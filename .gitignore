@@ -3,6 +3,6 @@ node_modules/
 public/
 .env.test
 .env.development
-xcuts
+src/xcuts.js
 bggapi.js
 .eslintrc.json
