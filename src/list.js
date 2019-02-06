@@ -1,7 +1,7 @@
 import uuidv4 from 'uuid'
 import { renderListData, showListSection, showRankNav, hideRankNav } from './views'
 import { saveData } from './functions'
-import { setCategory } from './index'
+import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 
 let listData = []
