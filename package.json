@@ -5,7 +5,8 @@
   "main": "input.js",
   "scripts": {
     "dev-server": "webpack-dev-server --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "compile:sass": "node-sass src/styles/main.scss public/styles/styles.css -w"
   },
   "author": "",
   "license": "ISC",
