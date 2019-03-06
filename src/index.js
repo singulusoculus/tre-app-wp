@@ -1,12 +1,14 @@
 import { renderPreviousSession, showListSection, showRankSection, renderListData, showWelcomeSection } from './js/views'
 import { addListItems, getListData, clearListData, loadList, createList } from './js/list'
-import { setFilters } from './filters'
+import { setFilters } from './js/filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './js/rank'
 import { getResultData } from './js/result'
 import { getBGGData } from './js/requests-bgg'
 import { getCategory, setCategory } from './js/category'
 import { getCurrentStep, setCurrentStep } from './js/step'
 import { initFanFavorite, handleCategoryChange } from './js/launch'
+
+import './styles/main.scss'
 
 // Nav Control *************************************************
 // Launch Nav

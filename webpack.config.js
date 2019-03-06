@@ -1,10 +1,14 @@
-const path = require("path");
+const path = require('path')
+// const webpack = require('webpack')
+// const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-  entry: ["babel-polyfill", "./src/index.js"],
+  watch: true,
+  entry: ['babel-polyfill', './src/index.js'],
   output: {
-    path: path.resolve(__dirname, "public/dist"),
-    filename: "bundle.js"
+    path: path.resolve(__dirname, 'public/dist'),
+    filename: 'bundle.js'
   },
   module: {
     rules: [
@@ -12,20 +16,31 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["env"],
-            plugins: ["transform-object-rest-spread"]
+            presets: ['env'],
+            plugins: ['transform-object-rest-spread']
           }
         }
+      }, {
+        test: /\.scss$/,
+        use: ['style-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
+        ]
       }
     ]
   },
+  plugins: [
+    new MiniCssExtractPlugin('main.css')
+  ],
   devServer: {
-    contentBase: path.resolve(__dirname, "public"),
-    publicPath: "/dist/",
-    inline: true,
-    hot: true
+    contentBase: path.resolve(__dirname, 'public'),
+    publicPath: '/dist/',
+    watchContentBase: true,
+    inline: true
+    // hot: true
   },
-  devtool: "source-map"
-};
+  devtool: 'source-map'
+}
