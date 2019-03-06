@@ -1,12 +1,12 @@
-import { renderPreviousSession, showListSection, showRankSection, renderListData, showWelcomeSection } from './views'
-import { addListItems, getListData, clearListData, loadList, createList } from './list'
+import { renderPreviousSession, showListSection, showRankSection, renderListData, showWelcomeSection } from './js/views'
+import { addListItems, getListData, clearListData, loadList, createList } from './js/list'
 import { setFilters } from './filters'
-import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './rank'
-import { getResultData } from './result'
-import { getBGGData } from './requests-bgg'
-import { getCategory, setCategory } from './category'
-import { getCurrentStep, setCurrentStep } from './step'
-import { initFanFavorite, handleCategoryChange } from './launch'
+import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './js/rank'
+import { getResultData } from './js/result'
+import { getBGGData } from './js/requests-bgg'
+import { getCategory, setCategory } from './js/category'
+import { getCurrentStep, setCurrentStep } from './js/step'
+import { initFanFavorite, handleCategoryChange } from './js/launch'
 
 // Nav Control *************************************************
 // Launch Nav

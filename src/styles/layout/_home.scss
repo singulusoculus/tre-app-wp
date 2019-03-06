@@ -1,0 +1,5 @@
+.container {
+  display: grid;
+  grid-template-rows: 8rem repeat(4, 20rem) 8rem;
+  margin: 0 3rem;
+}
