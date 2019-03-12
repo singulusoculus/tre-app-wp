@@ -1,3 +1,6 @@
 .list {
   background-color: turquoise;
+  display: none;
+
+  grid-row: row-start 2 / row-end 2;
 }

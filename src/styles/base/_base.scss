@@ -1,3 +1,7 @@
+$color-grey-light-1: #f9f7f6;
+$color-grey-light-2: #aaa;
+
+
 /* page reset */
 *,
 *::after,
@@ -9,9 +13,10 @@
 
 html {
   // This defines what 1rem is
-  font-size: 62.5%;
+  font-size: 62.5%; // 1rem = 10px
 }
 
 body {
   box-sizing: border-box;
+  background-color: $color-grey-light-1;
 }
