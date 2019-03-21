@@ -1,5 +1,5 @@
 .container {
-  display: grid;
-  grid-template-rows: [header-start] 6rem [header-end main-start] repeat(4, [row-start] 1fr [row-end]) [main-end footer-start] 6rem [footer-end];
-  margin: 0 3rem;
+  // display: grid;
+  // grid-template-rows: [header-start] 6rem [header-end main-start] repeat(4, [row-start] 1fr [row-end]) [main-end footer-start] 6rem [footer-end];
+  // margin: 0 3rem;
 }

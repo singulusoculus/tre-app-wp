@@ -6,32 +6,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>The Ranking Engine</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/materialize.min.css">
   <link rel="stylesheet" href="./dist/main.css" />
 </head>
 
 <body>
   <div class="container">
     <header class="header">
-      HEADER
+      <nav class="nav-extended">
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo">The Ranking Engine</a>
+          <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="#">Current Rankings</a></li>
+            <li><a href="#">Back to Pub Meeple</a></li>
+            <li><a href="#">Codex</a></li>
+          </ul>
+        </div>
+        <div class="nav-content">
+          <ul class="tabs tabs-transparent tabs-fixed-width">
+            <li class="tab start-tab"><a href="#start">Start</a></li>
+            <li class="tab list-tab"><a href="#list">List</a></li>
+            <li class="tab rank-tab"><a href="#rank">Rank</a></li>
+            <li class="tab result-tab"><a href="#result">Result</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <ul class="sidenav" id="mobile-nav">
+        <li><a href="#">Current Rankings</a></li>
+        <li><a href="#">Back to Pub Meeple</a></li>
+        <li><a href="#">Codex</a></li>
+      </ul>
+
     </header>
-    <section class="launch">
-      LAUNCH
+
+    <section id="start" class="start">
+      START
     </section>
-    <section class="list">
+
+    <section id="list" class="list">
       LIST
     </section>
-    <section class="rank">
+
+    <section id="rank" class="rank">
       RANK
     </section>
-    <section class="result">
+
+    <section id="result" class="result">
       RESULT
     </section>
-    <footer class="footer">
-      FOOTER
+
+    <footer class="footer page-footer">
+
+      <div class="footer-copyright">
+        © 2014 Copyright Text
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+      </div>
     </footer>
   </div>
 
-  <script src="/dist/bundle.js"></script>
+  <script src="./dist/materialize.min.js"></script>
+  <script src="./dist/init.js"></script>
+  <script src="./dist/bundle.js"></script>
 </body>
 
 </html>
