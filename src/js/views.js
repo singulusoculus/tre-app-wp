@@ -15,7 +15,7 @@ const renderPreviousSession = () => {
     const data = prevData.data
     const category = prevData.category
 
-    if (data.length > 0 && step !== 'Launch') {
+    if (data.length > 0 && step !== 'Start') {
       const containerEl = document.querySelector('.resume-session-container')
       const textEl = document.createElement('p')
       const buttonEl = document.createElement('button')
@@ -112,16 +112,16 @@ const hideResultNav = () => {
 }
 
 // Section Visibility
-const showWelcomeSection = () => {
+const showStartSection = () => {
   document.querySelector('#list-container').classList.add('inactive')
   document.querySelector('#list-container').classList.remove('active')
   document.querySelector('#rank-container').classList.add('inactive')
   document.querySelector('#rank-container').classList.remove('active')
   document.querySelector('#result-container').classList.add('inactive')
   document.querySelector('#result-container').classList.remove('active')
-  document.querySelector('#welcome-container').classList.add('active')
-  document.querySelector('#welcome-container').classList.remove('inactive')
-  document.querySelector('#step-nav__welcome').classList.add('step-nav--current')
+  document.querySelector('#start-container').classList.add('active')
+  document.querySelector('#start-container').classList.remove('inactive')
+  document.querySelector('#step-nav__start').classList.add('step-nav--current')
   document.querySelector('#step-nav__list').classList.remove('step-nav--current')
   document.querySelector('#step-nav__rank').classList.remove('step-nav--current')
   document.querySelector('#step-nav__result').classList.remove('step-nav--current')
@@ -142,9 +142,9 @@ const showListSection = () => {
   document.querySelector('#rank-container').classList.remove('active')
   document.querySelector('#result-container').classList.add('inactive')
   document.querySelector('#result-container').classList.remove('active')
-  document.querySelector('#welcome-container').classList.add('inactive')
-  document.querySelector('#welcome-container').classList.remove('active')
-  document.querySelector('#step-nav__welcome').classList.remove('step-nav--current')
+  document.querySelector('#start-container').classList.add('inactive')
+  document.querySelector('#start-container').classList.remove('active')
+  document.querySelector('#step-nav__start').classList.remove('step-nav--current')
   document.querySelector('#step-nav__list').classList.add('step-nav--current')
   document.querySelector('#step-nav__rank').classList.remove('step-nav--current')
   document.querySelector('#step-nav__result').classList.remove('step-nav--current')
@@ -165,9 +165,9 @@ const showRankSection = () => {
   document.querySelector('#rank-container').classList.remove('inactive')
   document.querySelector('#result-container').classList.add('inactive')
   document.querySelector('#result-container').classList.remove('active')
-  document.querySelector('#welcome-container').classList.add('inactive')
-  document.querySelector('#welcome-container').classList.remove('active')
-  document.querySelector('#step-nav__welcome').classList.remove('step-nav--current')
+  document.querySelector('#start-container').classList.add('inactive')
+  document.querySelector('#start-container').classList.remove('active')
+  document.querySelector('#step-nav__start').classList.remove('step-nav--current')
   document.querySelector('#step-nav__list').classList.remove('step-nav--current')
   document.querySelector('#step-nav__rank').classList.add('step-nav--current')
   document.querySelector('#step-nav__result').classList.remove('step-nav--current')
@@ -183,9 +183,9 @@ const showResultSection = () => {
   document.querySelector('#rank-container').classList.remove('active')
   document.querySelector('#result-container').classList.add('active')
   document.querySelector('#result-container').classList.remove('inactive')
-  document.querySelector('#welcome-container').classList.add('inactive')
-  document.querySelector('#welcome-container').classList.remove('active')
-  document.querySelector('#step-nav__welcome').classList.remove('step-nav--current')
+  document.querySelector('#start-container').classList.add('inactive')
+  document.querySelector('#start-container').classList.remove('active')
+  document.querySelector('#step-nav__start').classList.remove('step-nav--current')
   document.querySelector('#step-nav__list').classList.remove('step-nav--current')
   document.querySelector('#step-nav__rank').classList.remove('step-nav--current')
   document.querySelector('#step-nav__result').classList.add('step-nav--current')
@@ -193,12 +193,13 @@ const showResultSection = () => {
   showResultNav()
 }
 
-export { renderPreviousSession,
+export {
+  renderPreviousSession,
   showListSection,
   showRankSection,
   showResultSection,
   renderListData,
-  showWelcomeSection,
+  showStartSection,
   showListNav,
   hideListNav,
   showRankNav,

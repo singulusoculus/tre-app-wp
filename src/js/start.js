@@ -3,7 +3,7 @@ import { renderPreviousSession, showRankSection, showListNav, hideListNav } from
 import { initRanking } from './rank'
 import { setCategory } from './category'
 
-setCurrentStep('Launch')
+setCurrentStep('Start')
 
 // Check for Previous Session and display option if available
 renderPreviousSession()

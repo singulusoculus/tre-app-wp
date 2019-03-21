@@ -1,4 +1,4 @@
-import { renderPreviousSession, showListSection, showRankSection, renderListData, showWelcomeSection } from './js/views'
+import { renderPreviousSession, showListSection, showRankSection, renderListData, showStartSection } from './js/views'
 import { addListItems, getListData, clearListData, loadList, createList } from './js/list'
 import { setFilters } from './js/filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './js/rank'
@@ -6,24 +6,24 @@ import { getResultData } from './js/result'
 import { getBGGData } from './js/requests-bgg'
 import { getCategory, setCategory } from './js/category'
 import { getCurrentStep, setCurrentStep } from './js/step'
-import { initFanFavorite, handleCategoryChange } from './js/launch'
+import { initFanFavorite, handleCategoryChange } from './js/start'
 
 import './styles/main.scss'
 
 // Nav Control *************************************************
-// Launch Nav
-document.querySelector('#step-nav__welcome').addEventListener('click', () => {
+// Start Nav
+document.querySelector('#step-nav__start').addEventListener('click', () => {
   setCategory(parseInt(document.querySelector('#list-category').value))
-  setCurrentStep('Launch')
+  setCurrentStep('Start')
   renderPreviousSession()
-  showWelcomeSection()
+  showStartSection()
 })
 
 // List Nav
 document.querySelector('#step-nav__list').addEventListener('click', () => {
   const step = getCurrentStep()
 
-  if (step === 'Launch') {
+  if (step === 'Start') {
     clearListData()
     setCurrentStep('List')
     renderListData()
@@ -90,7 +90,7 @@ document.querySelector('#step-nav__result').addEventListener('click', () => {
 })
 
 // Section Control ***********************************************************************************
-// Launch Section ***********
+// Start Section ***********
 
 // Fan Favorite
 document.querySelector('#fan-fav-button').addEventListener('click', () => {
