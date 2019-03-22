@@ -11,12 +11,12 @@ $color-grey-light-2: #aaa;
   box-sizing: inherit;
 }
 
-html {
-  // This defines what 1rem is
-  font-size: 62.5%; // 1rem = 10px
-}
+// html {
+//   // This defines what 1rem is
+//   font-size: 62.5%; // 1rem = 10px
+// }
 
 body {
   box-sizing: border-box;
-  background-color: $color-grey-light-1;
+  // background-color: $color-grey-light-1;
 }

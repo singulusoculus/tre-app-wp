@@ -17,13 +17,44 @@ const renderPreviousSession = () => {
 
     if (data.length > 0 && step !== 'Start') {
       const containerEl = document.querySelector('.resume-session-container')
+
+      const rowEl = document.createElement('div')
+      rowEl.classList.add('row')
+
+      const colEl1 = document.createElement('div')
+      colEl1.classList.add('col', 's3')
+
+      const colEl2 = document.createElement('div')
+      colEl2.classList.add('col', 's6')
+
+      const colEl3 = document.createElement('div')
+      colEl3.classList.add('col', 's3')
+
+      const cardEl = document.createElement('div')
+      cardEl.classList.add('card', 'blue-grey', 'darken-1')
+
+      const contentEl = document.createElement('div')
+      contentEl.classList.add('card-content', 'white-text')
+
+      const titleEl = document.createElement('span')
+      titleEl.classList.add('card-title')
+      titleEl.textContent = 'Welcome Back!'
+
       const textEl = document.createElement('p')
-      const buttonEl = document.createElement('button')
-
       textEl.textContent = `You have a ${step} session available. Want to continue?`
-      buttonEl.textContent = 'Continue'
 
-      buttonEl.addEventListener('click', () => {
+      const actionEl = document.createElement('div')
+      actionEl.classList.add('card-action')
+
+      const linkEl = document.createElement('a')
+      linkEl.textContent = 'Continue'
+      linkEl.href = '#'
+
+      const dismissEl = document.createElement('a')
+      dismissEl.href = '#'
+      dismissEl.textContent = 'Dismiss'
+
+      linkEl.addEventListener('click', () => {
         if (step === 'List') {
           initPrevList(category, data)
           showListSection()
@@ -36,10 +67,37 @@ const renderPreviousSession = () => {
         }
       })
 
-      containerEl.appendChild(textEl)
-      containerEl.appendChild(buttonEl)
+      dismissEl.addEventListener('click', () => {
+        dismissWelcomeBack()
+      })
+
+      actionEl.appendChild(linkEl)
+      actionEl.appendChild(dismissEl)
+
+      contentEl.appendChild(titleEl)
+      contentEl.appendChild(textEl)
+
+      cardEl.appendChild(contentEl)
+      cardEl.appendChild(actionEl)
+
+      colEl2.appendChild(cardEl)
+
+      rowEl.appendChild(colEl1)
+      rowEl.appendChild(colEl2)
+      rowEl.appendChild(colEl3)
+
+      containerEl.appendChild(rowEl)
+      containerEl.setAttribute('style', 'border-bottom: 1px solid rgba(160,160,160,0.2)')
     }
   }
+}
+
+const dismissWelcomeBack = () => {
+  const element = document.querySelector('.resume-session-container')
+  element.textContent = ''
+  element.setAttribute('style', 'border-bottom: none')
+
+  // this could eventually clear the session data from LocalStorage
 }
 
 const renderListData = () => {

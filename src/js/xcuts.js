@@ -34,3 +34,26 @@
 //     return list
 //   }
 // }
+
+// old welcome back
+// const textEl = document.createElement('p')
+// const buttonEl = document.createElement('button')
+
+// textEl.textContent = `You have a ${step} session available. Want to continue?`
+// buttonEl.textContent = 'Continue'
+
+// buttonEl.addEventListener('click', () => {
+//   if (step === 'List') {
+//     initPrevList(category, data)
+//     showListSection()
+//   } else if (step === 'Rank') {
+//     initPrevRanking(category, data)
+//     showRankSection()
+//   } else if (step === 'Result') {
+//     initPrevResult(category, data)
+//     showResultSection()
+//   }
+// })
+
+// containerEl.appendChild(textEl)
+// containerEl.appendChild(buttonEl)
