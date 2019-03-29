@@ -36,12 +36,12 @@ const renderPreviousSession = () => {
       const contentEl = document.createElement('div')
       contentEl.classList.add('card-content', 'white-text')
 
-      const titleEl = document.createElement('span')
-      titleEl.classList.add('card-title')
-      titleEl.textContent = 'Welcome Back!'
+      // const titleEl = document.createElement('span')
+      // titleEl.classList.add('card-title')
+      // titleEl.textContent = 'Welcome Back!'
 
       const textEl = document.createElement('p')
-      textEl.textContent = `You have a ${step} session available. Want to continue?`
+      textEl.textContent = `You have a previous ${step} session available. Want to continue?`
 
       const actionEl = document.createElement('div')
       actionEl.classList.add('card-action')
@@ -57,13 +57,13 @@ const renderPreviousSession = () => {
       linkEl.addEventListener('click', () => {
         if (step === 'List') {
           initPrevList(category, data)
-          showListSection()
+          // showListSection()
         } else if (step === 'Rank') {
           initPrevRanking(category, data)
-          showRankSection()
+          // showRankSection()
         } else if (step === 'Result') {
           initPrevResult(category, data)
-          showResultSection()
+          // showResultSection()
         }
       })
 
@@ -74,7 +74,7 @@ const renderPreviousSession = () => {
       actionEl.appendChild(linkEl)
       actionEl.appendChild(dismissEl)
 
-      contentEl.appendChild(titleEl)
+      // contentEl.appendChild(titleEl)
       contentEl.appendChild(textEl)
 
       cardEl.appendChild(contentEl)
@@ -118,71 +118,80 @@ const renderListData = () => {
       const itemEl = generateListDataDOM(item)
       listEl.appendChild(itemEl)
     })
+    listEl.classList.add('collection')
   }
 }
 
 // Generate DOM for each item in createList
 const generateListDataDOM = (item) => {
-  const itemEl = document.createElement('div')
-  const textEl = document.createElement('p')
-  const buttonEl = document.createElement('button')
+  const itemEl = document.createElement('li')
+  itemEl.classList.add('collection-item')
 
-  textEl.textContent = item.name
-  buttonEl.textContent = 'X'
-  buttonEl.classList.add('create-list-delete')
-  buttonEl.addEventListener('click', (e) => {
+  const itemNameEl = document.createElement('span')
+  itemNameEl.textContent = item.name
+
+  const iconEl = document.createElement('a')
+  iconEl.classList.add('secondary-content')
+  iconEl.href = '#!'
+  iconEl.innerHTML = '<i class="material-icons">delete</i>'
+  iconEl.addEventListener('click', (e) => {
     removeListItem(item.id)
     renderListData()
   })
 
-  textEl.appendChild(buttonEl)
-  itemEl.appendChild(textEl)
+  itemEl.appendChild(itemNameEl)
+  itemEl.appendChild(iconEl)
 
   return itemEl
 }
 
-// Nav visibility
+// Step Tab visibility
+const showStepTab = (step) => {
+  document.querySelector(`#${step}-tab`).classList.add('step-tab--available')
+  updateTabIndicator()
+}
+
 const showListNav = () => {
-  document.querySelector('#step-nav__list').classList.add('step-nav--available')
+  document.querySelector('#list-tab').classList.add('step-tab--available')
+  updateTabIndicator()
 }
 
 const showRankNav = () => {
-  document.querySelector('#step-nav__list').classList.add('step-nav--available')
-  document.querySelector('#step-nav__rank').classList.add('step-nav--available')
+  document.querySelector('#rank-tab').classList.add('step-tab--available')
+  updateTabIndicator()
 }
 
 const showResultNav = () => {
-  document.querySelector('#step-nav__list').classList.add('step-nav--available')
-  document.querySelector('#step-nav__rank').classList.add('step-nav--available')
-  document.querySelector('#step-nav__result').classList.add('step-nav--available')
+  document.querySelector('#result-tab').classList.add('step-tab--available')
+  updateTabIndicator()
 }
 
-const hideRankNav = () => {
-  document.querySelector('#step-nav__rank').classList.remove('step-nav--available')
+const hideStepTab = (step) => {
+  closeTooltip(`${step}`)
+  document.querySelector(`#${step}-tab`).classList.remove('step-tab--available')
+  updateTabIndicator()
 }
 
 const hideListNav = () => {
-  document.querySelector('#step-nav__list').classList.remove('step-nav--available')
+  closeTooltip('list')
+  document.querySelector('#list-tab').classList.remove('step-tab--available')
+  updateTabIndicator()
+}
+
+const hideRankNav = () => {
+  closeTooltip('rank')
+  document.querySelector('#rank-tab').classList.remove('step-tab--available')
+  updateTabIndicator()
 }
 
 const hideResultNav = () => {
-  document.querySelector('#step-nav__result').classList.remove('step-nav--available')
+  // closeTooltip('result')
+  document.querySelector('#result-tab').classList.remove('step-tab--available')
+  updateTabIndicator()
 }
 
 // Section Visibility
-const showStartSection = () => {
-  document.querySelector('#list-container').classList.add('inactive')
-  document.querySelector('#list-container').classList.remove('active')
-  document.querySelector('#rank-container').classList.add('inactive')
-  document.querySelector('#rank-container').classList.remove('active')
-  document.querySelector('#result-container').classList.add('inactive')
-  document.querySelector('#result-container').classList.remove('active')
-  document.querySelector('#start-container').classList.add('active')
-  document.querySelector('#start-container').classList.remove('inactive')
-  document.querySelector('#step-nav__start').classList.add('step-nav--current')
-  document.querySelector('#step-nav__list').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__rank').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__result').classList.remove('step-nav--current')
+const onShowStartSection = () => {
   hideListNav()
   hideRankNav()
   hideResultNav()
@@ -193,20 +202,7 @@ const showStartSection = () => {
   }
 }
 
-const showListSection = () => {
-  document.querySelector('#list-container').classList.add('acitve')
-  document.querySelector('#list-container').classList.remove('inactive')
-  document.querySelector('#rank-container').classList.add('inactive')
-  document.querySelector('#rank-container').classList.remove('active')
-  document.querySelector('#result-container').classList.add('inactive')
-  document.querySelector('#result-container').classList.remove('active')
-  document.querySelector('#start-container').classList.add('inactive')
-  document.querySelector('#start-container').classList.remove('active')
-  document.querySelector('#step-nav__start').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__list').classList.add('step-nav--current')
-  document.querySelector('#step-nav__rank').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__result').classList.remove('step-nav--current')
-
+const onShowListSection = () => {
   hideRankNav()
   hideResultNav()
 
@@ -216,51 +212,75 @@ const showListSection = () => {
   }
 }
 
-const showRankSection = () => {
-  document.querySelector('#list-container').classList.add('inactive')
-  document.querySelector('#list-container').classList.remove('active')
-  document.querySelector('#rank-container').classList.add('active')
-  document.querySelector('#rank-container').classList.remove('inactive')
-  document.querySelector('#result-container').classList.add('inactive')
-  document.querySelector('#result-container').classList.remove('active')
-  document.querySelector('#start-container').classList.add('inactive')
-  document.querySelector('#start-container').classList.remove('active')
-  document.querySelector('#step-nav__start').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__list').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__rank').classList.add('step-nav--current')
-  document.querySelector('#step-nav__result').classList.remove('step-nav--current')
+// const showRankSection = () => {
+//   document.querySelector('#list-container').classList.add('inactive')
+//   document.querySelector('#list-container').classList.remove('active')
+//   document.querySelector('#rank-container').classList.add('active')
+//   document.querySelector('#rank-container').classList.remove('inactive')
+//   document.querySelector('#result-container').classList.add('inactive')
+//   document.querySelector('#result-container').classList.remove('active')
+//   document.querySelector('#start-container').classList.add('inactive')
+//   document.querySelector('#start-container').classList.remove('active')
+//   document.querySelector('#step-nav__start').classList.remove('step-nav--current')
+//   document.querySelector('#step-nav__list').classList.remove('step-nav--current')
+//   document.querySelector('#step-nav__rank').classList.add('step-nav--current')
+//   document.querySelector('#step-nav__result').classList.remove('step-nav--current')
 
-  hideResultNav()
-  showRankNav()
+//   hideResultNav()
+//   showRankNav()
+// }
+
+// const showResultSection = () => {
+//   document.querySelector('#list-container').classList.add('inactive')
+//   document.querySelector('#list-container').classList.remove('active')
+//   document.querySelector('#rank-container').classList.add('inactive')
+//   document.querySelector('#rank-container').classList.remove('active')
+//   document.querySelector('#result-container').classList.add('active')
+//   document.querySelector('#result-container').classList.remove('inactive')
+//   document.querySelector('#start-container').classList.add('inactive')
+//   document.querySelector('#start-container').classList.remove('active')
+//   document.querySelector('#step-nav__start').classList.remove('step-nav--current')
+//   document.querySelector('#step-nav__list').classList.remove('step-nav--current')
+//   document.querySelector('#step-nav__rank').classList.remove('step-nav--current')
+//   document.querySelector('#step-nav__result').classList.add('step-nav--current')
+
+//   showResultNav()
+// }
+
+const updateTabIndicator = () => {
+  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
+  tabs.updateTabIndicator()
 }
 
-const showResultSection = () => {
-  document.querySelector('#list-container').classList.add('inactive')
-  document.querySelector('#list-container').classList.remove('active')
-  document.querySelector('#rank-container').classList.add('inactive')
-  document.querySelector('#rank-container').classList.remove('active')
-  document.querySelector('#result-container').classList.add('active')
-  document.querySelector('#result-container').classList.remove('inactive')
-  document.querySelector('#start-container').classList.add('inactive')
-  document.querySelector('#start-container').classList.remove('active')
-  document.querySelector('#step-nav__start').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__list').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__rank').classList.remove('step-nav--current')
-  document.querySelector('#step-nav__result').classList.add('step-nav--current')
+const selectTab = (tab) => {
+  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
+  tabs.select(`${tab}-container`)
+}
 
-  showResultNav()
+const openTooltip = (tab) => {
+  const tip = M.Tooltip.getInstance(document.querySelector(`#${tab}-tab-link`))
+  tip.open()
+}
+
+const closeTooltip = (tab) => {
+  const tip = M.Tooltip.getInstance(document.querySelector(`#${tab}-tab-link`))
+  tip.close()
 }
 
 export {
   renderPreviousSession,
-  showListSection,
-  showRankSection,
-  showResultSection,
+  onShowListSection,
+  // showRankSection,
+  // showResultSection,
   renderListData,
-  showStartSection,
+  onShowStartSection,
   showListNav,
   hideListNav,
   showRankNav,
   hideRankNav,
-  showResultNav
+  showResultNav,
+  hideResultNav,
+  updateTabIndicator,
+  selectTab,
+  openTooltip
 }

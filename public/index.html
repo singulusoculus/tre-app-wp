@@ -7,7 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>The Ranking Engine</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="./dist/materialize.min.css">
   <link rel="stylesheet" href="./dist/main.css" />
 </head>
 
@@ -16,7 +15,7 @@
     <header class="header">
       <nav class="nav-extended">
         <div class="nav-wrapper">
-          <a href="#" class="brand-logo">The Ranking Engine</a>
+          <a href="#" class="brand-logo">Ranking Engine</a>
           <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="#">Current Rankings</a></li>
@@ -24,12 +23,15 @@
             <li><a href="#">Codex</a></li>
           </ul>
         </div>
+
         <div class="nav-content">
-          <ul class="tabs tabs-transparent tabs-fixed-width">
-            <li class="tab start-tab"><a href="#start">Start</a></li>
-            <li class="tab list-tab"><a href="#list">List</a></li>
-            <li class="tab rank-tab"><a href="#rank">Rank</a></li>
-            <li class="tab result-tab"><a href="#result">Result</a></li>
+          <ul id="step-tabs" class="tabs tabs-transparent tabs-fixed-width">
+            <li id="start-tab" class="start-tab tab "><a href="#start-container">Start</a></li>
+            <li id="list-tab" class="list-tab tab"><a href="#list-container" id="list-tab-link" class="tooltipped"
+                data-tooltip="Click here to create or edit your list">List</a></li>
+            <li id="rank-tab" class="rank-tab tab"><a href="#rank-container" id="rank-tab-link" class="tooltipped"
+                data-tooltip="Click to start or restart the Ranking Process">Rank</a></li>
+            <li id="result-tab" class="result-tab tab"><a href="#result-container">Result</a></li>
           </ul>
         </div>
       </nav>
@@ -42,21 +44,19 @@
 
     </header>
 
-    <section id="start" class="start">
+    <section id="start-container" class="start-container">
       <div class="resume-session-container"></div>
 
-      <h3>Create your own list</h3>
-      <div class="input-field col s12">
-        <select>
-          <option value="" disabled selected>Choose a Category</option>
+      <h3>Create a new list</h3>
+      <div id="list-category" class="input-field col s12">
+        <select id="list-category-select">
+          <option value="0" selected>Choose a category to get started</option>
           <option value="1">Board Games</option>
           <option value="2">Option 2</option>
           <option value="3">Option 3</option>
         </select>
-        <!-- <label>Materialize Select</label> -->
       </div>
 
-      <a class="waves-effect waves-light btn">Go!</a>
 
       <div class="divider"></div>
 
@@ -170,16 +170,74 @@
 
     </section>
 
-    <section id="list" class="list">
-      LIST
+    <section id="list-container" class="list-container">
+      <div class="row">
+        <ul class="collapsible col s12">
+          <li class="active">
+            <div class="collapsible-header"><i class="material-icons">format_list_bulleted</i>Text Entry</div>
+            <div class="collapsible-body">
+              <form>
+                <div class="row">
+                  <div class="input-field col s12 m8 l10 xl11">
+                    <textarea id="textarea-input" class="materialize-textarea"></textarea>
+                    <label for="textarea-input">Type or Paste your items here</label>
+                  </div>
+                  <a id="textarea-add-btn" class="waves-effect waves-light btn col s12 m4 l2 xl1">Add</a>
+                </div>
+              </form>
+            </div>
+          </li>
+          <li>
+            <div class="collapsible-header"><i class="material-icons">cloud_download</i>Add from BGG</div>
+            <div class="collapsible-body">
+              <a id="bgg-add" class="waves-effect waves-light btn">Add</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div id="list-items-wrapper">
+        <h4>Your List</h4>
+        <div class="row">
+          <div class="col s12 m6 l4 xl5 input-field">
+            <i class="material-icons prefix">filter_list</i>
+            <input id="search-text" type="text" placeholder="Filter Items" />
+          </div>
+          <div class="col s12 m6 l4 xl5 input-field">
+            <i class="material-icons prefix">sort_by_alpha</i>
+            <select id="sort-by">
+              <option value="alphabetical">Sort alphabetically</option>
+              <option value="byProjected">Sort by projected rank</option>
+              <option value="byPrevRank">Sort by previous rank (if available)</option>
+            </select>
+          </div>
+          <div class="col s6 m6 l2 xl1">
+            <a id="clear-list" class="waves-effect waves-light btn">Clear</a>
+          </div>
+          <div class="col s6 m6 l2 xl1">
+            <a id="save-list" class="waves-effect waves-light btn">Save</a>
+          </div>
+          <!-- <li class="collection-item">
+              <img src="images/yuna.jpg" alt="" class="circle">
+              <span>Example Items</span>
+              <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+            </li> -->
+        </div>
+        <div class="row">
+          <div class="col s12 m8 offset-m2">
+            <ul id="list-items"></ul>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="rank" class="rank">
+    <section id="rank-container" class="rank-container">
       RANK
     </section>
 
-    <section id="result" class="result">
+    <section id="result-container" class="result-container">
       RESULT
+      <div id="results-table"></div>
     </section>
 
     <footer class="footer page-footer">
@@ -192,7 +250,6 @@
   </div>
 
   <script src="./dist/materialize.min.js"></script>
-  <script src="./dist/init.js"></script>
   <script src="./dist/bundle.js"></script>
 </body>
 

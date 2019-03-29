@@ -1,19 +1,8 @@
-@import "abstracts/functions";
-@import "abstracts/mixins";
-@import "abstracts/variables";
-
-@import "base/base";
-@import "base/animations";
-@import "base/typography";
-@import "base/utilities";
-
-@import "layout/footer";
-@import "layout/header";
-@import "layout/home";
-@import "layout/launch";
-@import "layout/list";
-@import "layout/rank";
-@import "layout/result";
+@import "/materialize";
+@import "/base";
+@import "/animations";
+@import "/variables";
+@import "/mixins";
 
 
 .divider {
@@ -21,36 +10,18 @@
   border-bottom: 1px solid rgba(160,160,160,0.2);
 }
 
-/* .active {
-  display: block;
-}
-
-.inactive {
+#list-tab {
   display: none;
 }
 
-.step-nav {
-  display: inline-block;
-}
-
-.step-nav__welcome,
-.step-nav__list,
-.step-nav__rank,
-.step-nav__result {
-  display: inline-block;
-  color: rgb(0, 0, 0);
-  text-transform: uppercase;
-  font-size: 15px;
-  color: rgb(168, 168, 168);
+#rank-tab {
   display: none;
 }
 
-.step-nav--current {
-  font-size: 25px;
-  text-decoration: underline;
-  color: rgb(83, 83, 83);
+#result-tab {
+  display: none;
 }
 
-.step-nav--available {
-  display: inline-block;
-} */
+.step-tab--available {
+  display: inline-block !important;
+}

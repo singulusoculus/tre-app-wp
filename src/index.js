@@ -1,4 +1,4 @@
-import { renderPreviousSession, showListSection, showRankSection, renderListData, showStartSection } from './js/views'
+import { renderPreviousSession, onShowStartSection, onShowListSection, showRankSection, renderListData, updateTabIndicator } from './js/views'
 import { addListItems, getListData, clearListData, loadList, createList } from './js/list'
 import { setFilters } from './js/filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './js/rank'
@@ -10,26 +10,29 @@ import { initFanFavorite, handleCategoryChange } from './js/start'
 
 import './styles/main.scss'
 
-// Nav Control *************************************************
+M.AutoInit()
+
+// Step Tab Control *************************************************
 // Start Nav
-document.querySelector('#step-nav__start').addEventListener('click', () => {
-  setCategory(parseInt(document.querySelector('#list-category').value))
+document.querySelector('#start-tab').addEventListener('click', () => {
+  setCategory(parseInt(document.querySelector('#list-category-select').value))
   setCurrentStep('Start')
   renderPreviousSession()
-  showStartSection()
+  onShowStartSection()
 })
 
 // List Nav
-document.querySelector('#step-nav__list').addEventListener('click', () => {
+document.querySelector('#list-tab').addEventListener('click', () => {
   const step = getCurrentStep()
 
   if (step === 'Start') {
     clearListData()
     setCurrentStep('List')
+
     renderListData()
-    showListSection()
+    onShowListSection()
   } else if (step === 'List') {
-    showListSection()
+    onShowListSection()
   } else if (step === 'Rank') {
     const r = confirm('This will terminate the ranking process and allow you to edit the list. Want to continue?')
     if (r === true) {
@@ -54,7 +57,7 @@ document.querySelector('#step-nav__list').addEventListener('click', () => {
 })
 
 // Rank Nav
-document.querySelector('#step-nav__rank').addEventListener('click', () => {
+document.querySelector('#rank-tab').addEventListener('click', () => {
   const step = getCurrentStep()
 
   if (step === 'List') {
@@ -82,7 +85,7 @@ document.querySelector('#step-nav__rank').addEventListener('click', () => {
 })
 
 // Result Nav
-document.querySelector('#step-nav__result').addEventListener('click', () => {
+document.querySelector('#result-tab').addEventListener('click', () => {
   const step = getCurrentStep()
   if (step === 'Rank') {
     calcRankedList()
@@ -93,12 +96,12 @@ document.querySelector('#step-nav__result').addEventListener('click', () => {
 // Start Section ***********
 
 // Fan Favorite
-document.querySelector('#fan-fav-button').addEventListener('click', () => {
-  initFanFavorite()
-})
+// document.querySelector('#fan-fav-button').addEventListener('click', () => {
+//   initFanFavorite()
+// })
 
 // Select a category
-document.querySelector('#list-category').addEventListener('change', () => {
+document.querySelector('#list-category-select').addEventListener('change', () => {
   handleCategoryChange()
 })
 
@@ -106,7 +109,7 @@ document.querySelector('#list-category').addEventListener('change', () => {
 
 // List Section ***********
 // Add List Items
-document.querySelector('#add-text-input-button').addEventListener('click', () => {
+document.querySelector('#textarea-add-btn').addEventListener('click', () => {
   // Filter and create list data
   let textList = document.querySelector('#textarea-input').value.split('\n').filter((x) => (x !== (undefined || '')))
 
@@ -115,6 +118,7 @@ document.querySelector('#add-text-input-button').addEventListener('click', () =>
   let list = createList(textList, 'text')
 
   addListItems(list)
+  document.querySelector('#textarea-input').style.height = '45px'
 })
 
 document.querySelector('#bgg-add').addEventListener('click', () => {
@@ -143,37 +147,37 @@ document.querySelector('#clear-list').addEventListener('click', () => {
 
 // Rank Section **************
 // Handle item1 pick
-document.querySelector('#item-1').addEventListener('click', () => {
-  handlePick(-1)
-})
+// document.querySelector('#item-1').addEventListener('click', () => {
+//   handlePick(-1)
+// })
 
-// Handle item 2 pick
-document.querySelector('#item-2').addEventListener('click', () => {
-  handlePick(1)
-})
+// // Handle item 2 pick
+// document.querySelector('#item-2').addEventListener('click', () => {
+//   handlePick(1)
+// })
 
-// Handle undo
-document.querySelector('#undo-button').addEventListener('click', () => {
-  handleUndo()
-})
+// // Handle undo
+// document.querySelector('#undo-button').addEventListener('click', () => {
+//   handleUndo()
+// })
 
-// Handle item delete
-document.querySelectorAll('.delete-button').forEach((el) => {
-  el.addEventListener('click', (e) => {
-    if (e.target.id === 'delete-1') {
-      deleteItem(-1)
-    } else if (e.target.id === 'delete-2') {
-      deleteItem(1)
-    }
-  })
-})
+// // Handle item delete
+// document.querySelectorAll('.delete-button').forEach((el) => {
+//   el.addEventListener('click', (e) => {
+//     if (e.target.id === 'delete-1') {
+//       deleteItem(-1)
+//     } else if (e.target.id === 'delete-2') {
+//       deleteItem(1)
+//     }
+//   })
+// })
 
-// Handle Add item - during ranking
-document.querySelector('#add-button').addEventListener('click', (e) => {
-  console.log('add item')
-  const name = document.querySelector('#add-input').value
-  addItem(name, 'text')
-  document.querySelector('#add-input').value = ''
-})
+// // Handle Add item - during ranking
+// document.querySelector('#add-button').addEventListener('click', (e) => {
+//   console.log('add item')
+//   const name = document.querySelector('#add-input').value
+//   addItem(name, 'text')
+//   document.querySelector('#add-input').value = ''
+// })
 
 // Result Section ******************************

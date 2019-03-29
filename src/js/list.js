@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, showListSection, showRankNav, hideRankNav } from './views'
+import { renderListData, onShowListSection, showRankNav, hideRankNav, showListNav, selectTab, openTooltip } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -16,6 +16,9 @@ const initPrevList = (category, data) => {
   saveData(listData)
 
   renderListData()
+
+  showListNav()
+  selectTab('list')
 }
 
 const createListObject = (name, source, image = '', id, rank = 0, yearPublished = '', bggId = '') => {
@@ -37,7 +40,7 @@ const createListObject = (name, source, image = '', id, rank = 0, yearPublished 
 // Loads a list from rank or result back into List
 const loadList = (list) => {
   listData = list
-  showListSection()
+  onShowListSection()
   if (listData.length > 0) {
     saveData(listData)
     renderListData()
@@ -63,6 +66,8 @@ const addListItems = (list) => {
   if (listData.length > 0) {
     setCurrentStep('List')
     showRankNav()
+
+    openTooltip('rank')
 
     saveData(listData)
     renderListData()

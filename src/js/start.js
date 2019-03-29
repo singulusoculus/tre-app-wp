@@ -14,11 +14,13 @@ const initFanFavorite = () => {
 }
 
 const handleCategoryChange = () => {
-  const category = parseInt(document.querySelector('#list-category').value)
+  const category = parseInt(document.querySelector('#list-category-select').value)
   setCategory(category)
 
   if (category !== 0) {
     showListNav()
+    const tip = M.Tooltip.getInstance(document.querySelector('#list-tab-link'))
+    tip.open()
   } else {
     hideListNav()
   }

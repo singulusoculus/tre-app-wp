@@ -1,4 +1,4 @@
-import { showResultSection } from './views'
+import { showResultSection, showResultNav, selectTab } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
@@ -32,12 +32,13 @@ const renderResult = (data, comparisons) => {
   str += `</tbody></table>`
   str1 = comparisons ? `<p class="text-center">Total Comparisons: ${comparisons}</p>` : ''
 
-  document.getElementById('total-comparisons').innerHTML = str1
+  // document.getElementById('total-comparisons').innerHTML = str1
   document.getElementById('results-table').innerHTML = str
 
   saveData(resultData)
 
-  showResultSection()
+  showResultNav()
+  selectTab('result')
 }
 
 export { initPrevResult, renderResult, getResultData }
