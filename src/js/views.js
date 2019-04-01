@@ -15,7 +15,7 @@ const renderPreviousSession = () => {
     const data = prevData.data
     const category = prevData.category
 
-    if (data.length > 0 && step !== 'Start') {
+    if (Object.keys(data).length > 0 && step !== 'Start') {
       const containerEl = document.querySelector('.resume-session-container')
 
       const rowEl = document.createElement('div')
@@ -64,6 +64,7 @@ const renderPreviousSession = () => {
         } else if (step === 'Result') {
           initPrevResult(category, data)
           // showResultSection()
+          closeTooltip('result')
         }
       })
 
@@ -149,21 +150,11 @@ const generateListDataDOM = (item) => {
 const showStepTab = (step) => {
   document.querySelector(`#${step}-tab`).classList.add('step-tab--available')
   updateTabIndicator()
-}
+  openTooltip(`${step}`)
 
-const showListNav = () => {
-  document.querySelector('#list-tab').classList.add('step-tab--available')
-  updateTabIndicator()
-}
-
-const showRankNav = () => {
-  document.querySelector('#rank-tab').classList.add('step-tab--available')
-  updateTabIndicator()
-}
-
-const showResultNav = () => {
-  document.querySelector('#result-tab').classList.add('step-tab--available')
-  updateTabIndicator()
+  if (step === 'rank') {
+    closeTooltip('list')
+  }
 }
 
 const hideStepTab = (step) => {
@@ -172,81 +163,38 @@ const hideStepTab = (step) => {
   updateTabIndicator()
 }
 
-const hideListNav = () => {
-  closeTooltip('list')
-  document.querySelector('#list-tab').classList.remove('step-tab--available')
-  updateTabIndicator()
-}
-
-const hideRankNav = () => {
-  closeTooltip('rank')
-  document.querySelector('#rank-tab').classList.remove('step-tab--available')
-  updateTabIndicator()
-}
-
-const hideResultNav = () => {
-  // closeTooltip('result')
-  document.querySelector('#result-tab').classList.remove('step-tab--available')
-  updateTabIndicator()
-}
-
 // Section Visibility
 const onShowStartSection = () => {
-  hideListNav()
-  hideRankNav()
-  hideResultNav()
+  hideStepTab('list')
+  hideStepTab('rank')
+  hideStepTab('result')
 
   const category = getCategory()
   if (category !== 0) {
-    showListNav()
+    showStepTab('list')
   }
 }
 
 const onShowListSection = () => {
-  hideRankNav()
-  hideResultNav()
+  hideStepTab('rank')
+  hideStepTab('result')
 
   const list = getListData()
   if (list.length > 0) {
-    showRankNav()
+    showStepTab('rank')
   }
 }
 
-// const showRankSection = () => {
-//   document.querySelector('#list-container').classList.add('inactive')
-//   document.querySelector('#list-container').classList.remove('active')
-//   document.querySelector('#rank-container').classList.add('active')
-//   document.querySelector('#rank-container').classList.remove('inactive')
-//   document.querySelector('#result-container').classList.add('inactive')
-//   document.querySelector('#result-container').classList.remove('active')
-//   document.querySelector('#start-container').classList.add('inactive')
-//   document.querySelector('#start-container').classList.remove('active')
-//   document.querySelector('#step-nav__start').classList.remove('step-nav--current')
-//   document.querySelector('#step-nav__list').classList.remove('step-nav--current')
-//   document.querySelector('#step-nav__rank').classList.add('step-nav--current')
-//   document.querySelector('#step-nav__result').classList.remove('step-nav--current')
+// const onShowRankSection = () => {
+//   hideStepTab('result')
 
-//   hideResultNav()
-//   showRankNav()
 // }
 
-// const showResultSection = () => {
-//   document.querySelector('#list-container').classList.add('inactive')
-//   document.querySelector('#list-container').classList.remove('active')
-//   document.querySelector('#rank-container').classList.add('inactive')
-//   document.querySelector('#rank-container').classList.remove('active')
-//   document.querySelector('#result-container').classList.add('active')
-//   document.querySelector('#result-container').classList.remove('inactive')
-//   document.querySelector('#start-container').classList.add('inactive')
-//   document.querySelector('#start-container').classList.remove('active')
-//   document.querySelector('#step-nav__start').classList.remove('step-nav--current')
-//   document.querySelector('#step-nav__list').classList.remove('step-nav--current')
-//   document.querySelector('#step-nav__rank').classList.remove('step-nav--current')
-//   document.querySelector('#step-nav__result').classList.add('step-nav--current')
-
-//   showResultNav()
+// const onShowResultSection = () => {
+//
 // }
 
+// Step Tab Control
 const updateTabIndicator = () => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.updateTabIndicator()
@@ -257,30 +205,28 @@ const selectTab = (tab) => {
   tabs.select(`${tab}-container`)
 }
 
-const openTooltip = (tab) => {
-  const tip = M.Tooltip.getInstance(document.querySelector(`#${tab}-tab-link`))
+// Tooltip Control
+const openTooltip = (step) => {
+  const tip = M.Tooltip.getInstance(document.querySelector(`#${step}-tab-link`))
   tip.open()
 }
 
-const closeTooltip = (tab) => {
-  const tip = M.Tooltip.getInstance(document.querySelector(`#${tab}-tab-link`))
+const closeTooltip = (step) => {
+  const tip = M.Tooltip.getInstance(document.querySelector(`#${step}-tab-link`))
   tip.close()
 }
 
 export {
   renderPreviousSession,
   onShowListSection,
-  // showRankSection,
-  // showResultSection,
+  // onShowRankSection,
+  // onShowResultSection,
   renderListData,
   onShowStartSection,
-  showListNav,
-  hideListNav,
-  showRankNav,
-  hideRankNav,
-  showResultNav,
-  hideResultNav,
   updateTabIndicator,
   selectTab,
-  openTooltip
+  openTooltip,
+  showStepTab,
+  hideStepTab,
+  closeTooltip
 }

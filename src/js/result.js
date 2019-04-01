@@ -1,4 +1,4 @@
-import { showResultSection, showResultNav, selectTab } from './views'
+import { showStepTab, selectTab } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
@@ -10,7 +10,6 @@ const initPrevResult = (category, data) => {
   setCategory(category)
   setCurrentStep('Result')
   saveData(resultData)
-
   renderResult(resultData)
 }
 
@@ -37,7 +36,7 @@ const renderResult = (data, comparisons) => {
 
   saveData(resultData)
 
-  showResultNav()
+  showStepTab('result')
   selectTab('result')
 }
 

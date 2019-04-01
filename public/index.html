@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>The Ranking Engine</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
   <link rel="stylesheet" href="./dist/main.css" />
 </head>
 
@@ -26,12 +26,14 @@
 
         <div class="nav-content">
           <ul id="step-tabs" class="tabs tabs-transparent tabs-fixed-width">
-            <li id="start-tab" class="start-tab tab "><a href="#start-container">Start</a></li>
+            <li id="start-tab" class="start-tab tab "><a href="#start-container" id="start-tab-link" class="tooltipped"
+                data-tooltip="Click to start over">Start</a></li>
             <li id="list-tab" class="list-tab tab"><a href="#list-container" id="list-tab-link" class="tooltipped"
                 data-tooltip="Click here to create or edit your list">List</a></li>
             <li id="rank-tab" class="rank-tab tab"><a href="#rank-container" id="rank-tab-link" class="tooltipped"
-                data-tooltip="Click to start or restart the Ranking Process">Rank</a></li>
-            <li id="result-tab" class="result-tab tab"><a href="#result-container">Result</a></li>
+                data-tooltip="Click to start or restart the ranking process">Rank</a></li>
+            <li id="result-tab" class="result-tab tab"><a href="#result-container" id="result-tab-link"
+                class="tooltipped" data-tooltip="Click to see your results">Result</a></li>
           </ul>
         </div>
       </nav>
@@ -232,18 +234,40 @@
     </section>
 
     <section id="rank-container" class="rank-container">
-      RANK
+      <div class="row">
+        <div class="col s10 offset-s1">
+          <div class="progress">
+            <div id="progress-bar" class="determinate" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s5">
+          <div id="item-1-card" class="card">
+            <div class="card-content">
+              <p id="item-1-name">Game Name 1</p>
+            </div>
+          </div>
+        </div>
+        <div class="col s2">Buttons</div>
+        <div class="col s5">
+          <div id="item-2-card" class="card">
+            <div class="card-content">
+              <p id="item-2-name">Game Name 2</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="result-container" class="result-container">
-      RESULT
       <div id="results-table"></div>
     </section>
 
     <footer class="footer page-footer">
 
       <div class="footer-copyright">
-        © 2014 Copyright Text
+        © 2019 Pub Meeple
         <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
       </div>
     </footer>

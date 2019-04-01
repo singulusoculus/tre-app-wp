@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, onShowListSection, showRankNav, hideRankNav, showListNav, selectTab, openTooltip } from './views'
+import { renderListData, onShowListSection, hideStepTab, showStepTab, selectTab } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -17,7 +17,7 @@ const initPrevList = (category, data) => {
 
   renderListData()
 
-  showListNav()
+  showStepTab('list')
   selectTab('list')
 }
 
@@ -65,9 +65,7 @@ const addListItems = (list) => {
 
   if (listData.length > 0) {
     setCurrentStep('List')
-    showRankNav()
-
-    openTooltip('rank')
+    showStepTab('rank')
 
     saveData(listData)
     renderListData()
@@ -83,7 +81,7 @@ const removeListItem = (id) => {
   }
 
   if (listData.length === 0) {
-    hideRankNav()
+    hideStepTab('rank')
   }
 }
 
@@ -94,7 +92,7 @@ const clearListData = () => {
     const r = confirm('Are you sure you want to clear your list?')
     if (r === true) {
       listData = []
-      hideRankNav()
+      hideStepTab('rank')
 
       saveData(listData)
 

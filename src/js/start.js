@@ -1,5 +1,5 @@
 import { setCurrentStep } from './step'
-import { renderPreviousSession, showRankSection, showListNav, hideListNav } from './views'
+import { renderPreviousSession, showStepTab, hideStepTab } from './views'
 import { initRanking } from './rank'
 import { setCategory } from './category'
 
@@ -10,7 +10,7 @@ renderPreviousSession()
 
 const initFanFavorite = () => {
   initRanking(fanFavorite, 2)
-  showRankSection()
+  // showRankSection()
 }
 
 const handleCategoryChange = () => {
@@ -18,11 +18,9 @@ const handleCategoryChange = () => {
   setCategory(category)
 
   if (category !== 0) {
-    showListNav()
-    const tip = M.Tooltip.getInstance(document.querySelector('#list-tab-link'))
-    tip.open()
+    showStepTab('list')
   } else {
-    hideListNav()
+    hideStepTab('list')
   }
 }
 

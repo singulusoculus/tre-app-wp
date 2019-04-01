@@ -1,4 +1,4 @@
-import { renderPreviousSession, onShowStartSection, onShowListSection, showRankSection, renderListData, updateTabIndicator } from './js/views'
+import { renderPreviousSession, onShowStartSection, onShowListSection, showRankSection, renderListData, showStepTab, selectTab } from './js/views'
 import { addListItems, getListData, clearListData, loadList, createList } from './js/list'
 import { setFilters } from './js/filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './js/rank'
@@ -14,11 +14,27 @@ M.AutoInit()
 
 // Step Tab Control *************************************************
 // Start Nav
-document.querySelector('#start-tab').addEventListener('click', () => {
-  setCategory(parseInt(document.querySelector('#list-category-select').value))
-  setCurrentStep('Start')
-  renderPreviousSession()
-  onShowStartSection()
+document.querySelector('#start-tab').addEventListener('click', (e) => {
+  e.preventDefault()
+  const step = getCurrentStep()
+  const category = document.querySelector('#list-category-select').value
+  if (step !== 'Start' || category !== '0') {
+    const r = confirm('This will clear any progress and start the process from the beginning. Want to continue?')
+    if (r === true) {
+      // Reset the Category Select and reinitialize
+      document.querySelector('#list-category-select').value = 0
+      M.FormSelect.init(document.querySelector('#list-category-select'))
+      setCategory(0)
+      setCurrentStep('Start')
+      renderPreviousSession()
+
+      showStepTab('start')
+      selectTab('start')
+
+      onShowStartSection()
+    }
+
+  }
 })
 
 // List Nav
@@ -62,24 +78,29 @@ document.querySelector('#rank-tab').addEventListener('click', () => {
 
   if (step === 'List') {
     const listData = getListData()
-    if (listData.length === 0) {
-      alert('Add some items to your list')
-    } else {
-      const r = confirm('Are you ready to start ranking this list?')
-      if (r === true) {
-        const category = getCategory()
-        listData.sort((a, b) => 0.5 - Math.random())
-        initRanking(listData, category)
-        showRankSection()
-      }
+    const r = confirm('Are you ready to start ranking this list?')
+    if (r === true) {
+      const category = getCategory()
+      listData.sort((a, b) => 0.5 - Math.random())
+      initRanking(listData, category)
     }
+  } else if (step === 'Rank') {
+    const r = confirm('Do you really want to restart ranking this list?')
+    if (r === true) {
+      const data = getRankData()
+      const listData = data.masterList
+      listData.sort((a, b) => 0.5 - Math.random())
+      const category = getCategory()
+
+      initRanking(listData, category)
+    }
+
   } else if (step === 'Result') {
     const r = confirm('Do you want to start ranking this list again?')
     if (r === true) {
-      const data = getResultData()
+      const listData = getResultData()
       const category = getCategory()
-      initRanking(data, category)
-      showRankSection()
+      initRanking(listData, category)
     }
   }
 })
@@ -147,14 +168,14 @@ document.querySelector('#clear-list').addEventListener('click', () => {
 
 // Rank Section **************
 // Handle item1 pick
-// document.querySelector('#item-1').addEventListener('click', () => {
-//   handlePick(-1)
-// })
+document.querySelector('#item-1-card').addEventListener('click', () => {
+  handlePick(-1)
+})
 
-// // Handle item 2 pick
-// document.querySelector('#item-2').addEventListener('click', () => {
-//   handlePick(1)
-// })
+// Handle item 2 pick
+document.querySelector('#item-2-card').addEventListener('click', () => {
+  handlePick(1)
+})
 
 // // Handle undo
 // document.querySelector('#undo-button').addEventListener('click', () => {

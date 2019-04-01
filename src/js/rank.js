@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { showRankSection, showResultNav } from './views'
+import { showStepTab, selectTab, closeTooltip } from './views'
 import { renderResult } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { createListObject } from './list'
@@ -12,12 +12,15 @@ let rankDataHistory = []
 const initPrevRanking = (category, data) => {
   disableArrowKeyScroll()
 
-  populateRankData(true, data)
   setCurrentStep('Rank')
   setCategory(category)
+  populateRankData(true, data)
 
   showComparison()
-  showRankSection()
+  updateProgressBar()
+
+  showStepTab('rank')
+  selectTab('rank')
 }
 
 const populateRankData = (r, data) => {
@@ -100,6 +103,7 @@ const initRanking = (itemsList, category) => {
   rankData.cmp2 = rankData.sortList.length - 1
 
   setCurrentStep('Rank')
+  updateProgressBar()
 
   saveData(rankData)
 
@@ -126,8 +130,8 @@ const getComparisonInfo = () => {
 const showComparison = () => {
   const { item1Name, item2Name } = getComparisonInfo()
 
-  document.querySelector('#item-1').textContent = item1Name
-  document.querySelector('#item-2').textContent = item2Name
+  document.querySelector('#item-1-name').textContent = item1Name
+  document.querySelector('#item-2-name').textContent = item2Name
 }
 
 const handlePick = (flag) => {
@@ -150,6 +154,7 @@ const handlePick = (flag) => {
     }
 
     updateVoteShowPct()
+    updateProgressBar()
 
     // setPreviousItems
     saveRec(flag, 'handlePick')
@@ -157,11 +162,11 @@ const handlePick = (flag) => {
     rankData.numQuestion++
   }
 
+  closeTooltip('rank')
+
   cmpCheck()
 
   saveData(rankData)
-
-  // saveRankData()
 }
 
 const saveRec = (flag, source) => {
@@ -227,8 +232,8 @@ const sortList = () => {
 
 const cmpCheck = () => {
   if (rankData.cmp1 < 0) {
-    // updateProgressBar()
-    showResultNav()
+    updateProgressBar()
+    showStepTab('result')
     rankData.finishFlag = 1
   } else {
     checkForDeletedItems()
@@ -312,8 +317,8 @@ const checkForDeletedItems = () => {
 
   // check for completion
   if (rankData.cmp1 < 0) {
-    // updateProgressBar();
-    showResultNav()
+    updateProgressBar()
+    showStepTab('result')
     rankData.finishFlag = 1
   }
 }
@@ -334,8 +339,6 @@ const addItem = (item) => {
   showComparison()
 
   saveData(rankData)
-
-  // saveRankData()
 }
 
 const calcRankedList = () => {
@@ -354,6 +357,11 @@ const calcRankedList = () => {
   })
 
   renderResult(rankedList)
+}
+
+const updateProgressBar = () => {
+  const progress = Math.floor((rankData.finishSize * 100) / rankData.totalSize)
+  document.querySelector('#progress-bar').style.width = `${progress}%`
 }
 
 // -----------------------------------------------------
