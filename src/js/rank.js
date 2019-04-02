@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { showStepTab, selectTab, closeTooltip } from './views'
+import { showStepTab, selectTab, closeTooltip, onShowRankSection } from './views'
 import { renderResult } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { createListObject } from './list'
@@ -12,15 +12,16 @@ let rankDataHistory = []
 const initPrevRanking = (category, data) => {
   disableArrowKeyScroll()
 
+  showStepTab('rank')
+  selectTab('rank')
+
   setCurrentStep('Rank')
   setCategory(category)
   populateRankData(true, data)
 
   showComparison()
   updateProgressBar()
-
-  showStepTab('rank')
-  selectTab('rank')
+  onShowRankSection()
 }
 
 const populateRankData = (r, data) => {

@@ -1,4 +1,4 @@
-import { renderPreviousSession, onShowStartSection, onShowListSection, showRankSection, renderListData, showStepTab, selectTab } from './js/views'
+import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection } from './js/views'
 import { addListItems, getListData, clearListData, loadList, createList } from './js/list'
 import { setFilters } from './js/filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './js/rank'
@@ -8,14 +8,13 @@ import { getCategory, setCategory } from './js/category'
 import { getCurrentStep, setCurrentStep } from './js/step'
 import { initFanFavorite, handleCategoryChange } from './js/start'
 
-import './styles/main.scss'
+import './main.scss'
 
 M.AutoInit()
 
 // Step Tab Control *************************************************
-// Start Nav
+// Start Tab
 document.querySelector('#start-tab').addEventListener('click', (e) => {
-  e.preventDefault()
   const step = getCurrentStep()
   const category = document.querySelector('#list-category-select').value
   if (step !== 'Start' || category !== '0') {
@@ -32,12 +31,13 @@ document.querySelector('#start-tab').addEventListener('click', (e) => {
       selectTab('start')
 
       onShowStartSection()
+    } else {
+      e.stopPropagation()
     }
-
   }
 })
 
-// List Nav
+// List Tab
 document.querySelector('#list-tab').addEventListener('click', () => {
   const step = getCurrentStep()
 
@@ -72,7 +72,7 @@ document.querySelector('#list-tab').addEventListener('click', () => {
   }
 })
 
-// Rank Nav
+// Rank Tab
 document.querySelector('#rank-tab').addEventListener('click', () => {
   const step = getCurrentStep()
 
@@ -83,6 +83,7 @@ document.querySelector('#rank-tab').addEventListener('click', () => {
       const category = getCategory()
       listData.sort((a, b) => 0.5 - Math.random())
       initRanking(listData, category)
+      onShowRankSection()
     }
   } else if (step === 'Rank') {
     const r = confirm('Do you really want to restart ranking this list?')
@@ -91,25 +92,26 @@ document.querySelector('#rank-tab').addEventListener('click', () => {
       const listData = data.masterList
       listData.sort((a, b) => 0.5 - Math.random())
       const category = getCategory()
-
       initRanking(listData, category)
+      onShowRankSection()
     }
-
   } else if (step === 'Result') {
     const r = confirm('Do you want to start ranking this list again?')
     if (r === true) {
       const listData = getResultData()
       const category = getCategory()
       initRanking(listData, category)
+      onShowRankSection()
     }
   }
 })
 
-// Result Nav
+// Result Tab
 document.querySelector('#result-tab').addEventListener('click', () => {
   const step = getCurrentStep()
   if (step === 'Rank') {
     calcRankedList()
+    onShowResultSection()
   }
 })
 

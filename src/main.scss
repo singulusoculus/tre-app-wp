@@ -1,0 +1,73 @@
+@import "/styles/materialize";
+@import "/styles/base";
+@import "/styles/animations";
+@import "/styles/variables";
+@import "/styles/mixins";
+
+.nav-pm {
+  background-color: #3F5061;
+  z-index: 5;
+
+  &__logo {
+    width: 18rem;
+    margin: 0 2rem;
+    padding-top: .5rem;
+  }
+
+  &__links {
+    text-transform: uppercase;
+    font-weight: 400;
+
+    li a {
+      font-size: 1.1rem !important;
+    }
+  }
+}
+
+.nav-tre {
+  background-color: #527a45 !important;
+
+  &__title {
+    margin: 0 2rem;
+  }
+}
+
+.divider {
+  margin: 20px 0;
+  border-bottom: 1px solid rgba(160,160,160,0.2);
+}
+
+#list-tab {
+  display: none;
+}
+
+#rank-tab {
+  display: none;
+}
+
+#result-tab {
+  display: none;
+}
+
+.step-tab--available {
+  display: inline-block !important;
+}
+
+.progress {
+  margin-top: 2rem !important;
+}
+
+.btn {
+  background-color: #343A40 !important;
+}
+
+@media (max-width: 600px) {
+  .nav-tre__title {
+    font-size: 1.3rem !important;
+    margin: 0;
+  }
+
+  .nav-pm__logo {
+    width: 12rem;
+  }
+}

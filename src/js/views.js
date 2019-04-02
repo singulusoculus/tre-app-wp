@@ -21,14 +21,8 @@ const renderPreviousSession = () => {
       const rowEl = document.createElement('div')
       rowEl.classList.add('row')
 
-      const colEl1 = document.createElement('div')
-      colEl1.classList.add('col', 's3')
-
-      const colEl2 = document.createElement('div')
-      colEl2.classList.add('col', 's6')
-
-      const colEl3 = document.createElement('div')
-      colEl3.classList.add('col', 's3')
+      const colEl = document.createElement('div')
+      colEl.classList.add('col', 's12', 'm8', 'offset-m2', 'l6', 'offset-l3')
 
       const cardEl = document.createElement('div')
       cardEl.classList.add('card', 'blue-grey', 'darken-1')
@@ -41,10 +35,11 @@ const renderPreviousSession = () => {
       // titleEl.textContent = 'Welcome Back!'
 
       const textEl = document.createElement('p')
+      textEl.classList.add('center-align')
       textEl.textContent = `You have a previous ${step} session available. Want to continue?`
 
       const actionEl = document.createElement('div')
-      actionEl.classList.add('card-action')
+      actionEl.classList.add('card-action', 'center-align')
 
       const linkEl = document.createElement('a')
       linkEl.textContent = 'Continue'
@@ -81,11 +76,9 @@ const renderPreviousSession = () => {
       cardEl.appendChild(contentEl)
       cardEl.appendChild(actionEl)
 
-      colEl2.appendChild(cardEl)
+      colEl.appendChild(cardEl)
 
-      rowEl.appendChild(colEl1)
-      rowEl.appendChild(colEl2)
-      rowEl.appendChild(colEl3)
+      rowEl.appendChild(colEl)
 
       containerEl.appendChild(rowEl)
       containerEl.setAttribute('style', 'border-bottom: 1px solid rgba(160,160,160,0.2)')
@@ -179,20 +172,22 @@ const onShowListSection = () => {
   hideStepTab('rank')
   hideStepTab('result')
 
+  closeTooltip('list')
+
   const list = getListData()
   if (list.length > 0) {
     showStepTab('rank')
   }
 }
 
-// const onShowRankSection = () => {
-//   hideStepTab('result')
+const onShowRankSection = () => {
+  hideStepTab('result')
+  closeTooltip('rank')
+}
 
-// }
-
-// const onShowResultSection = () => {
-//
-// }
+const onShowResultSection = () => {
+  closeTooltip('result')
+}
 
 // Step Tab Control
 const updateTabIndicator = () => {
@@ -219,8 +214,8 @@ const closeTooltip = (step) => {
 export {
   renderPreviousSession,
   onShowListSection,
-  // onShowRankSection,
-  // onShowResultSection,
+  onShowRankSection,
+  onShowResultSection,
   renderListData,
   onShowStartSection,
   updateTabIndicator,

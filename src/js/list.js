@@ -88,7 +88,7 @@ const removeListItem = (id) => {
 const clearListData = () => {
   const step = getCurrentStep()
 
-  if (step === 'List') {
+  if (step === 'List' && listData.length > 0) {
     const r = confirm('Are you sure you want to clear your list?')
     if (r === true) {
       listData = []
