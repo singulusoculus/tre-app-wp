@@ -60,6 +60,8 @@ const createList = (itemArray, source) => {
 
 const addListItems = (list) => {
   list.forEach((item) => {
+    // strip out double quotes
+    item.name = item.name.replace(/["]+/g, '')
     listData.push(item)
   })
 
@@ -67,9 +69,15 @@ const addListItems = (list) => {
     setCurrentStep('List')
     showStepTab('rank')
 
+    filterDuplicates()
+
     saveData(listData)
     renderListData()
   }
+}
+
+const filterDuplicates = () => {
+  listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name) === index)
 }
 
 const removeListItem = (id) => {
@@ -142,4 +150,14 @@ const sortListData = (list, sortBy) => {
   }
 }
 
-export { addListItems, removeListItem, initPrevList, getListData, sortListData, clearListData, loadList, createList, createListObject }
+export {
+  addListItems,
+  removeListItem,
+  initPrevList,
+  getListData,
+  sortListData,
+  clearListData,
+  loadList,
+  createList,
+  createListObject
+}

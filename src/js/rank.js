@@ -237,9 +237,9 @@ const cmpCheck = () => {
     showStepTab('result')
     rankData.finishFlag = 1
   } else {
+    updateProgressBar()
     checkForDeletedItems()
     showComparison()
-    // renderMasterList()
   }
 }
 
@@ -267,9 +267,7 @@ const handleUndo = () => {
     const history = JSON.parse(historyJSON)
     rankData = history
     showComparison()
-
     saveData(rankData)
-    // renderMasterList()
   }
 }
 

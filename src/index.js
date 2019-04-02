@@ -180,9 +180,9 @@ document.querySelector('#item-2-card').addEventListener('click', () => {
 })
 
 // // Handle undo
-// document.querySelector('#undo-button').addEventListener('click', () => {
-//   handleUndo()
-// })
+document.querySelector('#undo-btn').addEventListener('click', () => {
+  handleUndo()
+})
 
 // // Handle item delete
 // document.querySelectorAll('.delete-button').forEach((el) => {
