@@ -131,12 +131,30 @@ const getComparisonInfo = () => {
 const showComparison = () => {
   const { item1Name, item2Name } = getComparisonInfo()
 
-  document.querySelector('#item-1-text').textContent = item1Name
-  document.querySelector('#item-2-text').textContent = item2Name
+  setTimeout(() => {
+    document.querySelector('#item-1-text').textContent = item1Name
+    document.querySelector('#item-2-text').textContent = item2Name
+    cardFadeIn()
+  }, 400)
+}
+
+const cardFadeOut = (flag) => {
+  if (flag === -1) {
+    // figure out if item name has changed before adding the class
+    document.querySelector('#item-1-card').classList.add('fade-out')
+  } else {
+    document.querySelector('#item-2-card').classList.add('fade-out')
+  }
+}
+
+const cardFadeIn = () => {
+  document.querySelector('#item-1-card').classList.remove('fade-out')
+  document.querySelector('#item-2-card').classList.remove('fade-out')
 }
 
 const handlePick = (flag) => {
   if (rankData.cmp1 >= 1) {
+    cardFadeOut(flag)
     setHistory()
 
     const { item1Ref, item2Ref } = getComparisonInfo()

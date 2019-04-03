@@ -71,6 +71,15 @@
   background-color: #343A40 !important;
 }
 
+.rank-card {
+  transition: all .4s;
+}
+
+.fade-out {
+  transform: scale(.6);
+  opacity: 0;
+}
+
 .rank-card-content {
   display: flex;
   align-items: center;
