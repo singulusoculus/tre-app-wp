@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, onShowListSection, hideStepTab, showStepTab, selectTab } from './views'
+import { renderListData, onShowListSection, hideStepTab, showStepTab, selectTab, toggleListItems } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -14,9 +14,8 @@ const initPrevList = (category, data) => {
   setCurrentStep('List')
 
   saveData(listData)
-
   renderListData()
-
+  
   showStepTab('list')
   selectTab('list')
 }

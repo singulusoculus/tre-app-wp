@@ -211,6 +211,18 @@ const closeTooltip = (step) => {
   tip.close()
 }
 
+const toggleListItems = () => {
+  const listItemsEl = document.querySelector('#list-items-wrapper')
+
+  if (listItemsEl.classList.contains('hide')) {
+    listItemsEl.classList.remove('hide')
+  } else {
+    listItemsEl.classList.add('hide')
+  }
+}
+
+
+
 export {
   renderPreviousSession,
   onShowListSection,
@@ -223,5 +235,6 @@ export {
   openTooltip,
   showStepTab,
   hideStepTab,
-  closeTooltip
+  closeTooltip,
+  toggleListItems
 }
