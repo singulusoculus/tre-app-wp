@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, onShowListSection, hideStepTab, showStepTab, selectTab, toggleListItems } from './views'
+import { renderListData, onShowListSection, hideStepTab, showStepTab, selectTab } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -15,7 +15,7 @@ const initPrevList = (category, data) => {
 
   saveData(listData)
   renderListData()
-  
+
   showStepTab('list')
   selectTab('list')
 }
@@ -67,9 +67,7 @@ const addListItems = (list) => {
   if (listData.length > 0) {
     setCurrentStep('List')
     showStepTab('rank')
-
     filterDuplicates()
-
     saveData(listData)
     renderListData()
   }

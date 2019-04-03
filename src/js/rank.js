@@ -131,8 +131,8 @@ const getComparisonInfo = () => {
 const showComparison = () => {
   const { item1Name, item2Name } = getComparisonInfo()
 
-  document.querySelector('#item-1-name').textContent = item1Name
-  document.querySelector('#item-2-name').textContent = item2Name
+  document.querySelector('#item-1-text').textContent = item1Name
+  document.querySelector('#item-2-text').textContent = item2Name
 }
 
 const handlePick = (flag) => {
@@ -266,6 +266,7 @@ const handleUndo = () => {
     const historyJSON = rankDataHistory.pop()
     const history = JSON.parse(historyJSON)
     rankData = history
+    updateProgressBar()
     showComparison()
     saveData(rankData)
   }

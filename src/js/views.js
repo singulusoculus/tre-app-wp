@@ -64,7 +64,11 @@ const renderPreviousSession = () => {
       })
 
       dismissEl.addEventListener('click', () => {
-        dismissWelcomeBack()
+        const element = document.querySelector('.resume-session-container')
+        element.classList.add('hide')
+        element.setAttribute('style', 'border-bottom: none')
+
+        // this could eventually clear the session data from LocalStorage
       })
 
       actionEl.appendChild(linkEl)
@@ -82,21 +86,18 @@ const renderPreviousSession = () => {
 
       containerEl.appendChild(rowEl)
       containerEl.setAttribute('style', 'border-bottom: 1px solid rgba(160,160,160,0.2)')
+      containerEl.classList.remove('hide')
     }
   }
-}
-
-const dismissWelcomeBack = () => {
-  const element = document.querySelector('.resume-session-container')
-  element.textContent = ''
-  element.setAttribute('style', 'border-bottom: none')
-
-  // this could eventually clear the session data from LocalStorage
 }
 
 const renderListData = () => {
   const data = getListData()
   const filters = getFilters()
+  const count = data.length
+
+  const listInfoEl = document.querySelector('#list-info')
+  listInfoEl.textContent = `You have ${count} items on this list`
 
   const listEl = document.querySelector('#list-items')
 
@@ -220,8 +221,6 @@ const toggleListItems = () => {
     listItemsEl.classList.add('hide')
   }
 }
-
-
 
 export {
   renderPreviousSession,

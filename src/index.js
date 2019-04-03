@@ -184,16 +184,17 @@ document.querySelector('#undo-btn').addEventListener('click', () => {
   handleUndo()
 })
 
-// // Handle item delete
-// document.querySelectorAll('.delete-button').forEach((el) => {
-//   el.addEventListener('click', (e) => {
-//     if (e.target.id === 'delete-1') {
-//       deleteItem(-1)
-//     } else if (e.target.id === 'delete-2') {
-//       deleteItem(1)
-//     }
-//   })
-// })
+// Handle item delete
+document.querySelectorAll('.rank-card-content__delete').forEach((el) => {
+  el.addEventListener('click', (e) => {
+    e.stopPropagation()
+    if (e.target.id === 'rank-delete-1') {
+      deleteItem(-1)
+    } else if (e.target.id === 'rank-delete-2') {
+      deleteItem(1)
+    }
+  })
+})
 
 // // Handle Add item - during ranking
 // document.querySelector('#add-button').addEventListener('click', (e) => {
@@ -204,3 +205,7 @@ document.querySelector('#undo-btn').addEventListener('click', () => {
 // })
 
 // Result Section ******************************
+
+document.querySelector('.support-us__dismiss').addEventListener('click', () => {
+  document.querySelector('.support-us').classList.add('hide')
+})
