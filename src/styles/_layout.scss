@@ -1,0 +1,109 @@
+//////////////////////////////////////////////////////////////////
+///////////  Navigation
+/////////////////////////////////////////////////////////////////
+
+.nav-pm {
+  background-color: #3F5061;
+  z-index: 5;
+
+  &__logo {
+    width: 18rem;
+    margin: 0 2rem;
+    padding-top: .5rem;
+  }
+
+  &__links {
+    text-transform: uppercase;
+    font-weight: 400;
+
+    li a {
+      font-size: 1.1rem !important;
+    }
+  }
+}
+
+.nav-tre {
+  background-color: #527a45 !important;
+
+  &__title {
+    margin: 0 2rem;
+  }
+}
+
+.step-tabs {
+
+  &__list {
+    display: none !important;
+  }
+
+  &__rank {
+    display: none !important;
+  }
+
+  &__result {
+    display: none !important;
+  }
+}
+
+.step-tab--available {
+  display: inline-block !important;
+}
+
+//////////////////////////////////////////////////////////////////
+///////////  List Section
+//////////////////////////////////////////////////////////////////
+
+#list-items-wrapper {
+  margin: 0 2rem;
+  padding: 1rem;
+  background-color: $color-grey-light-1;
+}
+
+.list-buttons {
+  margin-bottom: 0;
+}
+
+//////////////////////////////////////////////////////////////////
+///////////  Rank Section
+//////////////////////////////////////////////////////////////////
+.progress {
+  margin-top: 2rem !important;
+}
+
+.rank-card {
+  transition: all .4s ease-in-out;
+
+  &--fade-out {
+    transform: scale(.7);
+    opacity: 0;
+  }
+}
+
+.rank-card-content {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height:200px;
+
+  &__img {
+    max-width: 15rem;
+    margin-right: 1.5rem;
+  }
+
+  &__text {
+    text-transform: uppercase;
+  }
+
+  &__delete {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    cursor: pointer;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  #keys-reminder {
+      display: none;
+  }
+}

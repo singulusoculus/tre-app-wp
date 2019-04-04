@@ -1,0 +1,52 @@
+@import "/materialize";
+@import "/base";
+@import "/animations";
+@import "/variables";
+@import "/mixins";
+@import "/layout";
+
+
+
+.divider {
+  margin: 2rem 0;
+  border-bottom: 1px solid rgba(160,160,160,0.2);
+}
+
+.btn {
+  background-color: #343A40 !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .nav-tre__title {
+    font-size: 1.3rem !important;
+    margin: 0;
+  }
+
+  .nav-pm__logo {
+    width: 12rem;
+  }
+
+  #list-items-wrapper {
+    margin: 0 .2rem;
+    padding: .2rem;
+  }
+
+  .row {
+    margin-bottom: 1rem;
+  }
+
+  .rank-card-content__img {
+    max-width: 9rem;
+    margin-right: 1rem;
+  }
+
+  .rank-card-content {
+    padding: 1rem !important;
+  }
+
+  .input-field {
+    margin-top: .3rem;
+    margin-bottom: .3rem;
+  }
+
+}

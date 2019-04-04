@@ -1,19 +1,22 @@
-import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection } from './js/views'
-import { addListItems, getListData, clearListData, loadList, createList } from './js/list'
-import { setFilters } from './js/filters'
-import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './js/rank'
-import { getResultData } from './js/result'
-import { getBGGData } from './js/requests-bgg'
-import { getCategory, setCategory } from './js/category'
-import { getCurrentStep, setCurrentStep } from './js/step'
-import { initFanFavorite, handleCategoryChange } from './js/start'
+import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection } from './views'
+import { addListItems, getListData, clearListData, loadList, createList } from './list'
+import { setFilters } from './filters'
+import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './rank'
+import { getResultData } from './result'
+import { getBGGData } from './requests-bgg'
+import { getCategory, setCategory } from './category'
+import { getCurrentStep, setCurrentStep } from './step'
+import { initFanFavorite, handleCategoryChange } from './start'
 
-import './main.scss'
+import '../styles/main.scss'
 
 M.AutoInit()
 
-// Step Tab Control *************************************************
-// Start Tab
+// //////////////////////////////////////////////////////////////////////
+// // STEP TAB CONTROLS
+// //////////////////////////////////////////////////////////////////////
+
+// ***************** Start Tab *****************
 document.querySelector('#start-tab').addEventListener('click', (e) => {
   const step = getCurrentStep()
   const category = document.querySelector('#list-category-select').value
@@ -37,7 +40,7 @@ document.querySelector('#start-tab').addEventListener('click', (e) => {
   }
 })
 
-// List Tab
+// ***************** List Tab *****************
 document.querySelector('#list-tab').addEventListener('click', () => {
   const step = getCurrentStep()
 
@@ -72,7 +75,7 @@ document.querySelector('#list-tab').addEventListener('click', () => {
   }
 })
 
-// Rank Tab
+// ***************** Rank Tab *****************
 document.querySelector('#rank-tab').addEventListener('click', () => {
   const step = getCurrentStep()
 
@@ -106,7 +109,7 @@ document.querySelector('#rank-tab').addEventListener('click', () => {
   }
 })
 
-// Result Tab
+// ***************** Result Tab *****************
 document.querySelector('#result-tab').addEventListener('click', () => {
   const step = getCurrentStep()
   if (step === 'Rank') {
@@ -115,8 +118,11 @@ document.querySelector('#result-tab').addEventListener('click', () => {
   }
 })
 
-// Section Control ***********************************************************************************
-// Start Section ***********
+// //////////////////////////////////////////////////////////////////////
+// // SECTION CONTROLS
+// //////////////////////////////////////////////////////////////////////
+
+// ***************** Start Section *****************
 
 // Fan Favorite
 // document.querySelector('#fan-fav-button').addEventListener('click', () => {
@@ -130,7 +136,7 @@ document.querySelector('#list-category-select').addEventListener('change', () =>
 
 // User Lists
 
-// List Section ***********
+// ***************** List Section *****************
 // Add List Items
 document.querySelector('#textarea-add-btn').addEventListener('click', () => {
   // Filter and create list data
@@ -168,7 +174,7 @@ document.querySelector('#clear-list').addEventListener('click', () => {
   clearListData()
 })
 
-// Rank Section **************
+// ***************** Rank Section *****************
 // Handle item1 pick
 document.querySelector('#item-1-card').addEventListener('click', () => {
   handlePick(-1)
@@ -204,7 +210,7 @@ document.querySelectorAll('.rank-card-content__delete').forEach((el) => {
 //   document.querySelector('#add-input').value = ''
 // })
 
-// Result Section ******************************
+// ***************** Result Section *****************
 
 document.querySelector('.support-us__dismiss').addEventListener('click', () => {
   document.querySelector('.support-us').classList.add('hide')

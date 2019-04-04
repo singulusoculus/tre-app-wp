@@ -52,15 +52,15 @@
         </div>
 
         <div class="nav-content">
-          <ul id="step-tabs" class="tabs tabs-transparent tabs-fixed-width">
-            <li id="start-tab" class="start-tab tab "><a href="#start-container" id="start-tab-link" class="tooltipped"
-                data-tooltip="Click to start over">Start</a></li>
-            <li id="list-tab" class="list-tab tab"><a href="#list-container" id="list-tab-link" class="tooltipped"
-                data-tooltip="Click here to create or edit your list">List</a></li>
-            <li id="rank-tab" class="rank-tab tab"><a href="#rank-container" id="rank-tab-link" class="tooltipped"
-                data-tooltip="Click to start or restart the ranking process">Rank</a></li>
-            <li id="result-tab" class="result-tab tab"><a href="#result-container" id="result-tab-link"
-                class="tooltipped" data-tooltip="Click to see your results">Result</a></li>
+          <ul id="step-tabs" class="tabs tabs-transparent tabs-fixed-width step-tabs">
+            <li id="start-tab" class="start-tab tab step-tabs__start "><a href="#start-container" id="start-tab-link"
+                class="tooltipped" data-tooltip="Click to start over">Start</a></li>
+            <li id="list-tab" class="list-tab tab step-tabs__list"><a href="#list-container" id="list-tab-link"
+                class="tooltipped" data-tooltip="Click here to create or edit your list">List</a></li>
+            <li id="rank-tab" class="rank-tab tab step-tabs__rank"><a href="#rank-container" id="rank-tab-link"
+                class="tooltipped" data-tooltip="Click to start or restart the ranking process">Rank</a></li>
+            <li id="result-tab" class="result-tab tab step-tabs__result"><a href="#result-container"
+                id="result-tab-link" class="tooltipped" data-tooltip="Click to see your results">Result</a></li>
           </ul>
         </div>
       </nav>
@@ -317,6 +317,15 @@
             </div>
           </div>
         </div>
+      </div>
+      <div id="keys-reminder" class="row">
+        <p class="center-align">
+          Using the <i class="material-icons tiny">arrow_back</i>
+          or <i class="material-icons tiny">arrow_forward</i>
+          keys to make your selections will speed things up! Use
+          <i class="material-icons tiny">arrow_upward</i>
+          to Undo a selection.
+        </p>
       </div>
     </section>
 
