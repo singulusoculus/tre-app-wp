@@ -107,3 +107,114 @@
       display: none;
   }
 }
+
+//////////////////////////////////////////////////////////////////
+///////////  Help Overlay
+//////////////////////////////////////////////////////////////////
+
+.help {
+
+  &__checkbox {
+    display: none;
+  }
+
+  &__button {
+    position: fixed;
+    top: 5rem;
+    right: 5rem;
+    z-index: 2000;
+    cursor: pointer;
+  }
+
+  &__background {
+    height: 2rem;
+    width: 2rem;
+    position: fixed;
+    top: -1rem;
+    right: -1rem;
+    border-radius: 50%;
+    background-color: rgba($color-grey-dark, .2);
+    z-index: 1000;
+    transition: all .8s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+
+  &__text {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    opacity: 0;
+    width: 0;
+    transition: all .8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    color: #fff;
+  }
+
+  // FUNCTIONALITY
+  &__checkbox:checked ~ &__background {
+    transform: scale(250);
+    background-color: rgba($color-grey-dark, .8);
+  }
+
+  &__checkbox:checked ~ &__text {
+    opacity: 1;
+    width: 100%;
+    z-index: 1500;
+    top: 2rem;
+    margin: 0 auto;
+    padding: 0 20%;
+    overflow-y: auto;
+  }
+
+  // ICON
+  &__icon {
+    position: relative;
+    // margin-top: 3.4rem;
+
+    //&,
+    &::before,
+    &::after {
+      width: 2rem;
+      height: 2px;
+      background-color: transparent;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      transition: all .2s;
+
+    }
+
+    &::before {
+      top: -.8rem;
+    }
+
+    &::after {
+      top: .8rem;
+    }
+  }
+
+  &__checkbox:checked + &__icon {
+    background-color: transparent;
+    color: transparent;
+    opacity: 0;
+  }
+
+  &__checkbox:checked + &__button &__icon::before {
+    top: 0;
+    transform: rotate(135deg);
+    background-color: #fff;
+  }
+
+  &__checkbox:checked + &__button &__icon::after {
+    top: 0;
+    transform: rotate(-135deg);
+    background-color: #fff;
+  }
+  
+}
