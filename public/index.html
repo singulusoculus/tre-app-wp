@@ -105,7 +105,7 @@
             <li id="start-tab" class="start-tab tab step-tabs__start "><a href="#start-container" id="start-tab-link"
                 class="tooltipped" data-tooltip="Click to start over">Start</a></li>
             <li id="list-tab" class="list-tab tab step-tabs__list"><a href="#list-container" id="list-tab-link"
-                class="tooltipped" data-tooltip="Click here to create or edit your list">List</a></li>
+                class="tooltipped" data-tooltip="Click to create or edit your list">List</a></li>
             <li id="rank-tab" class="rank-tab tab step-tabs__rank"><a href="#rank-container" id="rank-tab-link"
                 class="tooltipped" data-tooltip="Click to start or restart the ranking process">Rank</a></li>
             <li id="result-tab" class="result-tab tab step-tabs__result"><a href="#result-container"
@@ -272,7 +272,7 @@
               <form>
                 <div class="row">
                   <div class="col s12 l2 center-align">
-                    <a id="textarea-add-btn" class="waves-effect waves-light btn"><i
+                    <a id="textarea-add-btn" class="waves-effect waves-light btn disabled"><i
                         class="material-icons right">add</i>Add</a>
                   </div>
                   <div class="input-field col s12 l10">
@@ -331,51 +331,57 @@
     </section>
 
     <section id="rank-container" class="rank-container">
-      <div class="row">
-        <div class="col s12 m10 offset-m1">
-          <div class="progress">
-            <div id="progress-bar" class="determinate" style="width: 0%"></div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6 center-align">
-          <a id="undo-btn" class="waves-effect waves-light btn"><i class="material-icons right">undo</i>Undo</a>
-        </div>
-        <div class="col s6 center-align">
-          <a class="waves-effect waves-light btn"><i class="material-icons right">save</i>Save</a>
-        </div>
-      </div>
-      <div class="divider"></div>
-      <div class="row">
-        <div class="col s12 m8 offset-m2 l6">
-          <div id="item-1-card" class="card rank-card">
-            <div class="rank-card-content card-content">
-              <img src="./images/meeple-lime.png" alt="" class="rank-card-content__img" id="item-1-img">
-              <p id="item-1-text" class="rank-card-content__text center-align">Game Name 1</p>
-              <i class="material-icons rank-card-content__delete" id="rank-delete-1">delete</i>
+      <div class="ranking">
+        <div class="row">
+          <div class="col s12 m10 offset-m1">
+            <div class="progress">
+              <div id="progress-bar" class="determinate" style="width: 0%"></div>
             </div>
           </div>
         </div>
-        <div class="col s12 m8 offset-m2 l6">
-          <div id="item-2-card" class="card rank-card">
-            <div class="rank-card-content card-content">
-              <img src="./images/meeple-orange.png" alt="" class="rank-card-content__img" id="item-2-img">
-              <p id="item-2-text" class="rank-card-content__text center-align">Game Name 2</p>
-              <i class="material-icons rank-card-content__delete" id="rank-delete-2">delete</i>
+        <div class="row">
+          <div class="col s6 center-align">
+            <a id="undo-btn" class="waves-effect waves-light btn"><i class="material-icons right">undo</i>Undo</a>
+          </div>
+          <div class="col s6 center-align">
+            <a class="waves-effect waves-light btn"><i class="material-icons right">save</i>Save</a>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+          <div class="col s12 m8 offset-m2 l6">
+            <div id="item-1-card" class="card rank-card">
+              <div class="rank-card-content card-content">
+                <img src="./images/meeple-lime.png" alt="" class="rank-card-content__img" id="item-1-img">
+                <p id="item-1-text" class="rank-card-content__text center-align">Game Name 1</p>
+                <i class="material-icons rank-card-content__delete" id="rank-delete-1">delete</i>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 m8 offset-m2 l6">
+            <div id="item-2-card" class="card rank-card">
+              <div class="rank-card-content card-content">
+                <img src="./images/meeple-orange.png" alt="" class="rank-card-content__img" id="item-2-img">
+                <p id="item-2-text" class="rank-card-content__text center-align">Game Name 2</p>
+                <i class="material-icons rank-card-content__delete" id="rank-delete-2">delete</i>
+              </div>
             </div>
           </div>
         </div>
+        <div id="keys-reminder" class="row">
+          <p class="center-align">
+            Using the <i class="material-icons tiny">arrow_back</i>
+            or <i class="material-icons tiny">arrow_forward</i>
+            keys to make your selections will speed things up! Use
+            <i class="material-icons tiny">arrow_upward</i>
+            to Undo a selection.
+          </p>
+        </div>
       </div>
-      <div id="keys-reminder" class="row">
-        <p class="center-align">
-          Using the <i class="material-icons tiny">arrow_back</i>
-          or <i class="material-icons tiny">arrow_forward</i>
-          keys to make your selections will speed things up! Use
-          <i class="material-icons tiny">arrow_upward</i>
-          to Undo a selection.
-        </p>
+      <div class="ranking-stats hide">
+        RANKING STATS
       </div>
+
     </section>
 
     <section id="result-container" class="result-container">

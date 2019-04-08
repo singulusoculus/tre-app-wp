@@ -30,10 +30,6 @@ const renderPreviousSession = () => {
       const contentEl = document.createElement('div')
       contentEl.classList.add('card-content', 'white-text')
 
-      // const titleEl = document.createElement('span')
-      // titleEl.classList.add('card-title')
-      // titleEl.textContent = 'Welcome Back!'
-
       const textEl = document.createElement('p')
       textEl.classList.add('center-align')
       textEl.textContent = `You have a previous ${step} session available. Want to continue?`
@@ -58,8 +54,7 @@ const renderPreviousSession = () => {
           // showRankSection()
         } else if (step === 'Result') {
           initPrevResult(category, data)
-          // showResultSection()
-          closeTooltip('result')
+          onShowResultSection()
         }
       })
 

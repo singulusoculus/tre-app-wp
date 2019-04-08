@@ -1,0 +1,23 @@
+textarea.materialize-textarea:focus {
+  border-bottom: 1px solid #527a45 !important;
+}
+
+textarea.materialize-textarea:focus+label {
+  color: #527a45 !important;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 1px solid #527a45 !important;
+}
+
+.input-field .prefix.active {
+  color: #527a45 !important;
+}
+
+.dropdown-content li>span {
+  color: #527a45 !important;
+}
+
+.secondary-content {
+  color: #527a45 !important;
+}

@@ -47,7 +47,6 @@ document.querySelector('#list-tab').addEventListener('click', (e) => {
   if (step === 'Start') {
     clearListData()
     setCurrentStep('List')
-
     renderListData()
     onShowListSection()
   } else if (step === 'List') {
@@ -147,6 +146,11 @@ document.querySelector('#list-category-select').addEventListener('change', () =>
 // User Lists
 
 // ***************** List Section *****************
+// Add items to textarea
+document.querySelector('#textarea-input').addEventListener('input', () => {
+  document.querySelector('#textarea-add-btn').classList.remove('disabled')
+})
+
 // Add List Items
 document.querySelector('#textarea-add-btn').addEventListener('click', () => {
   // Filter and create list data
@@ -158,6 +162,7 @@ document.querySelector('#textarea-add-btn').addEventListener('click', () => {
 
   addListItems(list)
   document.querySelector('#textarea-input').style.height = '45px'
+  document.querySelector('#textarea-add-btn').classList.add('disabled')
 })
 
 document.querySelector('#bgg-add').addEventListener('click', () => {

@@ -3,6 +3,7 @@
 @import "/base";
 @import "/layout";
 @import "/mixins";
+@import "/materialize-fixes";
 
 .divider {
   margin: 2rem 0;
@@ -16,7 +17,8 @@
 .next {
   width: 10rem;
   height: 10rem;
-  background-color: $color-grey-light-2;
+  // background-color: $color-grey-light-2;
+  background-color: #527a45;
   position: fixed;
   top:40%;
   right: -20rem;
@@ -34,7 +36,6 @@
     left: 15px;
     color: #fff;
     text-transform: uppercase;
-    
   }
 
   &__icon {
@@ -49,8 +50,6 @@
     opacity: 1;
     transform: translateX(-15rem) rotate(45deg); // on mobile - translateX(-13rem)
   }
-
-  
 }
 
 
