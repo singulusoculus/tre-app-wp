@@ -146,6 +146,28 @@ const showStepTab = (step) => {
   updateTabIndicator()
   openTooltip(`${step}`)
 
+  const nextButton = document.querySelector('.next')
+  const once = { once: true }
+
+  nextButton.classList.add('next--visible')
+
+  if (step === 'list') {
+    nextButton.addEventListener('click', (e) => {
+      selectTab('list')
+      updateTabIndicator()
+    }, once)
+  } else if (step === 'rank') {
+    nextButton.addEventListener('click', (e) => {
+      selectTab('rank')
+      updateTabIndicator()
+    }, once)
+  } else if (step === 'result') {
+    nextButton.addEventListener('click', (e) => {
+      selectTab('result')
+      updateTabIndicator()
+    }, once)
+  }
+
   if (step === 'rank') {
     closeTooltip('list')
   }
@@ -155,6 +177,9 @@ const hideStepTab = (step) => {
   closeTooltip(`${step}`)
   document.querySelector(`#${step}-tab`).classList.remove('step-tab--available')
   updateTabIndicator()
+
+  const nextButton = document.querySelector('.next')
+  nextButton.classList.remove('next--visible')
 }
 
 // Section Visibility
@@ -188,6 +213,8 @@ const onShowRankSection = () => {
 
 const onShowResultSection = () => {
   closeTooltip('result')
+
+  document.querySelector('.next').classList.remove('next--visible')
 }
 
 // Step Tab Control

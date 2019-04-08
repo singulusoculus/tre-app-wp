@@ -1,4 +1,4 @@
-@import "./variables";
+@import "/variables";
 @import "/animations";
 @import "/base";
 @import "/layout";
@@ -13,6 +13,45 @@
   background-color: #343A40 !important;
 }
 
+.next {
+  width: 10rem;
+  height: 10rem;
+  background-color: $color-grey-light-2;
+  position: fixed;
+  top:40%;
+  right: -20rem;
+  transform: rotate(-45deg);
+  border-radius: 3px;
+  transition: all .5s;
+  opacity: 0;
+  z-index: 2000;
+  cursor: pointer;
+
+  &__text {
+    transform: rotate(-45deg);
+    position: absolute;
+    bottom: 20px;
+    left: 15px;
+    color: #fff;
+    text-transform: uppercase;
+    
+  }
+
+  &__icon {
+    transform: rotate(-45deg);
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+
+  }
+
+  &--visible {
+    opacity: 1;
+    transform: translateX(-15rem) rotate(45deg); // on mobile - translateX(-13rem)
+  }
+
+  
+}
 
 
 @media only screen and (max-width: 600px) {
@@ -46,6 +85,10 @@
   .input-field {
     margin-top: .3rem;
     margin-bottom: .3rem;
+  }
+
+  .next--visible {
+    transform: translateX(-13rem) rotate(45deg);
   }
 
 }

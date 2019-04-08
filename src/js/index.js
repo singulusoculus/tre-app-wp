@@ -41,7 +41,7 @@ document.querySelector('#start-tab').addEventListener('click', (e) => {
 })
 
 // ***************** List Tab *****************
-document.querySelector('#list-tab').addEventListener('click', () => {
+document.querySelector('#list-tab').addEventListener('click', (e) => {
   const step = getCurrentStep()
 
   if (step === 'Start') {
@@ -65,18 +65,22 @@ document.querySelector('#list-tab').addEventListener('click', () => {
         list = data.masterList
       }
       loadList(list)
+    } else {
+      e.stopPropagation()
     }
   } else if (step === 'Result') {
     const r = confirm('This will clear your results and allow you to edit the list. Want to continue?')
     if (r === true) {
       const data = getResultData()
       loadList(data)
+    } else {
+      e.stopPropagation()
     }
   }
 })
 
 // ***************** Rank Tab *****************
-document.querySelector('#rank-tab').addEventListener('click', () => {
+document.querySelector('#rank-tab').addEventListener('click', (e) => {
   const step = getCurrentStep()
 
   if (step === 'List') {
@@ -87,6 +91,8 @@ document.querySelector('#rank-tab').addEventListener('click', () => {
       listData.sort((a, b) => 0.5 - Math.random())
       initRanking(listData, category)
       onShowRankSection()
+    } else {
+      e.stopPropagation()
     }
   } else if (step === 'Rank') {
     const r = confirm('Do you really want to restart ranking this list?')
@@ -97,6 +103,8 @@ document.querySelector('#rank-tab').addEventListener('click', () => {
       const category = getCategory()
       initRanking(listData, category)
       onShowRankSection()
+    } else {
+      e.stopPropagation()
     }
   } else if (step === 'Result') {
     const r = confirm('Do you want to start ranking this list again?')
@@ -105,6 +113,8 @@ document.querySelector('#rank-tab').addEventListener('click', () => {
       const category = getCategory()
       initRanking(listData, category)
       onShowRankSection()
+    } else {
+      e.stopPropagation()
     }
   }
 })
