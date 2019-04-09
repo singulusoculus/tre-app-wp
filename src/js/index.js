@@ -1,4 +1,4 @@
-import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection } from './views'
+import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection, updateTabIndicator } from './views'
 import { addListItems, getListData, clearListData, loadList, createList } from './list'
 import { setFilters } from './filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './rank'
@@ -125,6 +125,27 @@ document.querySelector('#result-tab').addEventListener('click', () => {
     calcRankedList()
     onShowResultSection()
   }
+})
+
+// //////////////////////////////////////////////////////////////////////
+// // NEXT BUTTON
+// //////////////////////////////////////////////////////////////////////
+document.querySelector('.next-list').addEventListener('click', () => {
+  selectTab('list')
+  updateTabIndicator()
+  document.querySelector('.next-list').classList.remove('next--visible')
+})
+
+document.querySelector('.next-rank').addEventListener('click', () => {
+  selectTab('rank')
+  updateTabIndicator()
+  document.querySelector('.next-rank').classList.remove('next--visible')
+})
+
+document.querySelector('.next-result').addEventListener('click', () => {
+  selectTab('result')
+  updateTabIndicator()
+  document.querySelector('.next-result').classList.remove('next--visible')
 })
 
 // //////////////////////////////////////////////////////////////////////

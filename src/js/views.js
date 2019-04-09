@@ -141,26 +141,9 @@ const showStepTab = (step) => {
   updateTabIndicator()
   openTooltip(`${step}`)
 
-  const nextButton = document.querySelector('.next')
-  const once = { once: true }
-
-  nextButton.classList.add('next--visible')
-
-  if (step === 'list') {
-    nextButton.addEventListener('click', (e) => {
-      selectTab('list')
-      updateTabIndicator()
-    }, once)
-  } else if (step === 'rank') {
-    nextButton.addEventListener('click', (e) => {
-      selectTab('rank')
-      updateTabIndicator()
-    }, once)
-  } else if (step === 'result') {
-    nextButton.addEventListener('click', (e) => {
-      selectTab('result')
-      updateTabIndicator()
-    }, once)
+  if (step !== 'start') {
+    const nextButton = document.querySelector(`.next-${step}`)
+    nextButton.classList.add('next--visible')
   }
 
   if (step === 'rank') {
@@ -173,7 +156,7 @@ const hideStepTab = (step) => {
   document.querySelector(`#${step}-tab`).classList.remove('step-tab--available')
   updateTabIndicator()
 
-  const nextButton = document.querySelector('.next')
+  const nextButton = document.querySelector(`.next-${step}`)
   nextButton.classList.remove('next--visible')
 }
 
@@ -192,8 +175,9 @@ const onShowStartSection = () => {
 const onShowListSection = () => {
   hideStepTab('rank')
   hideStepTab('result')
-
   closeTooltip('list')
+
+  document.querySelector('.next-list').classList.remove('next--visible')
 
   const list = getListData()
   if (list.length > 0) {
@@ -204,12 +188,14 @@ const onShowListSection = () => {
 const onShowRankSection = () => {
   hideStepTab('result')
   closeTooltip('rank')
+
+  document.querySelector('.next-rank').classList.remove('next--visible')
 }
 
 const onShowResultSection = () => {
   closeTooltip('result')
 
-  document.querySelector('.next').classList.remove('next--visible')
+  document.querySelector('.next-result').classList.remove('next--visible')
 }
 
 // Step Tab Control
