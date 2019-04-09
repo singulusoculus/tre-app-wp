@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { showStepTab, selectTab, closeTooltip, onShowRankSection } from './views'
+import { showStepTab, selectTab, onShowRankSection } from './views'
 import { renderResult } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { createListObject } from './list'
@@ -19,10 +19,20 @@ const initPrevRanking = (category, data) => {
   setCategory(category)
   populateRankData(true, data)
 
+  saveData(rankData)
+
   showComparison()
   updateProgressBar()
   onShowRankSection()
+
+  const history = JSON.parse(localStorage.getItem('rankDataHistory'))
+  if (history.length > 0) {
+    rankDataHistory = history
+    document.querySelector('#undo-btn').classList.remove('disabled')
+  }
 }
+
+const getRankData = () => rankData
 
 const populateRankData = (r, data) => {
   // Set up rankData Object
@@ -44,10 +54,8 @@ const populateRankData = (r, data) => {
     bggFlag: r ? data.bggFlag : 0,
     finalListID: r ? data.finalListID : 0
   }
-  saveData(rankData)
+  // saveData(rankData)
 }
-
-const getRankData = () => rankData
 
 const initRanking = (itemsList, category) => {
   disableArrowKeyScroll()
@@ -69,18 +77,16 @@ const initRanking = (itemsList, category) => {
 
   rankData.sortList[n] = []
 
-  for (let i = 0; i < rankData.masterList.length; i++) {
+  const masterListLength = rankData.masterList.length
+
+  for (let i = 0; i < masterListLength; i++) {
     rankData.sortList[n][i] = i
   }
-
-  // rankData.masterList.forEach((item, index) => {
-  //   rankData.sortList[n][index] = index
-  // })
 
   n++
 
   for (let i = 0; i < rankData.sortList.length; i++) {
-    // initialize sortList
+    // Initialize sortList
     if (rankData.sortList[i].length >= 2) {
       mid = Math.ceil(rankData.sortList[i].length / 2)
       rankData.sortList[n] = []
@@ -95,7 +101,8 @@ const initRanking = (itemsList, category) => {
       n++
     }
   }
-  // initialize rec
+
+  // Initialize rec
   rankData.masterList.forEach((item) => {
     rankData.rec.push(0)
   })
@@ -104,11 +111,10 @@ const initRanking = (itemsList, category) => {
   rankData.cmp2 = rankData.sortList.length - 1
 
   setCurrentStep('Rank')
-  updateProgressBar()
-
   saveData(rankData)
 
   resetHistory()
+  updateProgressBar()
   showComparison()
   cardFadeIn()
 }
@@ -121,46 +127,40 @@ const getComparisonInfo = () => {
     const item2Ref = rankData.sortList[rankData.cmp2][rankData.head2]
 
     return {
+      item1: rankData.masterList[item1Ref],
+      item2: rankData.masterList[item2Ref],
       item1Ref: item1Ref,
-      item2Ref: item2Ref,
-      item1Name: rankData.masterList[item1Ref].name,
-      item2Name: rankData.masterList[item2Ref].name,
-      item1Img: rankData.masterList[item1Ref].image,
-      item2Img: rankData.masterList[item2Ref].image
+      item2Ref: item2Ref
     }
   }
 }
 
 const showComparison = () => {
-  const { item1Name, item2Name, item1Img, item2Img } = getComparisonInfo()
+  const { item1, item2 } = getComparisonInfo()
 
   // Image control
-  if (item1Img !== '') {
-    document.querySelector('#item-1-img').setAttribute('src', item1Img)
+  if (item1.image !== '') {
+    document.querySelector('#item-1-img').setAttribute('src', item1.image)
   } else {
     document.querySelector('#item-1-img').setAttribute('src', './images/meeple-lime.png')
   }
 
-  if (item2Img !== '') {
-    document.querySelector('#item-2-img').setAttribute('src', item2Img)
+  if (item2.image !== '') {
+    document.querySelector('#item-2-img').setAttribute('src', item2.image)
   } else {
     document.querySelector('#item-2-img').setAttribute('src', './images/meeple-orange.png')
   }
 
   // Text control
-  document.querySelector('#item-1-text').textContent = item1Name
-  document.querySelector('#item-2-text').textContent = item2Name
+  document.querySelector('#item-1-text').textContent = item1.name
+  document.querySelector('#item-2-text').textContent = item2.name
 }
 
 const handlePick = (flag) => {
   if (rankData.cmp1 >= 1) {
     setHistory()
 
-    const { item1Ref, item2Ref } = getComparisonInfo()
-    const item1 = rankData.masterList[item1Ref]
-    const item2 = rankData.masterList[item2Ref]
-    const prevItem1Id = rankData.masterList[item1Ref].id
-    const prevItem2Id = rankData.masterList[item2Ref].id
+    const { item1, item2 } = getComparisonInfo()
 
     // Update showCounts
     item1.showCount++
@@ -178,14 +178,11 @@ const handlePick = (flag) => {
 
     updateRec(flag, 'handlePick')
     sortList()
-    cardFadeOut(prevItem1Id, prevItem2Id)
+    cardFadeOut(item1.id, item2.id)
     rankData.numQuestion++
   }
 
-  // closeTooltip('rank')
-
   cmpCheck()
-
   saveData(rankData)
 }
 
@@ -240,9 +237,11 @@ const sortList = () => {
     rankData.head1 = 0
     rankData.head2 = 0
 
+    const masterListLength = rankData.masterList.length
+
     // Initialize the rec before you make a new comparison
     if (rankData.head1 === 0 && rankData.head2 === 0) {
-      for (let i = 0; i < rankData.masterList.length; i++) {
+      for (let i = 0; i < masterListLength; i++) {
         rankData.rec[i] = 0
       }
       rankData.nrec = 0
@@ -257,8 +256,8 @@ const cmpCheck = () => {
     rankData.finishFlag = 1
   } else {
     checkForDeletedItems()
+    updateProgressBar()
     setTimeout(() => {
-      updateProgressBar()
       showComparison()
       cardFadeIn()
     }, 400)
@@ -266,7 +265,6 @@ const cmpCheck = () => {
 }
 
 const updateVoteShowPct = () => {
-  // Update voteShowPcts
   rankData.masterList.forEach((item) => {
     item.voteShowPct = item.voteCount / item.showCount
   })
@@ -278,17 +276,21 @@ const setHistory = () => {
   rankDataHistory.push(rankDataJSON)
 
   document.querySelector('#undo-btn').classList.remove('disabled')
+  saveRankDataHistory()
 }
 
 const resetHistory = () => {
   rankDataHistory = []
   document.querySelector('#undo-btn').classList.add('disabled')
+  saveRankDataHistory()
+}
+
+const saveRankDataHistory = () => {
+  localStorage.setItem('rankDataHistory', JSON.stringify(rankDataHistory))
 }
 
 const handleUndo = () => {
-  const { item1Ref, item2Ref } = getComparisonInfo()
-  const prevItem1Id = rankData.masterList[item1Ref].id
-  const prevItem2Id = rankData.masterList[item2Ref].id
+  const { item1, item2 } = getComparisonInfo()
 
   const historyLength = rankDataHistory.length
   if (historyLength > 0) {
@@ -296,15 +298,17 @@ const handleUndo = () => {
     const history = JSON.parse(historyJSON)
     rankData = history
 
-    cardFadeOut(prevItem1Id, prevItem2Id)
+    cardFadeOut(item1.id, item2.id)
+
+    updateProgressBar()
 
     setTimeout(() => {
-      updateProgressBar()
       showComparison()
       cardFadeIn()
     }, 400)
 
     saveData(rankData)
+    saveRankDataHistory()
   }
 
   const newHistoryLength = rankDataHistory.length
@@ -317,14 +321,14 @@ const handleUndo = () => {
 const deleteItem = (flag) => {
   let indexToDelete
   let r
-  const { item1Ref, item2Ref, item1Name, item2Name } = getComparisonInfo()
+  const { item1, item2, item1Ref, item2Ref } = getComparisonInfo()
 
   // decide which item to delete of the two listed. Set to indexToDelete
   if (flag < 0) {
-    r = confirm(`Are you sure you want to remove ${item1Name} from the ranking process?`)
+    r = confirm(`Are you sure you want to remove ${item1.name} from the ranking process?`)
     indexToDelete = item1Ref
   } else {
-    r = confirm(`Are you sure you want to remove ${item2Name} from the ranking process?`)
+    r = confirm(`Are you sure you want to remove ${item2.name} from the ranking process?`)
     indexToDelete = item2Ref
   }
 
@@ -335,15 +339,16 @@ const deleteItem = (flag) => {
     rankData.deletedItems.push(indexToDelete)
 
     saveData(rankData)
+    saveRankDataHistory()
 
     cmpCheck()
   }
 }
 
 const checkForDeletedItems = () => {
-  let { item1Ref, item2Ref } = getComparisonInfo()
-  const prevItem1Id = rankData.masterList[item1Ref].id
-  const prevItem2Id = rankData.masterList[item2Ref].id
+  let { item1, item2, item1Ref, item2Ref } = getComparisonInfo()
+  // const prevItem1Id = rankData.masterList[item1Ref].id
+  // const prevItem2Id = rankData.masterList[item2Ref].id
 
   while (rankData.deletedItems.indexOf(item1Ref) > -1 || rankData.deletedItems.indexOf(item2Ref) > -1) {
     // run while item is in deletedItems && is not at the end of cmp1
@@ -358,7 +363,7 @@ const checkForDeletedItems = () => {
     sortList()
   }
 
-  cardFadeOut(prevItem1Id, prevItem2Id)
+  cardFadeOut(item1.id, item2.id)
 
   // check for completion
   if (rankData.cmp1 < 0) {
@@ -384,6 +389,7 @@ const addItem = (item) => {
   showComparison()
 
   saveData(rankData)
+  saveRankDataHistory()
 }
 
 const calcRankedList = () => {
@@ -402,6 +408,8 @@ const calcRankedList = () => {
   })
 
   renderResult(rankedList)
+  rankDataHistory = []
+  saveRankDataHistory()
 }
 
 const updateProgressBar = () => {
@@ -411,16 +419,14 @@ const updateProgressBar = () => {
 
 const cardFadeOut = (prevItem1, prevItem2) => {
   if (rankData.cmp1 > 0) {
-    const { item1Ref, item2Ref } = getComparisonInfo()
-    const newItem1Id = rankData.masterList[item1Ref].id
-    const newItem2Id = rankData.masterList[item2Ref].id
+    const { item1, item2 } = getComparisonInfo()
 
-    if (prevItem1 !== newItem1Id) {
+    if (prevItem1 !== item1.id) {
       // figure out if item name has changed before adding the class
       document.querySelector('#item-1-card').classList.add('rank-card--fade-out')
     }
 
-    if (prevItem2 !== newItem2Id) {
+    if (prevItem2 !== item2.id) {
       document.querySelector('#item-2-card').classList.add('rank-card--fade-out')
     }
   }
@@ -439,18 +445,16 @@ document.onkeydown = function (e) {
     case 37:
       // Left
       handlePick(-1)
-      document.querySelector('#keys-reminder').classList.add('hide')
       break
     case 39:
       // Right
       handlePick(1)
-      document.querySelector('#keys-reminder').classList.add('hide')
       break
     case 38:
       // Up
       handleUndo()
-      document.querySelector('#keys-reminder').classList.add('hide')
   }
+  document.querySelector('#keys-reminder').classList.add('hide')
 }
 
 // -----------------------------------------------------

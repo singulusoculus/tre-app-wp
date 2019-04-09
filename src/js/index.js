@@ -1,8 +1,8 @@
-import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection, updateTabIndicator } from './views'
+import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection } from './views'
 import { addListItems, getListData, clearListData, loadList, createList } from './list'
 import { setFilters } from './filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './rank'
-import { getResultData } from './result'
+import { getResultData, renderResult } from './result'
 import { getBGGData } from './requests-bgg'
 import { getCategory, setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -30,7 +30,7 @@ document.querySelector('#start-tab').addEventListener('click', (e) => {
       setCurrentStep('Start')
       renderPreviousSession()
 
-      showStepTab('start')
+      // showStepTab('start')
       selectTab('start')
 
       onShowStartSection()
@@ -64,6 +64,7 @@ document.querySelector('#list-tab').addEventListener('click', (e) => {
         list = data.masterList
       }
       loadList(list)
+      onShowListSection()
     } else {
       e.stopPropagation()
     }
@@ -72,6 +73,7 @@ document.querySelector('#list-tab').addEventListener('click', (e) => {
     if (r === true) {
       const data = getResultData()
       loadList(data)
+      onShowListSection()
     } else {
       e.stopPropagation()
     }
@@ -132,20 +134,14 @@ document.querySelector('#result-tab').addEventListener('click', () => {
 // //////////////////////////////////////////////////////////////////////
 document.querySelector('.next-list').addEventListener('click', () => {
   selectTab('list')
-  updateTabIndicator()
-  document.querySelector('.next-list').classList.remove('next--visible')
 })
 
 document.querySelector('.next-rank').addEventListener('click', () => {
   selectTab('rank')
-  updateTabIndicator()
-  document.querySelector('.next-rank').classList.remove('next--visible')
 })
 
 document.querySelector('.next-result').addEventListener('click', () => {
   selectTab('result')
-  updateTabIndicator()
-  document.querySelector('.next-result').classList.remove('next--visible')
 })
 
 // //////////////////////////////////////////////////////////////////////

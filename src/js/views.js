@@ -48,13 +48,10 @@ const renderPreviousSession = () => {
       linkEl.addEventListener('click', () => {
         if (step === 'List') {
           initPrevList(category, data)
-          // showListSection()
         } else if (step === 'Rank') {
           initPrevRanking(category, data)
-          // showRankSection()
         } else if (step === 'Result') {
           initPrevResult(category, data)
-          onShowResultSection()
         }
       })
 
@@ -69,7 +66,6 @@ const renderPreviousSession = () => {
       actionEl.appendChild(linkEl)
       actionEl.appendChild(dismissEl)
 
-      // contentEl.appendChild(titleEl)
       contentEl.appendChild(textEl)
 
       cardEl.appendChild(contentEl)
@@ -141,6 +137,7 @@ const showStepTab = (step) => {
   updateTabIndicator()
   openTooltip(`${step}`)
 
+  // Next Button
   if (step !== 'start') {
     const nextButton = document.querySelector(`.next-${step}`)
     nextButton.classList.add('next--visible')
@@ -148,6 +145,12 @@ const showStepTab = (step) => {
 
   if (step === 'rank') {
     closeTooltip('list')
+    document.querySelector(`#list-tab`).classList.add('step-tab--available')
+  }
+
+  if (step === 'result') {
+    document.querySelector(`#list-tab`).classList.add('step-tab--available')
+    document.querySelector(`#rank-tab`).classList.add('step-tab--available')
   }
 }
 
@@ -207,6 +210,7 @@ const updateTabIndicator = () => {
 const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
+  updateTabIndicator()
 }
 
 // Tooltip Control

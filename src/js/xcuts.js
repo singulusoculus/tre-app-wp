@@ -57,3 +57,7 @@
 
 // containerEl.appendChild(textEl)
 // containerEl.appendChild(buttonEl)
+
+// rankData.masterList.forEach((item, index) => {
+//   rankData.sortList[n][index] = index
+// })
