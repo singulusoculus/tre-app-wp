@@ -14,6 +14,20 @@
   background-color: #343A40 !important;
 }
 
+.step-container {
+  opacity: 0;
+  -webkit-transform: translateY(20px);
+  transform: translateY(20px);
+  -webkit-transition: all 0.75s;
+  transition: all 0.75s;
+}
+
+.step-container.active {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+}
+
 .next {
   width: 10rem;
   height: 10rem;

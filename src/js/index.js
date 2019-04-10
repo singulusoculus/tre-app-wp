@@ -1,7 +1,7 @@
 import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection } from './views'
 import { addListItems, getListData, clearListData, loadList, createList } from './list'
 import { setFilters } from './filters'
-import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData, calcRankedList } from './rank'
+import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData } from './rank'
 import { getResultData, renderResult } from './result'
 import { getBGGData } from './requests-bgg'
 import { getCategory, setCategory } from './category'
