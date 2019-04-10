@@ -8,8 +8,8 @@ let resultData
 const initPrevResult = (category, data) => {
   resultData = data
   setCategory(category)
-  // setCurrentStep('Result')
-  // saveData(resultData)
+  setCurrentStep('Result')
+  saveData(resultData)
   renderResult(resultData)
 
   showStepTab('result')
@@ -19,9 +19,13 @@ const initPrevResult = (category, data) => {
 
 const getResultData = () => resultData
 
-const renderResult = (data) => {
-  setCurrentStep('Result')
+const setResultData = (data) => {
   resultData = data
+}
+
+const renderResult = () => {
+  // setCurrentStep('Result')
+  // resultData = data
 
   let str = ''
   // let str1 = ''
@@ -44,4 +48,4 @@ const renderResult = (data) => {
   // selectTab('result')
 }
 
-export { initPrevResult, renderResult, getResultData }
+export { initPrevResult, renderResult, getResultData, setResultData }

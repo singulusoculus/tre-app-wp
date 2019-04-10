@@ -123,8 +123,10 @@ document.querySelector('#rank-tab').addEventListener('click', (e) => {
 // ***************** Result Tab *****************
 document.querySelector('#result-tab').addEventListener('click', () => {
   const step = getCurrentStep()
-  if (step === 'Rank') {
-    calcRankedList()
+  if (step === 'Result') {
+    // calcRankedList()
+    // const data = getResultData()
+    renderResult()
     onShowResultSection()
   }
 })

@@ -84,7 +84,6 @@ const removeListItem = (id) => {
     listData.splice(itemID, 1)
     saveData(listData)
   }
-
   if (listData.length === 0) {
     hideStepTab('rank')
   }

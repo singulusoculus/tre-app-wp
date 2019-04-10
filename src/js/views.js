@@ -211,6 +211,7 @@ const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
   updateTabIndicator()
+  closeTooltip(tab)
 }
 
 // Tooltip Control

@@ -1,6 +1,6 @@
 import uuidv4 from 'uuid'
 import { showStepTab, selectTab, onShowRankSection } from './views'
-import { renderResult } from './result'
+import { renderResult, setResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { createListObject } from './list'
 import { setCategory } from './category'
@@ -183,7 +183,9 @@ const handlePick = (flag) => {
   }
 
   cmpCheck()
-  saveData(rankData)
+  if (rankData.finishFlag !== 1) {
+    saveData(rankData)
+  }
 }
 
 const updateRec = (flag, source) => {
@@ -252,6 +254,7 @@ const sortList = () => {
 const cmpCheck = () => {
   if (rankData.cmp1 < 0) {
     updateProgressBar()
+    calcRankedList()
     showStepTab('result')
     rankData.finishFlag = 1
   } else {
@@ -407,7 +410,11 @@ const calcRankedList = () => {
     rankedList.push(obj)
   })
 
-  renderResult(rankedList)
+  // renderResult(rankedList)
+  setResultData(rankedList)
+  setCurrentStep('Result')
+  saveData(rankedList)
+
   rankDataHistory = []
   saveRankDataHistory()
 }
