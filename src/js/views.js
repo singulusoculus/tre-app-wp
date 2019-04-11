@@ -163,11 +163,22 @@ const hideStepTab = (step) => {
   nextButton.classList.remove('next--visible')
 }
 
+const sectionTransition = (step) => {
+  const activeEls = document.getElementsByClassName('step-wrapper active')
+  while (activeEls[0]) {
+    activeEls[0].classList.remove('active')
+  }
+
+  document.querySelector(`#${step}-wrapper`).classList.add('active')
+}
+
 // Section Visibility
 const onShowStartSection = () => {
   hideStepTab('list')
   hideStepTab('rank')
   hideStepTab('result')
+
+  sectionTransition('start')
 
   const category = getCategory()
   if (category !== 0) {
@@ -179,6 +190,8 @@ const onShowListSection = () => {
   hideStepTab('rank')
   hideStepTab('result')
   closeTooltip('list')
+
+  sectionTransition('list')
 
   document.querySelector('.next-list').classList.remove('next--visible')
 
@@ -192,11 +205,15 @@ const onShowRankSection = () => {
   hideStepTab('result')
   closeTooltip('rank')
 
+  sectionTransition('rank')
+
   document.querySelector('.next-rank').classList.remove('next--visible')
 }
 
 const onShowResultSection = () => {
   closeTooltip('result')
+
+  sectionTransition('result')
 
   document.querySelector('.next-result').classList.remove('next--visible')
 }

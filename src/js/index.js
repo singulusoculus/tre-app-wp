@@ -12,6 +12,8 @@ import '../styles/main.scss'
 
 M.AutoInit()
 
+document.querySelector('#start-wrapper').classList.add('active')
+
 // //////////////////////////////////////////////////////////////////////
 // // STEP TAB CONTROLS
 // //////////////////////////////////////////////////////////////////////
@@ -30,7 +32,6 @@ document.querySelector('#start-tab').addEventListener('click', (e) => {
       setCurrentStep('Start')
       renderPreviousSession()
 
-      // showStepTab('start')
       selectTab('start')
 
       onShowStartSection()
