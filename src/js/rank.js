@@ -1,6 +1,6 @@
 import uuidv4 from 'uuid'
-import { showStepTab, selectTab, onShowRankSection } from './views'
-import { renderResult, setResultData } from './result'
+import { showStepTab, selectTab, onShowRankSection, sectionTransition } from './views'
+import { setResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { createListObject } from './list'
 import { setCategory } from './category'
@@ -54,7 +54,6 @@ const populateRankData = (r, data) => {
     bggFlag: r ? data.bggFlag : 0,
     finalListID: r ? data.finalListID : 0
   }
-  // saveData(rankData)
 }
 
 const initRanking = (itemsList, category) => {
@@ -256,6 +255,7 @@ const cmpCheck = () => {
     updateProgressBar()
     calcRankedList()
     showStepTab('result')
+    showStats()
     rankData.finishFlag = 1
   } else {
     checkForDeletedItems()
@@ -350,8 +350,6 @@ const deleteItem = (flag) => {
 
 const checkForDeletedItems = () => {
   let { item1, item2, item1Ref, item2Ref } = getComparisonInfo()
-  // const prevItem1Id = rankData.masterList[item1Ref].id
-  // const prevItem2Id = rankData.masterList[item2Ref].id
 
   while (rankData.deletedItems.indexOf(item1Ref) > -1 || rankData.deletedItems.indexOf(item2Ref) > -1) {
     // run while item is in deletedItems && is not at the end of cmp1
@@ -442,6 +440,11 @@ const cardFadeOut = (prevItem1, prevItem2) => {
 const cardFadeIn = () => {
   document.querySelector('#item-1-card').classList.remove('rank-card--fade-out')
   document.querySelector('#item-2-card').classList.remove('rank-card--fade-out')
+}
+
+const showStats = () => {
+  selectTab('stats')
+  sectionTransition('stats')
 }
 
 // Enable use of left, right, and down keys to make selections

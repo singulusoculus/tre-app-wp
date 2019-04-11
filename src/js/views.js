@@ -164,11 +164,13 @@ const hideStepTab = (step) => {
 }
 
 const sectionTransition = (step) => {
+  // Remove active class from all step-wrapper divs
   const activeEls = document.getElementsByClassName('step-wrapper active')
   while (activeEls[0]) {
     activeEls[0].classList.remove('active')
   }
 
+  // Add active class to current step
   document.querySelector(`#${step}-wrapper`).classList.add('active')
 }
 
@@ -227,8 +229,10 @@ const updateTabIndicator = () => {
 const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
-  updateTabIndicator()
-  closeTooltip(tab)
+  if (tab !== 'stats') {
+    updateTabIndicator()
+    closeTooltip(tab)
+  }
 }
 
 // Tooltip Control
@@ -265,5 +269,6 @@ export {
   showStepTab,
   hideStepTab,
   closeTooltip,
-  toggleListItems
+  toggleListItems,
+  sectionTransition
 }

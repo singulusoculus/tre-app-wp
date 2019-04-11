@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>The Ranking Engine</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
   <link rel="stylesheet" href="./dist/materialize.min.css" />
   <link rel="stylesheet" href="./dist/main.css" />
 </head>
@@ -119,6 +119,7 @@
                 class="tooltipped" data-tooltip="Click to create or edit your list">List</a></li>
             <li id="rank-tab" class="rank-tab tab step-tabs__rank"><a href="#rank-container" id="rank-tab-link"
                 class="tooltipped" data-tooltip="Click to start or restart the ranking process">Rank</a></li>
+            <li id="stats-tab" class="tab hide"><a href="#stats-container" id="stats-tab-link">Stats</a></li>
             <li id="result-tab" class="result-tab tab step-tabs__result"><a href="#result-container"
                 id="result-tab-link" class="tooltipped" data-tooltip="Click to see your results">Result</a></li>
           </ul>
@@ -277,6 +278,7 @@
     <div id="list-wrapper" class="step-wrapper">
       <section id="list-container" class="list-container step-container">
         <div class="row">
+          <h4 class="current-list-category"></h4>
           <ul class="collapsible col s12 popout">
             <li class="active">
               <div class="collapsible-header"><i class="material-icons">format_list_bulleted</i>Text Entry</div>
@@ -392,8 +394,29 @@
             </p>
           </div>
         </div>
-        <div class="ranking-stats hide">
-          RANKING STATS
+      </section>
+    </div>
+
+    <div id="stats-wrapper" class="step-wrapper">
+      <section id="stats-container" class="ranking-stats">
+        <div class="row">
+          <div class="col s12 m8 offset-m2 l6 offset-l3">
+            <h4 class="center-align ranking-stats__header">RANKING STATS</h4>
+            <p class="center-align ranking-stats__text">List Size: <span
+                class="ranking-stats__size ranking-stats__stat">52</span></p>
+            <div class="divider"></div>
+            <p class="center-align ranking-stats__text">Total Comparisons: <span
+                class="ranking-stats__comparisons ranking-stats__stat">500</span></p>
+            <div class="divider"></div>
+            <p class="center-align ranking-stats__text">Most Picked: <span
+                class="ranking-stats__picked ranking-stats__stat">Test</span></p>
+            <div class="divider"></div>
+            <p class="center-align ranking-stats__text">Most Seen: <span
+                class="ranking-stats__seen ranking-stats__stat">Test</span></p>
+            <div class="divider"></div>
+            <p class="center-align ranking-stats__text">Deleted: <span
+                class="ranking-stats__deleted ranking-stats__stat">5</span></p>
+          </div>
         </div>
       </section>
     </div>
