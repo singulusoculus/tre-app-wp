@@ -170,7 +170,10 @@ const sectionTransition = (step) => {
   }
 
   // Add active class to current step
-  document.querySelector(`#${step}-wrapper`).classList.add('active')
+  setTimeout(() => {
+    document.querySelector(`#${step}-wrapper`).classList.add('active')
+  }, 200)
+  // document.querySelector(`#${step}-wrapper`).classList.add('active')
 }
 
 // Section Visibility
