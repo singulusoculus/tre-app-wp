@@ -137,15 +137,13 @@ const showStepTab = (step) => {
   updateTabIndicator()
   openTooltip(`${step}`)
 
-  // Next Button
-  if (step !== 'start') {
-    const nextButton = document.querySelector(`.next-${step}`)
-    nextButton.classList.add('next--visible')
-  }
-
   if (step === 'rank') {
     closeTooltip('list')
     document.querySelector(`#list-tab`).classList.add('step-tab--available')
+
+    // Next Button
+    const nextButton = document.querySelector(`.next-${step}`)
+    nextButton.classList.add('next--visible')
   }
 
   if (step === 'result') {
@@ -159,8 +157,9 @@ const hideStepTab = (step) => {
   document.querySelector(`#${step}-tab`).classList.remove('step-tab--available')
   updateTabIndicator()
 
-  const nextButton = document.querySelector(`.next-${step}`)
-  nextButton.classList.remove('next--visible')
+  if (step === 'rank') {
+    document.querySelector(`.next-${step}`).classList.remove('next--visible')
+  }
 }
 
 const sectionTransition = (step) => {
@@ -195,8 +194,6 @@ const onShowListSection = () => {
 
   sectionTransition('list')
 
-  document.querySelector('.next-list').classList.remove('next--visible')
-
   const categoryName = document.querySelector('#list-category-select').selectedOptions[0].innerHTML
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
 
@@ -219,8 +216,6 @@ const onShowResultSection = () => {
   closeTooltip('result')
 
   sectionTransition('result')
-
-  document.querySelector('.next-result').classList.remove('next--visible')
 }
 
 // Step Tab Control
@@ -232,10 +227,8 @@ const updateTabIndicator = () => {
 const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
-  if (tab !== 'stats') {
-    updateTabIndicator()
-    closeTooltip(tab)
-  }
+  updateTabIndicator()
+  closeTooltip(tab)
 }
 
 // Tooltip Control

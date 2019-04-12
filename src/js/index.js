@@ -135,16 +135,9 @@ document.querySelector('#result-tab').addEventListener('click', () => {
 // //////////////////////////////////////////////////////////////////////
 // // NEXT BUTTON
 // //////////////////////////////////////////////////////////////////////
-document.querySelector('.next-list').addEventListener('click', () => {
-  selectTab('list')
-})
 
 document.querySelector('.next-rank').addEventListener('click', () => {
   selectTab('rank')
-})
-
-document.querySelector('.next-result').addEventListener('click', () => {
-  selectTab('result')
 })
 
 // //////////////////////////////////////////////////////////////////////
@@ -161,6 +154,7 @@ document.querySelector('.next-result').addEventListener('click', () => {
 // Select a category
 document.querySelector('#list-category-select').addEventListener('change', () => {
   handleCategoryChange()
+  selectTab('list')
 })
 
 // User Lists

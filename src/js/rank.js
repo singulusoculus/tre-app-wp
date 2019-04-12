@@ -255,8 +255,8 @@ const cmpCheck = () => {
     updateProgressBar()
     calcRankedList()
     showStepTab('result')
-    showStats()
     rankData.finishFlag = 1
+    selectTab('result')
   } else {
     checkForDeletedItems()
     updateProgressBar()
@@ -440,11 +440,6 @@ const cardFadeOut = (prevItem1, prevItem2) => {
 const cardFadeIn = () => {
   document.querySelector('#item-1-card').classList.remove('rank-card--fade-out')
   document.querySelector('#item-2-card').classList.remove('rank-card--fade-out')
-}
-
-const showStats = () => {
-  selectTab('stats')
-  sectionTransition('stats')
 }
 
 // Enable use of left, right, and down keys to make selections
