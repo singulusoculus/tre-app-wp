@@ -197,6 +197,9 @@ const onShowListSection = () => {
 
   document.querySelector('.next-list').classList.remove('next--visible')
 
+  const categoryName = document.querySelector('#list-category-select').selectedOptions[0].innerHTML
+  document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
+
   const list = getListData()
   if (list.length > 0) {
     showStepTab('rank')
