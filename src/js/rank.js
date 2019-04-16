@@ -256,8 +256,10 @@ const cmpCheck = () => {
   } else {
     checkForDeletedItems()
     updateProgressBar()
+
+    showComparison()
+
     setTimeout(() => {
-      showComparison()
       cardFadeIn()
     }, 400)
   }
