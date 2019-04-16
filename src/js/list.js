@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, onShowListSection, hideStepTab, showStepTab, selectTab } from './views'
+import { renderListData, onShowListSection, selectTab, enableStepTab, disableStepTab, enableNextButton } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -20,7 +20,7 @@ const initPrevList = (category, data) => {
   saveData(listData)
   renderListData()
 
-  showStepTab('list')
+  enableStepTab('list')
   selectTab('list')
 }
 
@@ -70,7 +70,8 @@ const addListItems = (list) => {
 
   if (listData.length > 0) {
     setCurrentStep('List')
-    showStepTab('rank')
+    enableStepTab('rank')
+    enableNextButton()
     filterDuplicates()
     saveData(listData)
     renderListData()
@@ -89,7 +90,7 @@ const removeListItem = (id) => {
     saveData(listData)
   }
   if (listData.length === 0) {
-    hideStepTab('rank')
+    disableStepTab('rank')
   }
 }
 
@@ -100,7 +101,7 @@ const clearListData = () => {
     const r = confirm('Are you sure you want to clear your list?')
     if (r === true) {
       listData = []
-      hideStepTab('rank')
+      disableStepTab('rank')
 
       saveData(listData)
 

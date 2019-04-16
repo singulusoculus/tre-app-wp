@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { showStepTab, selectTab, onShowRankSection, sectionTransition } from './views'
+import { selectTab, onShowRankSection, enableStepTab } from './views'
 import { setResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { createListObject } from './list'
@@ -12,7 +12,7 @@ let rankDataHistory = []
 const initPrevRanking = (category, data) => {
   disableArrowKeyScroll()
 
-  showStepTab('rank')
+  enableStepTab('rank', 'list')
   selectTab('rank')
 
   setCurrentStep('Rank')
@@ -254,7 +254,7 @@ const cmpCheck = () => {
   if (rankData.cmp1 < 0) {
     updateProgressBar()
     calcRankedList()
-    showStepTab('result')
+    enableStepTab('result')
     rankData.finishFlag = 1
     selectTab('result')
   } else {
@@ -369,8 +369,10 @@ const checkForDeletedItems = () => {
   // check for completion
   if (rankData.cmp1 < 0) {
     updateProgressBar()
-    showStepTab('result')
+    calcRankedList()
+    enableStepTab('result')
     rankData.finishFlag = 1
+    selectTab('result')
   }
 }
 

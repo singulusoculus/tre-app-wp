@@ -30,20 +30,10 @@
   }
 }
 
-.step-tabs {
-
-  &__list {
-    display: none !important;
-  }
-
-  &__rank {
-    display: none !important;
-  }
-
-  &__result {
-    display: none !important;
-  }
+.tab.disabled>a {
+  color: rgba(255,255,255,0.2) !important;
 }
+
 
 .step-tab--available {
   display: inline-block !important;
@@ -124,24 +114,6 @@
 @media only screen and (max-width: 992px) {
   #keys-reminder {
       display: none;
-  }
-}
-
-//////////////////////////////////////////////////////////////////
-///////////  RANKING STATS
-//////////////////////////////////////////////////////////////////
-.ranking-stats {
-
-  &__header {
-    margin: 5rem 0 2rem 0;
-  }
-
-  &__text {
-  
-  }
-
-  &__stat {
-
   }
 }
 

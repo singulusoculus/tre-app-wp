@@ -1,5 +1,5 @@
 import { setCurrentStep } from './step'
-import { renderPreviousSession, showStepTab, hideStepTab } from './views'
+import { renderPreviousSession } from './views'
 import { initRanking } from './rank'
 import { setCategory } from './category'
 
@@ -10,18 +10,11 @@ renderPreviousSession()
 
 const initFanFavorite = () => {
   initRanking(fanFavorite, 2)
-  // showRankSection()
 }
 
 const handleCategoryChange = () => {
   const category = parseInt(document.querySelector('#list-category-select').value)
   setCategory(category)
-
-  if (category !== 0) {
-    showStepTab('list')
-  } else {
-    hideStepTab('list')
-  }
 }
 
 // Temp Fan Favorite

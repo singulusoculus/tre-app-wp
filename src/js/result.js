@@ -1,4 +1,4 @@
-import { showStepTab, selectTab, onShowResultSection } from './views'
+import { selectTab, onShowResultSection, enableStepTab } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
@@ -12,7 +12,7 @@ const initPrevResult = (category, data) => {
   saveData(resultData)
   renderResult(resultData)
 
-  showStepTab('result')
+  enableStepTab('result', 'rank', 'list')
   selectTab('result')
   onShowResultSection()
 }
@@ -24,8 +24,6 @@ const setResultData = (data) => {
 }
 
 const renderResult = () => {
-  // setCurrentStep('Result')
-  // resultData = data
 
   let str = ''
   // let str1 = ''
@@ -43,9 +41,6 @@ const renderResult = () => {
   document.getElementById('results-table').innerHTML = str
 
   saveData(resultData)
-
-  // showStepTab('result')
-  // selectTab('result')
 }
 
 export { initPrevResult, renderResult, getResultData, setResultData }

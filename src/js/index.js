@@ -1,4 +1,4 @@
-import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, showStepTab, selectTab, onShowResultSection } from './views'
+import { renderPreviousSession, onShowStartSection, onShowListSection, onShowRankSection, renderListData, selectTab, onShowResultSection, enableStepTab } from './views'
 import { addListItems, getListData, clearListData, loadList, createList } from './list'
 import { setFilters } from './filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData } from './rank'
@@ -46,10 +46,11 @@ document.querySelector('#list-tab').addEventListener('click', (e) => {
   const step = getCurrentStep()
 
   if (step === 'Start') {
-    clearListData()
-    setCurrentStep('List')
-    renderListData()
-    onShowListSection()
+    // Do Nothing
+    // clearListData()
+    // setCurrentStep('List')
+    // renderListData()
+    // onShowListSection()
   } else if (step === 'List') {
     onShowListSection()
   } else if (step === 'Rank') {
@@ -125,8 +126,6 @@ document.querySelector('#rank-tab').addEventListener('click', (e) => {
 document.querySelector('#result-tab').addEventListener('click', () => {
   const step = getCurrentStep()
   if (step === 'Result') {
-    // calcRankedList()
-    // const data = getResultData()
     renderResult()
     onShowResultSection()
   }
@@ -137,6 +136,7 @@ document.querySelector('#result-tab').addEventListener('click', () => {
 // //////////////////////////////////////////////////////////////////////
 
 document.querySelector('.next-rank').addEventListener('click', () => {
+  enableStepTab('rank')
   selectTab('rank')
 })
 
@@ -154,6 +154,12 @@ document.querySelector('.next-rank').addEventListener('click', () => {
 // Select a category
 document.querySelector('#list-category-select').addEventListener('change', () => {
   handleCategoryChange()
+  clearListData()
+  setCurrentStep('List')
+  renderListData()
+
+  onShowListSection()
+  enableStepTab('list')
   selectTab('list')
 })
 

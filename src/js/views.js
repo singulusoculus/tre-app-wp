@@ -2,7 +2,6 @@ import { initPrevList, getListData, sortListData, removeListItem } from './list'
 import { getFilters } from './filters'
 import { initPrevRanking } from './rank'
 import { initPrevResult } from './result'
-import { getCategory } from './category'
 
 const renderPreviousSession = () => {
   const prevData = JSON.parse(localStorage.getItem('saveData'))
@@ -132,34 +131,26 @@ const generateListDataDOM = (item) => {
 }
 
 // Step Tab visibility
-const showStepTab = (step) => {
-  document.querySelector(`#${step}-tab`).classList.add('step-tab--available')
-  updateTabIndicator()
-  openTooltip(`${step}`)
+const enableStepTab = (...steps) => {
+  steps.forEach((step) => {
+    document.querySelector(`#${step}-tab`).classList.remove('disabled')
+  })
+}
 
-  if (step === 'rank') {
-    closeTooltip('list')
-    document.querySelector(`#list-tab`).classList.add('step-tab--available')
+const disableStepTab = (...steps) => {
+  steps.forEach((step) => {
+    document.querySelector(`#${step}-tab`).classList.add('disabled')
+  })
 
-    // Next Button
-    const nextButton = document.querySelector(`.next-${step}`)
-    nextButton.classList.add('next--visible')
-  }
-
-  if (step === 'result') {
-    document.querySelector(`#list-tab`).classList.add('step-tab--available')
-    document.querySelector(`#rank-tab`).classList.add('step-tab--available')
+  if (steps.includes('rank')) {
+    const nextButton = document.querySelector(`.next-rank`)
+    nextButton.classList.remove('next--visible')
   }
 }
 
-const hideStepTab = (step) => {
-  closeTooltip(`${step}`)
-  document.querySelector(`#${step}-tab`).classList.remove('step-tab--available')
-  updateTabIndicator()
-
-  if (step === 'rank') {
-    document.querySelector(`.next-${step}`).classList.remove('next--visible')
-  }
+const enableNextButton = () => {
+  const nextButton = document.querySelector(`.next-rank`)
+  nextButton.classList.add('next--visible')
 }
 
 const sectionTransition = (step) => {
@@ -173,27 +164,19 @@ const sectionTransition = (step) => {
   setTimeout(() => {
     document.querySelector(`#${step}-wrapper`).classList.add('active')
   }, 200)
-  // document.querySelector(`#${step}-wrapper`).classList.add('active')
 }
 
 // Section Visibility
 const onShowStartSection = () => {
-  hideStepTab('list')
-  hideStepTab('rank')
-  hideStepTab('result')
+  enableStepTab('start')
+  disableStepTab('list', 'rank', 'result')
 
   sectionTransition('start')
-
-  const category = getCategory()
-  if (category !== 0) {
-    showStepTab('list')
-  }
 }
 
 const onShowListSection = () => {
-  hideStepTab('rank')
-  hideStepTab('result')
-  closeTooltip('list')
+  enableStepTab('start', 'list')
+  disableStepTab('rank', 'result')
 
   sectionTransition('list')
 
@@ -202,13 +185,14 @@ const onShowListSection = () => {
 
   const list = getListData()
   if (list.length > 0) {
-    showStepTab('rank')
+    enableStepTab('rank')
+    enableNextButton()
   }
 }
 
 const onShowRankSection = () => {
-  hideStepTab('result')
-  closeTooltip('rank')
+  enableStepTab('start', 'list', 'result')
+  disableStepTab('result')
 
   sectionTransition('rank')
 
@@ -216,33 +200,13 @@ const onShowRankSection = () => {
 }
 
 const onShowResultSection = () => {
-  closeTooltip('result')
-
   sectionTransition('result')
 }
 
 // Step Tab Control
-const updateTabIndicator = () => {
-  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
-  tabs.updateTabIndicator()
-}
-
 const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
-  updateTabIndicator()
-  closeTooltip(tab)
-}
-
-// Tooltip Control
-const openTooltip = (step) => {
-  const tip = M.Tooltip.getInstance(document.querySelector(`#${step}-tab-link`))
-  tip.open()
-}
-
-const closeTooltip = (step) => {
-  const tip = M.Tooltip.getInstance(document.querySelector(`#${step}-tab-link`))
-  tip.close()
 }
 
 const toggleListItems = () => {
@@ -262,12 +226,10 @@ export {
   onShowResultSection,
   renderListData,
   onShowStartSection,
-  updateTabIndicator,
   selectTab,
-  openTooltip,
-  showStepTab,
-  hideStepTab,
-  closeTooltip,
   toggleListItems,
-  sectionTransition
+  sectionTransition,
+  enableStepTab,
+  disableStepTab,
+  enableNextButton
 }
