@@ -45,15 +45,7 @@ document.querySelector('#start-tab').addEventListener('click', (e) => {
 document.querySelector('#list-tab').addEventListener('click', (e) => {
   const step = getCurrentStep()
 
-  if (step === 'Start') {
-    // Do Nothing
-    // clearListData()
-    // setCurrentStep('List')
-    // renderListData()
-    // onShowListSection()
-  } else if (step === 'List') {
-    onShowListSection()
-  } else if (step === 'Rank') {
+  if (step === 'Rank') {
     const r = confirm('This will terminate the ranking process and allow you to edit the list. Want to continue?')
     if (r === true) {
       const data = getRankData()
