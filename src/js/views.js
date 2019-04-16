@@ -42,7 +42,7 @@ const renderPreviousSession = () => {
 
       const dismissEl = document.createElement('a')
       dismissEl.href = '#'
-      dismissEl.textContent = 'Dismiss'
+      dismissEl.textContent = 'Discard'
 
       linkEl.addEventListener('click', () => {
         if (step === 'List') {
@@ -59,7 +59,9 @@ const renderPreviousSession = () => {
         element.classList.add('hide')
         element.setAttribute('style', 'border-bottom: none')
 
-        // this could eventually clear the session data from LocalStorage
+        // clear localStorage on Discard
+        localStorage.removeItem('saveData')
+        localStorage.removeItem('rankDataHistory')
       })
 
       actionEl.appendChild(linkEl)
@@ -176,6 +178,8 @@ const showStartSection = (source) => {
   if (source !== 'tab') {
     selectTab('start')
   }
+
+  document.querySelector('.bgg-section').classList.add('hide')
 }
 
 const showListSection = (source) => {
@@ -185,6 +189,10 @@ const showListSection = (source) => {
 
   const categoryName = document.querySelector('#list-category-select').selectedOptions[0].innerHTML
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
+  // Show BGG section is category is Board Games
+  if (categoryName === 'Board Games') {
+    document.querySelector('.bgg-section').classList.remove('hide')
+  }
 
   const list = getListData()
   if (list.length > 0) {
@@ -222,6 +230,8 @@ const showResultSection = (source) => {
 const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
+
+  history.replaceState(null, null, ' ')
 }
 
 // Tooltip Control

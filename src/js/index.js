@@ -1,4 +1,4 @@
-import { renderPreviousSession, showStartSection, showListSection, showRankSection, renderListData } from './views'
+import { renderPreviousSession, showStartSection, showListSection, showRankSection, renderListData, selectTab } from './views'
 import { addListItems, getListData, clearListData, loadList, createList } from './list'
 import { setFilters } from './filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData } from './rank'
@@ -115,7 +115,7 @@ document.querySelector('#result-tab').addEventListener('click', () => {
 // //////////////////////////////////////////////////////////////////////
 
 document.querySelector('.next-rank').addEventListener('click', () => {
-  showRankSection()
+  selectTab('rank')
 })
 
 // //////////////////////////////////////////////////////////////////////
