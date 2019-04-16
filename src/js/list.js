@@ -44,11 +44,11 @@ const createListObject = (name, source, image = '', id, rank = 0, yearPublished 
 const loadList = (list) => {
   listData = list
   onShowListSection()
+  setCurrentStep('List')
   if (listData.length > 0) {
     saveData(listData)
     renderListData()
   }
-  setCurrentStep('List')
 }
 
 const createList = (itemArray, source) => {

@@ -134,12 +134,14 @@ const generateListDataDOM = (item) => {
 const enableStepTab = (...steps) => {
   steps.forEach((step) => {
     document.querySelector(`#${step}-tab`).classList.remove('disabled')
+    createTooltip(step)
   })
 }
 
 const disableStepTab = (...steps) => {
   steps.forEach((step) => {
     document.querySelector(`#${step}-tab`).classList.add('disabled')
+    destroyTooltip(step)
   })
 
   if (steps.includes('rank')) {
@@ -216,6 +218,32 @@ const toggleListItems = () => {
     listItemsEl.classList.remove('hide')
   } else {
     listItemsEl.classList.add('hide')
+  }
+}
+
+// Tooltip Control
+const createTooltip = (step) => {
+  const linkEl = document.querySelector(`#${step}-tab-link`)
+  switch (step) {
+    case 'list':
+      linkEl.classList.add('tooltipped')
+      linkEl.setAttribute('data-tooltip', 'Edit your list')
+      break
+    case 'rank':
+      linkEl.classList.add('tooltipped')
+      linkEl.setAttribute('data-tooltip', 'Start or Restart ranking')
+      break
+  }
+
+  const els = document.querySelectorAll('.tooltipped')
+  M.Tooltip.init(els)
+}
+
+const destroyTooltip = (step) => {
+  const stepLink = document.querySelector(`#${step}-tab-link`)
+  if (stepLink.classList.contains('tooltipped')) {
+    const tip = M.Tooltip.getInstance(stepLink)
+    tip.destroy()
   }
 }
 
