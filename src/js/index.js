@@ -33,6 +33,8 @@ document.querySelector('#start-tab').addEventListener('click', (e) => {
       renderPreviousSession()
 
       showStartSection('tab')
+    } else {
+      e.stopPropagation()
     }
   }
 })
@@ -55,6 +57,8 @@ document.querySelector('#list-tab').addEventListener('click', (e) => {
       }
       loadList(list)
       showListSection('tab')
+    } else {
+      e.stopPropagation()
     }
   } else if (step === 'Result') {
     const r = confirm('This will clear your results and allow you to edit the list. Want to continue?')
@@ -62,6 +66,8 @@ document.querySelector('#list-tab').addEventListener('click', (e) => {
       const data = getResultData()
       loadList(data)
       showListSection('tab')
+    } else {
+      e.stopPropagation()
     }
   }
 })
@@ -79,6 +85,8 @@ document.querySelector('#rank-tab').addEventListener('click', (e) => {
         listData.sort((a, b) => 0.5 - Math.random())
         initRanking(listData, category)
         showRankSection('tab')
+      } else {
+        e.stopPropagation()
       }
     }
   } else if (step === 'Rank') {
@@ -90,6 +98,8 @@ document.querySelector('#rank-tab').addEventListener('click', (e) => {
       const category = getCategory()
       initRanking(listData, category)
       showRankSection('tab')
+    } else {
+      e.stopPropagation()
     }
   } else if (step === 'Result') {
     const r = confirm('Do you want to start ranking this list again?')
@@ -98,6 +108,8 @@ document.querySelector('#rank-tab').addEventListener('click', (e) => {
       const category = getCategory()
       initRanking(listData, category)
       showRankSection('tab')
+    } else {
+      e.stopPropagation()
     }
   }
 })

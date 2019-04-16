@@ -101,7 +101,16 @@
   }
 
   .next--visible {
-    transform: translateX(-13rem) rotate(45deg);
+    transform: translateX(-11rem) rotate(45deg);
+  }
+
+  .next__text {
+    display: none;
+  }
+
+  .next__icon {
+    bottom: -7px;
+    left: -8px;
   }
 
 }

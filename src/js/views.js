@@ -89,7 +89,7 @@ const renderListData = () => {
   const count = data.length
 
   const listInfoEl = document.querySelector('#list-info')
-  listInfoEl.textContent = `You have ${count} items on this list`
+  listInfoEl.textContent = `${count} items on this list`
 
   const listEl = document.querySelector('#list-items')
 
