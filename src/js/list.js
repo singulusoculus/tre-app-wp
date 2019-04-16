@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, onShowListSection, selectTab, enableStepTab, disableStepTab, enableNextButton } from './views'
+import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -20,9 +20,7 @@ const initPrevList = (category, data) => {
   saveData(listData)
   renderListData()
 
-  enableStepTab('list')
-  selectTab('list')
-  onShowListSection()
+  showListSection()
 }
 
 const createListObject = (name, source, image = '', id, rank = 0, yearPublished = '', bggId = '') => {
@@ -44,7 +42,6 @@ const createListObject = (name, source, image = '', id, rank = 0, yearPublished 
 // Loads a list from rank or result back into List
 const loadList = (list) => {
   listData = list
-  onShowListSection()
   setCurrentStep('List')
   if (listData.length > 0) {
     saveData(listData)

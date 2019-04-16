@@ -169,17 +169,18 @@ const sectionTransition = (step) => {
 }
 
 // Section Visibility
-const onShowStartSection = () => {
-  enableStepTab('start')
+const showStartSection = (source) => {
   disableStepTab('list', 'rank', 'result')
-
   sectionTransition('start')
+
+  if (source !== 'tab') {
+    selectTab('start')
+  }
 }
 
-const onShowListSection = () => {
-  enableStepTab('start', 'list')
+const showListSection = (source) => {
+  enableStepTab('list')
   disableStepTab('rank', 'result')
-
   sectionTransition('list')
 
   const categoryName = document.querySelector('#list-category-select').selectedOptions[0].innerHTML
@@ -190,35 +191,37 @@ const onShowListSection = () => {
     enableStepTab('rank')
     enableNextButton()
   }
+
+  if (source !== 'tab') {
+    selectTab('list')
+  }
 }
 
-const onShowRankSection = () => {
-  enableStepTab('start', 'list', 'result')
+const showRankSection = (source) => {
+  enableStepTab('list', 'rank')
   disableStepTab('result')
-
   sectionTransition('rank')
 
   document.querySelector('.next-rank').classList.remove('next--visible')
+
+  if (source !== 'tab') {
+    selectTab('rank')
+  }
 }
 
-const onShowResultSection = () => {
+const showResultSection = (source) => {
+  enableStepTab('result', 'rank', 'list')
   sectionTransition('result')
+
+  if (source !== 'tab') {
+    selectTab('result')
+  }
 }
 
 // Step Tab Control
 const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
-}
-
-const toggleListItems = () => {
-  const listItemsEl = document.querySelector('#list-items-wrapper')
-
-  if (listItemsEl.classList.contains('hide')) {
-    listItemsEl.classList.remove('hide')
-  } else {
-    listItemsEl.classList.add('hide')
-  }
 }
 
 // Tooltip Control
@@ -249,13 +252,12 @@ const destroyTooltip = (step) => {
 
 export {
   renderPreviousSession,
-  onShowListSection,
-  onShowRankSection,
-  onShowResultSection,
+  showListSection,
+  showRankSection,
+  showResultSection,
   renderListData,
-  onShowStartSection,
+  showStartSection,
   selectTab,
-  toggleListItems,
   sectionTransition,
   enableStepTab,
   disableStepTab,

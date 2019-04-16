@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { selectTab, onShowRankSection, enableStepTab } from './views'
+import { showRankSection, showResultSection } from './views'
 import { setResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { createListObject } from './list'
@@ -12,9 +12,6 @@ let rankDataHistory = []
 const initPrevRanking = (category, data) => {
   disableArrowKeyScroll()
 
-  enableStepTab('rank', 'list')
-  selectTab('rank')
-
   setCurrentStep('Rank')
   setCategory(category)
   populateRankData(true, data)
@@ -23,7 +20,7 @@ const initPrevRanking = (category, data) => {
 
   showComparison()
   updateProgressBar()
-  onShowRankSection()
+  showRankSection()
 
   const history = JSON.parse(localStorage.getItem('rankDataHistory'))
   if (history.length > 0) {
@@ -254,9 +251,8 @@ const cmpCheck = () => {
   if (rankData.cmp1 < 0) {
     updateProgressBar()
     calcRankedList()
-    enableStepTab('result')
     rankData.finishFlag = 1
-    selectTab('result')
+    showResultSection()
   } else {
     checkForDeletedItems()
     updateProgressBar()
@@ -370,9 +366,8 @@ const checkForDeletedItems = () => {
   if (rankData.cmp1 < 0) {
     updateProgressBar()
     calcRankedList()
-    enableStepTab('result')
     rankData.finishFlag = 1
-    selectTab('result')
+    showResultSection()
   }
 }
 
