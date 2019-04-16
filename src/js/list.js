@@ -22,6 +22,7 @@ const initPrevList = (category, data) => {
 
   enableStepTab('list')
   selectTab('list')
+  onShowListSection()
 }
 
 const createListObject = (name, source, image = '', id, rank = 0, yearPublished = '', bggId = '') => {

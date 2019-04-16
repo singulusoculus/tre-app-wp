@@ -31,13 +31,13 @@ const renderPreviousSession = () => {
 
       const textEl = document.createElement('p')
       textEl.classList.add('center-align')
-      textEl.textContent = `You have a previous ${step} session available. Want to continue?`
+      textEl.textContent = `You have a previous ${step} session available. Want to resume?`
 
       const actionEl = document.createElement('div')
       actionEl.classList.add('card-action', 'center-align')
 
       const linkEl = document.createElement('a')
-      linkEl.textContent = 'Continue'
+      linkEl.textContent = 'Resume'
       linkEl.href = '#'
 
       const dismissEl = document.createElement('a')
