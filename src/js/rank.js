@@ -156,7 +156,7 @@ const showComparison = () => {
 
   setTimeout(() => {
     cardFadeIn()
-  }, 400)
+  }, 100)
 }
 
 const handlePick = (flag) => {
@@ -264,14 +264,11 @@ const cmpCheck = () => {
     checkForDeletedItems()
     updateProgressBar()
 
-    // showComparison()
-    debugger
-    let transitionEnd = whichTransitionEvent()
-    document.querySelector('#item-1-card').addEventListener(transitionEnd, showComparison(), false)
-    document.querySelector('#item-2-card').addEventListener(transitionEnd, showComparison(), false)
+    setTimeout(() => {
+      showComparison()
+    }, 400)
   }
 }
-
 
 const updateVoteShowPct = () => {
   rankData.masterList.forEach((item) => {
@@ -311,7 +308,9 @@ const handleUndo = () => {
 
     updateProgressBar()
 
-    showComparison()
+    setTimeout(() => {
+      showComparison()
+    }, 400)
 
     saveData(rankData)
     saveRankDataHistory()
@@ -444,22 +443,6 @@ const cardFadeOut = (prevItem1, prevItem2) => {
 const cardFadeIn = () => {
   document.querySelector('#item-1-card').classList.remove('rank-card--fade-out')
   document.querySelector('#item-2-card').classList.remove('rank-card--fade-out')
-}
-
-const whichTransitionEvent = () => {
-  const  el = document.createElement('fakeelement')
-  const  transitions = {
-    'transition':'transitionend',
-    'OTransition':'oTransitionEnd',
-    'MozTransition':'transitionend',
-    'WebkitTransition':'webkitTransitionEnd'
-  }
-
-  for(let t in transitions){
-      if( el.style[t] !== undefined ){
-          return transitions[t]
-      }
-  }
 }
 
 // Enable use of left, right, and down keys to make selections
