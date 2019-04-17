@@ -1,7 +1,7 @@
 import { initPrevList, getListData, sortListData, removeListItem } from './list'
 import { getFilters } from './filters'
 import { initPrevRanking } from './rank'
-import { initPrevResult } from './result'
+import { initPrevResult, renderResult } from './result'
 
 const renderPreviousSession = () => {
   const prevData = JSON.parse(localStorage.getItem('saveData'))
@@ -176,7 +176,7 @@ const showStartSection = (source) => {
   sectionTransition('start')
 
   if (source !== 'tab') {
-    selectTab('start')
+    showTab('start')
   }
 
   document.querySelector('.bgg-section').classList.add('hide')
@@ -201,7 +201,7 @@ const showListSection = (source) => {
   }
 
   if (source !== 'tab') {
-    selectTab('list')
+    showTab('list')
   }
 }
 
@@ -213,7 +213,7 @@ const showRankSection = (source) => {
   document.querySelector('.next-rank').classList.remove('next--visible')
 
   if (source !== 'tab') {
-    selectTab('rank')
+    showTab('rank')
   }
 }
 
@@ -221,8 +221,10 @@ const showResultSection = (source) => {
   enableStepTab('result', 'rank', 'list')
   sectionTransition('result')
 
+  renderResult()
+
   if (source !== 'tab') {
-    selectTab('result')
+    showTab('result')
   }
 }
 
@@ -234,14 +236,34 @@ const selectTab = (tab) => {
   history.replaceState(null, null, ' ')
 }
 
+// Materialize's select function simulates a click on the tab, potentially firing any events attached to it
+// This gets around that by simply showing the tab without the click event
 const showTab = (tab) => {
-  const activeEls = document.querySelectorAll('.tab > .active')
-  while (activeEls[0]) {
-    activeEls[0].classList.remove('active')
-  }
+  // Tabs
+  const activeTab = document.querySelectorAll('.tab > .active')
+  activeTab[0].classList.remove('active')
+
   const newActiveTab = document.querySelector(`#${tab}-tab-link`)
   newActiveTab.classList.add('active')
 
+  // Section
+  const activeSection = document.querySelectorAll('.step-container.active')
+  activeSection[0].classList.remove('active')
+  activeSection[0].setAttribute('style', 'display: none')
+
+  const newActiveSection = document.querySelector(`.${tab}-container`)
+  newActiveSection.classList.add('active')
+  newActiveSection.removeAttribute('style', 'display: none')
+
+  const tabs = document.querySelector('#step-tabs')
+  M.Tabs.init(tabs)
+  updateTabIndicator()
+  sectionTransition(tab)
+}
+
+const updateTabIndicator = () => {
+  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
+  tabs.updateTabIndicator()
 }
 
 // Tooltip Control
@@ -263,10 +285,12 @@ const createTooltip = (step) => {
 }
 
 const destroyTooltip = (step) => {
-  const stepLink = document.querySelector(`#${step}-tab-link`)
-  if (stepLink.classList.contains('tooltipped')) {
-    const tip = M.Tooltip.getInstance(stepLink)
-    tip.destroy()
+  if (step) {
+    const stepLink = document.querySelector(`#${step}-tab-link`)
+    if (stepLink.classList.contains('tooltipped')) {
+      const tip = M.Tooltip.getInstance(stepLink)
+      tip.destroy()
+    }
   }
 }
 
