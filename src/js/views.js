@@ -234,6 +234,16 @@ const selectTab = (tab) => {
   history.replaceState(null, null, ' ')
 }
 
+const showTab = (tab) => {
+  const activeEls = document.querySelectorAll('.tab > .active')
+  while (activeEls[0]) {
+    activeEls[0].classList.remove('active')
+  }
+  const newActiveTab = document.querySelector(`#${tab}-tab-link`)
+  newActiveTab.classList.add('active')
+
+}
+
 // Tooltip Control
 const createTooltip = (step) => {
   const linkEl = document.querySelector(`#${step}-tab-link`)
