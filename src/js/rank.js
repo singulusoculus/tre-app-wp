@@ -115,7 +115,7 @@ const initRanking = (itemsList, category) => {
   resetHistory()
   updateProgressBar()
   showComparison()
-  cardFadeIn()
+  // cardFadeIn()
 }
 
 const getComparisonInfo = () => {
@@ -153,6 +153,10 @@ const showComparison = () => {
   // Text control
   document.querySelector('#item-1-text').textContent = item1.name
   document.querySelector('#item-2-text').textContent = item2.name
+
+  setTimeout(() => {
+    cardFadeIn()
+  }, 400)
 }
 
 const handlePick = (flag) => {
@@ -260,13 +264,14 @@ const cmpCheck = () => {
     checkForDeletedItems()
     updateProgressBar()
 
-    showComparison()
-
-    setTimeout(() => {
-      cardFadeIn()
-    }, 400)
+    // showComparison()
+    debugger
+    let transitionEnd = whichTransitionEvent()
+    document.querySelector('#item-1-card').addEventListener(transitionEnd, showComparison(), false)
+    document.querySelector('#item-2-card').addEventListener(transitionEnd, showComparison(), false)
   }
 }
+
 
 const updateVoteShowPct = () => {
   rankData.masterList.forEach((item) => {
@@ -306,10 +311,7 @@ const handleUndo = () => {
 
     updateProgressBar()
 
-    setTimeout(() => {
-      showComparison()
-      cardFadeIn()
-    }, 400)
+    showComparison()
 
     saveData(rankData)
     saveRankDataHistory()
@@ -442,6 +444,22 @@ const cardFadeOut = (prevItem1, prevItem2) => {
 const cardFadeIn = () => {
   document.querySelector('#item-1-card').classList.remove('rank-card--fade-out')
   document.querySelector('#item-2-card').classList.remove('rank-card--fade-out')
+}
+
+const whichTransitionEvent = () => {
+  const  el = document.createElement('fakeelement')
+  const  transitions = {
+    'transition':'transitionend',
+    'OTransition':'oTransitionEnd',
+    'MozTransition':'transitionend',
+    'WebkitTransition':'webkitTransitionEnd'
+  }
+
+  for(let t in transitions){
+      if( el.style[t] !== undefined ){
+          return transitions[t]
+      }
+  }
 }
 
 // Enable use of left, right, and down keys to make selections
