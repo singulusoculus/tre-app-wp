@@ -21,3 +21,18 @@ input[type=text]:not(.browser-default):focus:not([readonly]) {
 .secondary-content {
   color: #527a45 !important;
 }
+
+.btn {
+  background-color: #343A40 !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .row {
+    margin-bottom: 1rem;
+  }
+
+  .input-field {
+    margin-top: .3rem;
+    margin-bottom: .3rem;
+  }
+}
