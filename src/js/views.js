@@ -287,7 +287,7 @@ const createTooltip = (step) => {
 const destroyTooltip = (step) => {
   if (step) {
     const stepLink = document.querySelector(`#${step}-tab-link`)
-    if (stepLink.classList.contains('tooltipped')) {
+    if (stepLink.classList.contains('tooltipped') && stepLink.M_Tooltip !== undefined) {
       const tip = M.Tooltip.getInstance(stepLink)
       tip.destroy()
     }
