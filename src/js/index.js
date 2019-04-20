@@ -170,6 +170,7 @@ document.querySelector('#textarea-add-btn').addEventListener('click', () => {
 
   addListItems(list)
   document.querySelector('#textarea-input').style.height = '45px'
+  document.querySelector('.input-field>label:not(.label-icon)').classList.remove('active')
   document.querySelector('#textarea-add-btn').classList.add('disabled')
 })
 
