@@ -10,6 +10,33 @@ import { initFanFavorite, handleCategoryChange } from './start'
 
 import '../styles/main.scss'
 
+const custConfirm = (message, resultCallback) => {
+  const alertText = document.querySelector('.alert-text')
+  alertText.innerText = message
+
+  const instance = M.Modal.getInstance(document.querySelector('#alert-modal'))
+  instance.open()
+
+  document.querySelector('#alert-ok-btn').addEventListener('click', (e) => {
+    resultCallback()
+  })
+
+  document.querySelector('#alert-cancel-btn').addEventListener('click', (e) => {
+    e.stopPropagation()
+    instance.close()
+  })
+}
+
+const clickStart = () => {
+  // Reset the Category Select and reinitialize
+  document.querySelector('#list-category-select').value = 0
+  M.FormSelect.init(document.querySelector('#list-category-select'))
+  setCategory(0)
+  setCurrentStep('Start')
+  renderPreviousSession()
+  showStartSection()
+}
+
 jQuery(document).ready(() => {
   M.AutoInit()
 
@@ -31,19 +58,23 @@ jQuery(document).ready(() => {
     const step = getCurrentStep()
     const category = document.querySelector('#list-category-select').value
     if (step !== 'Start' || category !== '0') {
-      const r = confirm('This will clear any progress and start the process from the beginning. Want to continue?')
-      if (r === true) {
-        // Reset the Category Select and reinitialize
-        document.querySelector('#list-category-select').value = 0
-        M.FormSelect.init(document.querySelector('#list-category-select'))
-        setCategory(0)
-        setCurrentStep('Start')
-        renderPreviousSession()
+      const message = 'This will clear any progress and start the process from the beginning. Want to continue?'
+      custConfirm(message, clickStart)
+      e.stopPropagation()
 
-        showStartSection('tab')
-      } else {
-        e.stopPropagation()
-      }
+      // const r = confirm('This will clear any progress and start the process from the beginning. Want to continue?')
+      // if (r === true) {
+      //   // Reset the Category Select and reinitialize
+      //   document.querySelector('#list-category-select').value = 0
+      //   M.FormSelect.init(document.querySelector('#list-category-select'))
+      //   setCategory(0)
+      //   setCurrentStep('Start')
+      //   renderPreviousSession()
+
+      //   showStartSection('tab')
+      // } else {
+      //   e.stopPropagation()
+      // }
     }
   })
 
