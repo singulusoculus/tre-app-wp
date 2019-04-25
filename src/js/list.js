@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton } from './views'
+import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -70,6 +70,7 @@ const addListItems = (list) => {
     setCurrentStep('List')
     enableStepTab('rank')
     enableNextButton()
+    enableListSave()
     filterDuplicates()
     saveData(listData)
     renderListData()
@@ -89,6 +90,7 @@ const removeListItem = (id) => {
   }
   if (listData.length === 0) {
     disableStepTab('rank')
+    disableListSave()
   }
 }
 
@@ -100,6 +102,7 @@ const clearListData = () => {
     if (r === true) {
       listData = []
       disableStepTab('rank')
+      disableListSave()
 
       saveData(listData)
 

@@ -1,4 +1,4 @@
-import { renderPreviousSession, showStartSection, showListSection, showRankSection, renderListData, selectTab } from './views'
+import { renderPreviousSession, showStartSection, showListSection, showRankSection, renderListData, selectTab, setupSaveLogin } from './views'
 import { addListItems, getListData, clearListData, loadList, createList } from './list'
 import { setFilters } from './filters'
 import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData } from './rank'
@@ -12,9 +12,15 @@ import '../styles/main.scss'
 
 jQuery(document).ready(() => {
   M.AutoInit()
+
+  const elems = document.querySelector('#alert-modal')
+  const options = { dismissible: false }
+  M.Modal.init(elems, options)
+
   document.querySelector('#start-wrapper').classList.add('active')
   setCurrentStep('Start')
   renderPreviousSession()
+  setupSaveLogin()
 
   // //////////////////////////////////////////////////////////////////////
   // // STEP TAB CONTROLS

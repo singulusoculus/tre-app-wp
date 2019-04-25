@@ -15,7 +15,6 @@
 
 .nav-pm {
   background-color: #3F5061;
-  z-index: 5;
 
   &__logo {
     width: 18rem;
@@ -403,4 +402,23 @@
     background-color: #fff;
   }
   
+}
+
+// Modals
+
+.modal-content {
+  position: relative;
+  border-bottom: 1px solid rgba($color-grey-light-2, .6);
+}
+
+.modal-footer {
+  text-align: center !important;
+}
+
+.modal-close-x {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 2rem;
+  color: rgba($color-grey-dark, .9);
 }

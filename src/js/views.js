@@ -157,6 +157,16 @@ const enableNextButton = () => {
   nextButton.classList.add('next--visible')
 }
 
+const enableListSave = () => {
+  const saveButton = document.querySelector('#save-list')
+  saveButton.classList.remove('disabled')
+}
+
+const disableListSave = () => {
+  const saveButton = document.querySelector('#save-list')
+  saveButton.classList.add('disabled')
+}
+
 const sectionTransition = (step) => {
   // Remove active class from all step-wrapper divs
   const activeEls = document.getElementsByClassName('step-wrapper active')
@@ -211,6 +221,7 @@ const showListSection = (source) => {
   if (list.length > 0) {
     enableStepTab('rank')
     enableNextButton()
+    enableListSave()
   }
 
   if (source !== 'tab') {
@@ -313,6 +324,51 @@ const destroyTooltip = (step) => {
   }
 }
 
+let userID = 0
+
+const setupSaveLogin = () => {
+  const myListsEl = document.querySelector('.my-lists')
+
+  if (userID === 0) {
+    // Create My Lists Login
+    const loginMessageEl = document.createElement('div')
+    loginMessageEl.classList.add('center-align')
+
+    const textEl = document.createElement('p')
+    textEl.setAttribute('style', 'margin-bottom: 1rem')
+    textEl.textContent = `You must be logged in to view your lists`
+
+    const btnEl = document.createElement('a')
+    const iEl = document.createElement('i')
+    btnEl.classList.add('waves-effect', 'waves-light', 'btn', 'modal-trigger')
+    btnEl.setAttribute('id', 'my-lists-login-btn')
+    btnEl.setAttribute('href', '#login-modal')
+    btnEl.textContent = 'Login'
+    iEl.classList.add('material-icons', 'right')
+    iEl.textContent = 'account_circle'
+
+    btnEl.appendChild(iEl)
+    loginMessageEl.appendChild(textEl)
+    loginMessageEl.appendChild(btnEl)
+    myListsEl.appendChild(loginMessageEl)
+
+    // Set Save button targets to Login Modal
+    const saveButtons = document.querySelectorAll('.save-btn')
+    saveButtons.forEach((el) => {
+      el.setAttribute('href', '#login-modal')
+    })
+  } else {
+    // get My Lists data and populate My Lists section
+    myListsEl.textContent = 'Lists retrieved'
+
+    // Set Save button targets to Save Modal
+    const saveButtons = document.querySelectorAll('.save-btn')
+    saveButtons.forEach((el) => {
+      el.setAttribute('href', '#save-modal')
+    })
+  }
+}
+
 export {
   renderPreviousSession,
   showListSection,
@@ -324,5 +380,8 @@ export {
   sectionTransition,
   enableStepTab,
   disableStepTab,
-  enableNextButton
+  enableNextButton,
+  enableListSave,
+  disableListSave,
+  setupSaveLogin
 }
