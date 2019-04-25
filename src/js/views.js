@@ -170,6 +170,17 @@ const sectionTransition = (step) => {
   }, 200)
 }
 
+// Help Text
+const showHelpText = (step) => {
+  const textEls = document.querySelectorAll('.help__text-item')
+  textEls.forEach((el) => {
+    el.classList.add('hide')
+  })
+
+  const activeTextEl = document.querySelector(`.help__text--${step}`)
+  activeTextEl.classList.remove('hide')
+}
+
 // Section Visibility
 const showStartSection = (source) => {
   disableStepTab('list', 'rank', 'result')
@@ -180,6 +191,8 @@ const showStartSection = (source) => {
   }
 
   document.querySelector('.bgg-section').classList.add('hide')
+
+  showHelpText('start')
 }
 
 const showListSection = (source) => {
@@ -203,6 +216,8 @@ const showListSection = (source) => {
   if (source !== 'tab') {
     showTab('list')
   }
+
+  showHelpText('list')
 }
 
 const showRankSection = (source) => {
@@ -215,6 +230,8 @@ const showRankSection = (source) => {
   if (source !== 'tab') {
     showTab('rank')
   }
+
+  showHelpText('rank')
 }
 
 const showResultSection = (source) => {
@@ -226,6 +243,8 @@ const showResultSection = (source) => {
   if (source !== 'tab') {
     showTab('result')
   }
+
+  showHelpText('result')
 }
 
 // Step Tab Control
