@@ -1,12 +1,5 @@
-import { setCurrentStep } from './step'
-import { renderPreviousSession } from './views'
 import { initRanking } from './rank'
 import { setCategory } from './category'
-
-setCurrentStep('Start')
-
-// Check for Previous Session and display option if available
-renderPreviousSession()
 
 const initFanFavorite = () => {
   initRanking(fanFavorite, 2)

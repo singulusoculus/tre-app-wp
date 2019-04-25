@@ -16,5 +16,15 @@
 body {
   box-sizing: border-box;
   overflow-x: hidden;
-  // background-color: $color-grey-light-1;
+
+  // makes footer stick to bottom of the page
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  // makes footer stick to bottom of the page
+  flex: 1 0 auto;
+  margin-bottom: 2rem !important;
 }

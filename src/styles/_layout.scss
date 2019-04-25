@@ -231,6 +231,47 @@
   }
 }
 
+//////////////////////////////////////////////////////////////////
+///////////  FOOTER
+//////////////////////////////////////////////////////////////////
+.footer.page-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0;
+  background-color: #232323 !important;
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.footer-copyright {
+  margin: 0 2rem;
+  padding: 1rem 0;
+  background-color: #232323 !important;
+
+  @media only screen and (max-width: 600px) {
+    align-self: center;
+  }
+}
+
+.footer-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin: 0 2rem;
+
+  & > a {
+    margin: 0 1rem;
+    align-self: center;
+  }
+
+  @media only screen and (max-width: 600px) {
+    margin-top: 1rem;
+    order: -1;
+  }
+}
+
 
 //////////////////////////////////////////////////////////////////
 ///////////  Help Overlay
