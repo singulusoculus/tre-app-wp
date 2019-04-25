@@ -278,15 +278,23 @@
 //////////////////////////////////////////////////////////////////
 
 .help {
+  line-height: 2rem;
+  margin: 0 2rem 0 1rem;
+
+  @media only screen and (max-width: 600px) {
+    margin-right: 2rem;
+  }
 
   &__checkbox {
     display: none;
   }
 
   &__button {
-    position: absolute;
-    top: 5rem;
-    right: 3rem;
+    // position: absolute;
+    // top: 5rem;
+    // right: 3rem;
+    display: inline-block;
+    position: relative;
     z-index: 3100;
     cursor: pointer;
   }
@@ -328,11 +336,15 @@
     margin: 0 auto;
     padding: 0 20%;
     overflow-y: auto;
+
+    @media only screen and (max-width: 600px) {
+      padding: 0 5%;
+    }
   }
 
   // ICON
   &__icon {
-    position: relative;
+    // position: relative;
     // margin-top: 3.4rem;
 
     //&,
@@ -370,13 +382,13 @@
   }
 
   &__checkbox:checked + &__button &__icon::before {
-    top: 0;
+    top: 17px;
     transform: rotate(135deg);
     background-color: #fff;
   }
 
   &__checkbox:checked + &__button &__icon::after {
-    top: 0;
+    top: 17px;
     transform: rotate(-135deg);
     background-color: #fff;
   }
