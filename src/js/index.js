@@ -1,41 +1,12 @@
-import { renderPreviousSession, showStartSection, showListSection, showRankSection, renderListData, selectTab, setupSaveLogin } from './views'
-import { addListItems, getListData, clearListData, loadList, createList } from './list'
+import { renderPreviousSession, showListSection, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank } from './views'
+import { addListItems, clearListData, createList } from './list'
 import { setFilters } from './filters'
-import { initRanking, handlePick, handleUndo, deleteItem, addItem, getRankData } from './rank'
-import { getResultData, renderResult } from './result'
+import { handlePick, handleUndo, deleteItem } from './rank'
 import { getBGGData } from './requests-bgg'
-import { getCategory, setCategory } from './category'
-import { getCurrentStep, setCurrentStep } from './step'
-import { initFanFavorite, handleCategoryChange } from './start'
+import { setCurrentStep } from './step'
+import { handleCategoryChange } from './start'
 
 import '../styles/main.scss'
-
-const custConfirm = (message, resultCallback) => {
-  const alertText = document.querySelector('.alert-text')
-  alertText.innerText = message
-
-  const instance = M.Modal.getInstance(document.querySelector('#alert-modal'))
-  instance.open()
-
-  document.querySelector('#alert-ok-btn').addEventListener('click', (e) => {
-    resultCallback()
-  })
-
-  document.querySelector('#alert-cancel-btn').addEventListener('click', (e) => {
-    e.stopPropagation()
-    instance.close()
-  })
-}
-
-const clickStart = () => {
-  // Reset the Category Select and reinitialize
-  document.querySelector('#list-category-select').value = 0
-  M.FormSelect.init(document.querySelector('#list-category-select'))
-  setCategory(0)
-  setCurrentStep('Start')
-  renderPreviousSession()
-  showStartSection()
-}
 
 jQuery(document).ready(() => {
   M.AutoInit()
@@ -55,118 +26,28 @@ jQuery(document).ready(() => {
 
   // ***************** Start Tab *****************
   document.querySelector('#start-tab').addEventListener('click', (e) => {
-    const step = getCurrentStep()
-    const category = document.querySelector('#list-category-select').value
-    if (step !== 'Start' || category !== '0') {
-      const message = 'This will clear any progress and start the process from the beginning. Want to continue?'
-      custConfirm(message, clickStart)
-      e.stopPropagation()
-
-      // const r = confirm('This will clear any progress and start the process from the beginning. Want to continue?')
-      // if (r === true) {
-      //   // Reset the Category Select and reinitialize
-      //   document.querySelector('#list-category-select').value = 0
-      //   M.FormSelect.init(document.querySelector('#list-category-select'))
-      //   setCategory(0)
-      //   setCurrentStep('Start')
-      //   renderPreviousSession()
-
-      //   showStartSection('tab')
-      // } else {
-      //   e.stopPropagation()
-      // }
-    }
+    handleClickStart()
+    e.stopPropagation()
   })
 
   // ***************** List Tab *****************
   document.querySelector('#list-tab').addEventListener('click', (e) => {
-    const step = getCurrentStep()
-
-    if (step === 'Rank') {
-      const r = confirm('This will terminate the ranking process and allow you to edit the list. Want to continue?')
-      if (r === true) {
-        const data = getRankData()
-        let list
-
-        // filter out potential deleted items
-        if (data.deletedItems) {
-          list = data.masterList.filter((e) => data.deletedItems.indexOf(data.masterList.indexOf(e)) < 0, data.deletedItems)
-        } else {
-          list = data.masterList
-        }
-        loadList(list)
-        showListSection('tab')
-      } else {
-        e.stopPropagation()
-      }
-    } else if (step === 'Result') {
-      const r = confirm('This will clear your results and allow you to edit the list. Want to continue?')
-      if (r === true) {
-        const data = getResultData()
-        loadList(data)
-        showListSection('tab')
-      } else {
-        e.stopPropagation()
-      }
-    }
+    handleClickList()
+    e.stopPropagation()
   })
 
   // ***************** Rank Tab *****************
   document.querySelector('#rank-tab').addEventListener('click', (e) => {
-    const step = getCurrentStep()
-
-    if (step === 'List') {
-      const listData = getListData()
-      if (listData.length > 0) {
-        const r = confirm('Are you ready to start ranking this list?')
-        if (r === true) {
-          const category = getCategory()
-          listData.sort((a, b) => 0.5 - Math.random())
-          initRanking(listData, category)
-          showRankSection('tab')
-        } else {
-          e.stopPropagation()
-        }
-      }
-    } else if (step === 'Rank') {
-      const r = confirm('Do you really want to restart ranking this list?')
-      if (r === true) {
-        const data = getRankData()
-        const listData = data.masterList
-        listData.sort((a, b) => 0.5 - Math.random())
-        const category = getCategory()
-        initRanking(listData, category)
-        showRankSection('tab')
-      } else {
-        e.stopPropagation()
-      }
-    } else if (step === 'Result') {
-      const r = confirm('Do you want to start ranking this list again?')
-      if (r === true) {
-        const listData = getResultData()
-        const category = getCategory()
-        initRanking(listData, category)
-        showRankSection('tab')
-      } else {
-        e.stopPropagation()
-      }
-    }
-  })
-
-  // ***************** Result Tab *****************
-  document.querySelector('#result-tab').addEventListener('click', () => {
-    const step = getCurrentStep()
-    if (step === 'Result') {
-      renderResult()
-    }
+    handleClickRank()
+    e.stopPropagation()
   })
 
   // //////////////////////////////////////////////////////////////////////
   // // NEXT BUTTON
   // //////////////////////////////////////////////////////////////////////
 
-  document.querySelector('.next-rank').addEventListener('click', () => {
-    selectTab('rank')
+  document.querySelector('.next-rank').addEventListener('click', (e) => {
+    handleClickRank()
   })
 
   // //////////////////////////////////////////////////////////////////////
