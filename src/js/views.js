@@ -307,7 +307,6 @@ const showListSection = (source) => {
 }
 
 const showRankSection = (source) => {
-
   if (source === 'List') {
     const listData = getListData()
     const category = getCategory()
