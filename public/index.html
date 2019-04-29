@@ -301,7 +301,7 @@
           <h5 class="current-list-category"></h5>
           <ul class="collapsible col s12 popout">
             <li class="active">
-              <div class="collapsible-header"><i class="material-icons">format_list_bulleted</i>Text Entry</div>
+              <div class="collapsible-header"><i class="material-icons">playlist_add</i>Text Entry</div>
               <div class="collapsible-body">
                 <form>
                   <div class="row">
@@ -320,49 +320,130 @@
             <li class="bgg-section hide">
               <div class="collapsible-header"><i class="material-icons">cloud_download</i>Add from BGG</div>
               <div class="collapsible-body">
-                <a id="bgg-add" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Add</a>
+                <div class="row">
+                  <div class="input-field col s12 m9">
+                    <input id="bgg-username" type="text">
+                    <label for="bgg-username">BGG Username</label>
+                  </div>
+                  <div class="col s12 m3">
+                    <a id="bgg-add" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Add</a>
+                  </div>
+                </div>
+                <div class="bgg-list">
+                  <h5>BGG Collection Filters</h5>
+                  <div class="divider-sm"></div>
+                  <p class="center-align bgg-filter-heading">List Types</p>
+
+                  <div>
+                    <form class="list-types" action="#">
+                      <label>
+                        <input class="for-trade" type="checkbox" />
+                        <span>For Trade</span>
+                      </label>
+                      <label>
+                        <input class="own" type="checkbox" />
+                        <span>Own</span>
+                      </label>
+                      <label>
+                        <input type="checkbox" />
+                        <span>Played</span>
+                      </label>
+                      <label>
+                        <input type="checkbox" />
+                        <span>Rated</span>
+                      </label>
+                      <label>
+                        <input type="checkbox" />
+                        <span>Want in Trade</span>
+                      </label>
+                      <label>
+                        <input type="checkbox" />
+                        <span>Want to Buy</span>
+                      </label>
+                      <label>
+                        <input type="checkbox" />
+                        <span>Want to Play</span>
+                      </label>
+                      <label>
+                        <input type="checkbox" />
+                        <span>Wishlist</span>
+                      </label>
+                    </form>
+                  </div>
+                  <div class="row">
+                    <form class='col s12 m6 center-align' action="#">
+                      <span class="bgg-filter-heading">Min Personal Rating</span>
+                      <p class="range-field">
+                        <input type="range" id="test5" value="0" min="0" max="10" />
+                      </p>
+                    </form>
+                    <form class="col s12 m6">
+                      <div class="switch center-align">
+                        <span class="bgg-filter-heading">Include Expansions</span>
+                        <p>
+                          <label>
+                            No
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            Yes
+                          </label>
+                        </p>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="divider-sm"></div>
+
+                </div>
               </div>
             </li>
           </ul>
-        </div>
+          <ul class="collapsible col s12 popout">
+            <li>
+              <div class="list-header collapsible-header"><i class="material-icons">view_list</i><span
+                  id="list-info">List: 0
+                  items</span></div>
+              <div class="collapsible-body">
+                <!-- <h5 id="list-info" class="center-align">You have 0 items on your list</h5> -->
+                <div class="row list-buttons">
+                  <div class="col s6 center-align">
+                    <a id="clear-list" class="waves-effect waves-light btn"><i
+                        class="material-icons right">clear</i>Clear</a>
+                  </div>
+                  <div class="col s6 center-align">
+                    <a href="#login-modal" id="save-list"
+                      class="waves-effect waves-light btn modal-trigger disabled save-btn"><i
+                        class="material-icons right">save</i>Save</a>
+                  </div>
+                </div>
 
-        <div id="list-items-wrapper" class="z-depth-2">
-          <h5 id="list-info" class="center-align">You have 0 items on your list</h5>
-          <div class="row list-buttons">
-            <div class="col s6 center-align">
-              <a id="clear-list" class="waves-effect waves-light btn"><i class="material-icons right">clear</i>Clear</a>
-            </div>
-            <div class="col s6 center-align">
-              <a href="#login-modal" id="save-list"
-                class="waves-effect waves-light btn modal-trigger disabled save-btn"><i
-                  class="material-icons right">save</i>Save</a>
-            </div>
-          </div>
+                <div class="row">
+                  <div class="col s12 m6 input-field">
+                    <i class="material-icons prefix">filter_list</i>
+                    <input id="search-text" type="text" placeholder="Filter Items" />
+                  </div>
+                  <div class="col s12 m6 input-field">
+                    <i class="material-icons prefix">sort_by_alpha</i>
+                    <select id="sort-by">
+                      <option value="alphabetical">Sort alphabetically</option>
+                      <option value="byProjected">Sort by projected rank</option>
+                      <option value="byPrevRank">Sort by previous rank (if available)</option>
+                    </select>
+                  </div>
+                  <!-- <li class="collection-item">
+                              <img src="images/yuna.jpg" alt="" class="circle">
+                              <span>Example Items</span>
+                              <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+                            </li> -->
+                </div>
+                <div class="row">
+                  <div class="col s12 m8 offset-m2">
+                    <ul id="list-items"></ul>
+                  </div>
+                </div>
+              </div>
+            </li>
 
-          <div class="row">
-            <div class="col s12 m6 input-field">
-              <i class="material-icons prefix">filter_list</i>
-              <input id="search-text" type="text" placeholder="Filter Items" />
-            </div>
-            <div class="col s12 m6 input-field">
-              <i class="material-icons prefix">sort_by_alpha</i>
-              <select id="sort-by">
-                <option value="alphabetical">Sort alphabetically</option>
-                <option value="byProjected">Sort by projected rank</option>
-                <option value="byPrevRank">Sort by previous rank (if available)</option>
-              </select>
-            </div>
-            <!-- <li class="collection-item">
-                  <img src="images/yuna.jpg" alt="" class="circle">
-                  <span>Example Items</span>
-                  <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
-                </li> -->
-          </div>
-          <div class="row">
-            <div class="col s12 m8 offset-m2">
-              <ul id="list-items"></ul>
-            </div>
-          </div>
+          </ul>
         </div>
       </section>
     </div>

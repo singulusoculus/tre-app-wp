@@ -3,6 +3,11 @@
 ///////////  MISC
 /////////////////////////////////////////////////////////////////
 
+.divider-sm {
+  border-bottom: 1px solid rgba(160,160,160,0.2);
+  margin: 8px 0;
+}
+
 .divider {
   margin: 2rem 0;
   border-bottom: 1px solid rgba(160,160,160,0.2);
@@ -39,7 +44,7 @@
 }
 
 .nav-tre {
-  background-color: #527a45 !important;
+  background-color: $color-primary !important;
 
   &__title {
     margin: 0 2rem;
@@ -181,7 +186,7 @@
   width: 10rem;
   height: 10rem;
   // background-color: $color-grey-light-2;
-  background-color: #527a45;
+  background-color: $color-primary;
   position: fixed;
   top:40%;
   right: -20rem;

@@ -91,7 +91,15 @@ const renderListData = () => {
   const count = data.length
 
   const listInfoEl = document.querySelector('#list-info')
-  listInfoEl.textContent = `${count} items on this list`
+  listInfoEl.textContent = `Your List: ${count} items`
+
+  const listHeader = document.querySelector('.list-header')
+  const clicked = document.querySelector('.list-header').classList.contains('clicked')
+  if (count > 0 && !clicked) {
+    listHeader.classList.add('pulse')
+  } else {
+    listHeader.classList.remove('pulse')
+  }
 
   const listEl = document.querySelector('#list-items')
 

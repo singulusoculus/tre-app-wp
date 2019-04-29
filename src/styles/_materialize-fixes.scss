@@ -1,29 +1,67 @@
 textarea.materialize-textarea:focus {
-  border-bottom: 1px solid #527a45 !important;
+  border-bottom: 1px solid $color-primary !important;
 }
 
 textarea.materialize-textarea:focus+label {
-  color: #527a45 !important;
+  color: $color-primary !important;
 }
 
 input[type=text]:not(.browser-default):focus:not([readonly]) {
-  border-bottom: 1px solid #527a45 !important;
+  border-bottom: 1px solid $color-primary !important;
 }
 
 .input-field .prefix.active {
-  color: #527a45 !important;
+  color: $color-primary !important;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly])+label {
+  color: $color-primary;
 }
 
 .dropdown-content li>span {
-  color: #527a45 !important;
+  color: $color-primary !important;
 }
 
 .secondary-content {
-  color: #527a45 !important;
+  color: $color-primary !important;
 }
 
 .btn {
   background-color: #343A40 !important;
+}
+
+// SLIDER FIXES
+input[type=range]+.thumb {
+  background-color: $color-primary;
+}
+
+input[type=range]+.thumb .value {
+  color: $color-primary;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  background-color: $color-primary;
+}
+input[type=range]::-moz-range-thumb {
+  background-color: $color-primary;
+}
+input[type=range]::-ms-thumb {
+  background-color: $color-primary;
+}
+
+// SWITCH
+.switch label input[type=checkbox]:checked+.lever:after {
+  background-color: $color-primary;
+}
+
+.switch label input[type=checkbox]:checked+.lever {
+  background-color: rgba($color-primary, .6);
+}
+
+// CHECKBOX
+[type="checkbox"]:checked+span:not(.lever):before {
+  border-right: 2px solid $color-primary;
+  border-bottom: 2px solid $color-primary;
 }
 
 @media only screen and (max-width: 600px) {
