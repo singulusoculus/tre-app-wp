@@ -8,13 +8,17 @@ const getBGGData = () => {
     xhttp = new XMLHttpRequest()
   }
 
-  xhttp.open('GET', './bggxml.xml', false)
+  // xhttp.open('GET', './bggxml.xml', false)
+
+  xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
   xhttp.send()
 
   const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
   const parser = new DOMParser()
   const xml = parser.parseFromString(xmlDoc, 'text/xml')
   const data = xmlToJson(xml)
+
+  console.log(data)
 
   const items = data.items.item
   let bggList = []
@@ -29,6 +33,22 @@ const getBGGData = () => {
 
     bggList.push(obj)
   })
+
+  let bggItems = []
+  items.forEach((item) => {
+    const bggId = item['@attributes'].objectid
+
+    bggItems.push(bggId)
+  })
+
+  let reqString = 'https://www.boardgamegeek.com/xmlapi2/thing?id='
+
+  bggItems.forEach((id) => {
+    reqString += `${id},`
+  })
+
+  console.log(reqString)
+
 
   return bggList
 }
