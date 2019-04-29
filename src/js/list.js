@@ -94,7 +94,7 @@ const removeListItem = (id) => {
   }
 }
 
-const clearBtnClick = () => {
+const handleClickClear = () => {
   const source = getCurrentStep()
 
   if (source === 'List' && listData.length > 0) {
@@ -168,5 +168,5 @@ export {
   loadList,
   createList,
   createListObject,
-  clearBtnClick
+  handleClickClear
 }

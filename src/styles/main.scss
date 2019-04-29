@@ -2,6 +2,7 @@
 @import "/base";
 @import "/layout";
 @import "/mixins";
+@import "/animations";
 @import "/materialize-fixes";
 
 .list-types {
@@ -27,40 +28,7 @@
 }
 
 
-.pulse {
-  cursor: pointer;
-  box-shadow: 0 0 0 0 rgba($color-primary, 0.4);
-  animation: pulse 2s infinite;
-}
-.pulse:hover {
-  animation: none;
-}
 
-@-webkit-keyframes pulse {
-  0% {
-    -webkit-box-shadow: 0 0 0 0 rgba($color-primary, 0.4);
-  }
-  70% {
-      -webkit-box-shadow: 0 0 0 20px rgba($color-primary, 0);
-  }
-  100% {
-      -webkit-box-shadow: 0 0 0 0 rgba($color-primary, 0);
-  }
-}
-@keyframes pulse {
-  0% {
-    -moz-box-shadow: 0 0 0 0 rgba($color-primary, 0.4);
-    box-shadow: 0 0 0 0 rgba($color-primary, 0.4);
-  }
-  70% {
-      -moz-box-shadow: 0 0 0 20px rgba($color-primary, 0);
-      box-shadow: 0 0 0 20px rgba($color-primary, 0);
-  }
-  100% {
-      -moz-box-shadow: 0 0 0 0 rgba($color-primary, 0);
-      box-shadow: 0 0 0 0 rgba($color-primary, 0);
-  }
-}
 
 
 

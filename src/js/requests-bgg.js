@@ -51,7 +51,6 @@ const getBGGData = () => {
 
   console.log(reqString)
 
-
   return bggList
 }
 

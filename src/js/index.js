@@ -1,5 +1,5 @@
 import { renderPreviousSession, showListSection, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank } from './views'
-import { addListItems, clearBtnClick, clearListData, createList } from './list'
+import { addListItems, handleClickClear, clearListData, createList } from './list'
 import { setFilters } from './filters'
 import { handlePick, handleUndo, deleteItem } from './rank'
 import { getBGGData } from './requests-bgg'
@@ -115,7 +115,7 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#clear-list').addEventListener('click', () => {
-    clearBtnClick()
+    handleClickClear()
   })
 
   document.querySelector('.list-header').addEventListener('click', () => {
