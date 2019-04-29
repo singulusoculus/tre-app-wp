@@ -8,9 +8,9 @@ const getBGGData = () => {
     xhttp = new XMLHttpRequest()
   }
 
-  // xhttp.open('GET', './bggxml.xml', false)
+  xhttp.open('GET', './bggxml.xml', false)
 
-  xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
+  // xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
   xhttp.send()
 
   const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
@@ -34,6 +34,8 @@ const getBGGData = () => {
     bggList.push(obj)
   })
 
+  // build string to send request for all collection items
+  // should probably make this do a certain number at a time since I don't know the limits
   let bggItems = []
   items.forEach((item) => {
     const bggId = item['@attributes'].objectid
