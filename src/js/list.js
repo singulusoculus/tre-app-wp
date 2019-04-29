@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave } from './views'
+import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -94,20 +94,26 @@ const removeListItem = (id) => {
   }
 }
 
+const clearBtnClick = () => {
+  const source = getCurrentStep()
+
+  if (source === 'List' && listData.length > 0) {
+    const message = 'Are you sure you want to clear your list?'
+    custConfirm(message, clearListData, source)
+  }
+}
+
 const clearListData = () => {
   const step = getCurrentStep()
 
   if (step === 'List' && listData.length > 0) {
-    const r = confirm('Are you sure you want to clear your list?')
-    if (r === true) {
-      listData = []
-      disableStepTab('rank')
-      disableListSave()
+    listData = []
+    disableStepTab('rank')
+    disableListSave()
 
-      saveData(listData)
+    saveData(listData)
 
-      renderListData()
-    }
+    renderListData()
   } else {
     listData = []
   }
@@ -161,5 +167,6 @@ export {
   clearListData,
   loadList,
   createList,
-  createListObject
+  createListObject,
+  clearBtnClick
 }

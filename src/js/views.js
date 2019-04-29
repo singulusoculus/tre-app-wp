@@ -93,6 +93,7 @@ const renderListData = () => {
   const listInfoEl = document.querySelector('#list-info')
   listInfoEl.textContent = `Your List: ${count} items`
 
+  // Pulse the list section if items are added and it hasn't been clicked yet
   const listHeader = document.querySelector('.list-header')
   const clicked = document.querySelector('.list-header').classList.contains('clicked')
   if (count > 0 && !clicked) {
@@ -482,5 +483,6 @@ export {
   setupSaveLogin,
   handleClickStart,
   handleClickList,
-  handleClickRank
+  handleClickRank,
+  custConfirm
 }
