@@ -97,9 +97,9 @@ const renderListData = () => {
   const listHeader = document.querySelector('.list-header')
   const clicked = document.querySelector('.list-header').classList.contains('clicked')
   if (count > 0 && !clicked) {
-    listHeader.classList.add('pulse')
+    listHeader.classList.add('pulse-bc')
   } else {
-    listHeader.classList.remove('pulse')
+    listHeader.classList.remove('pulse-bd')
   }
 
   const listEl = document.querySelector('#list-items')

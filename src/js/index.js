@@ -120,7 +120,7 @@ jQuery(document).ready(() => {
 
   document.querySelector('.list-header').addEventListener('click', () => {
     const listHeader = document.querySelector('.list-header')
-    listHeader.classList.remove('pulse')
+    listHeader.classList.remove('pulse-bc')
     listHeader.classList.add('clicked')
   })
 
