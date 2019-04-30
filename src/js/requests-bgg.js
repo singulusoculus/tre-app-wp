@@ -8,7 +8,7 @@ const getBGGData = () => {
     xhttp = new XMLHttpRequest()
   }
 
-  xhttp.open('GET', './bggxml.xml', false)
+  xhttp.open('GET', './collection-stats.xml', false)
 
   // xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
   xhttp.send()
@@ -28,6 +28,15 @@ const getBGGData = () => {
     const image = item.thumbnail['#text']
     const yearPublished = item.yearpublished['#text']
     const bggId = item['@attributes'].objectid
+
+    // list types
+    // item.status['@attributes'].own, fortrade, prevowned, want, wanttobuy, wanttoplay, wishlist
+    // if (item.numplays['#text'] > 0) { played: 1 } else { played: 0 }
+    // rated - if (item.stats["rating"]["@attributes"].value === 'N/A') { rated: 0 } else {rated: 1}
+
+    // rating - if (item.stats["rating"]["@attributes"].value === 'N/A') { rating: 'none' } else {rating: item.stats["rating"]["@attributes"].value}
+    // rating: rating: item.stats["rating"]["@attributes"].value
+    // if rating is 'N/A' then the game is unrated
 
     const obj = createListObject(name, 'bgg', image, undefined, 0, yearPublished, bggId)
 
