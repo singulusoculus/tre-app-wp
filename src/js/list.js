@@ -1,8 +1,9 @@
 import uuidv4 from 'uuid'
-import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm } from './views'
+import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderBGGCollection } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
+import { getBGGCollectionData } from './bgg-collection';
 
 let listData = []
 
@@ -23,22 +24,6 @@ const initPrevList = (category, data) => {
   showListSection()
 }
 
-const createListObject = (name, source, image = '', id, rank = 0, yearPublished = '', bggId = '') => {
-  const obj = {
-    id: id || uuidv4(),
-    name,
-    image,
-    source,
-    rank,
-    yearPublished,
-    bggId,
-    showCount: 0,
-    voteCount: 0,
-    voteShowPct: 0
-  }
-  return obj
-}
-
 // Loads a list from rank or result back into List
 const loadList = (list) => {
   listData = list
@@ -49,11 +34,27 @@ const loadList = (list) => {
   }
 }
 
+const createListObject = (data) => {
+  const obj = {
+    id: data.id || uuidv4(),
+    name: data.name,
+    image: data.image || '',
+    source: data.source,
+    rank: data.rank || 0,
+    yearPublished: data.yearPublished || '',
+    bggId: data.bggId || '',
+    showCount: 0,
+    voteCount: 0,
+    voteShowPct: 0
+  }
+  return obj
+}
+
 const createList = (itemArray, source) => {
   let list = []
-  itemArray.forEach((item) => {
-    const obj = createListObject(item, source)
-
+  itemArray.forEach((name) => {
+    const data = { name, source }
+    const obj = createListObject(data)
     list.push(obj)
   })
   return list
@@ -92,6 +93,11 @@ const removeListItem = (id) => {
     disableStepTab('rank')
     disableListSave()
   }
+
+  const bggData = getBGGCollectionData()
+  const bggItem = bggData.findIndex((item) => item.id === id)
+  bggData[bggItem].addedToList = false
+  renderBGGCollection()
 }
 
 const handleClickClear = () => {
@@ -114,6 +120,13 @@ const clearListData = () => {
     saveData(listData)
 
     renderListData()
+
+    const bggData = getBGGCollectionData()
+    bggData.forEach((item) => {
+      item.addedToList = false
+    })
+
+    renderBGGCollection()
   } else {
     listData = []
   }

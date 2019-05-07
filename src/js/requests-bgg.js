@@ -1,5 +1,4 @@
-
-import { createListObject } from './list'
+import uuidv4 from 'uuid'
 
 const getBGGData = () => {
   let xhttp = ''
@@ -18,49 +17,54 @@ const getBGGData = () => {
   const xml = parser.parseFromString(xmlDoc, 'text/xml')
   const data = xmlToJson(xml)
 
-  console.log(data)
-
   const items = data.items.item
+
   let bggList = []
 
   items.forEach((item) => {
-    const name = item.name['#text']
-    const image = item.thumbnail['#text']
-    const yearPublished = item.yearpublished['#text']
-    const bggId = item['@attributes'].objectid
-
-    // list types
-    // item.status['@attributes'].own, fortrade, prevowned, want, wanttobuy, wanttoplay, wishlist
-    // if (item.numplays['#text'] > 0) { played: 1 } else { played: 0 }
-    // rated - if (item.stats["rating"]["@attributes"].value === 'N/A') { rated: 0 } else {rated: 1}
-
-    // rating - if (item.stats["rating"]["@attributes"].value === 'N/A') { rating: 'none' } else {rating: item.stats["rating"]["@attributes"].value}
-    // rating: rating: item.stats["rating"]["@attributes"].value
-    // if rating is 'N/A' then the game is unrated
-
-    const obj = createListObject(name, 'bgg', image, undefined, 0, yearPublished, bggId)
+    const obj = {
+      id: uuidv4(),
+      name: item.name['#text'],
+      source: 'bgg',
+      image: item.thumbnail['#text'],
+      yearPublished: parseInt(item.yearpublished['#text']),
+      bggId: item['@attributes'].objectid,
+      own: item.status['@attributes'].own === '1' ? true : false,
+      fortrade: item.status['@attributes'].fortrade === '1' ? true : false,
+      prevowned: item.status['@attributes'].prevowned === '1' ? true : false,
+      want: item.status['@attributes'].want === '1' ? true : false,
+      wanttobuy: item.status['@attributes'].wanttobuy === '1' ? true : false,
+      wanttoplay: item.status['@attributes'].wanttoplay === '1' ? true : false,
+      wishlist: item.status['@attributes'].wishlist === '1' ? true : false,
+      played: item.numplays['#text'] > 0 ? true : false,
+      rated: item.stats['rating']['@attributes'].value === 'N/A' ? false : true,
+      rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
+      addedToList: false
+    }
 
     bggList.push(obj)
   })
-
-  // build string to send request for all collection items
-  // should probably make this do a certain number at a time since I don't know the limits
-  let bggItems = []
-  items.forEach((item) => {
-    const bggId = item['@attributes'].objectid
-
-    bggItems.push(bggId)
-  })
-
-  let reqString = 'https://www.boardgamegeek.com/xmlapi2/thing?id='
-
-  bggItems.forEach((id) => {
-    reqString += `${id},`
-  })
-
-  console.log(reqString)
-
+  console.log(bggList)
   return bggList
+
+  // // build string to send request for all collection items
+  // // should probably make this do a certain number at a time since I don't know the limits
+  // let bggItems = []
+  // items.forEach((item) => {
+  //   const bggId = item['@attributes'].objectid
+
+  //   bggItems.push(bggId)
+  // })
+
+  // let reqString = 'https://www.boardgamegeek.com/xmlapi2/thing?id='
+
+  // bggItems.forEach((id) => {
+  //   reqString += `${id},`
+  // })
+
+  // console.log(reqString)
+
+  // return bggList
 }
 
 // Changes XML to JSON

@@ -1,10 +1,11 @@
-import { renderPreviousSession, showListSection, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank } from './views'
+import { renderPreviousSession, showListSection, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank, renderBGGCollection } from './views'
 import { addListItems, handleClickClear, clearListData, createList } from './list'
-import { setFilters } from './filters'
+import { setFilters, setBGGFilters, getBGGFilters } from './filters'
 import { handlePick, handleUndo, deleteItem } from './rank'
 import { getBGGData } from './requests-bgg'
 import { setCurrentStep } from './step'
 import { handleCategoryChange } from './start'
+import { handleBGGCollection, getBGGCollectionData, handleAddSelectedBGG } from './bgg-collection'
 
 import '../styles/main.scss'
 
@@ -86,20 +87,43 @@ jQuery(document).ready(() => {
 
     document.querySelector('#textarea-input').value = ''
 
+    // create array of objects
     let list = createList(textList, 'text')
 
+    // add objects into listData
     addListItems(list)
     document.querySelector('#textarea-input').style.height = '45px'
     document.querySelector('.input-field>label:not(.label-icon)').classList.remove('active')
     document.querySelector('#textarea-add-btn').classList.add('disabled')
   })
 
-  document.querySelector('#bgg-add').addEventListener('click', () => {
-    const bggList = getBGGData()
-    addListItems(bggList)
+  document.querySelector('#bgg-submit').addEventListener('click', () => {
+    handleBGGCollection()
   })
 
-  // Filters
+  // BGG Filters
+  document.querySelectorAll('.bgg-cb').forEach((el) => {
+    el.addEventListener('change', (e) => {
+      const element = e.target.className
+      setBGGFilters({
+        [element]: e.target.checked
+      })
+      renderBGGCollection()
+    })
+  })
+
+  document.querySelector('#personal-rating').addEventListener('change', (e) => {
+    setBGGFilters({
+      rating: parseInt(e.target.value)
+    })
+    renderBGGCollection()
+  })
+
+  document.querySelector('#bgg-add-selected').addEventListener('click', (e) => {
+    handleAddSelectedBGG()
+  })
+
+  // List Filters
   document.querySelector('#search-text').addEventListener('input', (e) => {
     setFilters({
       searchText: e.target.value

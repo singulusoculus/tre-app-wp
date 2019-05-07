@@ -1,9 +1,10 @@
 import { initPrevList, getListData, sortListData, removeListItem, loadList } from './list'
-import { getFilters } from './filters'
+import { getFilters, getBGGFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
+import { getBGGCollectionData, addBGGItemToList, filterBGGCollection } from './bgg-collection';
 
 const renderPreviousSession = () => {
   const prevData = JSON.parse(localStorage.getItem('saveData'))
@@ -99,7 +100,7 @@ const renderListData = () => {
   if (count > 0 && !clicked) {
     listHeader.classList.add('pulse-bc')
   } else {
-    listHeader.classList.remove('pulse-bd')
+    listHeader.classList.remove('pulse-bc')
   }
 
   const listEl = document.querySelector('#list-items')
@@ -134,6 +135,47 @@ const generateListDataDOM = (item) => {
   iconEl.innerHTML = '<i class="material-icons">delete</i>'
   iconEl.addEventListener('click', (e) => {
     removeListItem(item.id)
+    renderListData()
+  })
+
+  itemEl.appendChild(itemNameEl)
+  itemEl.appendChild(iconEl)
+
+  return itemEl
+}
+
+const renderBGGCollection = () => {
+  const listInfoEl = document.querySelector('.bgg-collection-info')
+  const listEl = document.querySelector('.bgg-collection')
+
+  const filteredList = filterBGGCollection()
+
+  const count = filteredList.length
+  listInfoEl.textContent = `Selected Items: ${count}`
+
+  listEl.innerHTML = ''
+
+  filteredList.forEach((item) => {
+    const itemEl = generateBGGCollectionDOM(item)
+    listEl.appendChild(itemEl)
+  })
+  listEl.classList.add('collection')
+}
+
+const generateBGGCollectionDOM = (item) => {
+  const itemEl = document.createElement('li')
+  itemEl.classList.add('collection-item')
+
+  const itemNameEl = document.createElement('span')
+  itemNameEl.textContent = item.name
+
+  const iconEl = document.createElement('a')
+  iconEl.classList.add('secondary-content')
+  iconEl.href = '#!'
+  iconEl.innerHTML = '<i class="material-icons">add</i>'
+  iconEl.addEventListener('click', (e) => {
+    addBGGItemToList(item.id)
+    renderBGGCollection()
     renderListData()
   })
 
@@ -484,5 +526,6 @@ export {
   handleClickStart,
   handleClickList,
   handleClickRank,
-  custConfirm
+  custConfirm,
+  renderBGGCollection
 }
