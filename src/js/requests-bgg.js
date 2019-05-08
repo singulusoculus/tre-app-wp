@@ -44,7 +44,7 @@ const getBGGData = () => {
 
     bggList.push(obj)
   })
-  console.log(bggList)
+
   return bggList
 
   // // build string to send request for all collection items

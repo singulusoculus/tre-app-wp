@@ -7,10 +7,43 @@ let bggCollectionData = []
 
 const getBGGCollectionData = () => bggCollectionData
 
+const setBGGCollectionData = (data) => {
+  bggCollectionData = data
+}
+
+const saveBGGCollection = () => {
+  const bggUsername = document.querySelector('#bgg-username').value
+
+  const obj = {
+    bggUsername,
+    bggCollectionData
+  }
+  localStorage.setItem('bggCollection', JSON.stringify(obj))
+}
+
 const handleBGGCollection = () => {
   bggCollectionData = getBGGData()
 
+  showBGGCollectionSection()
+
   renderBGGCollection()
+}
+
+const showBGGCollectionSection = () => {
+  document.querySelector('.bgg-list').classList.remove('hide')
+  document.querySelector('.bgg-username-submit').classList.add('hide')
+  const bggUsernameSubmittedEl = document.querySelector('.bgg-username-submitted')
+  const headingEl = document.querySelector('.bgg-username-header')
+  const bggUsername = document.querySelector('#bgg-username').value
+  headingEl.textContent = `BGG Collection: ${bggUsername}`
+
+  bggUsernameSubmittedEl.classList.remove('hide')
+}
+
+const handleCollectionChangeClick = () => {
+  document.querySelector('.bgg-list').classList.add('hide')
+  document.querySelector('.bgg-username-submit').classList.remove('hide')
+  document.querySelector('.bgg-username-submitted').classList.add('hide')
 }
 
 const addBGGItemToList = (id) => {
@@ -19,10 +52,10 @@ const addBGGItemToList = (id) => {
   item.addedToList = true
 
   addListItems([item])
+  saveBGGCollection()
 }
 
 const filterBGGCollection = () => {
-  const data = getBGGCollectionData()
   const filters = getBGGFilters()
 
   let filteredList = []
@@ -32,7 +65,7 @@ const filterBGGCollection = () => {
 
   // filter the collection data for the filters marked as true
   listTypeFilters.forEach((filter) => {
-    const list = data.filter((item) => item[filter])
+    const list = bggCollectionData.filter((item) => item[filter])
     list.forEach((item) => {
       filteredList.push(item)
     })
@@ -64,4 +97,4 @@ const handleAddSelectedBGG = () => {
   renderBGGCollection()
 }
 
-export { handleBGGCollection, getBGGCollectionData, addBGGItemToList, filterBGGCollection, handleAddSelectedBGG }
+export { handleBGGCollection, getBGGCollectionData, addBGGItemToList, filterBGGCollection, handleAddSelectedBGG, handleCollectionChangeClick, saveBGGCollection, setBGGCollectionData, showBGGCollectionSection }

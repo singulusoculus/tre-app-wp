@@ -124,6 +124,51 @@
   margin-bottom: 0;
 }
 
+.bgg-username-header {
+  margin: 0;
+}
+
+.collection-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bgg-personal-rating {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  &__form {
+    width: 75%
+  }
+}
+
+.list-types {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.bgg-filter-heading {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: .5rem;
+}
+
+[type="checkbox"]+span:not(.lever) {
+  padding-left: 22px;
+  margin-right: 5px;
+}
+
+.list-header {
+  background-color: $color-secondary;
+  color: #fff;
+  border: 1px solid $color-secondary;
+}
+
 //////////////////////////////////////////////////////////////////
 ///////////  RANK SECTION
 //////////////////////////////////////////////////////////////////

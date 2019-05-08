@@ -4,33 +4,3 @@
 @import "/mixins";
 @import "/animations";
 @import "/materialize-fixes";
-
-.list-types {
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-
-.bgg-filter-heading {
-  font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: .5rem;
-}
-
-[type="checkbox"]+span:not(.lever) {
-  padding-left: 22px;
-  margin-right: 5px;
-}
-
-.list-header {
-  background-color: $color-secondary;
-  color: #fff;
-  border: 1px solid $color-secondary;
-}
-
-
-
-
-
-

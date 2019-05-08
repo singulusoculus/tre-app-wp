@@ -3,7 +3,8 @@ import { renderListData, showListSection, enableStepTab, disableStepTab, enableN
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { getBGGCollectionData } from './bgg-collection';
+import { getBGGCollectionData, setBGGCollectionData, showBGGCollectionSection } from './bgg-collection'
+import { updateBGGFilters } from './filters'
 
 let listData = []
 
@@ -20,6 +21,16 @@ const initPrevList = (category, data) => {
 
   saveData(listData)
   renderListData()
+
+  // Load previous BGG data if exists
+  const bggData = JSON.parse(localStorage.getItem('bggCollection'))
+  if (bggData.bggCollectionData.length > 0) {
+    setBGGCollectionData(bggData.bggCollectionData)
+    document.querySelector('#bgg-username').value = bggData.bggUsername
+    showBGGCollectionSection()
+    updateBGGFilters()
+    renderBGGCollection()
+  }
 
   showListSection()
 }
@@ -85,6 +96,14 @@ const filterDuplicates = () => {
 const removeListItem = (id) => {
   const itemID = listData.findIndex((item) => item.id === id)
 
+  // Show removed item back in Collection data
+  if (listData[itemID].source === 'bgg') {
+    const bggData = getBGGCollectionData()
+    const bggItem = bggData.findIndex((item) => item.id === id)
+    bggData[bggItem].addedToList = false
+    renderBGGCollection()
+  }
+
   if (itemID > -1) {
     listData.splice(itemID, 1)
     saveData(listData)
@@ -93,11 +112,6 @@ const removeListItem = (id) => {
     disableStepTab('rank')
     disableListSave()
   }
-
-  const bggData = getBGGCollectionData()
-  const bggItem = bggData.findIndex((item) => item.id === id)
-  bggData[bggItem].addedToList = false
-  renderBGGCollection()
 }
 
 const handleClickClear = () => {

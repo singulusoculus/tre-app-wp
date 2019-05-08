@@ -320,34 +320,41 @@
             <li class="bgg-section hide">
               <div class="collapsible-header"><i class="material-icons">cloud_download</i>Add from BGG</div>
               <div class="collapsible-body">
-                <div class="row">
-                  <div class="input-field col s12">
-                    <input id="bgg-username" type="text">
-                    <label for="bgg-username">BGG Username</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <form class="col s6">
-                    <div class="switch center-align">
-                      <span class="bgg-filter-heading">Include Expansions?</span>
-                      <p>
-                        <label>
-                          No
-                          <input type="checkbox">
-                          <span class="lever"></span>
-                          Yes
-                        </label>
-                      </p>
+                <div class="bgg-username-submit">
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="bgg-username" type="text">
+                      <label for="bgg-username">BGG Username</label>
                     </div>
-                  </form>
-                  <div class="col s6">
-                    <a id="bgg-submit" class="waves-effect waves-light btn"><i
-                        class="material-icons right">arrow_forward</i>Submit</a>
+                  </div>
+                  <div class="row">
+                    <form class="col s6">
+                      <div class="switch center-align">
+                        <span class="bgg-filter-heading">Include Expansions?</span>
+                        <p>
+                          <label>
+                            No
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            Yes
+                          </label>
+                        </p>
+                      </div>
+                    </form>
+                    <div class="col s6">
+                      <a id="bgg-submit" class="waves-effect waves-light btn"><i
+                          class="material-icons right">arrow_forward</i>Submit</a>
+                    </div>
                   </div>
                 </div>
-                <div class="bgg-list">
-                  <h5>BGG Collection Filters</h5>
+                <div class="bgg-username-submitted hide">
+                  <h4 class="bgg-username-header center-align"></h4>
+                  <p class="center-align"><a href="#!" class="change-bgg-username">(Change)</a></p>
+                </div>
+                <div class="bgg-list hide">
                   <div class="divider-sm"></div>
+                  <h5>Filters</h5>
+
                   <p class="center-align bgg-filter-heading">List Types</p>
 
                   <div>
@@ -390,24 +397,21 @@
                       </label>
                     </form>
                   </div>
-                  <div class="row">
-                    <form class='col s12 m6 center-align' action="#">
+                  <div class="bgg-personal-rating">
+                    <form class="bgg-personal-rating__form" action="#">
                       <span class="bgg-filter-heading">Min Personal Rating</span>
                       <p class="range-field">
                         <input type="range" id="personal-rating" value="0" min="0" max="10" />
                       </p>
                     </form>
-
                   </div>
                   <div class="divider-sm"></div>
-                  <div class="row">
-                    <div class="bgg-collection-info col s6"></div>
-                    <div class="col s6">
-                      <a id="bgg-add-selected" class="waves-effect waves-light btn"><i
-                          class="material-icons right">add</i>Add Selected</a>
-                    </div>
+                  <div class="collection-header-wrapper">
+                    <h5 class="collection-header">Collection:</h5>
+                    <div class="bgg-collection-info"></div>
+                    <a id="bgg-add-selected" class="waves-effect waves-light btn"><i
+                        class="material-icons right">add</i>Add Filtered</a>
                   </div>
-
                   <div class="bgg-collection">
                   </div>
                 </div>

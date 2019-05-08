@@ -72,4 +72,26 @@ const setBGGFilters = (updates) => {
   }
 }
 
-export { getFilters, setFilters, getBGGFilters, setBGGFilters }
+const updateBGGFilters = () => {
+  // Get checked checkboxes
+  const checkboxes = document.querySelectorAll('.bgg-cb')
+  let checkboxesChecked = []
+  checkboxes.forEach((cb) => {
+    if (cb.children[0].checked) {
+      checkboxesChecked.push(cb.children[0].className)
+    }
+  })
+  // Update filters based on this
+  checkboxesChecked.forEach((f) => {
+    setBGGFilters({ [f]: true })
+  })
+
+  // Get rating slider value
+  const pRating = document.querySelector('#personal-rating').value
+  // Update rating filter
+  setBGGFilters({
+    rating: parseInt(pRating)
+  })
+}
+
+export { getFilters, setFilters, getBGGFilters, setBGGFilters, updateBGGFilters }

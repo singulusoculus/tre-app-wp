@@ -1,10 +1,10 @@
 import { initPrevList, getListData, sortListData, removeListItem, loadList } from './list'
-import { getFilters, getBGGFilters } from './filters'
+import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
-import { getBGGCollectionData, addBGGItemToList, filterBGGCollection } from './bgg-collection';
+import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 
 const renderPreviousSession = () => {
   const prevData = JSON.parse(localStorage.getItem('saveData'))
@@ -147,11 +147,16 @@ const generateListDataDOM = (item) => {
 const renderBGGCollection = () => {
   const listInfoEl = document.querySelector('.bgg-collection-info')
   const listEl = document.querySelector('.bgg-collection')
+  const bggData = getBGGCollectionData()
+  const totalCount = bggData.length
+
+  const addedList = bggData.filter((item) => item.addedToList !== false)
+  const addedCount = addedList.length
 
   const filteredList = filterBGGCollection()
 
-  const count = filteredList.length
-  listInfoEl.textContent = `Selected Items: ${count}`
+  const filteredCount = filteredList.length
+  listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount}`
 
   listEl.innerHTML = ''
 
@@ -160,6 +165,7 @@ const renderBGGCollection = () => {
     listEl.appendChild(itemEl)
   })
   listEl.classList.add('collection')
+  saveBGGCollection()
 }
 
 const generateBGGCollectionDOM = (item) => {

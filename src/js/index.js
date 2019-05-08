@@ -1,11 +1,10 @@
 import { renderPreviousSession, showListSection, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank, renderBGGCollection } from './views'
 import { addListItems, handleClickClear, clearListData, createList } from './list'
-import { setFilters, setBGGFilters, getBGGFilters } from './filters'
+import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, deleteItem } from './rank'
-import { getBGGData } from './requests-bgg'
 import { setCurrentStep } from './step'
 import { handleCategoryChange } from './start'
-import { handleBGGCollection, getBGGCollectionData, handleAddSelectedBGG } from './bgg-collection'
+import { handleBGGCollection, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 
 import '../styles/main.scss'
 
@@ -99,6 +98,10 @@ jQuery(document).ready(() => {
 
   document.querySelector('#bgg-submit').addEventListener('click', () => {
     handleBGGCollection()
+  })
+
+  document.querySelector('.change-bgg-username').addEventListener('click', () => {
+    handleCollectionChangeClick()
   })
 
   // BGG Filters
