@@ -23,21 +23,42 @@ const saveData = (data) => {
   localStorage.setItem('saveData', JSON.stringify(obj))
 }
 
-// Determine which transition event a browser supports
-const whichTransitionEvent = () => {
-  const el = document.createElement('fakeelement')
-  const transitions = {
-    'transition': 'transitionend',
-    'OTransition': 'oTransitionEnd',
-    'MozTransition': 'transitionend',
-    'WebkitTransition': 'webkitTransitionEnd'
+// Changes XML to JSON
+const xmlToJson = (xml) => {
+  // Create the return object
+  let obj = {}
+
+  if (xml.nodeType === 1) { // element
+    // do attributes
+    if (xml.attributes.length > 0) {
+      obj['@attributes'] = {}
+      for (let j = 0; j < xml.attributes.length; j++) {
+        let attribute = xml.attributes.item(j)
+        obj['@attributes'][attribute.nodeName] = attribute.nodeValue
+      }
+    }
+  } else if (xml.nodeType === 3) { // text
+    obj = xml.nodeValue
   }
 
-  for (let t in transitions) {
-    if (el.style[t] !== undefined) {
-      return transitions[t]
+  // do children
+  if (xml.hasChildNodes()) {
+    for (let i = 0; i < xml.childNodes.length; i++) {
+      let item = xml.childNodes.item(i)
+      let nodeName = item.nodeName
+      if (typeof (obj[nodeName]) === 'undefined') {
+        obj[nodeName] = xmlToJson(item)
+      } else {
+        if (typeof (obj[nodeName].push) === 'undefined') {
+          let old = obj[nodeName]
+          obj[nodeName] = []
+          obj[nodeName].push(old)
+        }
+        obj[nodeName].push(xmlToJson(item))
+      }
     }
   }
+  return obj
 }
 
-export { disableArrowKeyScroll, saveData }
+export { disableArrowKeyScroll, saveData, xmlToJson }

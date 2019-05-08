@@ -3,8 +3,7 @@ import { renderListData, showListSection, enableStepTab, disableStepTab, enableN
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { getBGGCollectionData, setBGGCollectionData, showBGGCollectionSection } from './bgg-collection'
-import { updateBGGFilters } from './filters'
+import { getBGGCollectionData, initPrevBGGCollection } from './bgg-collection'
 
 let listData = []
 
@@ -22,15 +21,7 @@ const initPrevList = (category, data) => {
   saveData(listData)
   renderListData()
 
-  // Load previous BGG data if exists
-  const bggData = JSON.parse(localStorage.getItem('bggCollection'))
-  if (bggData.bggCollectionData.length > 0) {
-    setBGGCollectionData(bggData.bggCollectionData)
-    document.querySelector('#bgg-username').value = bggData.bggUsername
-    showBGGCollectionSection()
-    updateBGGFilters()
-    renderBGGCollection()
-  }
+  initPrevBGGCollection()
 
   showListSection()
 }

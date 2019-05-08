@@ -1,7 +1,8 @@
-import { getBGGData } from './requests-bgg'
 import { renderBGGCollection } from './views'
 import { addListItems, sortListData } from './list'
-import { getBGGFilters } from './filters'
+import { getBGGFilters, updateBGGFilters } from './filters'
+import { xmlToJson } from './functions'
+import uuidv4 from 'uuid'
 
 let bggCollectionData = []
 
@@ -21,22 +22,78 @@ const saveBGGCollection = () => {
   localStorage.setItem('bggCollection', JSON.stringify(obj))
 }
 
-const handleBGGCollection = () => {
+const initPrevBGGCollection = () => {
+  // Load previous BGG data if exists
+  const bggData = JSON.parse(localStorage.getItem('bggCollection'))
+  if (bggData.bggCollectionData.length > 0) {
+    setBGGCollectionData(bggData.bggCollectionData)
+    document.querySelector('#bgg-username').value = bggData.bggUsername
+    showBGGCollectionSection()
+    updateBGGFilters()
+    renderBGGCollection()
+  }
+}
+
+const handleBGGCollectionRequest = () => {
   bggCollectionData = getBGGData()
-
   showBGGCollectionSection()
-
   renderBGGCollection()
+}
+
+const getBGGData = () => {
+  let xhttp = ''
+
+  if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest()
+  }
+
+  xhttp.open('GET', './collection-stats.xml', false)
+
+  // xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
+  xhttp.send()
+
+  const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
+  const parser = new DOMParser()
+  const xml = parser.parseFromString(xmlDoc, 'text/xml')
+  const data = xmlToJson(xml)
+
+  const items = data.items.item
+
+  let bggList = []
+
+  items.forEach((item) => {
+    const obj = {
+      id: uuidv4(),
+      name: item.name['#text'],
+      source: 'bgg',
+      image: item.thumbnail['#text'],
+      yearPublished: parseInt(item.yearpublished['#text']),
+      bggId: item['@attributes'].objectid,
+      own: item.status['@attributes'].own === '1' ? true : false,
+      fortrade: item.status['@attributes'].fortrade === '1' ? true : false,
+      prevowned: item.status['@attributes'].prevowned === '1' ? true : false,
+      want: item.status['@attributes'].want === '1' ? true : false,
+      wanttobuy: item.status['@attributes'].wanttobuy === '1' ? true : false,
+      wanttoplay: item.status['@attributes'].wanttoplay === '1' ? true : false,
+      wishlist: item.status['@attributes'].wishlist === '1' ? true : false,
+      played: item.numplays['#text'] > 0 ? true : false,
+      rated: item.stats['rating']['@attributes'].value === 'N/A' ? false : true,
+      rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
+      addedToList: false
+    }
+
+    bggList.push(obj)
+  })
+
+  return bggList
 }
 
 const showBGGCollectionSection = () => {
   document.querySelector('.bgg-list').classList.remove('hide')
   document.querySelector('.bgg-username-submit').classList.add('hide')
-  const bggUsernameSubmittedEl = document.querySelector('.bgg-username-submitted')
-  const headingEl = document.querySelector('.bgg-username-header')
   const bggUsername = document.querySelector('#bgg-username').value
-  headingEl.textContent = `BGG Collection: ${bggUsername}`
-
+  document.querySelector('.bgg-username-header').textContent = `BGG Collection: ${bggUsername}`
+  const bggUsernameSubmittedEl = document.querySelector('.bgg-username-submitted')
   bggUsernameSubmittedEl.classList.remove('hide')
 }
 
@@ -52,7 +109,7 @@ const addBGGItemToList = (id) => {
   item.addedToList = true
 
   addListItems([item])
-  saveBGGCollection()
+  renderBGGCollection()
 }
 
 const filterBGGCollection = () => {
@@ -97,4 +154,15 @@ const handleAddSelectedBGG = () => {
   renderBGGCollection()
 }
 
-export { handleBGGCollection, getBGGCollectionData, addBGGItemToList, filterBGGCollection, handleAddSelectedBGG, handleCollectionChangeClick, saveBGGCollection, setBGGCollectionData, showBGGCollectionSection }
+export {
+  handleBGGCollectionRequest,
+  getBGGCollectionData,
+  addBGGItemToList,
+  filterBGGCollection,
+  handleAddSelectedBGG,
+  handleCollectionChangeClick,
+  saveBGGCollection,
+  setBGGCollectionData,
+  showBGGCollectionSection,
+  initPrevBGGCollection
+}

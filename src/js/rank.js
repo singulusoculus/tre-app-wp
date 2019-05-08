@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { showRankSection, showResultSection } from './views'
+import { showRankSection, showResultSection, custConfirm } from './views'
 import { setResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { createListObject } from './list'
@@ -322,28 +322,34 @@ const handleUndo = () => {
 // Delete
 const deleteItem = (flag) => {
   let indexToDelete
-  let r
-  const { item1, item2, item1Ref, item2Ref } = getComparisonInfo()
+  const { item1Ref, item2Ref } = getComparisonInfo()
 
   // decide which item to delete of the two listed. Set to indexToDelete
   if (flag < 0) {
-    r = confirm(`Are you sure you want to remove ${item1.name} from the ranking process?`)
     indexToDelete = item1Ref
   } else {
-    r = confirm(`Are you sure you want to remove ${item2.name} from the ranking process?`)
     indexToDelete = item2Ref
   }
 
-  // if OK then delete the item from the list, otherwise do nothing.
-  if (r === true) {
-    setHistory()
+  setHistory()
 
-    rankData.deletedItems.push(indexToDelete)
+  rankData.deletedItems.push(indexToDelete)
 
-    saveData(rankData)
-    saveRankDataHistory()
+  saveData(rankData)
+  saveRankDataHistory()
 
-    cmpCheck()
+  cmpCheck()
+}
+
+const handleDeleteItem = (flag) => {
+  const { item1, item2 } = getComparisonInfo()
+
+  if (flag < 0) {
+    const message = `Are you sure you want to remove ${item1.name} from the ranking process?`
+    custConfirm(message, deleteItem, flag)
+  } else {
+    const message = `Are you sure you want to remove ${item2.name} from the ranking process?`
+    custConfirm(message, deleteItem, flag)
   }
 }
 
@@ -375,23 +381,23 @@ const checkForDeletedItems = () => {
 }
 
 // Add item during ranking
-const addItem = (item) => {
-  setHistory()
-  const obj = createListObject(item, 'text', undefined, uuidv4())
+// const addItem = (item) => {
+//   setHistory()
+//   const obj = createListObject(item, 'text', undefined, uuidv4())
 
-  rankData.masterList.push(obj)
+//   rankData.masterList.push(obj)
 
-  if (rankData.sortList[rankData.cmp1].length < rankData.sortList[rankData.cmp2].length) {
-    rankData.sortList[rankData.cmp1].unshift(rankData.masterList.length - 1)
-  } else {
-    rankData.sortList[rankData.cmp2].unshift(rankData.masterList.length - 1)
-  }
+//   if (rankData.sortList[rankData.cmp1].length < rankData.sortList[rankData.cmp2].length) {
+//     rankData.sortList[rankData.cmp1].unshift(rankData.masterList.length - 1)
+//   } else {
+//     rankData.sortList[rankData.cmp2].unshift(rankData.masterList.length - 1)
+//   }
 
-  showComparison()
+//   showComparison()
 
-  saveData(rankData)
-  saveRankDataHistory()
-}
+//   saveData(rankData)
+//   saveRankDataHistory()
+// }
 
 const calcRankedList = () => {
   let list = rankData.sortList[0]
@@ -444,23 +450,24 @@ const cardFadeIn = () => {
 
 // Enable use of left, right, and down keys to make selections
 document.onkeydown = function (e) {
-  // Need something like the below to keep this from firing if a modal is visible
-  // if (!jQuery(".modal").is(".modal.fade.show")) {
-  switch (e.keyCode) {
-    case 37:
-      // Left
-      handlePick(-1)
-      break
-    case 39:
-      // Right
-      handlePick(1)
-      break
-    case 38:
-      // Up
-      handleUndo()
+  // If a modal is open arrow keys will not work
+  if (!document.querySelector('.modal.open')) {
+    switch (e.keyCode) {
+      case 37:
+        // Left
+        handlePick(-1)
+        break
+      case 39:
+        // Right
+        handlePick(1)
+        break
+      case 38:
+        // Up
+        handleUndo()
+    }
+    document.querySelector('#keys-reminder').classList.add('hide')
   }
-  document.querySelector('#keys-reminder').classList.add('hide')
 }
 
 // -----------------------------------------------------
-export { initPrevRanking, initRanking, handlePick, handleUndo, addItem, deleteItem, getRankData, calcRankedList }
+export { initPrevRanking, initRanking, handlePick, handleUndo, deleteItem, getRankData, calcRankedList, handleDeleteItem }

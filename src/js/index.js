@@ -1,10 +1,10 @@
 import { renderPreviousSession, showListSection, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank, renderBGGCollection } from './views'
 import { addListItems, handleClickClear, clearListData, createList } from './list'
 import { setFilters, setBGGFilters } from './filters'
-import { handlePick, handleUndo, deleteItem } from './rank'
+import { handlePick, handleUndo, handleDeleteItem } from './rank'
 import { setCurrentStep } from './step'
 import { handleCategoryChange } from './start'
-import { handleBGGCollection, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
+import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 
 import '../styles/main.scss'
 
@@ -67,7 +67,6 @@ jQuery(document).ready(() => {
     clearListData()
     setCurrentStep('List')
     renderListData()
-
     showListSection()
   })
 
@@ -97,11 +96,15 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#bgg-submit').addEventListener('click', () => {
-    handleBGGCollection()
+    handleBGGCollectionRequest()
   })
 
   document.querySelector('.change-bgg-username').addEventListener('click', () => {
     handleCollectionChangeClick()
+  })
+
+  document.querySelector('.update-bgg-collection').addEventListener('click', () => {
+    handleBGGCollectionRequest()
   })
 
   // BGG Filters
@@ -172,9 +175,9 @@ jQuery(document).ready(() => {
     el.addEventListener('click', (e) => {
       e.stopPropagation()
       if (e.target.id === 'rank-delete-1') {
-        deleteItem(-1)
+        handleDeleteItem(-1)
       } else if (e.target.id === 'rank-delete-2') {
-        deleteItem(1)
+        handleDeleteItem(1)
       }
     })
   })

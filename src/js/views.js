@@ -6,6 +6,10 @@ import { setCategory, getCategory } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 
+// //////////////////////////////////////////////////////////////////////
+// // PREVIOUS SESSION
+// //////////////////////////////////////////////////////////////////////
+
 const renderPreviousSession = () => {
   const prevData = JSON.parse(localStorage.getItem('saveData'))
 
@@ -86,6 +90,10 @@ const renderPreviousSession = () => {
   }
 }
 
+// //////////////////////////////////////////////////////////////////////
+// // RENDER LIST DATA
+// //////////////////////////////////////////////////////////////////////
+
 const renderListData = () => {
   const data = getListData()
   const filters = getFilters()
@@ -144,6 +152,10 @@ const generateListDataDOM = (item) => {
   return itemEl
 }
 
+// //////////////////////////////////////////////////////////////////////
+// // RENDER BGG DATA
+// //////////////////////////////////////////////////////////////////////
+
 const renderBGGCollection = () => {
   const listInfoEl = document.querySelector('.bgg-collection-info')
   const listEl = document.querySelector('.bgg-collection')
@@ -191,6 +203,10 @@ const generateBGGCollectionDOM = (item) => {
   return itemEl
 }
 
+// //////////////////////////////////////////////////////////////////////
+// // STEP TAB VISIBILITY
+// //////////////////////////////////////////////////////////////////////
+
 // Step Tab visibility
 const enableStepTab = (...steps) => {
   steps.forEach((step) => {
@@ -211,6 +227,10 @@ const disableStepTab = (...steps) => {
   }
 }
 
+// //////////////////////////////////////////////////////////////////////
+// // BUTTON CONTROLS / UI ELEMENTS
+// //////////////////////////////////////////////////////////////////////
+
 const enableNextButton = () => {
   const nextButton = document.querySelector(`.next-rank`)
   nextButton.classList.add('next--visible')
@@ -226,6 +246,54 @@ const disableListSave = () => {
   saveButton.classList.add('disabled')
 }
 
+// Help Text
+const showHelpText = (step) => {
+  const textEls = document.querySelectorAll('.help__text-item')
+  textEls.forEach((el) => {
+    el.classList.add('hide')
+  })
+
+  const activeTextEl = document.querySelector(`.help__text--${step}`)
+  activeTextEl.classList.remove('hide')
+}
+
+const updateTabIndicator = () => {
+  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
+  tabs.updateTabIndicator()
+}
+
+// Tooltip Control
+const createTooltip = (step) => {
+  const linkEl = document.querySelector(`#${step}-tab-link`)
+  switch (step) {
+    case 'list':
+      linkEl.classList.add('tooltipped')
+      linkEl.setAttribute('data-tooltip', 'Edit your list')
+      break
+    case 'rank':
+      linkEl.classList.add('tooltipped')
+      linkEl.setAttribute('data-tooltip', 'Start or Restart ranking')
+      break
+  }
+
+  const els = document.querySelectorAll('.tooltipped')
+  M.Tooltip.init(els)
+}
+
+const destroyTooltip = (step) => {
+  if (step) {
+    const stepLink = document.querySelector(`#${step}-tab-link`)
+    if (stepLink.classList.contains('tooltipped') && stepLink.M_Tooltip !== undefined) {
+      const tip = M.Tooltip.getInstance(stepLink)
+      tip.destroy()
+    }
+  }
+}
+
+// //////////////////////////////////////////////////////////////////////
+// // SECTION CONTROLS
+// //////////////////////////////////////////////////////////////////////
+
 const sectionTransition = (step) => {
   // Remove active class from all step-wrapper divs
   const activeEls = document.getElementsByClassName('step-wrapper active')
@@ -239,43 +307,10 @@ const sectionTransition = (step) => {
   }, 200)
 }
 
-// Help Text
-const showHelpText = (step) => {
-  const textEls = document.querySelectorAll('.help__text-item')
-  textEls.forEach((el) => {
-    el.classList.add('hide')
-  })
+// //////////////////////////////////////////////////////////////////////
+// // HANDLE TAB CLICKS
+// //////////////////////////////////////////////////////////////////////
 
-  const activeTextEl = document.querySelector(`.help__text--${step}`)
-  activeTextEl.classList.remove('hide')
-}
-
-// Custom Confirm modal
-const custConfirm = (message, resultCallback, source) => {
-  const alertText = document.querySelector('.alert-text')
-  alertText.innerText = message
-
-  const instance = M.Modal.getInstance(document.querySelector('#alert-modal'))
-  instance.open()
-
-  const eventFunc = () => {
-    resultCallback(source)
-    clearAlertEventListeners()
-  }
-
-  const clearAlertEventListeners = () => {
-    document.querySelector('#alert-ok-btn').removeEventListener('click', eventFunc)
-  }
-
-  document.querySelector('#alert-ok-btn').addEventListener('click', eventFunc)
-
-  document.querySelector('#alert-cancel-btn').addEventListener('click', (e) => {
-    e.stopPropagation()
-    instance.close()
-  })
-}
-
-// Handle Tab Clicks
 const handleClickStart = () => {
   const source = getCurrentStep()
   const category = document.querySelector('#list-category-select').value
@@ -313,7 +348,10 @@ const handleClickRank = () => {
   }
 }
 
-// Show Sections
+// //////////////////////////////////////////////////////////////////////
+// // SHOW SECTIONS
+// //////////////////////////////////////////////////////////////////////
+
 const showStartSection = (source) => {
   document.querySelector('#list-category-select').value = 0
   M.FormSelect.init(document.querySelector('#list-category-select'))
@@ -347,7 +385,7 @@ const showListSection = (source) => {
 
   const categoryName = document.querySelector('#list-category-select').selectedOptions[0].innerHTML
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
-  // Show BGG section is category is Board Games
+  // Show BGG section if category is Board Games
   if (categoryName === 'Board Games') {
     document.querySelector('.bgg-section').classList.remove('hide')
   }
@@ -401,7 +439,10 @@ const showResultSection = (source) => {
   showHelpText('result')
 }
 
-// Step Tab Control
+// //////////////////////////////////////////////////////////////////////
+// // STEP TAB CONTROLS
+// //////////////////////////////////////////////////////////////////////
+
 const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
@@ -436,37 +477,32 @@ const showTab = (tab) => {
   history.replaceState(null, null, ' ')
 }
 
-const updateTabIndicator = () => {
-  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
-  tabs.updateTabIndicator()
-}
+// //////////////////////////////////////////////////////////////////////
+// // MODALS / CUSTOM CONFIRMS
+// //////////////////////////////////////////////////////////////////////
 
-// Tooltip Control
-const createTooltip = (step) => {
-  const linkEl = document.querySelector(`#${step}-tab-link`)
-  switch (step) {
-    case 'list':
-      linkEl.classList.add('tooltipped')
-      linkEl.setAttribute('data-tooltip', 'Edit your list')
-      break
-    case 'rank':
-      linkEl.classList.add('tooltipped')
-      linkEl.setAttribute('data-tooltip', 'Start or Restart ranking')
-      break
+const custConfirm = (message, resultCallback, source) => {
+  const alertText = document.querySelector('.alert-text')
+  alertText.innerText = message
+
+  const instance = M.Modal.getInstance(document.querySelector('#alert-modal'))
+  instance.open()
+
+  const eventFunc = () => {
+    resultCallback(source)
+    clearAlertEventListeners()
   }
 
-  const els = document.querySelectorAll('.tooltipped')
-  M.Tooltip.init(els)
-}
-
-const destroyTooltip = (step) => {
-  if (step) {
-    const stepLink = document.querySelector(`#${step}-tab-link`)
-    if (stepLink.classList.contains('tooltipped') && stepLink.M_Tooltip !== undefined) {
-      const tip = M.Tooltip.getInstance(stepLink)
-      tip.destroy()
-    }
+  const clearAlertEventListeners = () => {
+    document.querySelector('#alert-ok-btn').removeEventListener('click', eventFunc)
   }
+
+  document.querySelector('#alert-ok-btn').addEventListener('click', eventFunc)
+
+  document.querySelector('#alert-cancel-btn').addEventListener('click', (e) => {
+    e.stopPropagation()
+    instance.close()
+  })
 }
 
 let userID = 0

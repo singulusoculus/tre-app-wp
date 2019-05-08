@@ -239,7 +239,7 @@
   border-radius: 3px;
   transition: all .5s;
   opacity: 0;
-  z-index: 1000;
+  z-index: 999;
   cursor: pointer;
 
   &__text {

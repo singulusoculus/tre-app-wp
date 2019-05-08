@@ -61,3 +61,39 @@
 // rankData.masterList.forEach((item, index) => {
 //   rankData.sortList[n][index] = index
 // })
+
+// For requesting details on a users collection - from getBGGData
+
+// // build string to send request for all collection items
+// // should probably make this do a certain number at a time since I don't know the limits
+// let bggItems = []
+// items.forEach((item) => {
+//   const bggId = item['@attributes'].objectid
+
+//   bggItems.push(bggId)
+// })
+
+// let reqString = 'https://www.boardgamegeek.com/xmlapi2/thing?id='
+
+// bggItems.forEach((id) => {
+//   reqString += `${id},`
+// })
+
+// console.log(reqString)
+
+// Determine which transition event a browser supports
+// const whichTransitionEvent = () => {
+//   const el = document.createElement('fakeelement')
+//   const transitions = {
+//     'transition': 'transitionend',
+//     'OTransition': 'oTransitionEnd',
+//     'MozTransition': 'transitionend',
+//     'WebkitTransition': 'webkitTransitionEnd'
+//   }
+
+//   for (let t in transitions) {
+//     if (el.style[t] !== undefined) {
+//       return transitions[t]
+//     }
+//   }
+// }
