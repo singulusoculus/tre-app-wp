@@ -343,8 +343,11 @@ const handleClickRank = () => {
     const message = 'Do you really want to restart ranking this list?'
     custConfirm(message, showRankSection, source)
   } else if (source === 'Result') {
-    const message = 'Do you want to start ranking this list again?'
-    custConfirm(message, showRankSection, source)
+    const instance = M.Modal.getInstance(document.querySelector('#restart-modal'))
+    instance.open()
+    const data = getResultData()
+    // Set List Size - total-list-size
+    document.querySelector('.total-list-size').textContent = `Complete: ${data.length} Items`
   }
 }
 

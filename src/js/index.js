@@ -1,19 +1,23 @@
 import { renderPreviousSession, showListSection, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank, renderBGGCollection } from './views'
 import { addListItems, handleClickClear, clearListData, createList } from './list'
 import { setFilters, setBGGFilters } from './filters'
-import { handlePick, handleUndo, handleDeleteItem } from './rank'
+import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { setCurrentStep } from './step'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
+import { isNumber } from './functions'
 
 import '../styles/main.scss'
+
 
 jQuery(document).ready(() => {
   M.AutoInit()
 
-  const elems = document.querySelector('#alert-modal')
   const options = { dismissible: false }
-  M.Modal.init(elems, options)
+  const alertModal = document.querySelector('#alert-modal')
+  const restartModal = document.querySelector('#restart-modal')
+  M.Modal.init(alertModal, options)
+  M.Modal.init(restartModal, options)
 
   document.querySelector('#start-wrapper').classList.add('active')
   setCurrentStep('Start')
@@ -48,6 +52,23 @@ jQuery(document).ready(() => {
 
   document.querySelector('.next-rank').addEventListener('click', (e) => {
     handleClickRank()
+  })
+
+  // //////////////////////////////////////////////////////////////////////
+  // // RESTART OPTIONS
+  // //////////////////////////////////////////////////////////////////////
+  document.querySelector('#restart-complete').addEventListener('click', (e) => {
+    document.querySelector('.rerank-options__num').classList.remove('visible')
+    document.querySelector('.rerank-options__radio').classList.remove('num-vis')
+  })
+
+  document.querySelector('#restart-partial').addEventListener('click', (e) => {
+    document.querySelector('.rerank-options__num').classList.add('visible')
+    document.querySelector('.rerank-options__radio').classList.add('num-vis')
+  })
+
+  document.querySelector('#restart-ok-btn').addEventListener('click', (e) => {
+    handleRestart(e)
   })
 
   // //////////////////////////////////////////////////////////////////////
