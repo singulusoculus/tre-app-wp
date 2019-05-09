@@ -499,8 +499,8 @@ const custConfirm = (message, resultCallback, source) => {
 
   document.querySelector('#alert-ok-btn').addEventListener('click', eventFunc)
 
-  document.querySelector('#alert-cancel-btn').addEventListener('click', (e) => {
-    e.stopPropagation()
+  document.querySelector('#alert-cancel-btn').addEventListener('click', () => {
+    clearAlertEventListeners()
     instance.close()
   })
 }
