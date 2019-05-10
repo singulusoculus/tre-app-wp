@@ -281,6 +281,43 @@
 }
 
 //////////////////////////////////////////////////////////////////
+///////////  RERANK OPTIONS
+//////////////////////////////////////////////////////////////////
+
+.rerank-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  &__radio {
+    transform: translateX(5rem);
+    transition: all .5s;
+
+    &.num-vis {
+      transform: translateX(0);
+    }
+
+    & + .rerank-options__num.visible {
+      transform: translateX(0);
+    }
+  }
+
+  &__num {
+    margin-left: 2rem;
+
+    opacity: 0;
+    transform: translateX(-4rem);
+    transition: all .5s;
+
+    &.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+//////////////////////////////////////////////////////////////////
 ///////////  FOOTER
 //////////////////////////////////////////////////////////////////
 .footer.page-footer {

@@ -647,6 +647,40 @@
     </div>
   </div>
 
+  <!-- Restart Modal -->
+  <div id="restart-modal" class="modal">
+    <div class="modal-content">
+      <!-- <a href="#!" class="modal-close btn-flat modal-close-x">
+          <span aria-hidden="true">&times;</span>
+        </a> -->
+      <h4>Rerank Options</h4>
+      <div class="rerank-options">
+        <form class="rerank-options__radio" action="#">
+          <p>
+            <label>
+              <input class="with-gap" name="rerank-options" type="radio" id="restart-complete" checked />
+              <span class="total-list-size">Complete: Items</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input class="with-gap" name="rerank-options" type="radio" id="restart-partial" />
+              <span>Top X</span>
+            </label>
+          </p>
+        </form>
+        <div class="input-field rerank-options__num">
+          <input id="num-of-items" type="number" class="validate">
+          <label class="active" for="num-of-items">Enter # of Items</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" id="restart-ok-btn" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+      <a href="#!" id="restart-cancel-btn" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
   <script src="./dist/materialize.min.js"></script>
   <script src="./dist/bundle.js"></script>

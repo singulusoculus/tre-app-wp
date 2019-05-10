@@ -97,3 +97,22 @@
 //     }
 //   }
 // }
+
+// Add item during ranking
+// const addItem = (item) => {
+//   setHistory()
+//   const obj = createListObject(item, 'text', undefined, uuidv4())
+
+//   rankData.masterList.push(obj)
+
+//   if (rankData.sortList[rankData.cmp1].length < rankData.sortList[rankData.cmp2].length) {
+//     rankData.sortList[rankData.cmp1].unshift(rankData.masterList.length - 1)
+//   } else {
+//     rankData.sortList[rankData.cmp2].unshift(rankData.masterList.length - 1)
+//   }
+
+//   showComparison()
+
+//   saveData(rankData)
+//   saveRankDataHistory()
+// }

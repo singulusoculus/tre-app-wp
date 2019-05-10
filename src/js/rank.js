@@ -1,8 +1,6 @@
-import uuidv4 from 'uuid'
 import { showRankSection, showResultSection, custConfirm } from './views'
-import { setResultData } from './result'
+import { setResultData, getResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
-import { createListObject } from './list'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 
@@ -390,25 +388,6 @@ const checkForDeletedItems = () => {
   }
 }
 
-// Add item during ranking
-// const addItem = (item) => {
-//   setHistory()
-//   const obj = createListObject(item, 'text', undefined, uuidv4())
-
-//   rankData.masterList.push(obj)
-
-//   if (rankData.sortList[rankData.cmp1].length < rankData.sortList[rankData.cmp2].length) {
-//     rankData.sortList[rankData.cmp1].unshift(rankData.masterList.length - 1)
-//   } else {
-//     rankData.sortList[rankData.cmp2].unshift(rankData.masterList.length - 1)
-//   }
-
-//   showComparison()
-
-//   saveData(rankData)
-//   saveRankDataHistory()
-// }
-
 const calcRankedList = () => {
   let list = rankData.sortList[0]
   let rankedList = []
@@ -436,6 +415,35 @@ const calcRankedList = () => {
 const updateProgressBar = () => {
   const progress = Math.floor((rankData.finishSize * 100) / rankData.totalSize)
   document.querySelector('#progress-bar').style.width = `${progress}%`
+}
+
+const handleRestart = (e) => {
+  // get selected option
+  const options = Array.from(document.getElementsByName('rerank-options'))
+  let checkedOption
+
+  options.forEach((el) => {
+    if (el.checked) {
+      checkedOption = el.id
+    }
+  })
+
+  if (checkedOption === 'restart-complete') {
+    showRankSection('Result')
+  } else if (checkedOption === 'restart-partial') {
+    // Get number of items
+    const numOfItems = parseInt(document.querySelector('#num-of-items').value)
+
+    if (isNaN(numOfItems)) {
+      alert('Please enter a number')
+      e.stopPropagation()
+    } else {
+      const fullData = getResultData()
+      const newData = fullData.slice(0, numOfItems)
+      setResultData(newData)
+      showRankSection('Result')
+    }
+  }
 }
 
 const cardFadeOut = (prevItem1, prevItem2) => {
@@ -480,4 +488,4 @@ document.onkeydown = function (e) {
 }
 
 // -----------------------------------------------------
-export { initPrevRanking, initRanking, handlePick, handleUndo, deleteItem, getRankData, calcRankedList, handleDeleteItem }
+export { initPrevRanking, initRanking, handlePick, handleUndo, deleteItem, getRankData, calcRankedList, handleDeleteItem, handleRestart }
