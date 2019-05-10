@@ -275,8 +275,14 @@ const updateVoteShowPct = () => {
 
 // History and Undo
 const setHistory = () => {
+  const maxHistory = 10
+
   const rankDataJSON = JSON.stringify(rankData)
   rankDataHistory.push(rankDataJSON)
+
+  if (rankDataHistory.length > maxHistory) {
+    rankDataHistory.shift()
+  }
 
   document.querySelector('#undo-btn').classList.remove('disabled')
   saveRankDataHistory()
@@ -300,6 +306,10 @@ const handleUndo = () => {
     const historyJSON = rankDataHistory.pop()
     const history = JSON.parse(historyJSON)
     rankData = history
+
+    if (rankDataHistory.length === 0) {
+      document.querySelector('#undo-btn').classList.add('disabled')
+    }
 
     cardFadeOut(item1.id, item2.id)
 
