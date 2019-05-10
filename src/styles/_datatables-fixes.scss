@@ -1,0 +1,58 @@
+#datatables_buttons_info {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 50%;
+  background-color: #fafafa;
+  padding: 1rem;
+  max-height: 70%;
+  width: 30%;
+  margin: auto;
+  overflow-y: auto;
+  border-radius: 2px;
+  text-align: center;
+
+  & h2 {
+    font-size: 2rem;
+  }
+}
+
+.floatright {
+  float: right;
+}
+
+table.dataTable thead {
+  & .sorting {
+    background-image:url("../../public/images/sort_both.png");
+  }
+
+  & .sorting_asc {
+    background-image:url("../../public/images/sort_asc.png")
+  }
+
+  & .sorting_desc {
+    background-image:url("../../public/images/sort_desc.png")
+  }
+
+  & .sorting_asc_disabled {
+    background-image:url("../../public/images/sort_asc_disabled.png")
+  }
+
+  & .sorting_desc_disabled {
+    background-image:url("../../public/images/sort_desc_disabled.png")
+  }
+
+}
+
+
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled{
+  cursor:pointer;
+  *cursor:hand;
+  background-repeat:no-repeat;
+  background-position:center right
+}
