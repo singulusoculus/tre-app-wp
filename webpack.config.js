@@ -7,7 +7,8 @@ module.exports = {
   watch: true,
   entry: ['babel-polyfill', './src/js/index.js'],
   output: {
-    path: path.resolve(__dirname, 'public/dist'),
+    path: path.resolve('C:/xampp/apps/wordpress/htdocs/wp-content/themes/Ranking-Engine/public/dist'), // for theme developement
+    // path: path.resolve(__dirname, 'public/dist'),
     filename: 'bundle.js'
   },
   module: {
