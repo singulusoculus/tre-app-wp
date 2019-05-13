@@ -63,6 +63,8 @@ const createList = (itemArray, source) => {
 }
 
 const addListItems = (list) => {
+  const prevLength = listData.length
+
   list.forEach((item) => {
     // strip out double quotes
     item.name = item.name.replace(/["]+/g, '')
@@ -75,6 +77,14 @@ const addListItems = (list) => {
     enableNextButton()
     enableListSave()
     filterDuplicates()
+
+    const currLength = listData.length
+    const addedItems = currLength - prevLength
+
+    if (addedItems > 0) {
+      M.toast({ html: `Added ${addedItems} items to your list` })
+    }
+
     saveData(listData)
     renderListData()
   }
@@ -90,7 +100,8 @@ const removeListItem = (id) => {
   // Show removed item back in Collection data
   if (listData[itemID].source === 'bgg') {
     const bggData = getBGGCollectionData()
-    const bggItem = bggData.findIndex((item) => item.id === id)
+    const bggId = listData[itemID].bggId
+    const bggItem = bggData.findIndex((item) => item.bggId === bggId)
     bggData[bggItem].addedToList = false
     renderBGGCollection()
   }

@@ -116,3 +116,10 @@
 //   saveData(rankData)
 //   saveRankDataHistory()
 // }
+
+// document.querySelector('#sort-by').addEventListener('change', (e) => {
+//   setFilters({
+//     sortBy: e.target.value
+//   })
+//   renderListData()
+// })

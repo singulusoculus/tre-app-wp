@@ -5,10 +5,8 @@ import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { setCurrentStep } from './step'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { isNumber } from './functions'
 
 import '../styles/main.scss'
-
 
 jQuery(document).ready(() => {
   M.AutoInit()
@@ -154,13 +152,6 @@ jQuery(document).ready(() => {
   document.querySelector('#search-text').addEventListener('input', (e) => {
     setFilters({
       searchText: e.target.value
-    })
-    renderListData()
-  })
-
-  document.querySelector('#sort-by').addEventListener('change', (e) => {
-    setFilters({
-      sortBy: e.target.value
     })
     renderListData()
   })

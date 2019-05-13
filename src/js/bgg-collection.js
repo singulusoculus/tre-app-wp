@@ -1,5 +1,5 @@
 import { renderBGGCollection } from './views'
-import { addListItems, sortListData } from './list'
+import { addListItems, sortListData, getListData } from './list'
 import { getBGGFilters, updateBGGFilters } from './filters'
 import { xmlToJson } from './functions'
 import uuidv4 from 'uuid'
@@ -41,6 +41,7 @@ const handleBGGCollectionRequest = () => {
 }
 
 const getBGGData = () => {
+  const listData = getListData()
   let xhttp = ''
 
   if (window.XMLHttpRequest) {
@@ -80,6 +81,10 @@ const getBGGData = () => {
       rated: item.stats['rating']['@attributes'].value === 'N/A' ? false : true,
       rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
       addedToList: false
+    }
+
+    if (listData.map(e => e.bggId).indexOf(obj.bggId) > -1) {
+      obj.addedToList = true
     }
 
     bggList.push(obj)
