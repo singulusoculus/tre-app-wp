@@ -1,23 +1,16 @@
-import { renderPreviousSession, showListSection, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank, renderBGGCollection } from './views'
-import { addListItems, handleClickClear, clearListData, createList } from './list'
+import '../styles/main.scss'
+import { renderPreviousSession, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank, renderBGGCollection, showTab } from './views'
+import { handleClickClear, handleAddTextItems } from './list'
 import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { setCurrentStep } from './step'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-
-import '../styles/main.scss'
+import { initMaterializeComponents } from './functions'
 
 jQuery(document).ready(() => {
-  M.AutoInit()
-
-  const options = { dismissible: false }
-  const alertModal = document.querySelector('#alert-modal')
-  const restartModal = document.querySelector('#restart-modal')
-  M.Modal.init(alertModal, options)
-  M.Modal.init(restartModal, options)
-
-  document.querySelector('#start-wrapper').classList.add('active')
+  initMaterializeComponents()
+  showTab('start')
   setCurrentStep('Start')
   renderPreviousSession()
   setupSaveLogin()
@@ -75,18 +68,9 @@ jQuery(document).ready(() => {
 
   // ***************** Start Section *****************
 
-  // Fan Favorite
-  // document.querySelector('#fan-fav-button').addEventListener('click', () => {
-  //   initFanFavorite()
-  // })
-
   // Select a category
   document.querySelector('#list-category-select').addEventListener('change', () => {
     handleCategoryChange()
-    clearListData()
-    setCurrentStep('List')
-    renderListData()
-    showListSection()
   })
 
   // User Lists
@@ -101,17 +85,7 @@ jQuery(document).ready(() => {
   document.querySelector('#textarea-add-btn').addEventListener('click', () => {
     // Filter and create list data
     let textList = document.querySelector('#textarea-input').value.split('\n').filter((x) => (x !== (undefined || '')))
-
-    document.querySelector('#textarea-input').value = ''
-
-    // create array of objects
-    let list = createList(textList, 'text')
-
-    // add objects into listData
-    addListItems(list)
-    document.querySelector('#textarea-input').style.height = '45px'
-    document.querySelector('.input-field>label:not(.label-icon)').classList.remove('active')
-    document.querySelector('#textarea-add-btn').classList.add('disabled')
+    handleAddTextItems(textList)
   })
 
   document.querySelector('#bgg-submit').addEventListener('click', () => {
@@ -193,14 +167,6 @@ jQuery(document).ready(() => {
       }
     })
   })
-
-  // // Handle Add item - during ranking
-  // document.querySelector('#add-button').addEventListener('click', (e) => {
-  //   console.log('add item')
-  //   const name = document.querySelector('#add-input').value
-  //   addItem(name, 'text')
-  //   document.querySelector('#add-input').value = ''
-  // })
 
   // ***************** Result Section *****************
 

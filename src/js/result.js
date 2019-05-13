@@ -11,7 +11,6 @@ const initPrevResult = (category, data) => {
   setCurrentStep('Result')
   saveData(resultData)
   renderResult(resultData)
-
   showResultSection()
 }
 
@@ -25,10 +24,7 @@ const renderResult = () => {
   let str = ''
   // let str1 = ''
 
-  // table table-bordered table-sm
-  // style="width: 10%"
-
-  str += `<table id="results-table-details" class="table-responsive"><thead class=""><tr><th class="rank-column" scope="col">Rank</th><th scope="col">Item</th></tr></thead><tbody>`
+  str += `<table id="results-table-details" class="table-responsive"><thead><tr><th class="rank-column" scope="col">Rank</th><th scope="col">Item</th></tr></thead><tbody>`
 
   for (let i = 0; i < resultData.length; i++) {
     str += `<tr><td>${resultData[i].rank}</td><td>${resultData[i].name}</td></tr>`
@@ -47,8 +43,7 @@ const renderResult = () => {
     buttons: [
       'copyHtml5',
       'excelHtml5',
-      'csvHtml5',
-      'pdfHtml5'
+      'csvHtml5'
     ]
   })
 

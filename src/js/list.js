@@ -62,6 +62,22 @@ const createList = (itemArray, source) => {
   return list
 }
 
+const handleAddTextItems = (textList) => {
+  const textareaEl = document.querySelector('#textarea-input')
+  textareaEl.value = ''
+
+  M.textareaAutoResize(textareaEl)
+  M.updateTextFields()
+
+  // create array of objects
+  let list = createList(textList, 'text')
+
+  // add objects into listData
+  addListItems(list)
+
+  document.querySelector('#textarea-add-btn').classList.add('disabled')
+}
+
 const addListItems = (list) => {
   const prevLength = listData.length
 
@@ -82,7 +98,7 @@ const addListItems = (list) => {
     const addedItems = currLength - prevLength
 
     if (addedItems > 0) {
-      M.toast({ html: `Added ${addedItems} items to your list` })
+      M.toast({ html: `Added ${addedItems} items to your list`, displayLength: 3000 })
     }
 
     saveData(listData)
@@ -148,20 +164,8 @@ const clearListData = () => {
   }
 }
 
-// sort method - if a comes first return -1, if b comes first return 1
-// remove byProjected, add needsImage, inputOrder
 const sortListData = (list, sortBy) => {
-  if (sortBy === 'byProjected') {
-    return list.sort((a, b) => {
-      if (a.voteShowPct > b.voteShowPct) {
-        return -1
-      } else if (a.voteShowPct < b.voteShowPct) {
-        return 1
-      } else {
-        return 0
-      }
-    })
-  } else if (sortBy === 'alphabetical') {
+  if (sortBy === 'alphabetical') {
     // for alpha sorts it is flipped - earlier letter in the alphabet is higher
     return list.sort((a, b) => {
       if (a.name.toLowerCase() < b.name.toLowerCase()) {
@@ -197,5 +201,6 @@ export {
   loadList,
   createList,
   createListObject,
-  handleClickClear
+  handleClickClear,
+  handleAddTextItems
 }

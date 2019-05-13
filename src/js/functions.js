@@ -11,6 +11,16 @@ const disableArrowKeyScroll = () => {
   }, false)
 }
 
+const initMaterializeComponents = () => {
+  M.AutoInit()
+
+  const modalOptions = { dismissible: false }
+  const alertModal = document.querySelector('#alert-modal')
+  const restartModal = document.querySelector('#restart-modal')
+  M.Modal.init(alertModal, modalOptions)
+  M.Modal.init(restartModal, modalOptions)
+}
+
 const saveData = (data) => {
   const category = getCategory()
   const step = getCurrentStep()
@@ -61,4 +71,4 @@ const xmlToJson = (xml) => {
   return obj
 }
 
-export { disableArrowKeyScroll, saveData, xmlToJson }
+export { disableArrowKeyScroll, saveData, xmlToJson, initMaterializeComponents }

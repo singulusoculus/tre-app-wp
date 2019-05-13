@@ -123,3 +123,39 @@
 //   })
 //   renderListData()
 // })
+
+// Temp Fan Favorite
+const fanFavorite = [{
+  name: 'The Phantom Menace',
+  image: '',
+  source: 'fanFav'
+},
+{
+  name: 'Attack of the Clones',
+  image: '',
+  source: 'fanFav'
+},
+{
+  name: 'Revenge of the Sith',
+  image: '',
+  source: 'fanFav'
+},
+{
+  name: 'A New Hope',
+  image: '',
+  source: 'fanFav'
+},
+{
+  name: 'The Empire Strikes Back',
+  image: '',
+  source: 'fanFav'
+},
+{
+  name: 'Return of the Jedi',
+  image: '',
+  source: 'fanFav'
+}]
+
+const initFanFavorite = () => {
+  initRanking(fanFavorite, 2)
+}

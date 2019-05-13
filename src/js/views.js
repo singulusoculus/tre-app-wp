@@ -105,6 +105,7 @@ const renderListData = () => {
   // Pulse the list section if items are added and it hasn't been clicked yet
   const listHeader = document.querySelector('.list-header')
   const clicked = document.querySelector('.list-header').classList.contains('clicked')
+
   if (count > 0 && !clicked) {
     listHeader.classList.add('pulse-bc')
   } else {
@@ -116,7 +117,7 @@ const renderListData = () => {
   // filter based on text input
   let filteredList = data.filter((item) => item.name.toLowerCase().includes(filters.searchText.toLowerCase()))
   // sort the list
-  filteredList = sortListData(filteredList, filters.sortBy)
+  // filteredList = sortListData(filteredList, filters.sortBy)
 
   listEl.innerHTML = ''
 
@@ -572,5 +573,6 @@ export {
   handleClickList,
   handleClickRank,
   custConfirm,
-  renderBGGCollection
+  renderBGGCollection,
+  showTab
 }

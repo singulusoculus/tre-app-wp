@@ -9,13 +9,10 @@ let rankDataHistory = []
 
 const initPrevRanking = (category, data) => {
   disableArrowKeyScroll()
-
   setCurrentStep('Rank')
   setCategory(category)
   populateRankData(true, data)
-
   saveData(rankData)
-
   showComparison()
   updateProgressBar()
   showRankSection()
@@ -110,7 +107,6 @@ const initRanking = (itemsList, category) => {
   resetHistory()
   updateProgressBar()
   showComparison()
-  // cardFadeIn()
 }
 
 const getComparisonInfo = () => {
@@ -403,7 +399,6 @@ const calcRankedList = () => {
     rankedList.push(obj)
   })
 
-  // renderResult(rankedList)
   setResultData(rankedList)
   setCurrentStep('Result')
   saveData(rankedList)
