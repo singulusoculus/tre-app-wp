@@ -14,6 +14,9 @@ const disableArrowKeyScroll = () => {
 const initMaterializeComponents = () => {
   M.AutoInit()
 
+  const elems = document.querySelectorAll('input[type=range]')
+  M.Range.init(elems)
+
   const modalOptions = { dismissible: false }
   const alertModal = document.querySelector('#alert-modal')
   const restartModal = document.querySelector('#restart-modal')
