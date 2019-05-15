@@ -25,23 +25,23 @@
 
 table.dataTable thead {
   & .sorting {
-    background-image:url("../../public/images/sort_both.png");
+    background-image:url("../../Ranking-Engine/images/sort_both.png");
   }
 
   & .sorting_asc {
-    background-image:url("../../public/images/sort_asc.png")
+    background-image:url("../../Ranking-Engine/images/sort_asc.png")
   }
 
   & .sorting_desc {
-    background-image:url("../../public/images/sort_desc.png")
+    background-image:url("../../Ranking-Engine/images/sort_desc.png")
   }
 
   & .sorting_asc_disabled {
-    background-image:url("../../public/images/sort_asc_disabled.png")
+    background-image:url("../../Ranking-Engine/images/sort_asc_disabled.png")
   }
 
   & .sorting_desc_disabled {
-    background-image:url("../../public/images/sort_desc_disabled.png")
+    background-image:url("../../Ranking-Engine/images/sort_desc_disabled.png")
   }
 
 }

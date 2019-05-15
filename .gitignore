@@ -1,11 +1,13 @@
 node_modules/
 .vscode/
-public/dist
+bundle.js
+bundle.js.map
+main.css
+main.css.map
 .env.test
 .env.development
 src/xcuts.js
 bggapi.js
 .eslintrc.json
 .DS_Store
-old/
-untracked/
+
