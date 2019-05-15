@@ -2,7 +2,7 @@ BEGIN
 
   -- Fix Weird Space on new lists
   DROP TABLE IF EXISTS `re_namefix_temp`;
-  CREATE TABLE `pubmeepl_wordpressf1d`.`re_namefix_temp` 
+  CREATE TABLE `rankingengine_wordpress`.`re_namefix_temp` 
   ( `id` INT NOT NULL 
   , `item_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL 
   , `new_item_name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL ) 
@@ -27,7 +27,7 @@ BEGIN
 
 -- Add item_name_fixed
   DROP TABLE IF EXISTS `re_final_d_temp`;
-  CREATE TABLE `pubmeepl_wordpressf1d`.`re_final_d_temp` 
+  CREATE TABLE `rankingengine_wordpress`.`re_final_d_temp` 
   ( `id` INT NOT NULL , `item_name` TEXT NOT NULL , `item_name_fixed` TEXT NOT NULL ) 
   ENGINE = MyISAM
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

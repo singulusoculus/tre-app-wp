@@ -8,7 +8,7 @@ BEGIN
 
   -- Create a temp table - re_boardgames_update_temp
   DROP TABLE IF EXISTS `re_boardgames_update_temp`;
-  CREATE TABLE `pubmeepl_wordpressf1d`.`re_boardgames_update_temp` 
+  CREATE TABLE `rankingengine_wordpress`.`re_boardgames_update_temp` 
   ( `id` INT(11) NOT NULL
   , `bg_id` INT(11) 
   , `bg_name` VARCHAR(200) NOT NULL
@@ -130,7 +130,7 @@ BEGIN
 
   -- Get previous scores for trend calc
   DROP TABLE IF EXISTS `re_boardgames_score_temp`;
-  CREATE TABLE `pubmeepl_wordpressf1d`.`re_boardgames_score_temp` 
+  CREATE TABLE `rankingengine_wordpress`.`re_boardgames_score_temp` 
   (`bg_id` INT(11) NOT NULL
   , `prev_at_score` FLOAT NOT NULL
   , `prev_cy_score` FLOAT NOT NULL

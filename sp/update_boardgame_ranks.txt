@@ -8,7 +8,7 @@ BEGIN
 
     -- Get previous ranks for rank move calc
     DROP TABLE IF EXISTS `re_boardgames_prerank_temp`;
-    CREATE TABLE `pubmeepl_wordpressf1d`.`re_boardgames_prerank_temp` 
+    CREATE TABLE `rankingengine_wordpress`.`re_boardgames_prerank_temp` 
     (`bg_id` INT(11) NOT NULL
     , `prev_at_rank` FLOAT NOT NULL
     , `prev_cy_rank` FLOAT NOT NULL
@@ -32,7 +32,7 @@ BEGIN
 
     -- Create temp table
     DROP TABLE IF EXISTS `re_boardgames_rank_temp`;
-    CREATE TABLE `pubmeepl_wordpressf1d`.`re_boardgames_rank_temp` 
+    CREATE TABLE `rankingengine_wordpress`.`re_boardgames_rank_temp` 
     ( `bg_id` VARCHAR(11) NOT NULL 
     , `bg_rank` FLOAT NOT NULL ) 
     ENGINE = MyISAM CHARSET=utf8mb4 
