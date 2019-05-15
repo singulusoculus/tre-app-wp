@@ -1,15 +1,14 @@
 const path = require('path')
-// const webpack = require('webpack')
-// const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 module.exports = {
   watch: true,
   entry: ['babel-polyfill', './src/js/index.js'],
   output: {
     path: path.resolve(__dirname, 'Ranking-Engine/dist'),
-    // path: path.resolve('C:/xampp/apps/wordpress/htdocs/wp-content/themes/Ranking-Engine/public/dist'), // for theme developement
-    // path: path.resolve(__dirname, 'public/dist'),
     filename: 'bundle.js'
   },
   module: {

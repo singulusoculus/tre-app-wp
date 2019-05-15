@@ -4,10 +4,6 @@ bundle.js
 bundle.js.map
 main.css
 main.css.map
-.env.test
-.env.development
-src/xcuts.js
-bggapi.js
 .eslintrc.json
 .DS_Store
 
