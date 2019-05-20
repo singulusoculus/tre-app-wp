@@ -1,18 +1,39 @@
 import '../styles/main.scss'
 import { renderPreviousSession, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank, renderBGGCollection, showTab } from './views'
-import { handleClickClear, handleAddTextItems } from './list'
+import { handleClickClear, handleAddTextItems, initPrevList } from './list'
 import { setFilters, setBGGFilters } from './filters'
-import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
+import { handlePick, handleUndo, handleDeleteItem, handleRestart, initPrevRanking } from './rank'
 import { setCurrentStep } from './step'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 import { initMaterializeComponents } from './functions'
+import { initPrevResult } from './result'
 
 jQuery(document).ready(() => {
   initMaterializeComponents()
   showTab('start')
   setCurrentStep('Start')
-  renderPreviousSession()
+
+  const loginReload = sessionStorage.getItem('loginReload')
+  if (loginReload) {
+    const prevData = JSON.parse(localStorage.getItem('saveData'))
+    const data = prevData.data
+    const category = prevData.category
+    const loginStep = prevData.step
+    var modal = M.Modal.getInstance(document.querySelector('#save-modal'))
+    if (loginStep === 'List') {
+      initPrevList(category, data)
+    } else if (loginStep === 'Rank') {
+      initPrevRanking(category, data)
+    } else if (loginStep === 'Result') {
+      initPrevResult(category, data)
+    }
+    modal.open()
+    sessionStorage.removeItem('loginReload')
+  } else {
+      renderPreviousSession()
+  }
+
   setupSaveLogin()
 
   // //////////////////////////////////////////////////////////////////////
@@ -172,5 +193,9 @@ jQuery(document).ready(() => {
 
   document.querySelector('.support-us__dismiss').addEventListener('click', () => {
     document.querySelector('.support-us').classList.add('hide')
+  })
+
+  document.querySelector('#login-form-button').addEventListener('click', () => {
+    sessionStorage.setItem('loginReload', true)
   })
 })

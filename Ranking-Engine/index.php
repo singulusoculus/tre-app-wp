@@ -565,24 +565,31 @@
         <span aria-hidden="true">&times;</span>
       </a>
       <h4>Login</h4>
-      <div class="row">
-        <div class="input-field col s12 m6">
-          <input id="username" type="text" class="validate">
-          <label for="username">User Name</label>
+      <div class="form-group">
+        <form id="login-form" action="login" method="post">
+          <p class="status center-align"></p>
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <input id="username" type="text" class="validate">
+              <label for="username">User Name</label>
+            </div>
+            <div class="input-field col s12 m6">
+              <input id="password" type="password" class="validate">
+              <label for="password">Password</label>
+            </div>
+          </div>
+          <div class="row center-align">
+            <a href="<?php echo wp_lostpassword_url(); ?>" class="col s12 m6">Lost your password?</a>
+            <a href="<?php echo wp_registration_url(); ?>" class="col s12 m6">Need to Register?</a>
+          </div>
+        <div class="modal-footer">
+          <!-- <a href="#!" id="login-btn" class="modal-close waves-effect waves-green btn-flat">Login</a> -->
+          <input id="login-form-button" class="waves-effect waves-green btn-flat" type="submit" value="Login" name="submit">
+            <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
         </div>
-        <div class="input-field col s12 m6">
-          <input id="password" type="password" class="validate">
-          <label for="password">Password</label>
-        </div>
-      </div>
-      <div class="row center-align">
-        <a href="#!" class="col s12 m6">Lost your password?</a>
-        <a href="#!" class="col s12 m6">Need to Register?</a>
-      </div>
+      </form>
     </div>
-    <div class="modal-footer">
-      <a href="#!" id="login-btn" class="modal-close waves-effect waves-green btn-flat">Login</a>
-    </div>
+  </div>
   </div>
 
   <!-- Message Modal -->
@@ -642,5 +649,12 @@
     </div>
   </div>
 
+  <script type="text/javascript">
+
+    const getUserID = () => {
+        return <?php echo get_current_user_id(); ?>;
+    }
+
+</script>
 
   <?php get_footer();

@@ -1,4 +1,4 @@
-import { showResultSection } from './views'
+import { showResultSection, setupSaveLogin } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
@@ -68,6 +68,8 @@ const renderResult = () => {
   saveButtonEl.appendChild(saveIconEl)
   const dtButtonsEl = document.querySelector('.dt-buttons')
   dtButtonsEl.appendChild(saveButtonEl)
+
+  setupSaveLogin()
 
   saveData(resultData)
 }

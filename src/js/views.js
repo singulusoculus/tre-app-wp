@@ -509,12 +509,10 @@ const custConfirm = (message, resultCallback, source) => {
   })
 }
 
-let userID = 0
-
 const setupSaveLogin = () => {
   const myListsEl = document.querySelector('.my-lists')
 
-  if (userID === 0) {
+  if (getUserID() === 0) {
     // Create My Lists Login
     const loginMessageEl = document.createElement('div')
     loginMessageEl.classList.add('center-align')

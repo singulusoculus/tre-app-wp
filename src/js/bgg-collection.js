@@ -25,12 +25,14 @@ const saveBGGCollection = () => {
 const initPrevBGGCollection = () => {
   // Load previous BGG data if exists
   const bggData = JSON.parse(localStorage.getItem('bggCollection'))
-  if (bggData.bggCollectionData.length > 0) {
-    setBGGCollectionData(bggData.bggCollectionData)
-    document.querySelector('#bgg-username').value = bggData.bggUsername
-    showBGGCollectionSection()
-    updateBGGFilters()
-    renderBGGCollection()
+  if (!bggData === null) {
+    if (bggData.bggCollectionData.length > 0) {
+      setBGGCollectionData(bggData.bggCollectionData)
+      document.querySelector('#bgg-username').value = bggData.bggUsername
+      showBGGCollectionSection()
+      updateBGGFilters()
+      renderBGGCollection()
+    }
   }
 }
 
