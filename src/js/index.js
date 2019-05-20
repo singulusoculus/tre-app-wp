@@ -5,7 +5,7 @@ import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine } from './functions'
+import { initRankingEngine, handleClickSave } from './functions'
 
 jQuery(document).ready(() => {
   initRankingEngine()
@@ -171,5 +171,10 @@ jQuery(document).ready(() => {
 
   document.querySelector('#login-form-button').addEventListener('click', () => {
     sessionStorage.setItem('loginReload', true)
+  })
+
+  // ***************** Modals *****************
+  document.querySelector('#save-list-btn').addEventListener('click', () => {
+    handleClickSave()
   })
 })

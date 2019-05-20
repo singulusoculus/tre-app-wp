@@ -4,6 +4,7 @@ import { showTab, renderPreviousSession, setupSaveLogin } from './views'
 import { initPrevList } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult } from './result'
+import { saveTemplateData, saveProgressData } from './database'
 
 const initRankingEngine = () => {
   initMaterializeComponents()
@@ -31,6 +32,23 @@ const initRankingEngine = () => {
   }
 
   setupSaveLogin()
+}
+
+const handleClickSave = () => {
+  const currentStep = getCurrentStep()
+  const saveDesc = document.querySelector('#save-description').value
+
+  if (saveDesc === '') {
+    alert('Please add adescription for your list')
+  } else {
+    if (currentStep === 'List') {
+      saveTemplateData(saveDesc)
+    } else if (currentStep === 'Rank') {
+      saveProgressData(saveDesc)
+    } else if (currentStep === 'Result') {
+      // save results
+    }
+  }
 }
 
 const disableArrowKeyScroll = () => {
@@ -106,4 +124,4 @@ const xmlToJson = (xml) => {
   return obj
 }
 
-export { disableArrowKeyScroll, saveData, xmlToJson, initMaterializeComponents, initRankingEngine }
+export { disableArrowKeyScroll, saveData, xmlToJson, initMaterializeComponents, initRankingEngine, handleClickSave }
