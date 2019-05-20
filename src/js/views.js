@@ -1,4 +1,4 @@
-import { initPrevList, getListData, sortListData, removeListItem, loadList } from './list'
+import { initPrevList, getListData, removeListItem, loadList } from './list'
 import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'

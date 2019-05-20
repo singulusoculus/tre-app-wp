@@ -1,5 +1,37 @@
 import { getCategory } from './category'
-import { getCurrentStep } from './step'
+import { getCurrentStep, setCurrentStep } from './step'
+import { showTab, renderPreviousSession, setupSaveLogin } from './views'
+import { initPrevList } from './list'
+import { initPrevRanking } from './rank'
+import { initPrevResult } from './result'
+
+const initRankingEngine = () => {
+  initMaterializeComponents()
+  showTab('start')
+  setCurrentStep('Start')
+
+  const loginReload = sessionStorage.getItem('loginReload')
+  if (loginReload) {
+    const prevData = JSON.parse(localStorage.getItem('saveData'))
+    const data = prevData.data
+    const category = prevData.category
+    const loginStep = prevData.step
+    if (loginStep === 'List') {
+      initPrevList(category, data)
+    } else if (loginStep === 'Rank') {
+      initPrevRanking(category, data)
+    } else if (loginStep === 'Result') {
+      initPrevResult(category, data)
+    }
+    const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
+    modal.open()
+    sessionStorage.removeItem('loginReload')
+  } else {
+    renderPreviousSession()
+  }
+
+  setupSaveLogin()
+}
 
 const disableArrowKeyScroll = () => {
   // Disable arrow keys from scrolling
@@ -74,4 +106,4 @@ const xmlToJson = (xml) => {
   return obj
 }
 
-export { disableArrowKeyScroll, saveData, xmlToJson, initMaterializeComponents }
+export { disableArrowKeyScroll, saveData, xmlToJson, initMaterializeComponents, initRankingEngine }

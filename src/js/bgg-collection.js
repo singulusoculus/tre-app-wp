@@ -50,7 +50,6 @@ const getBGGData = () => {
     xhttp = new XMLHttpRequest()
   }
 
-
   xhttp.open('GET', './wp-content/themes/Ranking-Engine/collection-stats.xml', false)
   // xhttp.open('GET', './collection-stats.xml', false)
 

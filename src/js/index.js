@@ -1,40 +1,14 @@
 import '../styles/main.scss'
-import { renderPreviousSession, renderListData, setupSaveLogin, handleClickStart, handleClickList, handleClickRank, renderBGGCollection, showTab } from './views'
-import { handleClickClear, handleAddTextItems, initPrevList } from './list'
+import { renderListData, handleClickStart, handleClickList, handleClickRank, renderBGGCollection } from './views'
+import { handleClickClear, handleAddTextItems } from './list'
 import { setFilters, setBGGFilters } from './filters'
-import { handlePick, handleUndo, handleDeleteItem, handleRestart, initPrevRanking } from './rank'
-import { setCurrentStep } from './step'
+import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initMaterializeComponents } from './functions'
-import { initPrevResult } from './result'
+import { initRankingEngine } from './functions'
 
 jQuery(document).ready(() => {
-  initMaterializeComponents()
-  showTab('start')
-  setCurrentStep('Start')
-
-  const loginReload = sessionStorage.getItem('loginReload')
-  if (loginReload) {
-    const prevData = JSON.parse(localStorage.getItem('saveData'))
-    const data = prevData.data
-    const category = prevData.category
-    const loginStep = prevData.step
-    var modal = M.Modal.getInstance(document.querySelector('#save-modal'))
-    if (loginStep === 'List') {
-      initPrevList(category, data)
-    } else if (loginStep === 'Rank') {
-      initPrevRanking(category, data)
-    } else if (loginStep === 'Result') {
-      initPrevResult(category, data)
-    }
-    modal.open()
-    sessionStorage.removeItem('loginReload')
-  } else {
-      renderPreviousSession()
-  }
-
-  setupSaveLogin()
+  initRankingEngine()
 
   // //////////////////////////////////////////////////////////////////////
   // // STEP TAB CONTROLS

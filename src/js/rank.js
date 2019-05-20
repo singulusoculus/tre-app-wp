@@ -132,13 +132,13 @@ const showComparison = () => {
   if (item1.image !== '') {
     document.querySelector('#item-1-img').setAttribute('src', item1.image)
   } else {
-    document.querySelector('#item-1-img').setAttribute('src', './wp-content/themes/Ranking-Engine/public/images/meeple-lime.png')
+    document.querySelector('#item-1-img').setAttribute('src', './wp-content/themes/Ranking-Engine/images/meeple-lime.png')
   }
 
   if (item2.image !== '') {
     document.querySelector('#item-2-img').setAttribute('src', item2.image)
   } else {
-    document.querySelector('#item-2-img').setAttribute('src', './wp-content/themes/Ranking-Engine/public/images/meeple-orange.png')
+    document.querySelector('#item-2-img').setAttribute('src', './wp-content/themes/Ranking-Engine/images/meeple-orange.png')
   }
 
   // Text control
