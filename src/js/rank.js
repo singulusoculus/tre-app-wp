@@ -3,6 +3,7 @@ import { setResultData, getResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
+import { saveResultData } from './database'
 
 let rankData = {}
 let rankDataHistory = []
@@ -405,6 +406,13 @@ const calcRankedList = () => {
 
   rankDataHistory = []
   saveRankDataHistory()
+
+  const rankedItems = []
+  rankedList.forEach((item) => {
+    rankedItems.push(item.name)
+  })
+
+  saveResultData(rankedItems)
 }
 
 const updateProgressBar = () => {

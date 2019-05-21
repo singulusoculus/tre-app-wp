@@ -36,11 +36,11 @@ switch ($func) {
   case 'getTemplateList':
     getTemplateList();
     break;
-  case 'saveFinalRanking':
-    saveFinalList_Rankings();
+  case 'saveResultRanking':
+    saveResultRanking();
     break;
-  case 'saveFinalMyLists':
-    saveFinalList_MyLists();
+  case 'saveResultUser':
+    saveResultUser();
     break;
   case 'saveProgressList':
     saveProgressList();
@@ -151,59 +151,72 @@ function getTemplateList() {
 // SAVE/UPDATE LIST DATA
 ///////////////////////////////////////
 
-function saveFinalList_MyLists() {
-  $desc = $_POST['desc'];
+function saveResultUser() {
+  global $wpdb;
+  $currentResultID = $_POST['currentResultID'];
+  $saveData = $_POST['resultData'];
+  $desc = $_POST['saveDesc'];
+  $itemCount = $_POST['itemCount'];
+  $category = $_POST['category'];
   $wpuid = $_POST['wpuid'];
-  $currentlistid = $_POST['currentlistid'];
-  $finallistid = $_POST['finallistid'];
+  $currDate = date("Y-m-d");
+  $version = '2.0.0';
 
-  //delete progress list
-  if ($currentlistid > 0) {
-      //an in progress list exists
-      //DELETE currentlistid from re_progress
-      $wpdb->delete( 're_progress', array( 'list_id' => $currentlistid ) );
-  }
-
-  //update final list with user id and description
-  $wpdb->update(
-      're_final_h',
-      array(
-          'list_desc' => $desc,
-          'wpuid' => $wpuid,
-      ), 
-      array('list_id' => $finallistid),
-      array(
-          '%s',
-          '%d',
-      ),
-      array( '%d' )
-  );
-}
-
-function saveFinalList_Rankings() {
-  $finalList = $_POST['finalList'];
-  $currentlistid = $_POST['currentlistid'];
-  $desc = $_POST['desc'];
-  $numitems = $_POST['numitems'];
-  $currdate = date("Y-m-d");
-  $bggflag = $_POST['bggflag'];
-  $listcategory = $_POST['listcategory'];
+  $saveData = removeslashes($savedata);
 
   //sanitize description
   $desc = sanitize_text_field($desc);
 
+
+
+
+  // //delete progress list
+  // if ($currentlistid > 0) {
+  //     //an in progress list exists
+  //     //DELETE currentlistid from re_progress
+  //     $wpdb->delete( 're_progress', array( 'list_id' => $currentlistid ) );
+  // }
+
+  // //update final list with user id and description
+  // $wpdb->update(
+  //     're_final_h',
+  //     array(
+  //         'list_desc' => $desc,
+  //         'wpuid' => $wpuid,
+  //     ), 
+  //     array('list_id' => $finallistid),
+  //     array(
+  //         '%s',
+  //         '%d',
+  //     ),
+  //     array( '%d' )
+  // );
+}
+
+function saveResultRanking() {
+  global $wpdb;
+  $finalList = $_POST['rankedItems'];
+  $itemCount = $_POST['itemCount'];
+  $bggFlag = $_POST['bggFlag'];
+  $templateID = $_POST['templateID'];
+  $currdate = date("Y-m-d");
+  $listCategory = $_POST['category'];
+  $version = '2.0.0';
+
   //INSERT data into re_final_h
   $wpdb->insert(
-      're_final_h',
+      're_results_h',
       array(
-          'list_id' => null,
+          'result_id' => null,
           'wpuid' => null,
-          'list_desc' => null,
+          'result_desc' => null,
           'finish_date' => $currdate,
-          'num_of_items' => $numitems,
-          'bgg_flag' => $bggflag,
-          'static_list_id' => null,
-          'list_category' => $listcategory
+          'item_count' => $itemCount,
+          'bgg_flag' => $bggFlag,
+          'template_id' => $templateID > 0 ? $templateID : null,
+          'list_category' => $listCategory,
+          'user_result_data' => null,
+          're_version' => $version
       ),
       array(
           '%d',
@@ -213,21 +226,23 @@ function saveFinalList_Rankings() {
           '%d',
           '%d',
           '%d',
-          '%d'
+          '%d',
+          '%s',
+          '%s'
       )
   );
 
   $savelistid = $wpdb->insert_id;
 
-  //INSERT finalList rows into re_final_d
+  //INSERT finalList rows into re_result_d
   foreach ($finalList as $key => $value) {
 
       $itemname = stripslashes($value);
 
       $wpdb->insert(
-          're_final_d',
+          're_results_d',
           array(
-              'list_id' => $savelistid,
+              'result_id' => $savelistid,
               'item_name' => $itemname,
               'item_rank' => $key+1
           ),
@@ -262,7 +277,7 @@ function saveProgressList() {
   if ($currentlistid === "0") {
       //INSERT
       $wpdb->insert(
-          're_user_progress',
+          're_rank_progress',
           array(
               'progress_id' => null,
               'wpuid' => $wpuid,
@@ -292,7 +307,7 @@ function saveProgressList() {
   } else {
       //UPDATE currentlistid row
       $wpdb->update(
-          're_user_progress',
+          're_rank_progress',
           array(
               'progress_desc' => $desc,
               'save_date' => $currdate,
@@ -326,6 +341,7 @@ function saveTemplateList() {
   $desc = $_POST['saveDesc'];
   $numItems = $_POST['itemCount'];
   $wpuid = $_POST['wpuid'];
+  $category = $_POST['category'];
   $currentDate = date("Y-m-d");
   $version = '2.0.0';
 
@@ -337,7 +353,7 @@ function saveTemplateList() {
   if ($currentTemplateId === "0") {
       //INSERT
       $wpdb->insert(
-          're_user_templates',
+          're_list_templates',
           array(
               'template_id' => null,
               'wpuid' => $wpuid,
@@ -345,6 +361,7 @@ function saveTemplateList() {
               'created_date' => $currentDate,
               'updated_date' => $currentDate,
               'item_count' => $numItems,
+              'list_category' => $category,
               'template_data' => $templateData,
               're_version' => $version
           ),
@@ -365,7 +382,7 @@ function saveTemplateList() {
   } else {
       //UPDATE currentlistid row
       $wpdb->update(
-          're_user_templates',
+          're_list_templates',
           array(
               'template_desc' => $desc,
               'updated_date' => $currentDate,

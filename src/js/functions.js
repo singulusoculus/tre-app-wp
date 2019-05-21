@@ -4,7 +4,7 @@ import { showTab, renderPreviousSession, setupSaveLogin } from './views'
 import { initPrevList } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult } from './result'
-import { saveTemplateData, saveProgressData } from './database'
+import { saveTemplateData, saveProgressData, getcurrentListID } from './database'
 
 const initRankingEngine = () => {
   initMaterializeComponents()
@@ -46,10 +46,20 @@ const handleClickSave = () => {
     } else if (currentStep === 'Rank') {
       saveProgressData(saveDesc)
     } else if (currentStep === 'Result') {
-      // save results
+      const resultListID = getcurrentListID('result')
+      if (resultListID > 0) {
+        // update previously saved list
+      } else {
+        // save result list
+      }
     }
   }
 }
+
+// Update previously saved list
+// pull previous saved list
+// update the top X rankings
+// save it back to the database
 
 const disableArrowKeyScroll = () => {
   // Disable arrow keys from scrolling
