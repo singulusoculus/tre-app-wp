@@ -5,6 +5,7 @@ import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
+import { setCurrentListID } from './database';
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -20,6 +21,7 @@ const renderPreviousSession = () => {
     const step = prevData.step
     const data = prevData.data
     const category = prevData.category
+    const currentListID = prevData.currentListID
 
     if (Object.keys(data).length > 0 && step !== 'Start') {
       const containerEl = document.querySelector('.resume-session-container')
@@ -52,6 +54,7 @@ const renderPreviousSession = () => {
       dismissEl.textContent = 'Discard'
 
       linkEl.addEventListener('click', () => {
+        setCurrentListID(currentListID)
         if (step === 'List') {
           initPrevList(category, data)
         } else if (step === 'Rank') {

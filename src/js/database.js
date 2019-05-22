@@ -2,14 +2,18 @@ import { getListData } from './list'
 import { getRankData } from './rank'
 import { getResultData } from './result'
 import { getCategory } from './category'
+import { saveData } from './functions'
 
+// dbListIds
 let currentListID = {
   template: 0,
   progress: 0,
   result: 0
 }
 
-const getcurrentListID = (type) => currentListID[type]
+const getCurrentListID = (type) => currentListID[type]
+
+const getAllListIDs = () => currentListID
 
 const setCurrentListID = (update) => {
   if (typeof update.template === 'number') {
@@ -33,9 +37,10 @@ const setCurrentListID = (update) => {
 //   })
 // }
 
-const saveResultData = (rankedItems) => {
+const dbSaveResultData = (rankedItems) => {
   const itemCount = rankedItems.length
   const rankData = getRankData()
+  const resultData = getResultData()
   const bggFlag = rankData.bggFlag
   const templateID = currentListID.template
   const category = getCategory()
@@ -55,11 +60,16 @@ const saveResultData = (rankedItems) => {
       })
       console.log('Saved Result')
       console.log(currentListID.result)
+      saveData(resultData)
     }
   })
 }
 
-const saveProgressData = (saveDesc) => {
+const dbUpdateResultData = (rankedItems) => {
+
+}
+
+const dbSaveProgressData = (saveDesc) => {
   const wpuid = getUserID()
   let rankData = getRankData()
   const itemCount = rankData.masterList.length
@@ -82,11 +92,12 @@ const saveProgressData = (saveDesc) => {
       })
       console.log('Saved Progress')
       console.log(currentListID.progress)
+      saveData(rankData)
     }
   })
 }
 
-const saveTemplateData = (saveDesc) => {
+const dbSaveTemplateData = (saveDesc) => {
   const wpuid = getUserID()
   let listData = getListData()
   const itemCount = listData.length
@@ -109,12 +120,13 @@ const saveTemplateData = (saveDesc) => {
       })
       console.log('Saved Template')
       console.log(currentListID.template)
+      saveData(listData)
     }
   })
 }
 
-const saveUserResultData = (saveDesc) => {
+const dbSaveUserResultData = (saveDesc) => {
 
 }
 
-export { getcurrentListID, setCurrentListID, saveTemplateData, saveProgressData, saveResultData }
+export { getCurrentListID, setCurrentListID, dbSaveTemplateData, dbSaveProgressData, dbSaveResultData, getAllListIDs }

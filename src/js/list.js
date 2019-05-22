@@ -4,6 +4,7 @@ import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { getBGGCollectionData, initPrevBGGCollection } from './bgg-collection'
+import { setCurrentListID } from './database'
 
 let listData = []
 

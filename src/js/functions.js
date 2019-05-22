@@ -4,7 +4,7 @@ import { showTab, renderPreviousSession, setupSaveLogin } from './views'
 import { initPrevList } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult } from './result'
-import { saveTemplateData, saveProgressData, getcurrentListID } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, getCurrentListID, setCurrentListID, getAllListIDs } from './database'
 
 const initRankingEngine = () => {
   initMaterializeComponents()
@@ -17,6 +17,8 @@ const initRankingEngine = () => {
     const data = prevData.data
     const category = prevData.category
     const loginStep = prevData.step
+    const currentListID = prevData.currentListID
+    
     if (loginStep === 'List') {
       initPrevList(category, data)
     } else if (loginStep === 'Rank') {
@@ -27,6 +29,7 @@ const initRankingEngine = () => {
     const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
     modal.open()
     sessionStorage.removeItem('loginReload')
+    setCurrentListID(currentListID)
   } else {
     renderPreviousSession()
   }
@@ -42,11 +45,11 @@ const handleClickSave = () => {
     alert('Please add adescription for your list')
   } else {
     if (currentStep === 'List') {
-      saveTemplateData(saveDesc)
+      dbSaveTemplateData(saveDesc)
     } else if (currentStep === 'Rank') {
-      saveProgressData(saveDesc)
+      dbSaveProgressData(saveDesc)
     } else if (currentStep === 'Result') {
-      const resultListID = getcurrentListID('result')
+      const resultListID = getCurrentListID('result')
       if (resultListID > 0) {
         // update previously saved list
       } else {
@@ -87,10 +90,12 @@ const initMaterializeComponents = () => {
 const saveData = (data) => {
   const category = getCategory()
   const step = getCurrentStep()
+  const currentListID = getAllListIDs()
 
   const obj = {
     category,
     step,
+    currentListID,
     data
   }
   localStorage.setItem('saveData', JSON.stringify(obj))
