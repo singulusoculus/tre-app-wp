@@ -4,7 +4,7 @@ import { showTab, renderPreviousSession, setupSaveLogin } from './views'
 import { initPrevList } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, getCurrentListID, setCurrentListID, getAllListIDs } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo } from './database'
 
 const initRankingEngine = () => {
   initMaterializeComponents()
@@ -17,7 +17,7 @@ const initRankingEngine = () => {
     const data = prevData.data
     const category = prevData.category
     const loginStep = prevData.step
-    const currentListID = prevData.currentListID
+    const dbListInfo = prevData.dbListInfo
     
     if (loginStep === 'List') {
       initPrevList(category, data)
@@ -29,7 +29,8 @@ const initRankingEngine = () => {
     const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
     modal.open()
     sessionStorage.removeItem('loginReload')
-    setCurrentListID(currentListID)
+    setDBListInfo(dbListInfo)
+    // setCurrentListID(currentListID)
   } else {
     renderPreviousSession()
   }
@@ -37,25 +38,37 @@ const initRankingEngine = () => {
   setupSaveLogin()
 }
 
-const handleClickSave = () => {
+const handleClickSave = (e) => {
   const currentStep = getCurrentStep()
   const saveDesc = document.querySelector('#save-description').value
 
   if (saveDesc === '') {
-    alert('Please add adescription for your list')
+    alert('Please add a description for your list')
+    e.stopPropagation()
   } else {
     if (currentStep === 'List') {
       dbSaveTemplateData(saveDesc)
     } else if (currentStep === 'Rank') {
       dbSaveProgressData(saveDesc)
     } else if (currentStep === 'Result') {
-      const resultListID = getCurrentListID('result')
-      if (resultListID > 0) {
-        // update previously saved list
-      } else {
-        // save result list
-      }
+      // const resultListID = getCurrentListID('result')
+      // if (resultListID > 0) {
+      //   // update previously saved list
+      // } else {
+      //   // save result list
+      // }
     }
+  }
+}
+
+const handleClickUpdate = (e) => {
+  const saveDesc = document.querySelector('#save-description').value
+
+  if (saveDesc === '') {
+    alert('Please add a description for your list')
+    e.stopPropagation()
+  } else {
+    dbUpdateTemplateData(saveDesc)
   }
 }
 
@@ -90,12 +103,12 @@ const initMaterializeComponents = () => {
 const saveData = (data) => {
   const category = getCategory()
   const step = getCurrentStep()
-  const currentListID = getAllListIDs()
+  const dbListInfo = getDBListInfo()
 
   const obj = {
     category,
     step,
-    currentListID,
+    dbListInfo,
     data
   }
   localStorage.setItem('saveData', JSON.stringify(obj))
@@ -139,4 +152,4 @@ const xmlToJson = (xml) => {
   return obj
 }
 
-export { disableArrowKeyScroll, saveData, xmlToJson, initMaterializeComponents, initRankingEngine, handleClickSave }
+export { disableArrowKeyScroll, saveData, xmlToJson, initMaterializeComponents, initRankingEngine, handleClickSave, handleClickUpdate }

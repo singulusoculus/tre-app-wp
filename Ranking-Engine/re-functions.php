@@ -36,24 +36,32 @@ switch ($func) {
   case 'getTemplateList':
     getTemplateList();
     break;
-  case 'saveResultRanking':
-    saveResultRanking();
+  case 'insertResultRanking':
+    insertResultRanking();
     break;
-  case 'saveResultUser':
-    saveResultUser();
+  case 'updateResultRanking':
+    updateResultRanking();
     break;
-  case 'saveProgressList':
-    saveProgressList();
+  case 'insertResultUser':
+    insertResultUser();
     break;
-  case 'saveTemplateList':
-    saveTemplateList();
+  case 'insertProgressList':
+    insertProgressList();
     break;
-  case 'updateFinalList':
-    updateFinalList();
+  case 'updateProgressList':
+    updateProgressList();
+    break;
+  case 'insertTemplateList':
+    insertTemplateList();
+    break;
+  case 'updateTemplateList':
+    updateTemplateList();
     break;
   case 'updateRankings':
     updateRankings();
     break;
+  default:
+    echo 'Could not find the specified function';
 }
 
 ///////////////////////////////////////
@@ -151,7 +159,7 @@ function getTemplateList() {
 // SAVE/UPDATE LIST DATA
 ///////////////////////////////////////
 
-function saveResultUser() {
+function insertResultUser() {
   global $wpdb;
   $currentResultID = $_POST['currentResultID'];
   $saveData = $_POST['resultData'];
@@ -193,7 +201,7 @@ function saveResultUser() {
   // );
 }
 
-function saveResultRanking() {
+function insertResultRanking() {
   global $wpdb;
   $finalList = $_POST['rankedItems'];
   $itemCount = $_POST['itemCount'];
@@ -258,7 +266,11 @@ function saveResultRanking() {
 
 }
 
-function saveProgressList() {
+function updateResultRanking() {
+
+}
+
+function insertProgressList() {
   global $wpdb;
   $currentlistid = $_POST['currentProgressID'];
   $savedata = $_POST['rankData'];
@@ -274,69 +286,81 @@ function saveProgressList() {
   //sanitize description
   $desc = sanitize_text_field($desc);
 
-  if ($currentlistid === "0") {
-      //INSERT
-      $wpdb->insert(
-          're_rank_progress',
-          array(
-              'progress_id' => null,
-              'wpuid' => $wpuid,
-              'progress_desc' => $desc,
-              'created_date' => $currdate,
-              'save_date' => $currdate,
-              'item_count' => $numitems,
-              'percent_complete' => $percent,
-              'progress_data' => $savedata,
-              're_version' => $version
-          ),
-          array(
-              '%d',
-              '%d',
-              '%s',
-              '%s',
-              '%s',
-              '%d',
-              '%d',
-              '%s',
-              '%s'
-          )
-      );
+  //INSERT
+  $wpdb->insert(
+      're_rank_progress',
+      array(
+          'progress_id' => null,
+          'wpuid' => $wpuid,
+          'progress_desc' => $desc,
+          'created_date' => $currdate,
+          'save_date' => $currdate,
+          'item_count' => $numitems,
+          'percent_complete' => $percent,
+          'progress_data' => $savedata,
+          're_version' => $version
+      ),
+      array(
+          '%d',
+          '%d',
+          '%s',
+          '%s',
+          '%s',
+          '%d',
+          '%d',
+          '%s',
+          '%s'
+      )
+  );
 
-      $currentlistid = $wpdb->insert_id;
-
-  } else {
-      //UPDATE currentlistid row
-      $wpdb->update(
-          're_rank_progress',
-          array(
-              'progress_desc' => $desc,
-              'save_date' => $currdate,
-              'item_count' => $numitems,
-              'percent_complete' => $percent,
-              'progress_data' => $savedata,
-              're_version' => $version
-
-          ), 
-          array('progress_id' => $currentlistid),
-          array(
-              '%s',
-              '%s',
-              '%d',
-              '%d',
-              '%s',
-              '%s'
-          ),
-          array( '%d' )
-      );
-  }
-
+  $currentlistid = $wpdb->insert_id;
   //send currentlistid back to JS
   echo $currentlistid;
 }
 
-function saveTemplateList() {
+function updateProgressList() {
   global $wpdb;
-  $currentTemplateId = $_POST['currentTemplateID'];
+  $currentlistid = $_POST['currentProgressID'];
+  $savedata = $_POST['rankData'];
+  $desc = $_POST['saveDesc'];
+  $numitems = $_POST['itemCount'];
+  $percent = $_POST['percent'];
+  $currdate = date("Y-m-d");
+  $version = '2.0.0';
+
+  $savedata = removeslashes($savedata);
+
+  //sanitize description
+  $desc = sanitize_text_field($desc);
+
+  $wpdb->update(
+    're_rank_progress',
+    array(
+        'progress_desc' => $desc,
+        'save_date' => $currdate,
+        'item_count' => $numitems,
+        'percent_complete' => $percent,
+        'progress_data' => $savedata,
+        're_version' => $version
+
+    ), 
+    array('progress_id' => $currentlistid),
+    array(
+        '%s',
+        '%s',
+        '%d',
+        '%d',
+        '%s',
+        '%s'
+    ),
+    array( '%d' )
+);
+
+
+}
+
+function insertTemplateList() {
+  global $wpdb;
   $templateData = $_POST['listData'];
   $desc = $_POST['saveDesc'];
   $numItems = $_POST['itemCount'];
@@ -350,62 +374,75 @@ function saveTemplateList() {
   //sanitize description
   $desc = sanitize_text_field($desc);
 
-  if ($currentTemplateId === "0") {
-      //INSERT
-      $wpdb->insert(
-          're_list_templates',
-          array(
-              'template_id' => null,
-              'wpuid' => $wpuid,
-              'template_desc' => $desc,
-              'created_date' => $currentDate,
-              'updated_date' => $currentDate,
-              'item_count' => $numItems,
-              'list_category' => $category,
-              'template_data' => $templateData,
-              're_version' => $version
-          ),
-          array(
-              '%d',
-              '%d',
-              '%s',
-              '%s',
-              '%d',
-              '%d',
-              '%s',
-              '%s'
-          )
-      );
+  //INSERT
+  $wpdb->insert(
+    're_list_templates',
+    array(
+        'template_id' => null,
+        'wpuid' => $wpuid,
+        'template_desc' => $desc,
+        'created_date' => $currentDate,
+        'updated_date' => $currentDate,
+        'item_count' => $numItems,
+        'list_category' => $category,
+        'template_data' => $templateData,
+        're_version' => $version
+    ),
+    array(
+        '%d',
+        '%d',
+        '%s',
+        '%s',
+        '%d',
+        '%d',
+        '%s',
+        '%s',
+        '%s'
+    )
+  );
 
-      $currentTemplateId = $wpdb->insert_id;
-
-  } else {
-      //UPDATE currentlistid row
-      $wpdb->update(
-          're_list_templates',
-          array(
-              'template_desc' => $desc,
-              'updated_date' => $currentDate,
-              'item_count' => $numItems,
-              'template_data' => $templateData,
-              're_version' => $version
-
-          ), 
-          array('template_id' => $currentTemplateId),
-          array(
-              '%s',
-              '%s',
-              '%d',
-              '%s',
-              '%s'
-          ),
-          array( '%d' )
-      );
-  }
-
-  //send currentTemplateId back to JS 
+  $currentTemplateId = $wpdb->insert_id;
   echo $currentTemplateId;
+}
 
+function updateTemplateList() {
+  global $wpdb;
+  $currentTemplateId = $_POST['currentTemplateID'];
+  $templateData = $_POST['listData'];
+  $desc = $_POST['saveDesc'];
+  $numItems = $_POST['itemCount'];
+  $wpuid = $_POST['wpuid'];
+  $currentDate = date("Y-m-d");
+  $version = '2.0.0';
+
+  $templateData = removeslashes($templateData);
+
+  //sanitize description
+  $desc = sanitize_text_field($desc);
+
+  //UPDATE currentlistid row
+  $wpdb->update(
+    're_list_templates',
+    array(
+        'template_desc' => $desc,
+        'updated_date' => $currentDate,
+        'item_count' => $numItems,
+        'template_data' => $templateData,
+        're_version' => $version
+    ), 
+    array('template_id' => $currentTemplateId),
+    array(
+        '%s',
+        '%s',
+        '%d',
+        '%s',
+        '%s'
+    ),
+    array( '%d' )
+  );
+
+  $currentTemplateId = $wpdb->insert_id;
+  echo $currentTemplateId;
 }
 
 function updateFinalList() {

@@ -3,7 +3,7 @@ import { setResultData, getResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
-import { dbSaveResultData } from './database'
+import { dbSaveResultData, setDBListInfoType } from './database'
 
 let rankData = {}
 let rankDataHistory = []
@@ -435,6 +435,9 @@ const handleRestart = (e) => {
   if (checkedOption === 'restart-complete') {
     showRankSection('Result')
   } else if (checkedOption === 'restart-partial') {
+    // Destroy template connection to database
+    setDBListInfoType('template', { id: 0, desc: '' })
+
     // Get number of items
     const numOfItems = parseInt(document.querySelector('#num-of-items').value)
 

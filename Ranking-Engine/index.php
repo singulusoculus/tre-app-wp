@@ -554,7 +554,8 @@
       </div>
     </div>
     <div class="modal-footer center-align">
-      <a href="#!" id="save-list-btn" class="modal-close waves-effect waves-green btn-flat">Save</a>
+      <a href="#!" id="save-list-btn" class="modal-close waves-effect waves-green btn-flat">Save New</a>
+      <a href="#!" id="update-list-btn" class="modal-close waves-effect waves-green btn-flat hide">Update Current</a>
     </div>
   </div>
 

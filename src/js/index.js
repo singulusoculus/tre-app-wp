@@ -5,7 +5,8 @@ import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine, handleClickSave } from './functions'
+import { initRankingEngine, handleClickSave, handleClickUpdate } from './functions'
+import { getDBListInfo } from './database'
 
 jQuery(document).ready(() => {
   initRankingEngine()
@@ -174,7 +175,38 @@ jQuery(document).ready(() => {
   })
 
   // ***************** Modals *****************
-  document.querySelector('#save-list-btn').addEventListener('click', () => {
-    handleClickSave()
+  document.querySelector('#save-list-btn').addEventListener('click', (e) => {
+    handleClickSave(e)
   })
+
+  document.querySelector('#update-list-btn').addEventListener('click', (e) => {
+    handleClickUpdate(e)
+  })
+
+  document.querySelector('#save-list').addEventListener('click', () => {
+    const listInfo = getDBListInfo()
+    if (listInfo.template.id > 0) {
+      document.querySelector('#update-list-btn').classList.remove('hide')
+      document.querySelector('#save-list-btn').textContent = 'Save New'
+      document.querySelector('#save-description').value = listInfo.template.desc
+    } else {
+      document.querySelector('#update-list-btn').classList.add('hide')
+      document.querySelector('#save-list-btn').textContent = 'Save'
+      document.querySelector('#save-description').value = ''
+    }
+  })
+
+  document.querySelector('#save-ranking').addEventListener('click', () => {
+    const progressID = getDBListInfo().progress.id
+
+    document.querySelector('#update-list-btn').classList.add('hide')
+
+    if (progressID > 0) {
+      document.querySelector('#save-list-btn').textContent = 'Update'
+    } else {
+      document.querySelector('#save-list-btn').textContent = 'Save'
+      document.querySelector('#save-description').value = ''
+    }
+  })
+
 })
