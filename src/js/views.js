@@ -5,7 +5,7 @@ import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
-import { setCurrentListID, setDBListInfo } from './database'
+import { setCurrentListID, setDBListInfo, setDBListInfoType } from './database'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -369,6 +369,9 @@ const showStartSection = (source) => {
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
   showHelpText('start')
+
+  // Clears result database link
+  setDBListInfoType('result', { id: 0 })
 }
 
 const showListSection = (source) => {
@@ -386,6 +389,9 @@ const showListSection = (source) => {
     const data = getResultData()
     loadList(data)
   }
+
+  // Clears result database link
+  setDBListInfoType('result', { id: 0 })
 
   enableStepTab('list')
   disableStepTab('rank', 'result')
@@ -409,6 +415,9 @@ const showListSection = (source) => {
 }
 
 const showRankSection = (source) => {
+  // Clears database link when starting a new ranking
+  setDBListInfoType('progress', { id: 0, desc: '' })
+
   if (source === 'List') {
     const listData = getListData()
     const category = getCategory()

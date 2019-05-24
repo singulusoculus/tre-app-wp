@@ -102,27 +102,49 @@ const dbSaveProgressData = (saveDesc) => {
   let rankData = getRankData()
   const itemCount = rankData.masterList.length
   const percent = Math.floor(rankData.finishSize * 100 / rankData.totalSize)
-  rankData = JSON.stringify(rankData)
+  const rankDataJSON = JSON.stringify(rankData)
 
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
-    func: 'saveProgressList',
-    currentProgressID: dbListInfo.progress.id,
-    wpuid,
-    rankData,
-    saveDesc,
-    itemCount,
-    percent
-  }, (data, status) => {
-    if (status === 'success') {
-      let newData = parseInt(data.replace(/[\n\r]+/g, ''))
-      setDBListInfoType('progress', {
-        id: newData
-      })
-      console.log('Saved Progress')
-      console.log(dbListInfo.progress.id)
-      saveData(rankData)
-    }
-  })
+  if (dbListInfo.progress.id === 0) {
+    // INSERT
+    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+      func: 'insertProgressList',
+      wpuid,
+      rankData: rankDataJSON,
+      saveDesc,
+      itemCount,
+      percent
+    }, (data, status) => {
+      if (status === 'success') {
+        let newData = parseInt(data.replace(/[\n\r]+/g, ''))
+        setDBListInfoType('progress', {
+          id: newData,
+          desc: saveDesc
+        })
+        console.log('Insert Progress')
+        console.log(dbListInfo.progress.id)
+        saveData(rankData)
+      }
+    })
+  } else {
+    // UPDATE
+    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+      func: 'updateProgressList',
+      currentProgressID: dbListInfo.progress.id,
+      rankData: rankDataJSON,
+      saveDesc,
+      itemCount,
+      percent
+    }, (data, status) => {
+      if (status === 'success') {
+        setDBListInfoType('progress', {
+          desc: saveDesc
+        })
+        console.log('Update Progress')
+        console.log(dbListInfo.progress.id)
+        saveData(rankData)
+      }
+    })
+  }
 }
 
 const dbSaveResultData = (rankedItems) => {
@@ -158,7 +180,33 @@ const dbUpdateResultData = (rankedItems) => {
 }
 
 const dbSaveUserResultData = (saveDesc) => {
+  const wpuid = getUserID()
+  let resultData = getResultData()
+  const itemCount = resultData.length
+  const resultDataJSON = JSON.stringify(resultData)
+  const category = getCategory()
 
+  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    func: 'insertResultUser',
+    currentProgressID: dbListInfo.progress.id,
+    resultData: resultDataJSON,
+    desc: saveDesc,
+    itemCount: itemCount,
+    category,
+    wpuid
+  }, (data, status) => {
+    if (status === 'success') {
+      let newData = parseInt(data.replace(/[\n\r]+/g, ''))
+      setDBListInfoType('userResult', {
+        id: newData,
+        desc: saveDesc
+      })
+      console.log('Saved User Result')
+      console.log(dbListInfo.userResult.id)
+      setDBListInfoType('progress', { id: 0, desc: '' })
+      saveData(resultData)
+    }
+  })
 }
 
 export { dbSaveTemplateData,
@@ -167,4 +215,5 @@ export { dbSaveTemplateData,
   setDBListInfo,
   setDBListInfoType,
   getDBListInfo,
-  dbUpdateTemplateData }
+  dbUpdateTemplateData,
+  dbSaveUserResultData }

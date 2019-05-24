@@ -411,6 +411,9 @@ const calcRankedList = () => {
     rankedItems.push(item.name)
   })
 
+  // // Clears database link when completing ranking
+  // setDBListInfoType('progress', { id: 0, desc: '' })
+
   dbSaveResultData(rankedItems)
 
   // saveData(rankedList)
@@ -451,6 +454,8 @@ const handleRestart = (e) => {
       showRankSection('Result')
     }
   }
+  // Clears database link when starting a new ranking
+  setDBListInfoType('progress', { id: 0, desc: '' })
 }
 
 const cardFadeOut = (prevItem1, prevItem2) => {

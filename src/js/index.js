@@ -176,10 +176,12 @@ jQuery(document).ready(() => {
 
   // ***************** Modals *****************
   document.querySelector('#save-list-btn').addEventListener('click', (e) => {
+    // This button is available on List, Rank, and Result sections
     handleClickSave(e)
   })
 
   document.querySelector('#update-list-btn').addEventListener('click', (e) => {
+    // This is only available on the List section
     handleClickUpdate(e)
   })
 
@@ -198,11 +200,13 @@ jQuery(document).ready(() => {
 
   document.querySelector('#save-ranking').addEventListener('click', () => {
     const progressID = getDBListInfo().progress.id
+    const listInfo = getDBListInfo()
 
     document.querySelector('#update-list-btn').classList.add('hide')
 
     if (progressID > 0) {
       document.querySelector('#save-list-btn').textContent = 'Update'
+      document.querySelector('#save-description').value = listInfo.progress.desc
     } else {
       document.querySelector('#save-list-btn').textContent = 'Save'
       document.querySelector('#save-description').value = ''

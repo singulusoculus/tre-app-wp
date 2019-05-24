@@ -110,11 +110,11 @@ function deleteTemplateList() {
 function getUserLists() {
   $wpuid = $_POST['wpuid'];
     
-  $progressLists = $wpdb->get_results( "SELECT list_id, list_desc, save_date, num_of_items, percent_complete FROM re_progress WHERE wpuid = $wpuid ORDER BY list_id DESC", ARRAY_A );
+  $progressLists = $wpdb->get_results( "SELECT list_id, list_desc, save_date, num_of_items, percent_complete FROM re_rank_progress WHERE wpuid = $wpuid ORDER BY list_id DESC", ARRAY_A );
 
-  $finalLists = $wpdb->get_results("SELECT list_id, list_desc, finish_date, num_of_items FROM re_final_h WHERE wpuid = $wpuid ORDER BY list_id DESC" , ARRAY_A );
+  $finalLists = $wpdb->get_results("SELECT list_id, list_desc, finish_date, num_of_items FROM re_user_results WHERE wpuid = $wpuid ORDER BY list_id DESC" , ARRAY_A );
 
-  $templateLists = $wpdb->get_results("SELECT template_id, template_desc, created_date, updated_date, num_of_items FROM re_templates WHERE wpuid = $wpuid ORDER BY list_id DESC" , ARRAY_A );
+  $templateLists = $wpdb->get_results("SELECT template_id, template_desc, created_date, updated_date, num_of_items FROM re_list_templates WHERE wpuid = $wpuid ORDER BY list_id DESC" , ARRAY_A );
 
   // push list data in to array
   $userlists = array();
@@ -161,44 +161,54 @@ function getTemplateList() {
 
 function insertResultUser() {
   global $wpdb;
-  $currentResultID = $_POST['currentResultID'];
+  $currentProgressID = $_POST['currentProgressID'];
   $saveData = $_POST['resultData'];
-  $desc = $_POST['saveDesc'];
+  $desc = $_POST['desc'];
   $itemCount = $_POST['itemCount'];
   $category = $_POST['category'];
   $wpuid = $_POST['wpuid'];
   $currDate = date("Y-m-d");
   $version = '2.0.0';
 
-  $saveData = removeslashes($savedata);
+  $saveData = removeslashes($saveData);
 
   //sanitize description
   $desc = sanitize_text_field($desc);
 
+  //delete progress list if exists
+  if ($currentProgressID > 0) {
+      // DELETE currentlistid from re_progress
+      $wpdb->delete( 're_rank_progress', array( 'progress_id' => $currentProgressID ) );
+  }
 
+  // insert new list into re_results_user
+    //INSERT
+  $wpdb->insert(
+    're_results_user',
+    array(
+        'result_id' => null,
+        'wpuid' => $wpuid,
+        'result_desc' => $desc,
+        'finish_date' => $currDate,
+        'item_count' => $itemCount,
+        'list_category' => $category,
+        'result_data' => $saveData,
+        're_version' => $version
+    ),
+    array(
+        '%d',
+        '%d',
+        '%s',
+        '%s',
+        '%d',
+        '%d',
+        '%s',
+        '%s'
+    )
+  );
 
-
-  // //delete progress list
-  // if ($currentlistid > 0) {
-  //     //an in progress list exists
-  //     //DELETE currentlistid from re_progress
-  //     $wpdb->delete( 're_progress', array( 'list_id' => $currentlistid ) );
-  // }
-
-  // //update final list with user id and description
-  // $wpdb->update(
-  //     're_final_h',
-  //     array(
-  //         'list_desc' => $desc,
-  //         'wpuid' => $wpuid,
-  //     ), 
-  //     array('list_id' => $finallistid),
-  //     array(
-  //         '%s',
-  //         '%d',
-  //     ),
-  //     array( '%d' )
-  // );
+  $savelistid = $wpdb->insert_id;
+  echo $savelistid;
 }
 
 function insertResultRanking() {
@@ -216,26 +226,18 @@ function insertResultRanking() {
       're_results_h',
       array(
           'result_id' => null,
-          'wpuid' => null,
-          'result_desc' => null,
           'finish_date' => $currdate,
           'item_count' => $itemCount,
           'bgg_flag' => $bggFlag,
-          'template_id' => $templateID > 0 ? $templateID : null,
           'list_category' => $listCategory,
-          'user_result_data' => null,
           're_version' => $version
       ),
       array(
           '%d',
-          '%d',
-          '%s',
           '%s',
           '%d',
           '%d',
           '%d',
-          '%d',
-          '%s',
           '%s'
       )
   );
@@ -272,7 +274,6 @@ function updateResultRanking() {
 
 function insertProgressList() {
   global $wpdb;
-  $currentlistid = $_POST['currentProgressID'];
   $savedata = $_POST['rankData'];
   $desc = $_POST['saveDesc'];
   $numitems = $_POST['itemCount'];
@@ -336,13 +337,12 @@ function updateProgressList() {
   $wpdb->update(
     're_rank_progress',
     array(
-        'progress_desc' => $desc,
-        'save_date' => $currdate,
-        'item_count' => $numitems,
-        'percent_complete' => $percent,
-        'progress_data' => $savedata,
-        're_version' => $version
-
+      'progress_desc' => $desc,
+      'save_date' => $currdate,
+      'item_count' => $numitems,
+      'percent_complete' => $percent,
+      'progress_data' => $savedata,
+      're_version' => $version
     ), 
     array('progress_id' => $currentlistid),
     array(
@@ -354,9 +354,8 @@ function updateProgressList() {
         '%s'
     ),
     array( '%d' )
-);
-
-
+  );
+  echo $currentlistid;
 }
 
 function insertTemplateList() {
@@ -440,8 +439,6 @@ function updateTemplateList() {
     ),
     array( '%d' )
   );
-
-  $currentTemplateId = $wpdb->insert_id;
   echo $currentTemplateId;
 }
 

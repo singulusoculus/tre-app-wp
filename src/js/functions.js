@@ -4,7 +4,7 @@ import { showTab, renderPreviousSession, setupSaveLogin } from './views'
 import { initPrevList } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData } from './database'
 
 const initRankingEngine = () => {
   initMaterializeComponents()
@@ -18,7 +18,7 @@ const initRankingEngine = () => {
     const category = prevData.category
     const loginStep = prevData.step
     const dbListInfo = prevData.dbListInfo
-    
+
     if (loginStep === 'List') {
       initPrevList(category, data)
     } else if (loginStep === 'Rank') {
@@ -49,14 +49,10 @@ const handleClickSave = (e) => {
     if (currentStep === 'List') {
       dbSaveTemplateData(saveDesc)
     } else if (currentStep === 'Rank') {
+      // This handles both insert and update db opeations depending on if they have a current list.
       dbSaveProgressData(saveDesc)
     } else if (currentStep === 'Result') {
-      // const resultListID = getCurrentListID('result')
-      // if (resultListID > 0) {
-      //   // update previously saved list
-      // } else {
-      //   // save result list
-      // }
+      dbSaveUserResultData(saveDesc)
     }
   }
 }
