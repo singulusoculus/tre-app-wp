@@ -1,9 +1,9 @@
 import { getCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { showTab, renderPreviousSession, setupSaveLogin } from './views'
-import { initPrevList } from './list'
+import { showTab, renderPreviousSession, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection } from './views'
+import { initPrevList, getListData } from './list'
 import { initPrevRanking } from './rank'
-import { initPrevResult } from './result'
+import { initPrevResult, getResultData } from './result'
 import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData } from './database'
 
 const initRankingEngine = () => {
@@ -36,6 +36,7 @@ const initRankingEngine = () => {
   }
 
   setupSaveLogin()
+  history.replaceState(null, null, ' ')
 }
 
 const handleClickSave = (e) => {
@@ -73,6 +74,50 @@ const handleClickUpdate = (e) => {
 // update the top X rankings
 // save it back to the database
 
+// //////////////////////////////////////////////////////////////////////
+// // HANDLE TAB CLICKS
+// //////////////////////////////////////////////////////////////////////
+
+const handleClickStart = () => {
+  const source = getCurrentStep()
+  const category = document.querySelector('#list-category-select').value
+  if (source !== 'Start' || category !== '0') {
+    const message = 'This will clear any progress and start the process from the beginning. Want to continue?'
+    custConfirm(message, showStartSection, source)
+  }
+}
+
+const handleClickList = () => {
+  const source = getCurrentStep()
+  if (source === 'Rank') {
+    const message = 'This will terminate the ranking process and allow you to edit the list. Want to continue?'
+    custConfirm(message, showListSection, source)
+  } else if (source === 'Result') {
+    const message = 'This will clear your results and allow you to edit the list. Want to continue?'
+    custConfirm(message, showListSection, source)
+  }
+}
+
+const handleClickRank = () => {
+  const source = getCurrentStep()
+  if (source === 'List') {
+    const listData = getListData()
+    if (listData.length > 0) {
+      const message = 'Are you ready to start ranking this list?'
+      custConfirm(message, showRankSection, source)
+    }
+  } else if (source === 'Rank') {
+    const message = 'Do you really want to restart ranking this list?'
+    custConfirm(message, showRankSection, source)
+  } else if (source === 'Result') {
+    const instance = M.Modal.getInstance(document.querySelector('#restart-modal'))
+    instance.open()
+    const data = getResultData()
+    // Set List Size - total-list-size
+    document.querySelector('.total-list-size').textContent = `Complete: ${data.length} Items`
+  }
+}
+
 const disableArrowKeyScroll = () => {
   // Disable arrow keys from scrolling
   window.addEventListener('keydown', (e) => {
@@ -100,6 +145,15 @@ const saveData = (data) => {
   const category = getCategory()
   const step = getCurrentStep()
   const dbListInfo = getDBListInfo()
+  // const rankDataHistory = getRankDataHistory()
+
+  // if (step === 'List') {
+  //   data = getListData()
+  // } else if (step === 'Rank') {
+  //   data = getRankData()
+  // } else if (step === 'Result') {
+  //   data = getResultData()
+  // }
 
   const obj = {
     category,
@@ -148,4 +202,14 @@ const xmlToJson = (xml) => {
   return obj
 }
 
-export { disableArrowKeyScroll, saveData, xmlToJson, initMaterializeComponents, initRankingEngine, handleClickSave, handleClickUpdate }
+export { disableArrowKeyScroll,
+  saveData,
+  xmlToJson,
+  initMaterializeComponents,
+  initRankingEngine,
+  handleClickSave,
+  handleClickUpdate,
+  handleClickStart,
+  handleClickList,
+  handleClickRank
+}

@@ -203,6 +203,7 @@ const dbSaveUserResultData = (saveDesc) => {
       })
       console.log('Saved User Result')
       console.log(dbListInfo.userResult.id)
+      document.querySelector('#save-results').classList.add('disabled')
       setDBListInfoType('progress', { id: 0, desc: '' })
       saveData(resultData)
     }
@@ -216,4 +217,5 @@ export { dbSaveTemplateData,
   setDBListInfoType,
   getDBListInfo,
   dbUpdateTemplateData,
-  dbSaveUserResultData }
+  dbSaveUserResultData
+}

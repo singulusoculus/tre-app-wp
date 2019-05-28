@@ -2,7 +2,7 @@ import { showResultSection, setupSaveLogin } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
-import { saveResultData } from './database'
+import { saveResultData, getDBListInfo } from './database'
 
 let resultData
 
@@ -57,9 +57,15 @@ const renderResult = () => {
   // Fix Rank column width
   document.querySelector('.rank-column').setAttribute('style', 'width: 10%')
 
+  const userResultID = getDBListInfo().userResult.id
   // Put save button in line with other buttons
   const saveButtonEl = document.createElement('a')
   saveButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'modal-trigger', 'save-btn')
+  if (userResultID === 0) {
+    saveButtonEl.classList.remove('disabled')
+  } else {
+    saveButtonEl.classList.add('disabled')
+  }
   saveButtonEl.setAttribute('id', 'save-results')
   saveButtonEl.setAttribute('href', '#login-modal')
   saveButtonEl.textContent = 'Save'
@@ -69,6 +75,10 @@ const renderResult = () => {
   saveButtonEl.appendChild(saveIconEl)
   const dtButtonsEl = document.querySelector('.dt-buttons')
   dtButtonsEl.appendChild(saveButtonEl)
+  saveButtonEl.addEventListener('click', () => {
+    document.querySelector('#save-list-btn').textContent = 'Save'
+    document.querySelector('#save-description').value = ''
+  })
 
   setupSaveLogin()
 

@@ -127,11 +127,11 @@
           <ul id="step-tabs" class="tabs tabs-transparent tabs-fixed-width step-tabs">
             <li id="start-tab" class="start-tab tab step-tabs__start "><a href="#start-container" id="start-tab-link"
                 class="tooltipped active" data-tooltip="Start over">Start</a></li>
-            <li id="list-tab" class="list-tab tab step-tabs__list disabled"><a href="#list-container" id="list-tab-link"
+            <li id="list-tab" class="list-tab tab step-tabs__list disabled"><a href="#" id="list-tab-link"
                 class="" data-tooltip="">List</a></li>
-            <li id="rank-tab" class="rank-tab tab step-tabs__rank disabled"><a href="#rank-container" id="rank-tab-link"
+            <li id="rank-tab" class="rank-tab tab step-tabs__rank disabled"><a href="#" id="rank-tab-link"
                 class="" data-tooltip="">Rank</a></li>
-            <li id="result-tab" class="result-tab tab step-tabs__result disabled"><a href="#result-container"
+            <li id="result-tab" class="result-tab tab step-tabs__result disabled"><a href="#"
                 id="result-tab-link">Result</a></li>
           </ul>
         </div>

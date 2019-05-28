@@ -3,9 +3,9 @@ import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
-import { setCurrentStep, getCurrentStep } from './step'
+import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
-import { setCurrentListID, setDBListInfo, setDBListInfoType } from './database'
+import { setDBListInfo, setDBListInfoType } from './database'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -312,50 +312,6 @@ const sectionTransition = (step) => {
 }
 
 // //////////////////////////////////////////////////////////////////////
-// // HANDLE TAB CLICKS
-// //////////////////////////////////////////////////////////////////////
-
-const handleClickStart = () => {
-  const source = getCurrentStep()
-  const category = document.querySelector('#list-category-select').value
-  if (source !== 'Start' || category !== '0') {
-    const message = 'This will clear any progress and start the process from the beginning. Want to continue?'
-    custConfirm(message, showStartSection, source)
-  }
-}
-
-const handleClickList = () => {
-  const source = getCurrentStep()
-  if (source === 'Rank') {
-    const message = 'This will terminate the ranking process and allow you to edit the list. Want to continue?'
-    custConfirm(message, showListSection, source)
-  } else if (source === 'Result') {
-    const message = 'This will clear your results and allow you to edit the list. Want to continue?'
-    custConfirm(message, showListSection, source)
-  }
-}
-
-const handleClickRank = () => {
-  const source = getCurrentStep()
-  if (source === 'List') {
-    const listData = getListData()
-    if (listData.length > 0) {
-      const message = 'Are you ready to start ranking this list?'
-      custConfirm(message, showRankSection, source)
-    }
-  } else if (source === 'Rank') {
-    const message = 'Do you really want to restart ranking this list?'
-    custConfirm(message, showRankSection, source)
-  } else if (source === 'Result') {
-    const instance = M.Modal.getInstance(document.querySelector('#restart-modal'))
-    instance.open()
-    const data = getResultData()
-    // Set List Size - total-list-size
-    document.querySelector('.total-list-size').textContent = `Complete: ${data.length} Items`
-  }
-}
-
-// //////////////////////////////////////////////////////////////////////
 // // SHOW SECTIONS
 // //////////////////////////////////////////////////////////////////////
 
@@ -372,6 +328,7 @@ const showStartSection = (source) => {
 
   // Clears result database link
   setDBListInfoType('result', { id: 0 })
+  setDBListInfoType('userResult', { id: 0, desc: '' })
 }
 
 const showListSection = (source) => {
@@ -392,6 +349,7 @@ const showListSection = (source) => {
 
   // Clears result database link
   setDBListInfoType('result', { id: 0 })
+  setDBListInfoType('userResult', { id: 0, desc: '' })
 
   enableStepTab('list')
   disableStepTab('rank', 'result')
@@ -415,8 +373,10 @@ const showListSection = (source) => {
 }
 
 const showRankSection = (source) => {
-  // Clears database link when starting a new ranking
-  setDBListInfoType('progress', { id: 0, desc: '' })
+  if (source !== undefined) {
+    // Clears database link when starting a new ranking
+    setDBListInfoType('progress', { id: 0, desc: '' })
+  }
 
   if (source === 'List') {
     const listData = getListData()
@@ -435,6 +395,8 @@ const showRankSection = (source) => {
     initRanking(listData, category)
   }
 
+  setDBListInfoType('userResult', { id: 0, desc: '' })
+
   enableStepTab('list', 'rank')
   disableStepTab('result')
 
@@ -451,7 +413,6 @@ const showResultSection = (source) => {
   renderResult()
 
   showTab('result')
-
   showHelpText('result')
 }
 
@@ -579,9 +540,6 @@ export {
   enableListSave,
   disableListSave,
   setupSaveLogin,
-  handleClickStart,
-  handleClickList,
-  handleClickRank,
   custConfirm,
   renderBGGCollection,
   showTab

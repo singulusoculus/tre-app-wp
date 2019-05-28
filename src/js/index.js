@@ -1,11 +1,11 @@
 import '../styles/main.scss'
-import { renderListData, handleClickStart, handleClickList, handleClickRank, renderBGGCollection } from './views'
+import { renderListData, renderBGGCollection } from './views'
 import { handleClickClear, handleAddTextItems } from './list'
 import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine, handleClickSave, handleClickUpdate } from './functions'
+import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank } from './functions'
 import { getDBListInfo } from './database'
 
 jQuery(document).ready(() => {
@@ -17,19 +17,19 @@ jQuery(document).ready(() => {
 
   // ***************** Start Tab *****************
   document.querySelector('#start-tab').addEventListener('click', (e) => {
-    handleClickStart()
+    handleClickStart(e)
     e.stopPropagation()
   })
 
   // ***************** List Tab *****************
   document.querySelector('#list-tab').addEventListener('click', (e) => {
-    handleClickList()
+    handleClickList(e)
     e.stopPropagation()
   })
 
   // ***************** Rank Tab *****************
   document.querySelector('#rank-tab').addEventListener('click', (e) => {
-    handleClickRank()
+    handleClickRank(e)
     e.stopPropagation()
   })
 
@@ -213,4 +213,5 @@ jQuery(document).ready(() => {
     }
   })
 
+// End of document.ready
 })

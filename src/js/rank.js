@@ -27,6 +27,8 @@ const initPrevRanking = (category, data) => {
 
 const getRankData = () => rankData
 
+const getRankDataHistory = () => rankDataHistory
+
 const populateRankData = (r, data) => {
   // Set up rankData Object
   rankData = {
@@ -436,6 +438,7 @@ const handleRestart = (e) => {
   })
 
   if (checkedOption === 'restart-complete') {
+    setDBListInfoType('result', { id: 0 })
     showRankSection('Result')
   } else if (checkedOption === 'restart-partial') {
     // Destroy template connection to database
@@ -500,4 +503,14 @@ document.onkeydown = function (e) {
 }
 
 // -----------------------------------------------------
-export { initPrevRanking, initRanking, handlePick, handleUndo, deleteItem, getRankData, calcRankedList, handleDeleteItem, handleRestart }
+export { initPrevRanking,
+  initRanking,
+  handlePick,
+  handleUndo,
+  deleteItem,
+  getRankData,
+  calcRankedList,
+  handleDeleteItem,
+  handleRestart,
+  getRankDataHistory
+}
