@@ -1,5 +1,5 @@
 import { renderBGGCollection } from './views'
-import { addListItems, sortListData, getListData } from './list'
+import { addListItems, sortListData, getListData, createList } from './list'
 import { getBGGFilters, updateBGGFilters } from './filters'
 import { xmlToJson } from './functions'
 import uuidv4 from 'uuid'
@@ -116,7 +116,9 @@ const addBGGItemToList = (id) => {
   const item = bggCollectionData[itemID]
   item.addedToList = true
 
-  addListItems([item])
+  const list = createList([item])
+  addListItems(list)
+
   renderBGGCollection()
 }
 
@@ -158,7 +160,9 @@ const handleAddSelectedBGG = () => {
     item.addedToList = true
   })
 
-  addListItems(filteredList)
+  const list = createList(filteredList)
+  addListItems(list)
+
   renderBGGCollection()
 }
 

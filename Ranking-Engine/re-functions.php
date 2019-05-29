@@ -27,8 +27,8 @@ switch ($func) {
   case 'getUserLists':
     getUserLists();
     break;
-  case 'getFinalList':
-    getFinalList();
+  case 'getUserResultList':
+    getUserResultList();
     break;
   case 'getProgressList':
     getProgressList();
@@ -107,6 +107,17 @@ function deleteTemplateList() {
 // RETRIEVE LIST DATA
 ///////////////////////////////////////
 
+function getResultList() {
+  global $wpdb;
+  $listid = $_POST['listId'];
+    
+  $results = $wpdb->get_results("SELECT item_rank, item_name FROM re_results_d WHERE result_id = $listid", ARRAY_A );
+
+  $results_json = json_encode($results);
+
+  echo $results_json;
+}
+
 function getUserLists() {
   $wpuid = $_POST['wpuid'];
     
@@ -125,7 +136,7 @@ function getUserLists() {
   print_r($lists_json);
 }
 
-function getFinalList() {
+function getUserResultList() {
   $listid = $_POST['listid'];
     
   $results = $wpdb->get_results("SELECT item_rank, item_name FROM re_final_d WHERE list_id = $listid", ARRAY_A );
@@ -269,7 +280,25 @@ function insertResultRanking() {
 }
 
 function updateResultRanking() {
+  global $wpdb;
+  $rankedItems = $_POST['rankedItems'];
+  $resultId = $_POST['resultId'];
 
+  foreach ($rankedItems as $key => $value) {
+    $wpdb->update(
+      're_results_d',
+      array('item_name' => $value),
+      array(
+        'result_id' => $resultId,
+        'item_rank' => $key+1
+      ),
+      array('%s'),
+      array(
+        '%d',
+        '%d'
+      )
+    );
+  }
 }
 
 function insertProgressList() {

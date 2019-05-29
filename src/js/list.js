@@ -4,7 +4,6 @@ import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { getBGGCollectionData, initPrevBGGCollection } from './bgg-collection'
-import { setCurrentListID } from './database'
 
 let listData = []
 
@@ -44,20 +43,20 @@ const createListObject = (data) => {
     image: data.image || '',
     source: data.source,
     rank: data.rank || 0,
-    yearPublished: data.yearPublished || '',
-    bggId: data.bggId || '',
-    showCount: 0,
-    voteCount: 0,
-    voteShowPct: 0
+    // yearPublished: data.yearPublished || '',
+    bggId: data.bggId || ''
+    // showCount: 0,
+    // voteCount: 0,
+    // voteShowPct: 0
   }
   return obj
 }
 
-const createList = (itemArray, source) => {
+// data takes in array of objects
+const createList = (data) => {
   let list = []
-  itemArray.forEach((name) => {
-    const data = { name, source }
-    const obj = createListObject(data)
+  data.forEach((item) => {
+    const obj = createListObject(item)
     list.push(obj)
   })
   return list
@@ -70,8 +69,18 @@ const handleAddTextItems = (textList) => {
   M.textareaAutoResize(textareaEl)
   M.updateTextFields()
 
+  const data = []
+
+  // create array of objects to send to createList
+  textList.forEach((name) => {
+    data.push({
+      name,
+      source: 'text'
+    })
+  })
+
   // create array of objects
-  let list = createList(textList, 'text')
+  let list = createList(data)
 
   // add objects into listData
   addListItems(list)

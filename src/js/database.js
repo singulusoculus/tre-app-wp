@@ -147,6 +147,20 @@ const dbSaveProgressData = (saveDesc) => {
   }
 }
 
+const dbUpdateResultData = (rankedItems, resultId) => {
+  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    func: 'updateResultRanking',
+    rankedItems,
+    resultId
+  }, (data, status) => {
+    if (status === 'success') {
+      const resultData = getResultData()
+      saveData(resultData)
+      console.log('List updated')
+    }
+  })
+}
+
 const dbSaveResultData = (rankedItems) => {
   const itemCount = rankedItems.length
   const rankData = getRankData()
@@ -173,10 +187,6 @@ const dbSaveResultData = (rankedItems) => {
       saveData(resultData)
     }
   })
-}
-
-const dbUpdateResultData = (rankedItems) => {
-
 }
 
 const dbSaveUserResultData = (saveDesc) => {
@@ -217,5 +227,6 @@ export { dbSaveTemplateData,
   setDBListInfoType,
   getDBListInfo,
   dbUpdateTemplateData,
-  dbSaveUserResultData
+  dbSaveUserResultData,
+  dbUpdateResultData
 }
