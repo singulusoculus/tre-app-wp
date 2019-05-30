@@ -13,30 +13,31 @@ const initRankingEngine = () => {
 
   const loginReload = sessionStorage.getItem('loginReload')
   if (loginReload) {
-    const prevData = JSON.parse(localStorage.getItem('saveData'))
-    const data = prevData.data
-    const category = prevData.category
-    const loginStep = prevData.step
-    const dbListInfo = prevData.dbListInfo
+    if (loginReload !== 'Start') {
+      const prevData = JSON.parse(localStorage.getItem('saveData'))
+      const data = prevData.data
+      const category = prevData.category
+      const loginStep = prevData.step
+      const dbListInfo = prevData.dbListInfo
 
-    if (loginStep === 'List') {
-      initPrevList(category, data)
-    } else if (loginStep === 'Rank') {
-      initPrevRanking(category, data)
-    } else if (loginStep === 'Result') {
-      initPrevResult(category, data)
+      if (loginStep === 'List') {
+        initPrevList(category, data)
+      } else if (loginStep === 'Rank') {
+        initPrevRanking(category, data)
+      } else if (loginStep === 'Result') {
+        initPrevResult(category, data)
+      }
+      const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
+      modal.open()
+      sessionStorage.removeItem('loginReload')
+      setDBListInfo(dbListInfo)
+      // setCurrentListID(currentListID)
     }
-    const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
-    modal.open()
-    sessionStorage.removeItem('loginReload')
-    setDBListInfo(dbListInfo)
-    // setCurrentListID(currentListID)
-  } else {
-    renderPreviousSession()
   }
-
+  renderPreviousSession()
   setupSaveLogin()
   history.replaceState(null, null, ' ')
+  sessionStorage.removeItem('loginReload')
 }
 
 const handleClickSave = (e) => {

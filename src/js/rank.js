@@ -517,5 +517,6 @@ export { initPrevRanking,
   calcRankedList,
   handleDeleteItem,
   handleRestart,
-  getRankDataHistory
+  getRankDataHistory,
+  resetHistory
 }

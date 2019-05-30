@@ -2,7 +2,7 @@ import { showResultSection, setupSaveLogin } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
-import { saveResultData, getDBListInfo } from './database'
+import { getDBListInfo } from './database'
 
 let resultData
 

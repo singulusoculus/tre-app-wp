@@ -7,6 +7,8 @@ import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank } from './functions'
 import { getDBListInfo } from './database'
+import { getCurrentStep } from './step'
+import { getCategory } from './category'
 
 jQuery(document).ready(() => {
   initRankingEngine()
@@ -171,7 +173,8 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#login-form-button').addEventListener('click', () => {
-    sessionStorage.setItem('loginReload', true)
+    const data = getCurrentStep()
+    sessionStorage.setItem('loginReload', data)
   })
 
   // ***************** Modals *****************

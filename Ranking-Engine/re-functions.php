@@ -1,13 +1,14 @@
 <?php
 
 
-require_once('C:\xampp\apps\wordpress\htdocs\wp-config.php');
+// require_once('C:\xampp\apps\wordpress\htdocs\wp-config.php');
 require_once('C:\xampp\apps\wordpress\htdocs\wp-load.php');
 
 // require_once($_SERVER['DOCUMENT_ROOT'] . $folder . '/wp-config.php');
 // require_once($_SERVER['DOCUMENT_ROOT'] . $folder . '/wp-load.php');
 
 // global $wpdb;
+$version = '2.0.0';
 
 $func = $_POST['func'];
 
@@ -15,8 +16,8 @@ switch ($func) {
   case 'getBGGCollection':
     getBGGCollection();
     break;
-  case 'deleteFinalList':
-    deleteFinalList();
+  case 'deleteUserResultList':
+    deleteUserResultList();
     break;
   case 'deleteProgressList':
     deleteProgressList();
@@ -75,32 +76,25 @@ function getBGGCollection() {
 ///////////////////////////////////////
 // DELETE LISTS
 ///////////////////////////////////////
-function deleteFinalList() {
+function deleteUserResultList() {
+  global $wpdb;
   $listid = $_POST['listid'];
 
-  $wpdb->update(
-      're_final_h',
-      array(
-          'wpuid' => null,
-      ), 
-      array('list_id' => $listid),
-      array(
-          '%d',
-      ),
-      array( '%d' )
-  );
+  $wpdb->delete('re_results_user', array('result_id' => $listid));
 }
 
 function deleteProgressList() {
+  global $wpdb;
   $listid = $_POST['listid'];
 
-  $wpdb->delete( 're_progress', array( 'list_id' => $listid ) );
+  $wpdb->delete( 're_rank_progress', array('progress_id' => $listid ));
 }
 
 function deleteTemplateList() {
+  global $wpdb;
   $listid = $_POST['listid'];
 
-  $wpdb->delete( 're_templates', array( 'list_id' => $listid ) );
+  $wpdb->delete( 're_list_templates', array('template_id' => $listid ));
 }
 
 ///////////////////////////////////////
@@ -119,17 +113,18 @@ function getResultList() {
 }
 
 function getUserLists() {
+  global $wpdb;
   $wpuid = $_POST['wpuid'];
     
-  $progressLists = $wpdb->get_results( "SELECT list_id, list_desc, save_date, num_of_items, percent_complete FROM re_rank_progress WHERE wpuid = $wpuid ORDER BY list_id DESC", ARRAY_A );
+  $progressLists = $wpdb->get_results( "SELECT progress_id, save_date, item_count, percent_complete, progress_desc FROM re_rank_progress WHERE wpuid = $wpuid ORDER BY progress_id DESC", ARRAY_A );
 
-  $finalLists = $wpdb->get_results("SELECT list_id, list_desc, finish_date, num_of_items FROM re_user_results WHERE wpuid = $wpuid ORDER BY list_id DESC" , ARRAY_A );
+  $resultLists = $wpdb->get_results("SELECT result_id, finish_date, item_count, result_desc FROM re_results_user WHERE wpuid = $wpuid ORDER BY result_id DESC" , ARRAY_A );
 
-  $templateLists = $wpdb->get_results("SELECT template_id, template_desc, created_date, updated_date, num_of_items FROM re_list_templates WHERE wpuid = $wpuid ORDER BY list_id DESC" , ARRAY_A );
+  $templateLists = $wpdb->get_results("SELECT template_id, created_date, updated_date, item_count, template_desc FROM re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
 
   // push list data in to array
-  $userlists = array();
-  array_push($userLists, $progressLists, $finalLists, $templateLists);
+  $userLists = array();
+  array_push($userLists, $templateLists, $progressLists, $resultLists );
 
   // send it in json
   $lists_json = json_encode($userLists);
@@ -137,9 +132,10 @@ function getUserLists() {
 }
 
 function getUserResultList() {
-  $listid = $_POST['listid'];
+  global $wpdb;
+  $resultid = $_POST['resultid'];
     
-  $results = $wpdb->get_results("SELECT item_rank, item_name FROM re_final_d WHERE list_id = $listid", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT result_data, list_category, result_desc FROM re_results_user WHERE result_id = $resultid", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -147,9 +143,10 @@ function getUserResultList() {
 }
 
 function getProgressList() {
-  $listid = $_POST['listid'];
+  global $wpdb;
+  $progressid = $_POST['progressid'];
     
-  $results = $wpdb->get_results( "SELECT save_data, re_version FROM re_progress WHERE list_id = $listid", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc FROM re_rank_progress WHERE progress_id = $progressid", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -157,9 +154,10 @@ function getProgressList() {
 }
 
 function getTemplateList() {
+  global $wpdb;
   $templateid = $_POST['templateid'];
     
-  $results = $wpdb->get_results( "SELECT template_data FROM re_template WHERE template_id = $templateid", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT template_data, list_category, template_desc FROM re_list_templates WHERE template_id = $templateid", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -179,7 +177,7 @@ function insertResultUser() {
   $category = $_POST['category'];
   $wpuid = $_POST['wpuid'];
   $currDate = date("Y-m-d");
-  $version = '2.0.0';
+  global $version;
 
   $saveData = removeslashes($saveData);
 
@@ -230,7 +228,7 @@ function insertResultRanking() {
   $templateID = $_POST['templateID'];
   $currdate = date("Y-m-d");
   $listCategory = $_POST['category'];
-  $version = '2.0.0';
+  global $version;
 
   //INSERT data into re_final_h
   $wpdb->insert(
@@ -309,7 +307,8 @@ function insertProgressList() {
   $percent = $_POST['percent'];
   $wpuid = $_POST['wpuid'];
   $currdate = date("Y-m-d");
-  $version = '2.0.0';
+  $category = $_POST['category'];
+  global $version;
 
   $savedata = removeslashes($savedata);
 
@@ -327,6 +326,7 @@ function insertProgressList() {
           'save_date' => $currdate,
           'item_count' => $numitems,
           'percent_complete' => $percent,
+          'list_category' => $category,
           'progress_data' => $savedata,
           're_version' => $version
       ),
@@ -336,6 +336,7 @@ function insertProgressList() {
           '%s',
           '%s',
           '%s',
+          '%d',
           '%d',
           '%d',
           '%s',
@@ -356,7 +357,7 @@ function updateProgressList() {
   $numitems = $_POST['itemCount'];
   $percent = $_POST['percent'];
   $currdate = date("Y-m-d");
-  $version = '2.0.0';
+  global $version;
 
   $savedata = removeslashes($savedata);
 
@@ -395,7 +396,7 @@ function insertTemplateList() {
   $wpuid = $_POST['wpuid'];
   $category = $_POST['category'];
   $currentDate = date("Y-m-d");
-  $version = '2.0.0';
+  global $version;
 
   $templateData = removeslashes($templateData);
 
@@ -441,7 +442,7 @@ function updateTemplateList() {
   $numItems = $_POST['itemCount'];
   $wpuid = $_POST['wpuid'];
   $currentDate = date("Y-m-d");
-  $version = '2.0.0';
+  global $version;
 
   $templateData = removeslashes($templateData);
 

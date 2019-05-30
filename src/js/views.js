@@ -5,7 +5,7 @@ import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
-import { setDBListInfo, setDBListInfoType } from './database'
+import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList } from './database'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -325,6 +325,7 @@ const showStartSection = (source) => {
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
   showHelpText('start')
+  setupSaveLogin()
 
   // Clears result database link
   setDBListInfoType('result', { id: 0 })
@@ -482,7 +483,7 @@ const custConfirm = (message, resultCallback, source) => {
   })
 }
 
-const setupSaveLogin = () => {
+const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
 
   if (getUserID() === 0) {
@@ -515,7 +516,40 @@ const setupSaveLogin = () => {
     })
   } else {
     // get My Lists data and populate My Lists section
-    myListsEl.textContent = 'Lists retrieved'
+    const data = await dbGetUserLists()
+
+    myListsEl.textContent = ''
+
+    const templateLists = data[0]
+    const progressLists = data[1]
+    const resultLists = data[2]
+
+    // Templates
+    if (templateLists.length > 0) {
+      const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '', '']
+      const templateTable = createTableElement('templates', templateHeaders, templateLists)
+      myListsEl.appendChild(templateTable)
+    }
+
+    // Progress
+    if (progressLists.length > 0) {
+      const progressHeaders = ['Saved', 'Items', '% Comp', 'Desc', '']
+      const progressTable = createTableElement('progress', progressHeaders, progressLists)
+      myListsEl.appendChild(progressTable)
+    }
+
+    // Results
+    if (resultLists.length > 0) {
+      const resultsHeaders = ['Completed', 'Items', 'Desc', '']
+      const resultsTable = createTableElement('results', resultsHeaders, resultLists)
+      myListsEl.appendChild(resultsTable)
+    }
+
+    const allListsLength = templateLists.length + progressLists.length + resultLists.length
+
+    if (allListsLength === 0) {
+      myListsEl.textContent = 'You have not saved any lists yet.'
+    }
 
     // Set Save button targets to Save Modal
     const saveButtons = document.querySelectorAll('.save-btn')
@@ -523,6 +557,59 @@ const setupSaveLogin = () => {
       el.setAttribute('href', '#save-modal')
     })
   }
+}
+
+const createTableElement = (type, headers, rows) => {
+  // Main table div
+  const divEl = document.createElement('div')
+  divEl.classList.add(`my-lists__${type}`)
+  const h4El = document.createElement('h4')
+  h4El.classList.add('center-align')
+  const upperType = type.toUpperCase()
+  h4El.textContent = `${upperType}`
+  const tableEl = document.createElement('table')
+  tableEl.classList.add('highlight')
+
+  // Headers
+  const theadEl = document.createElement('thead')
+  const trEl = document.createElement('tr')
+
+  headers.forEach((header) => {
+    const thEl = document.createElement('th')
+    thEl.textContent = header
+    trEl.appendChild(thEl)
+  })
+
+  theadEl.appendChild(trEl)
+  tableEl.appendChild(theadEl)
+
+  const tbodyEl = document.createElement('tbody')
+
+  // Rows
+  rows.forEach((row) => {
+    const trEl = document.createElement('tr')
+    const items = Object.values(row)
+    const itemID = items[0]
+    trEl.classList.add(`${type}-${itemID}`)
+    items.slice(1).forEach((item) => {
+      const tdEl = document.createElement('td')
+      tdEl.textContent = item
+      trEl.appendChild(tdEl)
+    })
+    trEl.addEventListener('click', () => {
+      // Go get the clicked list from the database and init the right step
+      console.log(type, itemID)
+      dbLoadUserList(type, itemID)
+    })
+    tbodyEl.appendChild(trEl)
+  })
+
+  tableEl.appendChild(tbodyEl)
+
+  divEl.appendChild(h4El)
+  divEl.appendChild(tableEl)
+
+  return divEl
 }
 
 export {

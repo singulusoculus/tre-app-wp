@@ -1,6 +1,6 @@
-import { getListData } from './list'
-import { getRankData } from './rank'
-import { getResultData } from './result'
+import { getListData, initPrevList } from './list'
+import { getRankData, initPrevRanking, resetHistory } from './rank'
+import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData } from './functions'
 
@@ -36,6 +36,71 @@ const setDBListInfoType = (type, updates) => {
 
 const setDBListInfo = (newData) => {
   dbListInfo = newData
+}
+
+const dbGetUserLists = () => new Promise((resolve, reject) => {
+  const wpuid = getUserID()
+
+  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    func: 'getUserLists',
+    wpuid
+  }, (data, status) => {
+    if (status === 'success') {
+      const parsedData = JSON.parse(data)
+      parsedData ? resolve(parsedData) : reject('No data returned')
+    }
+  })
+})
+
+const dbLoadUserList = (type, id) => {
+  if (type === 'templates') {
+    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+      func: 'getTemplateList',
+      templateid: id
+    }, (data, status) => {
+      if (status === 'success') {
+        const parsedData = JSON.parse(data)
+        const listData = JSON.parse(parsedData[0].template_data)
+        const category = parsedData[0].list_category
+        const desc = parsedData[0].template_desc
+        initPrevList(category, listData)
+        const intID = parseInt(id)
+        setDBListInfoType('template', { id: intID, desc })
+      }
+    })
+  } else if (type === 'progress') {
+    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+      func: 'getProgressList',
+      progressid: id
+    }, (data, status) => {
+      if (status === 'success') {
+        const parsedData = JSON.parse(data)
+        const rankData = JSON.parse(parsedData[0].progress_data)
+        const category = parsedData[0].list_category
+        const desc = parsedData[0].progress_desc
+        resetHistory()
+        initPrevRanking(category, rankData)
+        const intID = parseInt(id)
+        setDBListInfoType('progress', { id: intID, desc })
+      }
+    })
+  } else if (type === 'results') {
+    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+      func: 'getUserResultList',
+      resultid: id
+    }, (data, status) => {
+      if (status === 'success') {
+        const parsedData = JSON.parse(data)
+        const resultData = JSON.parse(parsedData[0].result_data)
+        const category = parsedData[0].list_category
+        const desc = parsedData[0].result_desc
+        initPrevResult(category, resultData)
+        const intID = parseInt(id)
+        setDBListInfoType('userResult', { id: intID, desc })
+        document.querySelector('#save-results').classList.add('disabled')
+      }
+    })
+  }
 }
 
 const dbSaveTemplateData = (saveDesc) => {
@@ -103,6 +168,7 @@ const dbSaveProgressData = (saveDesc) => {
   const itemCount = rankData.masterList.length
   const percent = Math.floor(rankData.finishSize * 100 / rankData.totalSize)
   const rankDataJSON = JSON.stringify(rankData)
+  const category = getCategory()
 
   if (dbListInfo.progress.id === 0) {
     // INSERT
@@ -112,7 +178,8 @@ const dbSaveProgressData = (saveDesc) => {
       rankData: rankDataJSON,
       saveDesc,
       itemCount,
-      percent
+      percent,
+      category
     }, (data, status) => {
       if (status === 'success') {
         let newData = parseInt(data.replace(/[\n\r]+/g, ''))
@@ -228,5 +295,7 @@ export { dbSaveTemplateData,
   getDBListInfo,
   dbUpdateTemplateData,
   dbSaveUserResultData,
-  dbUpdateResultData
+  dbUpdateResultData,
+  dbGetUserLists,
+  dbLoadUserList
 }
