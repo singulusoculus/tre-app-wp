@@ -78,21 +78,21 @@ function getBGGCollection() {
 ///////////////////////////////////////
 function deleteUserResultList() {
   global $wpdb;
-  $listid = $_POST['listid'];
+  $listid = $_POST['resultid'];
 
   $wpdb->delete('re_results_user', array('result_id' => $listid));
 }
 
 function deleteProgressList() {
   global $wpdb;
-  $listid = $_POST['listid'];
+  $listid = $_POST['progressid'];
 
   $wpdb->delete( 're_rank_progress', array('progress_id' => $listid ));
 }
 
 function deleteTemplateList() {
   global $wpdb;
-  $listid = $_POST['listid'];
+  $listid = $_POST['templateid'];
 
   $wpdb->delete( 're_list_templates', array('template_id' => $listid ));
 }

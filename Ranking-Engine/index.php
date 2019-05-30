@@ -125,14 +125,10 @@
 
         <div class="nav-content">
           <ul id="step-tabs" class="tabs tabs-transparent tabs-fixed-width step-tabs">
-            <li id="start-tab" class="start-tab tab step-tabs__start "><a href="#start-container" id="start-tab-link"
-                class="tooltipped active" data-tooltip="Start over">Start</a></li>
-            <li id="list-tab" class="list-tab tab step-tabs__list disabled"><a href="#list-container" id="list-tab-link"
-                class="" data-tooltip="">List</a></li>
-            <li id="rank-tab" class="rank-tab tab step-tabs__rank disabled"><a href="#rank-container" id="rank-tab-link"
-                class="" data-tooltip="">Rank</a></li>
-            <li id="result-tab" class="result-tab tab step-tabs__result disabled"><a href="#result-container"
-                id="result-tab-link">Result</a></li>
+            <li id="start-tab" class="start-tab tab step-tabs__start "><a href="#start-container" id="start-tab-link" class="tooltipped active" data-tooltip="Start over">Start</a></li>
+            <li id="list-tab" class="list-tab tab step-tabs__list disabled"><a href="#list-container" id="list-tab-link" class="" data-tooltip="">List</a></li>
+            <li id="rank-tab" class="rank-tab tab step-tabs__rank disabled"><a href="#rank-container" id="rank-tab-link" class="" data-tooltip="">Rank</a></li>
+            <li id="result-tab" class="result-tab tab step-tabs__result disabled"><a href="#result-container" id="result-tab-link">Result</a></li>
           </ul>
         </div>
       </nav>
@@ -175,112 +171,7 @@
             <div class="collapsible-header"><i class="material-icons">view_list</i>My Lists</div>
             <div class="collapsible-body">
               <div class="my-lists">
-                <!-- <div class="my-lists__progress">
-                  <h4 class="center-align">In Progress</h4>
-                  <table class="highlight">
-                    <thead>
-                      <tr>
-                        <th>Saved</th>
-                        <th>Items</th>
-                        <th>% Comp</th>
-                        <th>Desc</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <tr>
-                        <td>1/3/2019</td>
-                        <td>203</td>
-                        <td>20%</td>
-                        <td>Testing</td>
-                        <td><a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></td>
-                      </tr>
-                      <tr>
-                        <td>1/3/2019</td>
-                        <td>203</td>
-                        <td>20%</td>
-                        <td>Testing</td>
-                        <td><a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="my-lists__completed">
-                  <h4 class="center-align">Completed</h4>
-                  <table class="highlight">
-                    <thead>
-                      <tr>
-                        <th>Completed</th>
-                        <th>Items</th>
-                        <th>Desc</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <tr>
-                        <td>1/3/2019</td>
-                        <td>203</td>
-                        <td>Testing</td>
-                        <td><a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></td>
-                      </tr>
-                      <tr>
-                        <td>1/3/2019</td>
-                        <td>203</td>
-                        <td>Testing</td>
-                        <td><a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="my-lists__templates">
-                  <h4 class="center-align">Templates</h4>
-                  <table class="highlight">
-                    <thead>
-                      <tr>
-                        <th>Created</th>
-                        <th>Last Save</th>
-                        <th>Items</th>
-                        <th>Desc</th>
-                        <th></th>
-                        <th></th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <tr>
-                        <td>1/3/2019</td>
-                        <td>1/3/2019</td>
-                        <td>123</td>
-                        <td>Testing</td>
-                        <td>
-                          <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
-                        </td>
-                        <td>
-                          <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>1/3/2019</td>
-                        <td>1/3/2019</td>
-                        <td>456</td>
-                        <td>Testing</td>
-                        <td>
-                          <a href="#!" class="secondary-content"><i class="material-icons">edit</i></a>
-                        </td>
-                        <td>
-                          <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div> -->
-
               </div>
-
             </div>
           </li>
         </ul>

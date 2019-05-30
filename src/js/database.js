@@ -3,6 +3,7 @@ import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData } from './functions'
+import { renderMyLists, setupSaveButtons } from './views';
 
 let dbListInfo = {
   template: {
@@ -100,6 +101,43 @@ const dbLoadUserList = (type, id) => {
         document.querySelector('#save-results').classList.add('disabled')
       }
     })
+  }
+}
+
+const dbDeleteUserList = (type, id) => {
+  const r = confirm('Are you sure you want to delete this list?')
+  if (r === true) {
+    if (type === 'templates') {
+      jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+        func: 'deleteTemplateList',
+        templateid: id
+      }, (data, status) => {
+        if (status === 'success') {
+          renderMyLists()
+          setupSaveButtons()
+        }
+      })
+    } else if (type === 'progress') {
+      jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+        func: 'deleteProgressList',
+        progressid: id
+      }, (data, status) => {
+        if (status === 'success') {
+          renderMyLists()
+          setupSaveButtons()
+        }
+      })
+    } else if (type === 'results') {
+      jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+        func: 'deleteUserResultList',
+        resultid: id
+      }, (data, status) => {
+        if (status === 'success') {
+          renderMyLists()
+          setupSaveButtons()
+        }
+      })
+    }
   }
 }
 
@@ -297,5 +335,6 @@ export { dbSaveTemplateData,
   dbSaveUserResultData,
   dbUpdateResultData,
   dbGetUserLists,
-  dbLoadUserList
+  dbLoadUserList,
+  dbDeleteUserList
 }

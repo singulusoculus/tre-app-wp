@@ -5,7 +5,7 @@ import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
-import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList } from './database'
+import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList } from './database'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -405,7 +405,6 @@ const showRankSection = (source) => {
     showTab('rank')
     showHelpText('rank')
   }
-
   document.querySelector('.next-rank').classList.remove('next--visible')
 }
 
@@ -424,8 +423,6 @@ const showResultSection = (source) => {
 const selectTab = (tab) => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.select(`${tab}-container`)
-
-  history.replaceState(null, null, ' ')
 }
 
 // Materialize's select function simulates a click on the tab, potentially firing any events attached to it
@@ -451,8 +448,6 @@ const showTab = (tab) => {
   M.Tabs.init(tabs)
   updateTabIndicator()
   sectionTransition(tab)
-
-  history.replaceState(null, null, ' ')
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -515,48 +510,56 @@ const setupSaveLogin = async () => {
       el.setAttribute('href', '#login-modal')
     })
   } else {
-    // get My Lists data and populate My Lists section
-    const data = await dbGetUserLists()
-
-    myListsEl.textContent = ''
-
-    const templateLists = data[0]
-    const progressLists = data[1]
-    const resultLists = data[2]
-
-    // Templates
-    if (templateLists.length > 0) {
-      const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '', '']
-      const templateTable = createTableElement('templates', templateHeaders, templateLists)
-      myListsEl.appendChild(templateTable)
-    }
-
-    // Progress
-    if (progressLists.length > 0) {
-      const progressHeaders = ['Saved', 'Items', '% Comp', 'Desc', '']
-      const progressTable = createTableElement('progress', progressHeaders, progressLists)
-      myListsEl.appendChild(progressTable)
-    }
-
-    // Results
-    if (resultLists.length > 0) {
-      const resultsHeaders = ['Completed', 'Items', 'Desc', '']
-      const resultsTable = createTableElement('results', resultsHeaders, resultLists)
-      myListsEl.appendChild(resultsTable)
-    }
-
-    const allListsLength = templateLists.length + progressLists.length + resultLists.length
-
-    if (allListsLength === 0) {
-      myListsEl.textContent = 'You have not saved any lists yet.'
-    }
-
-    // Set Save button targets to Save Modal
-    const saveButtons = document.querySelectorAll('.save-btn')
-    saveButtons.forEach((el) => {
-      el.setAttribute('href', '#save-modal')
-    })
+    renderMyLists()
+    setupSaveButtons()
   }
+}
+
+const renderMyLists = async () => {
+  const myListsEl = document.querySelector('.my-lists')
+  // get My Lists data and populate My Lists section
+  const data = await dbGetUserLists()
+
+  myListsEl.textContent = ''
+
+  const templateLists = data[0]
+  const progressLists = data[1]
+  const resultLists = data[2]
+
+  // Templates
+  if (templateLists.length > 0) {
+    const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '']
+    const templateTable = createTableElement('templates', templateHeaders, templateLists)
+    myListsEl.appendChild(templateTable)
+  }
+
+  // Progress
+  if (progressLists.length > 0) {
+    const progressHeaders = ['Saved', 'Items', '% Comp', 'Desc', '']
+    const progressTable = createTableElement('progress', progressHeaders, progressLists)
+    myListsEl.appendChild(progressTable)
+  }
+
+  // Results
+  if (resultLists.length > 0) {
+    const resultsHeaders = ['Completed', 'Items', 'Desc', '']
+    const resultsTable = createTableElement('results', resultsHeaders, resultLists)
+    myListsEl.appendChild(resultsTable)
+  }
+
+  const allListsLength = templateLists.length + progressLists.length + resultLists.length
+
+  if (allListsLength === 0) {
+    myListsEl.textContent = 'You have not saved any lists yet.'
+  }
+}
+
+const setupSaveButtons = () => {
+  // Set Save button targets to Save Modal
+  const saveButtons = document.querySelectorAll('.save-btn')
+  saveButtons.forEach((el) => {
+    el.setAttribute('href', '#save-modal')
+  })
 }
 
 const createTableElement = (type, headers, rows) => {
@@ -598,9 +601,27 @@ const createTableElement = (type, headers, rows) => {
     })
     trEl.addEventListener('click', () => {
       // Go get the clicked list from the database and init the right step
-      console.log(type, itemID)
       dbLoadUserList(type, itemID)
     })
+    // Delete
+    const tdDeleteEl = document.createElement('td')
+    const aEl = document.createElement('a')
+    aEl.classList.add('secondary-content')
+    const iEl = document.createElement('i')
+    iEl.classList.add('material-icons')
+    iEl.textContent = 'delete'
+
+    aEl.addEventListener('click', (e) => {
+      // Delete the list
+      console.log(type, itemID)
+      dbDeleteUserList(type, itemID)
+      e.stopPropagation()
+    })
+
+    aEl.appendChild(iEl)
+    tdDeleteEl.appendChild(aEl)
+    trEl.appendChild(tdDeleteEl)
+
     tbodyEl.appendChild(trEl)
   })
 
@@ -629,5 +650,7 @@ export {
   setupSaveLogin,
   custConfirm,
   renderBGGCollection,
-  showTab
+  showTab,
+  renderMyLists,
+  setupSaveButtons
 }

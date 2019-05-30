@@ -29,14 +29,11 @@ const initRankingEngine = () => {
       }
       const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
       modal.open()
-      sessionStorage.removeItem('loginReload')
       setDBListInfo(dbListInfo)
-      // setCurrentListID(currentListID)
     }
   }
   renderPreviousSession()
   setupSaveLogin()
-  history.replaceState(null, null, ' ')
   sessionStorage.removeItem('loginReload')
 }
 
@@ -69,11 +66,6 @@ const handleClickUpdate = (e) => {
     dbUpdateTemplateData(saveDesc)
   }
 }
-
-// Update previously saved list
-// pull previous saved list
-// update the top X rankings
-// save it back to the database
 
 // //////////////////////////////////////////////////////////////////////
 // // HANDLE TAB CLICKS

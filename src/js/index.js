@@ -8,7 +8,6 @@ import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChang
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank } from './functions'
 import { getDBListInfo } from './database'
 import { getCurrentStep } from './step'
-import { getCategory } from './category'
 
 jQuery(document).ready(() => {
   initRankingEngine()
@@ -218,3 +217,8 @@ jQuery(document).ready(() => {
 
 // End of document.ready
 })
+
+window.onpopstate = (e) => {
+  history.replaceState(null, null, ' ')
+  e.stopPropagation()
+}
