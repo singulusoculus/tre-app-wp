@@ -140,6 +140,17 @@
 
         <ul class="collapsible popout">
           <li class="active">
+            <div class="collapsible-header">Transfer Processes</div>
+            <div class="collapsible-body">
+            <a id="progress-transfer" class="waves-effect waves-light btn">Progress Transfer</a>
+            </div>
+          </li>
+        </ul>
+            
+
+
+        <ul class="collapsible popout">
+          <li class="active">
             <div class="collapsible-header"><i class="material-icons">create</i>Create a new list</div>
             <div class="collapsible-body">
               <div class="row">

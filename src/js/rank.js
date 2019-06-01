@@ -272,7 +272,12 @@ const cmpCheck = () => {
 
 // History and Undo
 const setHistory = () => {
-  const maxHistory = 10
+  let maxHistory
+  if (rankData.masterList.length > 1000) {
+    maxHistory = 4
+  } else {
+    maxHistory = 10
+  }
 
   const rankDataJSON = JSON.stringify(rankData)
   rankDataHistory.push(rankDataJSON)
