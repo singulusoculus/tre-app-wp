@@ -143,6 +143,8 @@
             <div class="collapsible-header">Transfer Processes</div>
             <div class="collapsible-body">
             <a id="progress-transfer" class="waves-effect waves-light btn">Progress Transfer</a>
+            <a id="user-result-transfer" class="waves-effect waves-light btn">User Result Transfer</a>
+            <a id="result-transfer" class="waves-effect waves-light btn">Ranking Result Transfer</a>
             </div>
           </li>
         </ul>

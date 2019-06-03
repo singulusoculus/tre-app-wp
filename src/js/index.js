@@ -8,17 +8,25 @@ import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChang
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank } from './functions'
 import { getDBListInfo } from './database'
 import { getCurrentStep } from './step'
-import { handleProgressTransferClick } from './transfer'
+import { handleProgressTransferClick, handleUserResultTransferClick, handleRankingResultsTransferClick } from './transfer'
 
 jQuery(document).ready(() => {
   initRankingEngine()
 
   // //////////////////////////////////////////////////////////////////////
-  // // Transfer Old Lists
+  // // Transfer Processes
   // //////////////////////////////////////////////////////////////////////
 
   document.querySelector('#progress-transfer').addEventListener('click', () => {
     handleProgressTransferClick()
+  })
+
+  document.querySelector('#user-result-transfer').addEventListener('click', () => {
+    handleUserResultTransferClick()
+  })
+
+  document.querySelector('#result-transfer').addEventListener('click', () => {
+    handleRankingResultsTransferClick()
   })
 
   // //////////////////////////////////////////////////////////////////////

@@ -4,6 +4,7 @@ import { disableArrowKeyScroll, saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 import { dbSaveResultData, setDBListInfoType, getDBListInfo, dbUpdateResultData } from './database'
+import { createList } from './list';
 
 let rankData = {}
 let rankDataHistory = []
@@ -54,6 +55,8 @@ const populateRankData = (r, data) => {
 const initRanking = (itemsList, category) => {
   disableArrowKeyScroll()
   populateRankData(false)
+
+  itemsList = createList(itemsList)
 
   rankData.masterList = itemsList
   setCategory(category)

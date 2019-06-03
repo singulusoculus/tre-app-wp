@@ -1,5 +1,79 @@
 import { createList } from './list'
 
+const handleRankingResultsTransferClick = () => {
+  jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+    func: 'transferRankingResultsH'
+  }, (data, status) => {
+    console.log('Ranking Header Transfer complete')
+    jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+      func: 'transferRankingResultsD'
+    }, (data, status) => {
+      console.log('Ranking Detail Transfer complete')
+    })
+  })
+}
+
+const handleUserResultTransferClick = () => {
+  // Get lists to transfer and list info from re_final_h
+  jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+    func: 'getOldResultLists'
+  }, (data, status) => {
+    const parsedData = JSON.parse(data)
+    // console.log(parsedData)
+
+    parsedData.forEach((list) => {
+      const listId = list.list_id
+      const wpuid = list.wpuid
+      const desc = list.list_desc
+      const bggFlag = list.bgg_flag
+      const finishDate = list.finish_date
+      const itemCount = list.item_count
+      const category = list.list_category
+
+      jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+        func: 'getOldResultDetails',
+        listId
+      }, (data, status) => {
+        const parsedDetails = JSON.parse(data)
+        // console.log(parsedDetails)
+
+        let resultData = []
+
+        parsedDetails.forEach((item) => {
+          resultData.push({
+            name: item.item_name,
+            source: bggFlag === 1 ? 'bgg' : 'text',
+            rank: item.item_rank
+          })
+        })
+
+        const result = createList(resultData)
+
+        // strip out uuid before saving to database
+        result.forEach((item) => {
+          delete item.id
+        })
+
+        const resultJSON = JSON.stringify(result)
+        // console.log(result)
+
+        jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+          func: 'insertResultList',
+          resultJSON,
+          wpuid,
+          desc,
+          finishDate,
+          itemCount,
+          category
+        }, (data, status) => {
+          let newData = parseInt(data.replace(/[\n\r]+/g, ''))
+          console.log(`Transfered ${listId}. New ID: ${newData}`)
+        })
+      })
+    })
+  })
+}
+
 const handleProgressTransferClick = () => {
   let erroredLists = []
 
@@ -38,7 +112,6 @@ const handleProgressTransferClick = () => {
         let regex2 = /(?!,)(?!])"\s/
         dirtySaveData = dirtySaveData.replace(regex, '').replace(regex2, '')
         const cleanSaveData = dirtySaveData.replace(' ","', '","').replace('"," ', '","').replace('""', '"').replace('." ', '')
-        console.log(cleanSaveData)
         // var saveData = JSON.parse(cleanSaveData)
         try {
           var saveData = JSON.parse(cleanSaveData)
@@ -121,6 +194,13 @@ const handleProgressTransferClick = () => {
           if (status === 'success') {
             let newData = parseInt(data.replace(/[\n\r]+/g, ''))
             console.log(`Transfered ${listid}. New ID: ${newData}`)
+
+            jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+              func: 'deleteOldProgressList',
+              listid: listid
+            }, (data, status) => {
+              console.log(`Deleted ${listid} from re_progress_transfer.`)
+            })
           }
         })
       })
@@ -128,4 +208,4 @@ const handleProgressTransferClick = () => {
   })
 }
 
-export { handleProgressTransferClick }
+export { handleProgressTransferClick, handleUserResultTransferClick, handleRankingResultsTransferClick }
