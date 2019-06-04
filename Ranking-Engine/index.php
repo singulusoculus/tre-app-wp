@@ -230,7 +230,7 @@
                         <p>
                           <label>
                             No
-                            <input type="checkbox">
+                            <input id="bgg-expansions" type="checkbox">
                             <span class="lever"></span>
                             Yes
                           </label>

@@ -3,7 +3,7 @@ import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData } from './functions'
-import { renderMyLists, setupSaveButtons } from './views';
+import { renderMyLists, setupSaveButtons } from './views'
 
 let dbListInfo = {
   template: {

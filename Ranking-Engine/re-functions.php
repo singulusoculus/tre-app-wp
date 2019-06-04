@@ -70,7 +70,43 @@ switch ($func) {
 ///////////////////////////////////////
 
 function getBGGCollection() {
-  echo 'getBGGCollection';
+  $bggUsername = $_POST['bggUsername'];
+  $expansions = $_POST['expansions'];
+
+
+  $url = 'https://www.boardgamegeek.com/xmlapi2/collection?username='.$bggUsername. '&stats=1';
+
+  //filter out expansions if checked
+  if ($noExpansion == 1) {
+    $url = $url.'&excludesubtype=boardgameexpansion';
+  }
+
+  $tries = 1;
+
+  do {
+    $headers = get_headers($url, 1);
+    $statusCode = substr($headers[0], 9, 3);
+
+    if ($statusCode == '200') {
+      $xml = simplexml_load_file($url);
+
+      //Check for a valid username
+      if ($xml->error->message == "Invalid username specified") {
+        echo 1;
+      } else {
+        // Send xml back to js
+        echo $xml;
+      } 
+    } else {
+      $tries++;
+      sleep(10);
+    }
+
+    if ($tries == 12) {
+      echo 2;
+    }
+
+  } while ($statusCode == '202' && $tries < 13);
 }
 
 ///////////////////////////////////////

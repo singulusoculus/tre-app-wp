@@ -36,14 +36,75 @@ const initPrevBGGCollection = () => {
   }
 }
 
-const handleBGGCollectionRequest = () => {
+const handleBGGCollectionRequest = async () => {
+  // This will replace getBGGData once I can test
+  // const user = document.querySelector('#bgg-username').value
+  // const expansions = document.querySelector('#bgg-expansions').checked
+  // bggCollectionData = await getBGGCollection(user, expansions)
+
   bggCollectionData = getBGGData()
   showBGGCollectionSection()
   renderBGGCollection()
 }
 
+const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => {
+  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    func: 'getBGGCollection',
+    bggUsername: user,
+    expansions: expansions
+  }, (data, status) => {
+    // 1 = invalid username; 2 = timed out, try again later
+    if (data === 1) {
+      reject(new Error('Invalid username'))
+    } else if (data === 2) {
+      reject(new Error('Timed Out. Try again later.'))
+    } else {
+      const listData = getListData()
+      const xmlDoc = data.replace(/[\n\r]+/g, '')
+      const parser = new DOMParser()
+      const xml = parser.parseFromString(xmlDoc, 'text/xml')
+      const dataJSON = xmlToJson(xml)
+
+      const items = dataJSON.items.item
+
+      let bggList = []
+
+      items.forEach((item) => {
+        const obj = {
+          id: uuidv4(),
+          name: item.name['#text'],
+          source: 'bgg',
+          image: item.thumbnail['#text'],
+          yearPublished: parseInt(item.yearpublished['#text']),
+          bggId: item['@attributes'].objectid,
+          own: item.status['@attributes'].own === '1',
+          fortrade: item.status['@attributes'].fortrade === '1',
+          prevowned: item.status['@attributes'].prevowned === '1',
+          want: item.status['@attributes'].want === '1',
+          wanttobuy: item.status['@attributes'].wanttobuy === '1',
+          wanttoplay: item.status['@attributes'].wanttoplay === '1',
+          wishlist: item.status['@attributes'].wishlist === '1',
+          played: item.numplays['#text'] > 0,
+          rated: item.stats['rating']['@attributes'].value !== 'N/A',
+          rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
+          addedToList: false
+        }
+
+        if (listData.map(e => e.bggId).indexOf(obj.bggId) > -1) {
+          obj.addedToList = true
+        }
+
+        bggList.push(obj)
+      })
+
+      resolve(bggList)
+    }
+  })
+})
+
 const getBGGData = () => {
   const listData = getListData()
+
   let xhttp = ''
 
   if (window.XMLHttpRequest) {
@@ -57,6 +118,7 @@ const getBGGData = () => {
   xhttp.send()
 
   const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
+
   const parser = new DOMParser()
   const xml = parser.parseFromString(xmlDoc, 'text/xml')
   const data = xmlToJson(xml)
