@@ -253,6 +253,7 @@ const dbSaveProgressData = (saveDesc) => {
 }
 
 const dbUpdateResultData = (rankedItems, resultId) => {
+  const category = getCategory()
   jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
     func: 'updateResultRanking',
     rankedItems,
@@ -262,6 +263,9 @@ const dbUpdateResultData = (rankedItems, resultId) => {
       const resultData = getResultData()
       saveData(resultData)
       console.log('List updated')
+      if (category === 2) {
+        dbUpdateRankings(resultId)
+      }
     }
   })
 }
@@ -290,6 +294,10 @@ const dbSaveResultData = (rankedItems) => {
       console.log('Saved Result')
       console.log(dbListInfo.result.id)
       saveData(resultData)
+
+      if (category === 2 && itemCount > 10) {
+        dbUpdateRankings(dbListInfo.result.id)
+      }
     }
   })
 }
@@ -322,6 +330,15 @@ const dbSaveUserResultData = (saveDesc) => {
       setDBListInfoType('progress', { id: 0, desc: '' })
       saveData(resultData)
     }
+  })
+}
+
+const dbUpdateRankings = (listId) => {
+  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    func: 'updateRankings',
+    listId: listId
+  }, (data, status) => {
+    console.log('Updated re_boardgames')
   })
 }
 

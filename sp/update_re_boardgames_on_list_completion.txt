@@ -9,7 +9,7 @@ BEGIN
   -- Create a temp table - re_boardgames_update_temp
   DROP TABLE IF EXISTS `re_boardgames_update_temp`;
   CREATE TABLE `rankingengine_wordpress`.`re_boardgames_update_temp` 
-  ( `id` INT(11) NOT NULL
+  (`id` INT(11) NOT NULL
   , `bg_id` INT(11) 
   , `bg_name` VARCHAR(200) NOT NULL
   , `status` VARCHAR(1) NOT NULL
@@ -30,28 +30,27 @@ BEGIN
   INSERT INTO re_boardgames_update_temp (id, bg_id, bg_name, status)
   SELECT id
   , re_boardgames.bg_id
-  , (case when item_name_fixed is null then item_name else item_name_fixed end) AS item_name
+  , item_name
   , (CASE WHEN re_boardgames.bg_id IS NULL THEN 'P' ELSE 'A' END) AS status
-  FROM re_final_d
-  JOIN re_final_h on re_final_d.list_id = re_final_h.list_id
-  LEFT JOIN re_boardgames ON (case when item_name_fixed is null then item_name else item_name_fixed end) = re_boardgames.bg_name
-  WHERE re_final_d.list_id = @FinalListID;
+  FROM re_results_d
+  JOIN re_results_h on re_results_d.result_id = re_results_h.result_id
+  LEFT JOIN re_boardgames ON item_name = re_boardgames.bg_name
+  WHERE re_results_d.result_id = @FinalListID;
 
   -- Get times ranked for list items
   UPDATE re_boardgames_update_temp
-  JOIN (SELECT (case when item_name_fixed is null then item_name else item_name_fixed end) AS item_name
-  , count(case when item_name_fixed is null then item_name else item_name_fixed end) AS item_name_count
-  FROM re_final_d
-  JOIN re_boardgames_update_temp ON (case when item_name_fixed is null then item_name else item_name_fixed end) = re_boardgames_update_temp.bg_name
-  JOIN re_final_h ON re_final_d.list_id = re_final_h.list_id
-  WHERE re_final_h.list_category = 2 
-  AND bgg_flag <> 2 
-  AND num_of_items > 10
-  GROUP BY (case when item_name_fixed is null then item_name else item_name_fixed end)) AS re_final_d_count
-  ON re_boardgames_update_temp.bg_name = re_final_d_count.item_name
-  SET re_boardgames_update_temp.times_ranked = re_final_d_count.item_name_count;
+  JOIN (SELECT item_name
+  , count(item_name) AS item_name_count
+  FROM re_results_d
+  JOIN re_boardgames_update_temp ON item_name = re_boardgames_update_temp.bg_name
+  JOIN re_results_h ON re_results_d.result_id = re_results_h.result_id
+  WHERE re_results_h.list_category = 2  
+  AND item_count > 10
+  GROUP BY item_name) AS re_results_d_count
+  ON re_boardgames_update_temp.bg_name = re_results_d_count.item_name
+  SET re_boardgames_update_temp.times_ranked = re_results_d_count.item_name_count;
 
-  -- Delete items from re_boardgames_update_temp that have fewer than 10 items
+  -- Delete items from re_boardgames_update_temp that have fewer than 25 items
   DELETE FROM re_boardgames_update_temp
   WHERE times_ranked < 25 AND bg_id IS NULL;
 
@@ -70,60 +69,59 @@ BEGIN
   LEFT JOIN re_boardgames ON re_boardgames_update_temp.bg_name = re_boardgames.bg_name
   SET re_boardgames_update_temp.bg_id = re_boardgames.bg_id;
 
-    -- Write back bg_id to re_final_d
-  UPDATE re_final_d
-  JOIN re_boardgames_update_temp ON re_final_d.id = re_boardgames_update_temp.id
-  SET re_final_d.bg_id = re_boardgames_update_temp.bg_id;
+    -- Write back bg_id to re_results_d
+  UPDATE re_results_d
+  JOIN re_boardgames_update_temp ON re_results_d.id = re_boardgames_update_temp.id
+  SET re_results_d.bg_id = re_boardgames_update_temp.bg_id;
 
-  -- Update re_final_d - applies bg_id to newly added games
-  UPDATE re_final_d
+  -- Update re_results_d - applies bg_id to newly added games
+  UPDATE re_results_d
   JOIN (SELECT bg_id, bg_name
   FROM re_boardgames_update_temp
   WHERE status = 'P') as NewGames
-  ON (case when item_name_fixed is null then item_name else item_name_fixed end) = NewGames.bg_name
-  JOIN re_final_h ON re_final_d.list_id = re_final_h.list_id
-  SET re_final_d.bg_id = NewGames.bg_id
-  WHERE re_final_h.list_category = 2 
-  AND bgg_flag <> 2 
-  AND num_of_items > 10;
+  ON item_name = NewGames.bg_name
+  JOIN re_results_h ON re_results_d.result_id = re_results_h.result_id
+  SET re_results_d.bg_id = NewGames.bg_id
+  WHERE re_results_h.list_category = 2 
+  AND item_count > 10;
 
   -- All time - list score and times ranked
   INSERT INTO re_boardgames_update_temp (bg_id, at_list_score, at_times_ranked)
-  SELECT re_final_d.bg_id
-  , round(avg(((num_of_items-item_rank+1)/num_of_items)*100), 3) AS list_score
-  , count(re_final_d.bg_id) as times_ranked
-  FROM re_final_d
-  JOIN re_final_h on re_final_d.list_id = re_final_h.list_id
-  JOIN re_boardgames_update_temp ON re_final_d.bg_id = re_boardgames_update_temp.bg_id
-  GROUP BY re_final_d.bg_id
+  SELECT re_results_d.bg_id
+  , round(avg(((item_count-item_rank+1)/item_count)*100), 3) AS list_score
+  , count(re_results_d.bg_id) as times_ranked
+  FROM re_results_d
+  JOIN re_results_h on re_results_d.result_id = re_results_h.result_id
+  JOIN re_boardgames_update_temp ON re_results_d.bg_id = re_boardgames_update_temp.bg_id
+  GROUP BY re_results_d.bg_id
   ON DUPLICATE KEY UPDATE
   at_list_score = VALUES(at_list_score)
   , at_times_ranked = VALUES(at_times_ranked);
   
   -- Current Year - list score and times ranked
   INSERT INTO re_boardgames_update_temp (bg_id, cy_list_score, cy_times_ranked)
-  SELECT re_final_d.bg_id
-  , round(avg(((num_of_items-item_rank+1)/num_of_items)*100), 3) AS list_score
-  , count(re_final_d.bg_id) as times_ranked
-  FROM re_final_d
-  JOIN re_final_h on re_final_d.list_id = re_final_h.list_id
-  JOIN re_boardgames_update_temp ON re_final_d.bg_id = re_boardgames_update_temp.bg_id
+  SELECT re_results_d.bg_id
+  , round(avg(((item_count-item_rank+1)/item_count)*100), 3) AS list_score
+  , count(re_results_d.bg_id) as times_ranked
+  FROM re_results_d
+  JOIN re_results_h on re_results_d.result_id = re_results_h.result_id
+  JOIN re_boardgames_update_temp ON re_results_d.bg_id = re_boardgames_update_temp.bg_id
   WHERE year(finish_date) = year(now())
-  GROUP BY re_final_d.bg_id
+  GROUP BY re_results_d.bg_id
   ON DUPLICATE KEY UPDATE
   cy_list_score = VALUES(cy_list_score)
   , cy_times_ranked = VALUES(cy_times_ranked);
 
   -- 30 Days - list score and times ranked
   INSERT INTO re_boardgames_update_temp (bg_id, d30_list_score, d30_times_ranked)
-  SELECT re_final_d.bg_id
-  , round(avg(((num_of_items-item_rank+1)/num_of_items)*100), 3) AS list_score
-  , count(re_final_d.bg_id) as times_ranked
-  FROM re_final_d
-  JOIN re_final_h on re_final_d.list_id = re_final_h.list_id
-  JOIN re_boardgames_update_temp ON re_final_d.bg_id = re_boardgames_update_temp.bg_id
-  WHERE (re_final_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-  GROUP BY re_final_d.bg_id
+  SELECT re_results_d.bg_id
+  , round(avg(((item_count-item_rank+1)/item_count)*100), 3) AS list_score
+  , count(re_results_d.bg_id) as times_ranked
+  FROM re_results_d
+  JOIN re_results_h on re_results_d.result_id = re_results_h.result_id
+  JOIN re_boardgames_update_temp ON re_results_d.bg_id = re_boardgames_update_temp.bg_id
+  WHERE (re_results_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+  GROUP BY re_results_d.bg_id
   ON DUPLICATE KEY UPDATE
   d30_list_score = VALUES(d30_list_score)
   , d30_times_ranked = VALUES(d30_times_ranked);
@@ -179,12 +177,19 @@ BEGIN
   , re_boardgames.d30_score_trend = round(d30_score_trend + ((d30_list_score + d30_pop_score) - prev_d30_score), 5);
 
   -- Update newly added P trends to 0
+  -- UPDATE re_boardgames
+  -- JOIN re_boardgames_update_temp ON re_boardgames.bg_id = re_boardgames_update_temp.bg_id
+  -- SET at_score_trend = 0
+  -- , cy_score_trend = 0
+  -- , d30_score_trend = 0
+  -- WHERE re_boardgames_update_temp.status = 'P';
+
+  -- Update Pending Games trends to 0 - they won't get a trending score until they are approved
   UPDATE re_boardgames
-  JOIN re_boardgames_update_temp ON re_boardgames.bg_id = re_boardgames_update_temp.bg_id
-  SET at_score_trend = 0
-  , cy_score_trend = 0
-  , d30_score_trend = 0
-  WHERE re_boardgames_update_temp.status = 'P';
+  SET at_score_trend = 0,
+  cy_score_trend = 0,
+  d30_score_trend = 0
+  WHERE re_boardgames.bg_status = 'P';
   
   -- Drop temp table
   DROP TABLE re_boardgames_update_temp;

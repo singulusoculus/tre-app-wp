@@ -472,16 +472,13 @@ function updateTemplateList() {
   echo $currentTemplateId;
 }
 
-function updateFinalList() {
-  echo 'updateFinalList';
-}
-
 ///////////////////////////////////////
 // UPDATE RANKINGS
 ///////////////////////////////////////
 
 function updateRankings() {
-  $listid = $_POST['listid'];
+  global $wpdb;
+  $listid = $_POST['listId'];
 
   $query = "CALL `update_re_boardgames_on_list_completion`(".$listid.");";
   $result = $wpdb->query($query);
