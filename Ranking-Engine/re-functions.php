@@ -333,6 +333,7 @@ function updateResultRanking() {
       )
     );
   }
+  echo $resultId;
 }
 
 function insertProgressList() {

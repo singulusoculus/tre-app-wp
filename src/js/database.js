@@ -64,9 +64,9 @@ const dbLoadUserList = (type, id) => {
         const listData = JSON.parse(parsedData[0].template_data)
         const category = parsedData[0].list_category
         const desc = parsedData[0].template_desc
-        initPrevList(category, listData)
         const intID = parseInt(id)
         setDBListInfoType('template', { id: intID, desc })
+        initPrevList(category, listData)
       }
     })
   } else if (type === 'progress') {
@@ -80,9 +80,9 @@ const dbLoadUserList = (type, id) => {
         const category = parsedData[0].list_category
         const desc = parsedData[0].progress_desc
         resetHistory()
-        initPrevRanking(category, rankData)
         const intID = parseInt(id)
         setDBListInfoType('progress', { id: intID, desc })
+        initPrevRanking(category, rankData)
       }
     })
   } else if (type === 'results') {
@@ -95,9 +95,9 @@ const dbLoadUserList = (type, id) => {
         const resultData = JSON.parse(parsedData[0].result_data)
         const category = parsedData[0].list_category
         const desc = parsedData[0].result_desc
-        initPrevResult(category, resultData)
         const intID = parseInt(id)
         setDBListInfoType('userResult', { id: intID, desc })
+        initPrevResult(category, resultData)
         document.querySelector('#save-results').classList.add('disabled')
       }
     })
@@ -254,6 +254,7 @@ const dbSaveProgressData = (saveDesc) => {
 
 const dbUpdateResultData = (rankedItems, resultId) => {
   const category = getCategory()
+  console.log('start update')
   jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
     func: 'updateResultRanking',
     rankedItems,

@@ -210,10 +210,12 @@ jQuery(document).ready(() => {
       document.querySelector('#update-list-btn').classList.remove('hide')
       document.querySelector('#save-list-btn').textContent = 'Save New'
       document.querySelector('#save-description').value = listInfo.template.desc
+      document.querySelector('#save-description-label').classList.add('active')
     } else {
       document.querySelector('#update-list-btn').classList.add('hide')
       document.querySelector('#save-list-btn').textContent = 'Save'
       document.querySelector('#save-description').value = ''
+      document.querySelector('#save-description-label').classList.remove('active')
     }
   })
 
@@ -226,9 +228,11 @@ jQuery(document).ready(() => {
     if (progressID > 0) {
       document.querySelector('#save-list-btn').textContent = 'Update'
       document.querySelector('#save-description').value = listInfo.progress.desc
+      document.querySelector('#save-description-label').classList.add('active')
     } else {
       document.querySelector('#save-list-btn').textContent = 'Save'
       document.querySelector('#save-description').value = ''
+      document.querySelector('#save-description-label').classList.remove('active')
     }
   })
 

@@ -453,7 +453,7 @@
       <div class="row">
         <div class="input-field col s12">
           <input id="save-description" type="text">
-          <label for="save-description">Description</label>
+          <label id="save-description-label" for="save-description">Description</label>
         </div>
       </div>
     </div>
