@@ -3,7 +3,7 @@ import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData } from './functions'
-import { renderMyLists, setupSaveButtons } from './views'
+import { renderMyLists, setupSaveButtons, fadeInSpinner, fadeOutSpinner } from './views'
 
 let dbListInfo = {
   template: {
@@ -39,16 +39,37 @@ const setDBListInfo = (newData) => {
   dbListInfo = newData
 }
 
+const clearDBListInfo = () => {
+  dbListInfo = {
+    template: {
+      id: 0,
+      desc: ''
+    },
+    progress: {
+      id: 0,
+      desc: ''
+    },
+    result: {
+      id: 0
+    },
+    userResult: {
+      id: 0,
+      desc: ''
+    }
+  }
+}
+
 const dbGetUserLists = () => new Promise((resolve, reject) => {
   const wpuid = getUserID()
-
+  fadeInSpinner()
   jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
     func: 'getUserLists',
     wpuid
   }, (data, status) => {
     if (status === 'success') {
       const parsedData = JSON.parse(data)
-      parsedData ? resolve(parsedData) : reject('No data returned')
+      parsedData ? resolve(parsedData) : reject(new Error('No data returned'))
+      fadeOutSpinner()
     }
   })
 })
@@ -115,6 +136,8 @@ const dbDeleteUserList = (type, id) => {
         if (status === 'success') {
           renderMyLists()
           setupSaveButtons()
+
+          M.toast({ html: `Template Deleted`, displayLength: 2000 })
         }
       })
     } else if (type === 'progress') {
@@ -125,6 +148,8 @@ const dbDeleteUserList = (type, id) => {
         if (status === 'success') {
           renderMyLists()
           setupSaveButtons()
+
+          M.toast({ html: `Progress List Deleted`, displayLength: 2000 })
         }
       })
     } else if (type === 'results') {
@@ -135,6 +160,8 @@ const dbDeleteUserList = (type, id) => {
         if (status === 'success') {
           renderMyLists()
           setupSaveButtons()
+
+          M.toast({ html: `Result List Deleted`, displayLength: 2000 })
         }
       })
     }
@@ -144,10 +171,18 @@ const dbDeleteUserList = (type, id) => {
 const dbSaveTemplateData = (saveDesc) => {
   const wpuid = getUserID()
   let listData = getListData()
+
+  // strip out uuid before saving to database
+  listData.forEach((item) => {
+    delete item.id
+  })
+
   const itemCount = listData.length
   const listDataJSON = JSON.stringify(listData)
   const category = getCategory()
   setDBListInfoType('template', { id: 0, desc: '' })
+
+  fadeInSpinner()
 
   if (dbListInfo.template.id === 0) {
     jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
@@ -164,12 +199,10 @@ const dbSaveTemplateData = (saveDesc) => {
           id: newData,
           desc: saveDesc
         })
-        console.log('Saved Template')
-        console.log(dbListInfo.template.id)
-
         saveData(listData)
-      } else {
-        console.log(data)
+
+        fadeOutSpinner()
+        M.toast({ html: `Template Saved`, displayLength: 2000 })
       }
     })
   }
@@ -177,8 +210,16 @@ const dbSaveTemplateData = (saveDesc) => {
 
 const dbUpdateTemplateData = (saveDesc) => {
   let listData = getListData()
+
+  // strip out uuid before saving to database
+  listData.forEach((item) => {
+    delete item.id
+  })
+
   const itemCount = listData.length
   const listDataJSON = JSON.stringify(listData)
+
+  fadeInSpinner()
 
   jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
     func: 'updateTemplateList',
@@ -196,6 +237,9 @@ const dbUpdateTemplateData = (saveDesc) => {
       console.log(dbListInfo.template.desc)
 
       saveData(listData)
+
+      fadeOutSpinner()
+      M.toast({ html: `Template Updated`, displayLength: 2000 })
     }
   })
 }
@@ -203,10 +247,18 @@ const dbUpdateTemplateData = (saveDesc) => {
 const dbSaveProgressData = (saveDesc) => {
   const wpuid = getUserID()
   let rankData = getRankData()
+
+  // strip out uuid before saving to database
+  rankData.masterList.forEach((item) => {
+    delete item.id
+  })
+
   const itemCount = rankData.masterList.length
   const percent = Math.floor(rankData.finishSize * 100 / rankData.totalSize)
   const rankDataJSON = JSON.stringify(rankData)
   const category = getCategory()
+
+  fadeInSpinner()
 
   if (dbListInfo.progress.id === 0) {
     // INSERT
@@ -228,6 +280,9 @@ const dbSaveProgressData = (saveDesc) => {
         console.log('Insert Progress')
         console.log(dbListInfo.progress.id)
         saveData(rankData)
+
+        fadeOutSpinner()
+        M.toast({ html: `Progress List Saved`, displayLength: 2000 })
       }
     })
   } else {
@@ -247,6 +302,9 @@ const dbSaveProgressData = (saveDesc) => {
         console.log('Update Progress')
         console.log(dbListInfo.progress.id)
         saveData(rankData)
+
+        fadeOutSpinner()
+        M.toast({ html: `Progress List Updated`, displayLength: 2000 })
       }
     })
   }
@@ -310,6 +368,8 @@ const dbSaveUserResultData = (saveDesc) => {
   const resultDataJSON = JSON.stringify(resultData)
   const category = getCategory()
 
+  fadeInSpinner()
+
   jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
     func: 'insertResultUser',
     currentProgressID: dbListInfo.progress.id,
@@ -330,6 +390,9 @@ const dbSaveUserResultData = (saveDesc) => {
       document.querySelector('#save-results').classList.add('disabled')
       setDBListInfoType('progress', { id: 0, desc: '' })
       saveData(resultData)
+
+      fadeOutSpinner()
+      M.toast({ html: `Result List Saved`, displayLength: 2000 })
     }
   })
 }
@@ -354,5 +417,6 @@ export { dbSaveTemplateData,
   dbUpdateResultData,
   dbGetUserLists,
   dbLoadUserList,
-  dbDeleteUserList
+  dbDeleteUserList,
+  clearDBListInfo
 }

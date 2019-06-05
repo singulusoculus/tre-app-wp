@@ -12,34 +12,6 @@
     </div>
   </div>
 
-  <nav class="nav-pm">
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo"><img class="nav-pm__logo" src="./wp-content/themes/Ranking-Engine/images/pm-banner.png" alt=""></a>
-      <a href="#" data-target="mobile-nav-pm" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down nav-pm__links">
-        <li><a href="#">Articles</a></li>
-        <li><a href="#">Podcast</a></li>
-        <li><a href="#">Resources</a></li>
-        <li><a href="#">Reviews</a></li>
-        <li><a href="#">Support Us</a></li>
-        <li><a href="#">Videos</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <ul class="sidenav" id="mobile-nav-pm">
-    <li><a href=" #">Articles</a></li>
-    <li><a href="#">Podcast</a></li>
-    <li><a href="#">Resources</a></li>
-    <li><a href="#">Reviews</a></li>
-    <li><a href="#">Support Us</a></li>
-    <li><a href="#">Videos</a></li>
-    <div class="divider"></div>
-    <li><a href="#">Current Rankings</a></li>
-    <li><a href="#">Codex</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-
   <main class="container">
     <header class="header">
       <nav class="nav-extended nav-tre">
@@ -138,8 +110,8 @@
       <section id="start-container" class="start-container step-container">
         <div class="resume-session-container"></div>
 
-        <ul class="collapsible popout">
-          <li class="active">
+        <!-- <ul class="collapsible popout">
+          <li class="">
             <div class="collapsible-header">Transfer Processes</div>
             <div class="collapsible-body">
             <a id="progress-transfer" class="waves-effect waves-light btn">Progress Transfer</a>
@@ -147,12 +119,10 @@
             <a id="result-transfer" class="waves-effect waves-light btn">Ranking Result Transfer</a>
             </div>
           </li>
-        </ul>
+        </ul> -->
             
-
-
-        <ul class="collapsible popout">
-          <li class="active">
+        <ul id="start-sections" class="collapsible popout">
+          <li id="start-new-list" class="active">
             <div class="collapsible-header"><i class="material-icons">create</i>Create a new list</div>
             <div class="collapsible-body">
               <div class="row">
@@ -180,7 +150,7 @@
               </div>
             </div>
           </li>
-          <li>
+          <li id="start-my-lists">
             <div class="collapsible-header"><i class="material-icons">view_list</i>My Lists</div>
             <div class="collapsible-body">
               <div class="my-lists">
@@ -430,17 +400,6 @@
 
   </main>
 
-  <footer class="footer page-footer">
-    <div class="footer-copyright">
-      Designed by Brian Casey | © 2019 Pub Meeple
-    </div>
-    <div class="footer-links">
-      <a class="grey-text text-lighten-4 right" href="#!">About</a>
-      <a class="grey-text text-lighten-4 right" href="#!">Contact</a>
-      <a class="grey-text text-lighten-4 right" href="#!">Support Us</a>
-    </div>
-  </footer>
-
   <!-- Modals -->
   <!-- Save Modal -->
   <div id="save-modal" class="modal">
@@ -553,13 +512,5 @@
       <a href="#!" id="restart-cancel-btn" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
     </div>
   </div>
-
-  <script type="text/javascript">
-
-    const getUserID = () => {
-        return <?php echo get_current_user_id(); ?>;
-    }
-
-</script>
 
   <?php get_footer();

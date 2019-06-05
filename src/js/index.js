@@ -13,21 +13,23 @@ import { handleProgressTransferClick, handleUserResultTransferClick, handleRanki
 jQuery(document).ready(() => {
   initRankingEngine()
 
+  // M.Collapsible.getInstance(document.querySelector('#start-sections')).open(1)
+
   // //////////////////////////////////////////////////////////////////////
   // // Transfer Processes
   // //////////////////////////////////////////////////////////////////////
 
-  document.querySelector('#progress-transfer').addEventListener('click', () => {
-    handleProgressTransferClick()
-  })
+  // document.querySelector('#progress-transfer').addEventListener('click', () => {
+  //   handleProgressTransferClick()
+  // })
 
-  document.querySelector('#user-result-transfer').addEventListener('click', () => {
-    handleUserResultTransferClick()
-  })
+  // document.querySelector('#user-result-transfer').addEventListener('click', () => {
+  //   handleUserResultTransferClick()
+  // })
 
-  document.querySelector('#result-transfer').addEventListener('click', () => {
-    handleRankingResultsTransferClick()
-  })
+  // document.querySelector('#result-transfer').addEventListener('click', () => {
+  //   handleRankingResultsTransferClick()
+  // })
 
   // //////////////////////////////////////////////////////////////////////
   // // STEP TAB CONTROLS
@@ -189,8 +191,12 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#login-form-button').addEventListener('click', () => {
-    const data = getCurrentStep()
-    sessionStorage.setItem('loginReload', data)
+    const data = {
+      type: 'login',
+      step: getCurrentStep()
+    }
+    const dataJSON = JSON.stringify(data)
+    sessionStorage.setItem('reload', dataJSON)
   })
 
   // ***************** Modals *****************

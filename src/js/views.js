@@ -3,9 +3,10 @@ import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
-import { setCurrentStep } from './step'
+import { setCurrentStep, getCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
-import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList } from './database'
+import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, clearDBListInfo, getDBListInfo } from './database'
+import { updateLocalStorageSaveDataItem } from './functions';
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -20,8 +21,6 @@ const renderPreviousSession = () => {
   if (prevData !== null) {
     const step = prevData.step
     const data = prevData.data
-    const category = prevData.category
-    const dbListInfo = prevData.dbListInfo
 
     if (Object.keys(data).length > 0 && step !== 'Start') {
       const containerEl = document.querySelector('.resume-session-container')
@@ -54,6 +53,12 @@ const renderPreviousSession = () => {
       dismissEl.textContent = 'Discard'
 
       linkEl.addEventListener('click', () => {
+        const prevData = JSON.parse(localStorage.getItem('saveData'))
+        const step = prevData.step
+        const data = prevData.data
+        const category = prevData.category
+        const dbListInfo = prevData.dbListInfo
+
         setDBListInfo(dbListInfo)
         if (step === 'List') {
           initPrevList(category, data)
@@ -355,7 +360,11 @@ const showListSection = (source) => {
   enableStepTab('list')
   disableStepTab('rank', 'result')
 
-  const categoryName = document.querySelector('#list-category-select').selectedOptions[0].innerHTML
+  const category = getCategory()
+  const categorySelectEl = document.querySelector('#list-category-select')
+  categorySelectEl.value = category
+  M.FormSelect.init(categorySelectEl)
+  const categoryName = categorySelectEl.selectedOptions[0].innerHTML
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
   // Show BGG section if category is Board Games
   if (categoryName === 'Board Games') {
@@ -480,6 +489,11 @@ const custConfirm = (message, resultCallback, source) => {
 
 const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
+  myListsEl.textContent = ''
+  const accountMenuEl = document.querySelector('#account-dropdown')
+  accountMenuEl.textContent = ''
+  const sideNavEl = document.querySelector('#mobile-nav-pm')
+  sideNavEl.textContent = ''
 
   if (getUserID() === 0) {
     // Create My Lists Login
@@ -509,10 +523,77 @@ const setupSaveLogin = async () => {
     saveButtons.forEach((el) => {
       el.setAttribute('href', '#login-modal')
     })
+
+    // Set up Account Menu
+    const liLogInEl = document.createElement('li')
+    const aLogInEl = document.createElement('a')
+    aLogInEl.classList.add('modal-trigger', 'account-login')
+    aLogInEl.setAttribute('href', '#login-modal')
+    aLogInEl.textContent = 'Log In'
+    liLogInEl.appendChild(aLogInEl)
+    accountMenuEl.appendChild(liLogInEl.cloneNode(true))
+
+    // SideNav
+    sideNavEl.appendChild(liLogInEl.cloneNode(true))
+
+    clearDBListInfo()
+    const update = getDBListInfo()
+    updateLocalStorageSaveDataItem('dbListInfo', update)
   } else {
     renderMyLists()
     setupSaveButtons()
+
+    // Set up Account Menu
+    const liLogInEl = document.createElement('li')
+    const aLogOutEl = document.createElement('a')
+    aLogOutEl.setAttribute('href', 'http://localhost:8080/wordpress/wp-login.php?action=logout')
+    aLogOutEl.textContent = 'Log Out'
+    aLogOutEl.classList.add('account-log-out')
+    liLogInEl.appendChild(aLogOutEl)
+
+    const liMyListsEl = document.createElement('li')
+    const aMyListsEl = document.createElement('a')
+    aMyListsEl.setAttribute('href', '#!')
+    aMyListsEl.classList.add('account-my-lists')
+    aMyListsEl.textContent = 'My Lists'
+    liMyListsEl.appendChild(aMyListsEl)
+
+    accountMenuEl.appendChild(liLogInEl.cloneNode(true))
+    accountMenuEl.appendChild(liMyListsEl.cloneNode(true))
+
+    // SideNav
+    sideNavEl.appendChild(liLogInEl.cloneNode(true))
+    sideNavEl.appendChild(liMyListsEl.cloneNode(true))
+
+    const accountMyLists = document.querySelectorAll('.account-my-lists')
+    accountMyLists.forEach((el) => {
+      el.addEventListener('click', () => {
+        showMyLists()
+      })
+    })
+
+    const accountLogOut = document.querySelectorAll('.account-log-out')
+    accountLogOut.forEach((el) => {
+      el.addEventListener('click', () => {
+        const data = {
+          type: 'logout',
+          step: getCurrentStep()
+        }
+        const dataJSON = JSON.stringify(data)
+        sessionStorage.setItem('reload', dataJSON)
+      })
+    })
   }
+}
+
+const showMyLists = () => {
+  const step = getCurrentStep()
+
+  if (step !== 'Start') {
+    showStartSection()
+  }
+
+  M.Collapsible.getInstance(document.querySelector('#start-sections')).open(1)
 }
 
 const renderMyLists = async () => {
@@ -525,6 +606,20 @@ const renderMyLists = async () => {
   const templateLists = data[0]
   const progressLists = data[1]
   const resultLists = data[2]
+
+  // Create Logout button
+  const btnEl = document.createElement('a')
+  const iEl = document.createElement('i')
+  btnEl.classList.add('waves-effect', 'waves-light', 'btn', 'center-align')
+  btnEl.setAttribute('id', 'my-lists-logout-btn')
+  btnEl.setAttribute('href', 'http://localhost:8080/wordpress/wp-login.php?action=logout')
+  // btnEl.setAttribute('href', 'http://rankingengine.pubmeeple.com/wp-login.php?action=logout')
+  btnEl.textContent = 'Log Off'
+  iEl.classList.add('material-icons', 'right')
+  iEl.textContent = 'account_circle'
+
+  btnEl.appendChild(iEl)
+  myListsEl.appendChild(btnEl)
 
   // Templates
   if (templateLists.length > 0) {
@@ -633,6 +728,14 @@ const createTableElement = (type, headers, rows) => {
   return divEl
 }
 
+const fadeInSpinner = () => {
+  jQuery('.loading').fadeIn()
+}
+
+const fadeOutSpinner = () => {
+  jQuery('.loading').fadeOut()
+}
+
 export {
   renderPreviousSession,
   showListSection,
@@ -652,5 +755,8 @@ export {
   renderBGGCollection,
   showTab,
   renderMyLists,
-  setupSaveButtons
+  setupSaveButtons,
+  fadeInSpinner,
+  fadeOutSpinner,
+  showMyLists
 }

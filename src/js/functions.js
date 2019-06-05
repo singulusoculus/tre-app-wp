@@ -1,6 +1,6 @@
 import { getCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { showTab, renderPreviousSession, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection } from './views'
+import { showTab, renderPreviousSession, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists } from './views'
 import { initPrevList, getListData } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
@@ -11,15 +11,19 @@ const initRankingEngine = () => {
   showTab('start')
   setCurrentStep('Start')
 
-  const loginReload = sessionStorage.getItem('loginReload')
-  if (loginReload) {
-    if (loginReload !== 'Start') {
-      const prevData = JSON.parse(localStorage.getItem('saveData'))
-      const data = prevData.data
-      const category = prevData.category
-      const loginStep = prevData.step
-      const dbListInfo = prevData.dbListInfo
+  let reload = sessionStorage.getItem('reload')
+  if (reload) {
+    reload = JSON.parse(reload)
+    const step = reload.step
+    const type = reload.type
 
+    const prevData = JSON.parse(localStorage.getItem('saveData'))
+    const data = prevData.data
+    const category = prevData.category
+    const loginStep = prevData.step
+    const dbListInfo = prevData.dbListInfo
+
+    if (step !== 'Start') {
       if (loginStep === 'List') {
         initPrevList(category, data)
       } else if (loginStep === 'Rank') {
@@ -27,14 +31,19 @@ const initRankingEngine = () => {
       } else if (loginStep === 'Result') {
         initPrevResult(category, data)
       }
-      const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
-      modal.open()
-      setDBListInfo(dbListInfo)
+      if (type === 'login') {
+        const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
+        modal.open()
+        setDBListInfo(dbListInfo)
+      }
+    } else {
+      showMyLists()
     }
   }
+
   renderPreviousSession()
   setupSaveLogin()
-  sessionStorage.removeItem('loginReload')
+  sessionStorage.removeItem('reload')
 }
 
 const handleClickSave = (e) => {
@@ -157,6 +166,34 @@ const saveData = (data) => {
   localStorage.setItem('saveData', JSON.stringify(obj))
 }
 
+const updateLocalStorageSaveDataItem = (type, update) => {
+  const saveData = JSON.parse(localStorage.getItem('saveData'))
+
+  let category = saveData.category
+  let step = saveData.step
+  let dbListInfo = saveData.dbListInfo
+  let data = saveData.data
+
+  if (type === 'category') {
+    category = update
+  } else if (type === 'step') {
+    step = update
+  } else if (type === 'dbListInfo') {
+    dbListInfo = update
+  } else if (type === data) {
+    data = update
+  }
+
+  const obj = {
+    category,
+    step,
+    dbListInfo,
+    data
+  }
+
+  localStorage.setItem('saveData', JSON.stringify(obj))
+}
+
 // Changes XML to JSON
 const xmlToJson = (xml) => {
   // Create the return object
@@ -204,5 +241,6 @@ export { disableArrowKeyScroll,
   handleClickUpdate,
   handleClickStart,
   handleClickList,
-  handleClickRank
+  handleClickRank,
+  updateLocalStorageSaveDataItem
 }

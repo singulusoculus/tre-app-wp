@@ -14,6 +14,12 @@ function blankslate_load_scripts() {
   wp_enqueue_script( 're-datatables-js', get_theme_file_uri('/dist/datatables.min.js') );
 }
 
+function wpse_44020_logout_redirect( $logouturl, $redir )
+{
+    return $logouturl . '&amp;redirect_to=' . 'http://localhost:8080/wordpress/';
+}
+add_filter( 'logout_url', 'wpse_44020_logout_redirect', 10, 2 );
+
 
 //For The Ranking Engine - starting in 1.4
 //ajax login functionality - currently redirects, need to figure out how to not redirect

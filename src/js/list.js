@@ -10,7 +10,7 @@ let listData = []
 const getListData = () => listData
 
 const initPrevList = (category, data) => {
-  listData = data
+  listData = createList(data)
   setCategory(category)
   setCurrentStep('List')
 

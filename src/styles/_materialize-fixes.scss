@@ -64,6 +64,11 @@ input[type=range]::-ms-thumb {
   border-bottom: 2px solid $color-primary;
 }
 
+// DROPDOWN
+.dropdown-content li > a {
+  color: $color-primary;
+}
+
 @media only screen and (max-width: 600px) {
   .row {
     margin-bottom: 1rem;

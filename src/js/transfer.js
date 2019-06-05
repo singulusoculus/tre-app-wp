@@ -160,6 +160,11 @@ const handleProgressTransferClick = () => {
 
         const list = createList(listData)
 
+        // strip out uuid before saving to database
+        list.forEach((item) => {
+          delete item.id
+        })
+
         const rankData = {
           masterList: list,
           sortList: lstMember,

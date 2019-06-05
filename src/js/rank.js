@@ -13,6 +13,9 @@ const initPrevRanking = (category, data) => {
   disableArrowKeyScroll()
   setCurrentStep('Rank')
   setCategory(category)
+
+  data.masterList = createList(data.masterList)
+
   populateRankData(true, data)
   saveData(rankData)
   showComparison()

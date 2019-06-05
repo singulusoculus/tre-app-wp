@@ -38,11 +38,11 @@ const initPrevBGGCollection = () => {
 
 const handleBGGCollectionRequest = async () => {
   // This will replace getBGGData once I can test
-  // const user = document.querySelector('#bgg-username').value
-  // const expansions = document.querySelector('#bgg-expansions').checked
-  // bggCollectionData = await getBGGCollection(user, expansions)
+  const user = document.querySelector('#bgg-username').value
+  const expansions = document.querySelector('#bgg-expansions').checked
+  bggCollectionData = await getBGGCollection(user, expansions)
 
-  bggCollectionData = getBGGData()
+  // bggCollectionData = getBGGData()
   showBGGCollectionSection()
   renderBGGCollection()
 }
@@ -59,6 +59,7 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
     } else if (data === 2) {
       reject(new Error('Timed Out. Try again later.'))
     } else {
+      console.log(data)
       const listData = getListData()
       const xmlDoc = data.replace(/[\n\r]+/g, '')
       const parser = new DOMParser()
