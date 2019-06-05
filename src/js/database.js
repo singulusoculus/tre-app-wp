@@ -232,9 +232,6 @@ const dbUpdateTemplateData = (saveDesc) => {
       setDBListInfoType('template', {
         desc: saveDesc
       })
-      console.log('Updated Template')
-      console.log(dbListInfo.template.id)
-      console.log(dbListInfo.template.desc)
 
       saveData(listData)
 
@@ -277,8 +274,6 @@ const dbSaveProgressData = (saveDesc) => {
           id: newData,
           desc: saveDesc
         })
-        console.log('Insert Progress')
-        console.log(dbListInfo.progress.id)
         saveData(rankData)
 
         fadeOutSpinner()
@@ -299,8 +294,6 @@ const dbSaveProgressData = (saveDesc) => {
         setDBListInfoType('progress', {
           desc: saveDesc
         })
-        console.log('Update Progress')
-        console.log(dbListInfo.progress.id)
         saveData(rankData)
 
         fadeOutSpinner()
@@ -312,7 +305,6 @@ const dbSaveProgressData = (saveDesc) => {
 
 const dbUpdateResultData = (rankedItems, resultId) => {
   const category = getCategory()
-  console.log('start update')
   jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
     func: 'updateResultRanking',
     rankedItems,
@@ -321,7 +313,6 @@ const dbUpdateResultData = (rankedItems, resultId) => {
     if (status === 'success') {
       const resultData = getResultData()
       saveData(resultData)
-      console.log('List updated')
       if (category === 2) {
         dbUpdateRankings(resultId)
       }
@@ -350,8 +341,6 @@ const dbSaveResultData = (rankedItems) => {
       setDBListInfoType('result', {
         id: newData
       })
-      console.log('Saved Result')
-      console.log(dbListInfo.result.id)
       saveData(resultData)
 
       if (category === 2 && itemCount > 10) {
@@ -385,8 +374,6 @@ const dbSaveUserResultData = (saveDesc) => {
         id: newData,
         desc: saveDesc
       })
-      console.log('Saved User Result')
-      console.log(dbListInfo.userResult.id)
       document.querySelector('#save-results').classList.add('disabled')
       setDBListInfoType('progress', { id: 0, desc: '' })
       saveData(resultData)
@@ -402,7 +389,7 @@ const dbUpdateRankings = (listId) => {
     func: 'updateRankings',
     listId: listId
   }, (data, status) => {
-    console.log('Updated re_boardgames')
+
   })
 }
 

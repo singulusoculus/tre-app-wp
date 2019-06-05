@@ -81,8 +81,6 @@ const renderResult = () => {
   })
 
   setupSaveLogin()
-
-  // saveData(resultData)
 }
 
 export { initPrevResult, renderResult, getResultData, setResultData }

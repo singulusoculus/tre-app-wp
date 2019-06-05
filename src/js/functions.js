@@ -76,6 +76,38 @@ const handleClickUpdate = (e) => {
   }
 }
 
+const handleClickSaveList = () => {
+  const listInfo = getDBListInfo()
+  if (listInfo.template.id > 0) {
+    document.querySelector('#update-list-btn').classList.remove('hide')
+    document.querySelector('#save-list-btn').textContent = 'Save New'
+    document.querySelector('#save-description').value = listInfo.template.desc
+    document.querySelector('#save-description-label').classList.add('active')
+  } else {
+    document.querySelector('#update-list-btn').classList.add('hide')
+    document.querySelector('#save-list-btn').textContent = 'Save'
+    document.querySelector('#save-description').value = ''
+    document.querySelector('#save-description-label').classList.remove('active')
+  }
+}
+
+const handleClickSaveRank = () => {
+  const progressID = getDBListInfo().progress.id
+  const listInfo = getDBListInfo()
+
+  document.querySelector('#update-list-btn').classList.add('hide')
+
+  if (progressID > 0) {
+    document.querySelector('#save-list-btn').textContent = 'Update'
+    document.querySelector('#save-description').value = listInfo.progress.desc
+    document.querySelector('#save-description-label').classList.add('active')
+  } else {
+    document.querySelector('#save-list-btn').textContent = 'Save'
+    document.querySelector('#save-description').value = ''
+    document.querySelector('#save-description-label').classList.remove('active')
+  }
+}
+
 // //////////////////////////////////////////////////////////////////////
 // // HANDLE TAB CLICKS
 // //////////////////////////////////////////////////////////////////////
@@ -200,7 +232,7 @@ const xmlToJson = (xml) => {
   let obj = {}
 
   if (xml.nodeType === 1) { // element
-    // do attributes
+    // attributes
     if (xml.attributes.length > 0) {
       obj['@attributes'] = {}
       for (let j = 0; j < xml.attributes.length; j++) {
@@ -212,7 +244,7 @@ const xmlToJson = (xml) => {
     obj = xml.nodeValue
   }
 
-  // do children
+  // children
   if (xml.hasChildNodes()) {
     for (let i = 0; i < xml.childNodes.length; i++) {
       let item = xml.childNodes.item(i)
@@ -232,6 +264,15 @@ const xmlToJson = (xml) => {
   return obj
 }
 
+const setReloadInfo = (type) => {
+  const data = {
+    type,
+    step: getCurrentStep()
+  }
+  const dataJSON = JSON.stringify(data)
+  sessionStorage.setItem('reload', dataJSON)
+}
+
 export { disableArrowKeyScroll,
   saveData,
   xmlToJson,
@@ -242,5 +283,8 @@ export { disableArrowKeyScroll,
   handleClickStart,
   handleClickList,
   handleClickRank,
-  updateLocalStorageSaveDataItem
+  updateLocalStorageSaveDataItem,
+  setReloadInfo,
+  handleClickSaveList,
+  handleClickSaveRank
 }

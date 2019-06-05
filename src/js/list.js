@@ -43,11 +43,7 @@ const createListObject = (data) => {
     image: data.image || '',
     source: data.source,
     rank: data.rank || 0,
-    // yearPublished: data.yearPublished || '',
     bggId: data.bggId || ''
-    // showCount: 0,
-    // voteCount: 0,
-    // voteShowPct: 0
   }
   return obj
 }
@@ -108,7 +104,7 @@ const addListItems = (list) => {
     const addedItems = currLength - prevLength
 
     if (addedItems > 0) {
-      M.toast({ html: `Added ${addedItems} items to your list`, displayLength: 3000 })
+      M.toast({ html: `Added ${addedItems} items to your list`, displayLength: 1500 })
     }
 
     saveData(listData)

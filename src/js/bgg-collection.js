@@ -25,7 +25,7 @@ const saveBGGCollection = () => {
 const initPrevBGGCollection = () => {
   // Load previous BGG data if exists
   const bggData = JSON.parse(localStorage.getItem('bggCollection'))
-  if (!bggData === null) {
+  if (bggData !== null) {
     if (bggData.bggCollectionData.length > 0) {
       setBGGCollectionData(bggData.bggCollectionData)
       document.querySelector('#bgg-username').value = bggData.bggUsername
@@ -38,11 +38,11 @@ const initPrevBGGCollection = () => {
 
 const handleBGGCollectionRequest = async () => {
   // This will replace getBGGData once I can test
-  const user = document.querySelector('#bgg-username').value
-  const expansions = document.querySelector('#bgg-expansions').checked
-  bggCollectionData = await getBGGCollection(user, expansions)
+  // const user = document.querySelector('#bgg-username').value
+  // const expansions = document.querySelector('#bgg-expansions').checked
+  // bggCollectionData = await getBGGCollection(user, expansions)
 
-  // bggCollectionData = getBGGData()
+  bggCollectionData = getBGGData()
   showBGGCollectionSection()
   renderBGGCollection()
 }

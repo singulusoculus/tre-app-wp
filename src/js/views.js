@@ -1,4 +1,4 @@
-import { initPrevList, getListData, removeListItem, loadList } from './list'
+import { initPrevList, getListData, removeListItem, loadList, sortListData } from './list'
 import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
@@ -6,7 +6,7 @@ import { setCategory, getCategory } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, clearDBListInfo, getDBListInfo } from './database'
-import { updateLocalStorageSaveDataItem } from './functions';
+import { updateLocalStorageSaveDataItem, setReloadInfo } from './functions'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -125,7 +125,7 @@ const renderListData = () => {
   // filter based on text input
   let filteredList = data.filter((item) => item.name.toLowerCase().includes(filters.searchText.toLowerCase()))
   // sort the list
-  // filteredList = sortListData(filteredList, filters.sortBy)
+  filteredList = sortListData(filteredList, 'alphabetical')
 
   listEl.innerHTML = ''
 
@@ -177,7 +177,9 @@ const renderBGGCollection = () => {
   const filteredList = filterBGGCollection()
 
   const filteredCount = filteredList.length
-  listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount}`
+  listInfoEl.textContent = `Total: ${totalCount} | Added: ${addedCount} | Filtered: ${filteredCount} `
+
+  document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
 
   listEl.innerHTML = ''
 
@@ -297,6 +299,14 @@ const destroyTooltip = (step) => {
       tip.destroy()
     }
   }
+}
+
+const fadeInSpinner = () => {
+  jQuery('.loading').fadeIn()
+}
+
+const fadeOutSpinner = () => {
+  jQuery('.loading').fadeOut()
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -575,12 +585,7 @@ const setupSaveLogin = async () => {
     const accountLogOut = document.querySelectorAll('.account-log-out')
     accountLogOut.forEach((el) => {
       el.addEventListener('click', () => {
-        const data = {
-          type: 'logout',
-          step: getCurrentStep()
-        }
-        const dataJSON = JSON.stringify(data)
-        sessionStorage.setItem('reload', dataJSON)
+        setReloadInfo('logout')
       })
     })
   }
@@ -726,14 +731,6 @@ const createTableElement = (type, headers, rows) => {
   divEl.appendChild(tableEl)
 
   return divEl
-}
-
-const fadeInSpinner = () => {
-  jQuery('.loading').fadeIn()
-}
-
-const fadeOutSpinner = () => {
-  jQuery('.loading').fadeOut()
 }
 
 export {

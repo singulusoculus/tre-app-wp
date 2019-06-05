@@ -5,9 +5,7 @@ import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank } from './functions'
-import { getDBListInfo } from './database'
-import { getCurrentStep } from './step'
+import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
 import { handleProgressTransferClick, handleUserResultTransferClick, handleRankingResultsTransferClick } from './transfer'
 
 jQuery(document).ready(() => {
@@ -191,12 +189,7 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#login-form-button').addEventListener('click', () => {
-    const data = {
-      type: 'login',
-      step: getCurrentStep()
-    }
-    const dataJSON = JSON.stringify(data)
-    sessionStorage.setItem('reload', dataJSON)
+    setReloadInfo('login')
   })
 
   // ***************** Modals *****************
@@ -211,35 +204,11 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#save-list').addEventListener('click', () => {
-    const listInfo = getDBListInfo()
-    if (listInfo.template.id > 0) {
-      document.querySelector('#update-list-btn').classList.remove('hide')
-      document.querySelector('#save-list-btn').textContent = 'Save New'
-      document.querySelector('#save-description').value = listInfo.template.desc
-      document.querySelector('#save-description-label').classList.add('active')
-    } else {
-      document.querySelector('#update-list-btn').classList.add('hide')
-      document.querySelector('#save-list-btn').textContent = 'Save'
-      document.querySelector('#save-description').value = ''
-      document.querySelector('#save-description-label').classList.remove('active')
-    }
+    handleClickSaveList()
   })
 
   document.querySelector('#save-ranking').addEventListener('click', () => {
-    const progressID = getDBListInfo().progress.id
-    const listInfo = getDBListInfo()
-
-    document.querySelector('#update-list-btn').classList.add('hide')
-
-    if (progressID > 0) {
-      document.querySelector('#save-list-btn').textContent = 'Update'
-      document.querySelector('#save-description').value = listInfo.progress.desc
-      document.querySelector('#save-description-label').classList.add('active')
-    } else {
-      document.querySelector('#save-list-btn').textContent = 'Save'
-      document.querySelector('#save-description').value = ''
-      document.querySelector('#save-description-label').classList.remove('active')
-    }
+    handleClickSaveRank()
   })
 
 // End of document.ready

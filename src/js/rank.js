@@ -4,7 +4,7 @@ import { disableArrowKeyScroll, saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 import { dbSaveResultData, setDBListInfoType, getDBListInfo, dbUpdateResultData } from './database'
-import { createList } from './list';
+import { createList } from './list'
 
 let rankData = {}
 let rankDataHistory = []
@@ -63,13 +63,6 @@ const initRanking = (itemsList, category) => {
 
   rankData.masterList = itemsList
   setCategory(category)
-
-  // Reset counts and percents
-  // rankData.masterList.forEach((item) => {
-  //   item.showCount = 0
-  //   item.voteCount = 0
-  //   item.voteShowPct = 0
-  // })
 
   // Initialize sorting lists
   let n = 0
@@ -165,21 +158,9 @@ const handlePick = (flag) => {
 
     const { item1, item2 } = getComparisonInfo()
 
-    // Update showCounts
-    // item1.showCount++
-    // item2.showCount++
-
-    // Update correct voteCount
-    // if (flag === -1) {
-    //   item1.voteCount++
-    // } else {
-    //   item2.voteCount++
-    // }
-
-    // updateVoteShowPct()
     updateProgressBar()
 
-    updateRec(flag, 'handlePick')
+    updateRec(flag)
     sortList()
     cardFadeOut(item1.id, item2.id)
     rankData.numQuestion++
@@ -191,22 +172,14 @@ const handlePick = (flag) => {
   }
 }
 
-const updateRec = (flag, source) => {
+const updateRec = (flag) => {
   if (flag < 0) {
     rankData.rec[rankData.nrec] = rankData.sortList[rankData.cmp1][rankData.head1]
-    // if (source === 'sortList') {
-    //   rankData.masterList[rankData.sortList[rankData.cmp1][rankData.head1]].showCount++
-    //   updateVoteShowPct()
-    // }
     rankData.head1++
     rankData.nrec++
     rankData.finishSize++
   } else if (flag > 0) {
     rankData.rec[rankData.nrec] = rankData.sortList[rankData.cmp2][rankData.head2]
-    // if (source === 'sortList') {
-    //   rankData.masterList[rankData.sortList[rankData.cmp2][rankData.head2]].showCount++
-    //   updateVoteShowPct()
-    // }
     rankData.head2++
     rankData.nrec++
     rankData.finishSize++
@@ -221,11 +194,11 @@ const sortList = () => {
   // else if there are items left in head2 after head 1 is complete then put them in rec
   if (rankData.head1 < cmp1Length && rankData.head2 === cmp2Length) {
     while (rankData.head1 < cmp1Length) {
-      updateRec(-1, 'sortList')
+      updateRec(-1)
     }
   } else if (rankData.head1 === cmp1Length && rankData.head2 < cmp2Length) {
     while (rankData.head2 < cmp2Length) {
-      updateRec(1, 'sortList')
+      updateRec(1)
     }
   }
 
@@ -269,12 +242,6 @@ const cmpCheck = () => {
     }, 400)
   }
 }
-
-// const updateVoteShowPct = () => {
-//   rankData.masterList.forEach((item) => {
-//     item.voteShowPct = item.voteCount / item.showCount
-//   })
-// }
 
 // History and Undo
 const setHistory = () => {
@@ -424,17 +391,12 @@ const calcRankedList = () => {
     rankedItems.push(item.name)
   })
 
-  // // Clears database link when completing ranking
-  // setDBListInfoType('progress', { id: 0, desc: '' })
-
   const resultId = getDBListInfo().result.id
   if (resultId === 0) {
     dbSaveResultData(rankedItems)
   } else if (resultId > 0) {
     dbUpdateResultData(rankedItems, resultId)
   }
-
-  // saveData(rankedList)
 }
 
 const updateProgressBar = () => {

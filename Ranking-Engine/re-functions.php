@@ -462,9 +462,9 @@ function insertTemplateList() {
         '%d',
         '%s',
         '%s',
-        '%d',
-        '%d',
         '%s',
+        '%d',
+        '%d',
         '%s',
         '%s'
     )
