@@ -16,6 +16,11 @@
     const getUserID = () => {
       return <?php echo get_current_user_id(); ?>;
     }
+
+    const getFilePath = (file) => {
+      const themePath = '<?php echo get_theme_file_uri(); ?>'
+      return `${themePath}${file}`
+    }
   </script>
   </body>
 </html>

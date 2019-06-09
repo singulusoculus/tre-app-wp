@@ -1,0 +1,41 @@
+
+
+.post-password-form {
+  text-align: center !important;
+}
+
+.card .card-content.db-stats {
+  padding: 10px;
+}
+
+.count {
+  font-size: 35px;
+  font-weight: 600;
+}
+  
+.count-bottom {
+  font-size: 13px;
+}
+
+.dt-elements-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+// Materialize fixes
+.tabs .tab a:hover, .tabs .tab a.active {
+  // background-color: #c8e6c9 !important;
+  color: #2e7d32;
+}
+
+.tabs .tab a:hover, .tabs .tab a {
+  // background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+  background-color: transparent;
+}
+

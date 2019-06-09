@@ -1,9 +1,5 @@
 
-<?php get_header(); ?>
-
-
-  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
-  
+<?php get_header(); ?>  
 
   <div class="next-wrapper">
     <div class="next z-depth-3 next-rank">
@@ -347,7 +343,7 @@
             <div class="col s12 m8 offset-m2 l6">
               <div id="item-1-card" class="card rank-card">
                 <div class="rank-card-content card-content">
-                  <img src="./wp-content/themes/Ranking-Engine/images/meeple-lime.png" alt="" class="rank-card-content__img" id="item-1-img">
+                  <img src="<?php echo get_theme_file_uri('/images/meeple-lime.png'); ?>" alt="" class="rank-card-content__img" id="item-1-img">
                   <p id="item-1-text" class="rank-card-content__text center-align">Game Name 1</p>
                   <i class="material-icons rank-card-content__delete" id="rank-delete-1">delete</i>
                 </div>
@@ -356,7 +352,7 @@
             <div class="col s12 m8 offset-m2 l6">
               <div id="item-2-card" class="card rank-card">
                 <div class="rank-card-content card-content">
-                  <img src="./wp-content/themes/Ranking-Engine/images/meeple-orange.png" alt="" class="rank-card-content__img" id="item-2-img">
+                  <img src="<?php echo get_theme_file_uri('/images/meeple-orange.png'); ?>" alt="" class="rank-card-content__img" id="item-2-img">
                   <p id="item-2-text" class="rank-card-content__text center-align">Game Name 2</p>
                   <i class="material-icons rank-card-content__delete" id="rank-delete-2">delete</i>
                 </div>
@@ -512,5 +508,7 @@
       <a href="#!" id="restart-cancel-btn" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
     </div>
   </div>
+
+  <script src="<?php echo get_theme_file_uri('/dist/index-bundle.js'); ?>"></script>
 
   <?php get_footer();

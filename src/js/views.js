@@ -502,7 +502,7 @@ const setupSaveLogin = async () => {
   myListsEl.textContent = ''
   const accountMenuEl = document.querySelector('#account-dropdown')
   accountMenuEl.textContent = ''
-  const sideNavEl = document.querySelector('#mobile-nav-pm')
+  const sideNavEl = document.querySelector('#sidenav__account')
   sideNavEl.textContent = ''
 
   if (getUserID() === 0) {
@@ -548,7 +548,10 @@ const setupSaveLogin = async () => {
 
     clearDBListInfo()
     const update = getDBListInfo()
-    updateLocalStorageSaveDataItem('dbListInfo', update)
+    const prevData = JSON.parse(localStorage.getItem('saveData'))
+    if (prevData) {
+      updateLocalStorageSaveDataItem('dbListInfo', update)
+    }
   } else {
     renderMyLists()
     setupSaveButtons()
@@ -713,7 +716,6 @@ const createTableElement = (type, headers, rows) => {
 
     aEl.addEventListener('click', (e) => {
       // Delete the list
-      console.log(type, itemID)
       dbDeleteUserList(type, itemID)
       e.stopPropagation()
     })

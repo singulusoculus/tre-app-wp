@@ -1,11 +1,11 @@
 import { createList } from './list'
 
 const handleRankingResultsTransferClick = () => {
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+  jQuery.post(getFilePath('/re-func/re-transfer.php'), {
     func: 'transferRankingResultsH'
   }, (data, status) => {
     console.log('Ranking Header Transfer complete')
-    jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+    jQuery.post(getFilePath('/re-func/re-transfer.php'), {
       func: 'transferRankingResultsD'
     }, (data, status) => {
       console.log('Ranking Detail Transfer complete')
@@ -15,7 +15,7 @@ const handleRankingResultsTransferClick = () => {
 
 const handleUserResultTransferClick = () => {
   // Get lists to transfer and list info from re_final_h
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+  jQuery.post(getFilePath('/re-func/re-transfer.php'), {
     func: 'getOldResultLists'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
@@ -30,7 +30,7 @@ const handleUserResultTransferClick = () => {
       const itemCount = list.item_count
       const category = list.list_category
 
-      jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+      jQuery.post(getFilePath('/re-func/re-transfer.php'), {
         func: 'getOldResultDetails',
         listId
       }, (data, status) => {
@@ -57,7 +57,7 @@ const handleUserResultTransferClick = () => {
         const resultJSON = JSON.stringify(result)
         // console.log(result)
 
-        jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+        jQuery.post(getFilePath('/re-func/re-transfer.php'), {
           func: 'insertResultList',
           resultJSON,
           wpuid,
@@ -77,7 +77,7 @@ const handleUserResultTransferClick = () => {
 const handleProgressTransferClick = () => {
   let erroredLists = []
 
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+  jQuery.post(getFilePath('/re-func/re-transfer.php'), {
     func: 'getOldProgressListIDs'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
@@ -94,7 +94,7 @@ const handleProgressTransferClick = () => {
     // [50, 97, 103, 134, 138, 170, 202, 278, 294, 312, 342, 362, 371, 418, 545, 617, 626, 655, 665, 691, 737, 792, 802, 808, 839, 848, 903, 933, 936, 942, 968, 1030, 1043, 1070, 1083, 1101, 1118, 1120, 1121, 1141, 1151, 1152, 1163, 1176, 1192, 1225, 1284, 1353, 1376, 1396, 1420, 1430, 1443, 1452, 1458, 1467, 1469, 1480, 1489, 1494, 1500, 1517, 1538, 1539, 1577, 1579, 1582, 1632, 1655, 1661]
 
     progressLists.forEach((listid) => {
-      jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+      jQuery.post(getFilePath('/re-func/re-transfer.php'), {
         func: 'getOldProgressList',
         progressid: listid
       }, (data, status) => {
@@ -186,7 +186,7 @@ const handleProgressTransferClick = () => {
         const rankDataJSON = JSON.stringify(rankData)
 
         // Save the list to re_rank_progress
-        jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+        jQuery.post(getFilePath('/re-func/re-transfer.php'), {
           func: 'insertProgressList',
           wpuid,
           rankData: rankDataJSON,
@@ -200,7 +200,7 @@ const handleProgressTransferClick = () => {
             let newData = parseInt(data.replace(/[\n\r]+/g, ''))
             console.log(`Transfered ${listid}. New ID: ${newData}`)
 
-            jQuery.post('./wp-content/themes/Ranking-Engine/re-transfer.php', {
+            jQuery.post(getFilePath('/re-func/re-transfer.php'), {
               func: 'deleteOldProgressList',
               listid: listid
             }, (data, status) => {

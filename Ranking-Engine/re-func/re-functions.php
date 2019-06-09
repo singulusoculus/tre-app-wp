@@ -77,7 +77,7 @@ function getBGGCollection() {
   $url = 'https://www.boardgamegeek.com/xmlapi2/collection?username='.$bggUsername.'&stats=1';
 
   //filter out expansions if checked
-  if ($expansion == 1) {
+  if ($expansions === '0') {
     $url = $url.'&excludesubtype=boardgameexpansion';
   }
 
@@ -88,9 +88,9 @@ function getBGGCollection() {
     $statusCode = substr($headers[0], 9, 3);
 
     if ($statusCode == '200') {
-      $xml = simplexml_load_file($url);
+      //$xml = simplexml_load_file($url);
       // $xml = simplexml_load_string($url);
-      // $xml = file_get_contents($url);
+      $xml = file_get_contents($url);
 
       //Check for a valid username
       if ($xml->error->message == "Invalid username specified") {

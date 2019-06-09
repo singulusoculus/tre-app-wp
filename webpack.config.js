@@ -6,10 +6,14 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 module.exports = {
   watch: true,
-  entry: ['babel-polyfill', './src/js/index.js'],
+  entry: {
+    index: ['babel-polyfill', './src/js/index.js'],
+    dashboard: ['babel-polyfill', './src/js/dashboard.js'],
+    rankings: ['babel-polyfill', './src/js/rankings.js']
+  },
   output: {
     path: path.resolve(__dirname, 'Ranking-Engine/dist'),
-    filename: 'bundle.js'
+    filename: '[name]-bundle.js'
   },
   module: {
     rules: [

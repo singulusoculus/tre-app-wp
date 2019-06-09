@@ -476,7 +476,10 @@ document.onkeydown = function (e) {
         // Up
         handleUndo()
     }
-    document.querySelector('#keys-reminder').classList.add('hide')
+    const keys = document.querySelector('#keys-reminder')
+    if (keys) {
+      keys.classList.add('hide')
+    }
   }
 }
 

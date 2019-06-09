@@ -62,7 +62,7 @@ const clearDBListInfo = () => {
 const dbGetUserLists = () => new Promise((resolve, reject) => {
   const wpuid = getUserID()
   fadeInSpinner()
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'getUserLists',
     wpuid
   }, (data, status) => {
@@ -76,7 +76,7 @@ const dbGetUserLists = () => new Promise((resolve, reject) => {
 
 const dbLoadUserList = (type, id) => {
   if (type === 'templates') {
-    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'getTemplateList',
       templateid: id
     }, (data, status) => {
@@ -91,7 +91,7 @@ const dbLoadUserList = (type, id) => {
       }
     })
   } else if (type === 'progress') {
-    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'getProgressList',
       progressid: id
     }, (data, status) => {
@@ -107,7 +107,7 @@ const dbLoadUserList = (type, id) => {
       }
     })
   } else if (type === 'results') {
-    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'getUserResultList',
       resultid: id
     }, (data, status) => {
@@ -129,7 +129,7 @@ const dbDeleteUserList = (type, id) => {
   const r = confirm('Are you sure you want to delete this list?')
   if (r === true) {
     if (type === 'templates') {
-      jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+      jQuery.post(getFilePath('/re-func/re-functions.php'), {
         func: 'deleteTemplateList',
         templateid: id
       }, (data, status) => {
@@ -141,7 +141,7 @@ const dbDeleteUserList = (type, id) => {
         }
       })
     } else if (type === 'progress') {
-      jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+      jQuery.post(getFilePath('/re-func/re-functions.php'), {
         func: 'deleteProgressList',
         progressid: id
       }, (data, status) => {
@@ -153,7 +153,7 @@ const dbDeleteUserList = (type, id) => {
         }
       })
     } else if (type === 'results') {
-      jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+      jQuery.post(getFilePath('/re-func/re-functions.php'), {
         func: 'deleteUserResultList',
         resultid: id
       }, (data, status) => {
@@ -185,7 +185,7 @@ const dbSaveTemplateData = (saveDesc) => {
   fadeInSpinner()
 
   if (dbListInfo.template.id === 0) {
-    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'insertTemplateList',
       wpuid,
       listData: listDataJSON,
@@ -221,7 +221,7 @@ const dbUpdateTemplateData = (saveDesc) => {
 
   fadeInSpinner()
 
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'updateTemplateList',
     currentTemplateID: dbListInfo.template.id,
     listData: listDataJSON,
@@ -259,7 +259,7 @@ const dbSaveProgressData = (saveDesc) => {
 
   if (dbListInfo.progress.id === 0) {
     // INSERT
-    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'insertProgressList',
       wpuid,
       rankData: rankDataJSON,
@@ -282,7 +282,7 @@ const dbSaveProgressData = (saveDesc) => {
     })
   } else {
     // UPDATE
-    jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'updateProgressList',
       currentProgressID: dbListInfo.progress.id,
       rankData: rankDataJSON,
@@ -305,7 +305,7 @@ const dbSaveProgressData = (saveDesc) => {
 
 const dbUpdateResultData = (rankedItems, resultId) => {
   const category = getCategory()
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'updateResultRanking',
     rankedItems,
     resultId
@@ -328,7 +328,7 @@ const dbSaveResultData = (rankedItems) => {
   const templateID = dbListInfo.template.id
   const category = getCategory()
 
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'insertResultRanking',
     rankedItems,
     itemCount,
@@ -359,7 +359,7 @@ const dbSaveUserResultData = (saveDesc) => {
 
   fadeInSpinner()
 
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'insertResultUser',
     currentProgressID: dbListInfo.progress.id,
     resultData: resultDataJSON,
@@ -385,7 +385,7 @@ const dbSaveUserResultData = (saveDesc) => {
 }
 
 const dbUpdateRankings = (listId) => {
-  jQuery.post('./wp-content/themes/Ranking-Engine/re-functions.php', {
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'updateRankings',
     listId: listId
   }, (data, status) => {

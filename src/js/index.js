@@ -6,28 +6,9 @@ import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
-import { handleProgressTransferClick, handleUserResultTransferClick, handleRankingResultsTransferClick } from './transfer'
 
 jQuery(document).ready(() => {
   initRankingEngine()
-
-  // M.Collapsible.getInstance(document.querySelector('#start-sections')).open(1)
-
-  // //////////////////////////////////////////////////////////////////////
-  // // Transfer Processes
-  // //////////////////////////////////////////////////////////////////////
-
-  // document.querySelector('#progress-transfer').addEventListener('click', () => {
-  //   handleProgressTransferClick()
-  // })
-
-  // document.querySelector('#user-result-transfer').addEventListener('click', () => {
-  //   handleUserResultTransferClick()
-  // })
-
-  // document.querySelector('#result-transfer').addEventListener('click', () => {
-  //   handleRankingResultsTransferClick()
-  // })
 
   // //////////////////////////////////////////////////////////////////////
   // // STEP TAB CONTROLS
