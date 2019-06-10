@@ -1,4 +1,4 @@
-import { showRankSection, showResultSection, custConfirm } from './views'
+import { showRankSection, showResultSection, custConfirm, custMessage } from './views'
 import { setResultData, getResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { setCategory } from './category'
@@ -426,7 +426,7 @@ const handleRestart = (e) => {
     const numOfItems = parseInt(document.querySelector('#num-of-items').value)
 
     if (isNaN(numOfItems)) {
-      alert('Please enter a number')
+      custMessage('Please enter a number')
       e.stopPropagation()
     } else {
       const fullData = getResultData()

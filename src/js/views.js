@@ -497,13 +497,20 @@ const custConfirm = (message, resultCallback, source) => {
   })
 }
 
+const custMessage = (message) => {
+  document.querySelector('.message-text').textContent = message
+
+  const instance = M.Modal.getInstance(document.querySelector('#message-modal'))
+  instance.open()
+}
+
 const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
   myListsEl.textContent = ''
-  const accountMenuEl = document.querySelector('#account-dropdown')
-  accountMenuEl.textContent = ''
-  const sideNavEl = document.querySelector('#sidenav__account')
-  sideNavEl.textContent = ''
+  // const accountMenuEl = document.querySelector('#account-dropdown')
+  // accountMenuEl.textContent = ''
+  // const sideNavEl = document.querySelector('#sidenav__account')
+  // sideNavEl.textContent = ''
 
   if (getUserID() === 0) {
     // Create My Lists Login
@@ -520,6 +527,10 @@ const setupSaveLogin = async () => {
     btnEl.setAttribute('id', 'my-lists-login-btn')
     btnEl.setAttribute('href', '#login-modal')
     btnEl.textContent = 'Login'
+    btnEl.addEventListener('click', () => {
+      document.querySelector('#login-form-button').setAttribute('from', '')
+      document.querySelector('#login-form-button').setAttribute('from', 'my-lists')
+    })
     iEl.classList.add('material-icons', 'right')
     iEl.textContent = 'account_circle'
 
@@ -534,17 +545,17 @@ const setupSaveLogin = async () => {
       el.setAttribute('href', '#login-modal')
     })
 
-    // Set up Account Menu
-    const liLogInEl = document.createElement('li')
-    const aLogInEl = document.createElement('a')
-    aLogInEl.classList.add('modal-trigger', 'account-login')
-    aLogInEl.setAttribute('href', '#login-modal')
-    aLogInEl.textContent = 'Log In'
-    liLogInEl.appendChild(aLogInEl)
-    accountMenuEl.appendChild(liLogInEl.cloneNode(true))
+    // // Set up Account Menu
+    // const liLogInEl = document.createElement('li')
+    // const aLogInEl = document.createElement('a')
+    // aLogInEl.classList.add('modal-trigger', 'account-login')
+    // aLogInEl.setAttribute('href', '#login-modal')
+    // aLogInEl.textContent = 'Log In'
+    // liLogInEl.appendChild(aLogInEl)
+    // accountMenuEl.appendChild(liLogInEl.cloneNode(true))
 
-    // SideNav
-    sideNavEl.appendChild(liLogInEl.cloneNode(true))
+    // // SideNav
+    // sideNavEl.appendChild(liLogInEl.cloneNode(true))
 
     clearDBListInfo()
     const update = getDBListInfo()
@@ -556,52 +567,55 @@ const setupSaveLogin = async () => {
     renderMyLists()
     setupSaveButtons()
 
-    // Set up Account Menu
-    const liLogInEl = document.createElement('li')
-    const aLogOutEl = document.createElement('a')
-    aLogOutEl.setAttribute('href', 'http://localhost:8080/wordpress/wp-login.php?action=logout')
-    aLogOutEl.textContent = 'Log Out'
-    aLogOutEl.classList.add('account-log-out')
-    liLogInEl.appendChild(aLogOutEl)
+    // // Set up Account Menu
+    // const liLogInEl = document.createElement('li')
+    // const aLogOutEl = document.createElement('a')
+    // aLogOutEl.setAttribute('href', 'http://localhost:8080/wordpress/wp-login.php?action=logout')
+    // aLogOutEl.textContent = 'Log Out'
+    // aLogOutEl.classList.add('account-log-out')
+    // liLogInEl.appendChild(aLogOutEl)
 
-    const liMyListsEl = document.createElement('li')
-    const aMyListsEl = document.createElement('a')
-    aMyListsEl.setAttribute('href', '#!')
-    aMyListsEl.classList.add('account-my-lists')
-    aMyListsEl.textContent = 'My Lists'
-    liMyListsEl.appendChild(aMyListsEl)
+    // const liMyListsEl = document.createElement('li')
+    // const aMyListsEl = document.createElement('a')
+    // aMyListsEl.setAttribute('href', '#!')
+    // aMyListsEl.classList.add('account-my-lists')
+    // aMyListsEl.textContent = 'My Lists'
+    // liMyListsEl.appendChild(aMyListsEl)
 
-    accountMenuEl.appendChild(liLogInEl.cloneNode(true))
-    accountMenuEl.appendChild(liMyListsEl.cloneNode(true))
+    // accountMenuEl.appendChild(liLogInEl.cloneNode(true))
+    // accountMenuEl.appendChild(liMyListsEl.cloneNode(true))
 
-    // SideNav
-    sideNavEl.appendChild(liLogInEl.cloneNode(true))
-    sideNavEl.appendChild(liMyListsEl.cloneNode(true))
+    // // SideNav
+    // sideNavEl.appendChild(liLogInEl.cloneNode(true))
+    // sideNavEl.appendChild(liMyListsEl.cloneNode(true))
 
-    const accountMyLists = document.querySelectorAll('.account-my-lists')
-    accountMyLists.forEach((el) => {
-      el.addEventListener('click', () => {
-        showMyLists()
-      })
-    })
+    // const accountMyLists = document.querySelectorAll('.account-my-lists')
+    // accountMyLists.forEach((el) => {
+    //   el.addEventListener('click', () => {
+    //     showMyLists()
+    //   })
+    // })
 
-    const accountLogOut = document.querySelectorAll('.account-log-out')
-    accountLogOut.forEach((el) => {
-      el.addEventListener('click', () => {
-        setReloadInfo('logout')
-      })
-    })
+    // const accountLogOut = document.querySelectorAll('.account-log-out')
+    // accountLogOut.forEach((el) => {
+    //   el.addEventListener('click', () => {
+    //     setReloadInfo('logout')
+    //   })
+    // })
   }
 }
 
 const showMyLists = () => {
-  const step = getCurrentStep()
+  // const step = getCurrentStep()
 
-  if (step !== 'Start') {
-    showStartSection()
-  }
+  // if (step !== 'Start') {
+  //   showStartSection()
+  // }
 
-  M.Collapsible.getInstance(document.querySelector('#start-sections')).open(1)
+  const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
+  instance.open()
+
+  // M.Collapsible.getInstance(document.querySelector('#start-sections')).open(1)
 }
 
 const renderMyLists = async () => {
@@ -696,7 +710,7 @@ const createTableElement = (type, headers, rows) => {
     const trEl = document.createElement('tr')
     const items = Object.values(row)
     const itemID = items[0]
-    trEl.classList.add(`${type}-${itemID}`)
+    trEl.classList.add(`${type}-${itemID}`, `${type}-list`, 'modal-close')
     items.slice(1).forEach((item) => {
       const tdEl = document.createElement('td')
       tdEl.textContent = item
@@ -757,5 +771,6 @@ export {
   setupSaveButtons,
   fadeInSpinner,
   fadeOutSpinner,
-  showMyLists
+  showMyLists,
+  custMessage
 }

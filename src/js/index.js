@@ -169,8 +169,10 @@ jQuery(document).ready(() => {
     document.querySelector('.support-us').classList.add('hide')
   })
 
-  document.querySelector('#login-form-button').addEventListener('click', () => {
-    setReloadInfo('login')
+  document.querySelector('#login-form-button').addEventListener('click', (e) => {
+    console.log(e)
+    const fromVal = e.target.attributes.from.value
+    setReloadInfo(`login-${fromVal}`)
   })
 
   // ***************** Modals *****************
@@ -190,6 +192,13 @@ jQuery(document).ready(() => {
 
   document.querySelector('#save-ranking').addEventListener('click', () => {
     handleClickSaveRank()
+  })
+
+  document.querySelectorAll('.save-btn').forEach((el) => {
+    el.addEventListener('click', () => {
+      document.querySelector('#login-form-button').setAttribute('from', '')
+      document.querySelector('#login-form-button').setAttribute('from', 'save')
+    })
   })
 
 // End of document.ready

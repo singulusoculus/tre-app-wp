@@ -2,7 +2,7 @@ import { getListData, initPrevList } from './list'
 import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
-import { saveData } from './functions'
+import { saveData, renderTableRows } from './functions'
 import { renderMyLists, setupSaveButtons, fadeInSpinner, fadeOutSpinner } from './views'
 
 let dbListInfo = {
@@ -73,6 +73,15 @@ const dbGetUserLists = () => new Promise((resolve, reject) => {
     }
   })
 })
+
+const dbGetTopTenYear = () => {
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
+    func: 'getYearTopTen'
+  }, (data, status) => {
+    const parsedData = JSON.parse(data)
+    renderTableRows(parsedData, 'top-ten-year')
+  })
+}
 
 const dbLoadUserList = (type, id) => {
   if (type === 'templates') {
@@ -200,6 +209,8 @@ const dbSaveTemplateData = (saveDesc) => {
           desc: saveDesc
         })
         saveData(listData)
+        renderMyLists()
+        setupSaveButtons()
 
         fadeOutSpinner()
         M.toast({ html: `Template Saved`, displayLength: 2000 })
@@ -234,6 +245,8 @@ const dbUpdateTemplateData = (saveDesc) => {
       })
 
       saveData(listData)
+      renderMyLists()
+      setupSaveButtons()
 
       fadeOutSpinner()
       M.toast({ html: `Template Updated`, displayLength: 2000 })
@@ -275,6 +288,8 @@ const dbSaveProgressData = (saveDesc) => {
           desc: saveDesc
         })
         saveData(rankData)
+        renderMyLists()
+        setupSaveButtons()
 
         fadeOutSpinner()
         M.toast({ html: `Progress List Saved`, displayLength: 2000 })
@@ -295,6 +310,8 @@ const dbSaveProgressData = (saveDesc) => {
           desc: saveDesc
         })
         saveData(rankData)
+        renderMyLists()
+        setupSaveButtons()
 
         fadeOutSpinner()
         M.toast({ html: `Progress List Updated`, displayLength: 2000 })
@@ -377,6 +394,8 @@ const dbSaveUserResultData = (saveDesc) => {
       document.querySelector('#save-results').classList.add('disabled')
       setDBListInfoType('progress', { id: 0, desc: '' })
       saveData(resultData)
+      renderMyLists()
+      setupSaveButtons()
 
       fadeOutSpinner()
       M.toast({ html: `Result List Saved`, displayLength: 2000 })
@@ -405,5 +424,6 @@ export { dbSaveTemplateData,
   dbGetUserLists,
   dbLoadUserList,
   dbDeleteUserList,
-  clearDBListInfo
+  clearDBListInfo,
+  dbGetTopTenYear
 }

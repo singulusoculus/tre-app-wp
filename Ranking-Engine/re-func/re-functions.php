@@ -16,6 +16,8 @@ switch ($func) {
   case 'getBGGCollection':
     getBGGCollection();
     break;
+  case 'getYearTopTen':
+    getYearTopTen();
   case 'deleteUserResultList':
     deleteUserResultList();
     break;
@@ -110,6 +112,22 @@ function getBGGCollection() {
     }
 
   } while ($statusCode == '202' && $tries < 13);
+}
+
+function getYearTopTen() {
+  global $wpdb;
+
+  $results = $wpdb->get_results ("SELECT cy_rank AS rank
+  , bg_name
+  FROM re_boardgames 
+  WHERE cy_rank <> 0
+  ORDER BY cy_rank ASC
+  LIMIT 10", ARRAY_A );
+
+  $results_json = json_encode($results);
+
+  echo $results_json;
+
 }
 
 ///////////////////////////////////////

@@ -84,6 +84,9 @@
               </div>
             </div>
           </div>
+          <div class="account right">
+          <a id="nav-pm__account" class="modal-trigger" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
+          </div>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="#">Current Rankings</a></li>
             <li><a href="#">Codex</a></li>
@@ -106,54 +109,52 @@
       <section id="start-container" class="start-container step-container">
         <div class="resume-session-container"></div>
 
-        <!-- <ul class="collapsible popout">
-          <li class="">
-            <div class="collapsible-header">Transfer Processes</div>
-            <div class="collapsible-body">
-            <a id="progress-transfer" class="waves-effect waves-light btn">Progress Transfer</a>
-            <a id="user-result-transfer" class="waves-effect waves-light btn">User Result Transfer</a>
-            <a id="result-transfer" class="waves-effect waves-light btn">Ranking Result Transfer</a>
+        <div class="list-category-wrapper">
+          <h5 class="center-align">Select a list category to get started:</h5>
+          <div class="row">
+            <div id="list-category" class="input-field col s12 m6 offset-m3">
+              <select id="list-category-select">
+                <option value="0" selected>Categories...</option>
+                <option value="1">Beverages</option>
+                <option value="2">Board Games</option>
+                <option value="3">Books</option>
+                <option value="4">Brews</option>
+                <option value="5">Characters</option>
+                <option value="6">Comics</option>
+                <option value="7">Food</option>
+                <option value="8">Movies</option>
+                <option value="9">Music</option>
+                <option value="10">People</option>
+                <option value="11">Places</option>
+                <option value="12">Sports</option>
+                <option value="13">Toys</option>
+                <option value="14">TV Shows</option>
+                <option value="15">Video Games</option>
+                <option value="16">Other</option>
+              </select>
             </div>
-          </li>
-        </ul> -->
-            
-        <ul id="start-sections" class="collapsible popout">
-          <li id="start-new-list" class="active">
-            <div class="collapsible-header"><i class="material-icons">create</i>Create a new list</div>
-            <div class="collapsible-body">
-              <div class="row">
-                <div id="list-category" class="input-field col s12">
-                  <select id="list-category-select">
-                    <option value="0" selected>Choose a category to get started</option>
-                    <option value="1">Beverages</option>
-                    <option value="2">Board Games</option>
-                    <option value="3">Books</option>
-                    <option value="4">Brews</option>
-                    <option value="5">Characters</option>
-                    <option value="6">Comics</option>
-                    <option value="7">Food</option>
-                    <option value="8">Movies</option>
-                    <option value="9">Music</option>
-                    <option value="10">People</option>
-                    <option value="11">Places</option>
-                    <option value="12">Sports</option>
-                    <option value="13">Toys</option>
-                    <option value="14">TV Shows</option>
-                    <option value="15">Video Games</option>
-                    <option value="16">Other</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li id="start-my-lists">
-            <div class="collapsible-header"><i class="material-icons">view_list</i>My Lists</div>
-            <div class="collapsible-body">
-              <div class="my-lists">
-              </div>
-            </div>
-          </li>
-        </ul>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h5 class="center-align">Current <?php echo date("Y"); ?> Top 10 Games:</h5>
+        <div class="row">
+          <div class="col s12 m8 offset-m2">
+            <table id="top-ten-year__table" class="striped">
+              <thead>
+                <tr>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Game</th>
+                </tr>
+              </thead>
+              <tbody id="top-ten-year__rows"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="center-align">
+          <a href="./rankings" class="waves-effect waves-light btn">See All Top Games<i class="material-icons small white-text">chevron_right</i></a>
+        </div>
       </section>
     </div>
 
@@ -506,6 +507,20 @@
     <div class="modal-footer">
       <a href="#!" id="restart-ok-btn" class="modal-close waves-effect waves-green btn-flat">Ok</a>
       <a href="#!" id="restart-cancel-btn" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+    </div>
+  </div>
+
+    <!-- Bottom Modal -->
+    <div id="account-modal" class="modal bottom-sheet">
+    <div class="modal-content">
+    <a href="#!" class="modal-close btn-flat modal-close-x">
+        <span aria-hidden="true">&times;</span>
+      </a>
+      <div class="container center-align">
+      <h4>My Lists</h4>
+        <div class="my-lists"></div>
+      </div>
+
     </div>
   </div>
 

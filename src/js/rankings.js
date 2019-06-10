@@ -1,11 +1,8 @@
 import { fadeInSpinner, fadeOutSpinner } from './views'
-import { numWithCommas, renderTableRows } from './functions'
+import { numWithCommas, renderTableRows, initDataTable } from './functions'
 
 const initRankings = () => {
   fadeInSpinner()
-
-  // Hide top nav account menu
-  document.querySelector('#nav-pm__account').classList.add('hide')
 
   // Get Totals Info
   // getTotals
@@ -22,6 +19,7 @@ const initRankings = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     renderTableRows(parsedData, 'rankings-at')
+    initDataTable('rankings-at')
   })
 
   // getTopGamesYear
@@ -30,6 +28,7 @@ const initRankings = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     renderTableRows(parsedData, 'rankings-y')
+    initDataTable('rankings-y')
   })
 
   // getTopGamesD30
@@ -38,6 +37,7 @@ const initRankings = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     renderTableRows(parsedData, 'rankings-d30')
+    initDataTable('rankings-d30')
   })
 }
 

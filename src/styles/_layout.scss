@@ -58,6 +58,10 @@
   }
 }
 
+#nav-pm__account {
+  display: block !important;
+}
+
 .tab.disabled>a {
   color: rgba(255,255,255,0.2) !important;
 }
@@ -100,6 +104,23 @@
     -webkit-transform: translateX(0);
     transform: translateX(0);
   }
+}
+
+//////////////////////////////////////////////////////////////////
+///////////  START SECTION
+//////////////////////////////////////////////////////////////////
+
+// My Lists
+.templates-list, .progress-list, .results-list {
+  cursor: pointer;
+}
+
+.list-category-wrapper {
+  padding-top: 1rem;
+}
+
+.my-lists > div > h4 {
+  padding-top: 2rem;
 }
 
 
@@ -525,4 +546,8 @@
   right: 0;
   font-size: 2rem;
   color: rgba($color-grey-dark, .9);
+}
+
+.modal.bottom-sheet {
+  max-height: 75% !important;
 }

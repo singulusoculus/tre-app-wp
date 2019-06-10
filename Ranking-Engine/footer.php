@@ -17,6 +17,10 @@
       return <?php echo get_current_user_id(); ?>;
     }
 
+    const getThemePath = () => {
+      return '<?php echo get_theme_file_uri(); ?>'
+    }
+
     const getFilePath = (file) => {
       const themePath = '<?php echo get_theme_file_uri(); ?>'
       return `${themePath}${file}`

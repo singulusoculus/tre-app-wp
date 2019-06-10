@@ -1,4 +1,4 @@
-import { renderBGGCollection, fadeInSpinner, fadeOutSpinner } from './views'
+import { renderBGGCollection, fadeInSpinner, fadeOutSpinner, custMessage } from './views'
 import { addListItems, sortListData, getListData, createList } from './list'
 import { getBGGFilters, updateBGGFilters } from './filters'
 import { xmlToJson } from './functions'
@@ -39,13 +39,18 @@ const initPrevBGGCollection = () => {
 const handleBGGCollectionRequest = async () => {
   // This will replace getBGGData once I can test
   const user = document.querySelector('#bgg-username').value
-  const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
-  bggCollectionData = await getBGGCollection(user, expansions)
 
-  // bggCollectionData = getBGGData()
-  showBGGCollectionSection()
-  renderBGGCollection()
-  fadeOutSpinner()
+  if (user === '') {
+    custMessage('Please input your BGG user name')
+  } else {
+    const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
+    bggCollectionData = await getBGGCollection(user, expansions)
+
+    // bggCollectionData = getBGGData()
+    showBGGCollectionSection()
+    renderBGGCollection()
+    fadeOutSpinner()
+  }
 }
 
 const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => {
@@ -173,6 +178,8 @@ const handleCollectionChangeClick = () => {
   document.querySelector('.bgg-list').classList.add('hide')
   document.querySelector('.bgg-username-submit').classList.remove('hide')
   document.querySelector('.bgg-username-submitted').classList.add('hide')
+
+  sessionStorage.removeItem('bggCollection')
 }
 
 const addBGGItemToList = (id) => {

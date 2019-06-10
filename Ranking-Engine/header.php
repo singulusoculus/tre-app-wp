@@ -4,7 +4,7 @@
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <meta name="viewport" content="width=device-width" />
 <?php wp_head(); ?>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
 </head>
 <body <?php body_class(); ?>>
 
@@ -23,7 +23,7 @@
         <li><a href="#">Reviews</a></li>
         <li><a href="#">Support Us</a></li>
         <li><a href="#">Videos</a></li>
-        <li><a id="nav-pm__account" class="dropdown-trigger" href="#!" data-target="account-dropdown"><i class="material-icons">account_circle</i></a></li>
+        <!-- <li><a id="nav-pm__account" class="dropdown-trigger" href="#!" data-target="account-dropdown"><i class="material-icons">account_circle</i></a></li> -->
       </ul>
     </div>
   </nav>
@@ -45,5 +45,4 @@
     <li><a href="#">Contact</a></li>
     <div class="divider"></div>
     <div id="sidenav__account"></div>
-
   </ul>

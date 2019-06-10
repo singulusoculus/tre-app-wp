@@ -1,15 +1,16 @@
 import { getCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { showTab, renderPreviousSession, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists } from './views'
+import { showTab, renderPreviousSession, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage } from './views'
 import { initPrevList, getListData } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear } from './database'
 
 const initRankingEngine = () => {
   initMaterializeComponents()
   showTab('start')
   setCurrentStep('Start')
+  dbGetTopTenYear()
 
   let reload = sessionStorage.getItem('reload')
   if (reload) {
@@ -23,7 +24,7 @@ const initRankingEngine = () => {
       const category = prevData.category
       const loginStep = prevData.step
       const dbListInfo = prevData.dbListInfo
-  
+
       if (step !== 'Start') {
         if (loginStep === 'List') {
           initPrevList(category, data)
@@ -32,14 +33,15 @@ const initRankingEngine = () => {
         } else if (loginStep === 'Result') {
           initPrevResult(category, data)
         }
-        if (type === 'login') {
+        if (type === 'login-save') {
           const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
           modal.open()
           setDBListInfo(dbListInfo)
         }
-      } else {
-        showMyLists()
       }
+    }
+    if (type === 'login-my-lists') {
+      showMyLists()
     }
   }
 
@@ -53,7 +55,7 @@ const handleClickSave = (e) => {
   const saveDesc = document.querySelector('#save-description').value
 
   if (saveDesc === '') {
-    alert('Please add a description for your list')
+    custMessage('Please add a description for your list')
     e.stopPropagation()
   } else {
     if (currentStep === 'List') {
@@ -71,7 +73,7 @@ const handleClickUpdate = (e) => {
   const saveDesc = document.querySelector('#save-description').value
 
   if (saveDesc === '') {
-    alert('Please add a description for your list')
+    custMessage('Please add a description for your list')
     e.stopPropagation()
   } else {
     dbUpdateTemplateData(saveDesc)
@@ -175,6 +177,10 @@ const initMaterializeComponents = () => {
   const restartModal = document.querySelector('#restart-modal')
   M.Modal.init(alertModal, modalOptions)
   M.Modal.init(restartModal, modalOptions)
+
+  const bottomSheetOptions = { inDuration: 500, outDuration: 500 }
+  const bottomSheetModal = document.querySelector('#account-modal')
+  M.Modal.init(bottomSheetModal, bottomSheetOptions)
 }
 
 const saveData = (data) => {
@@ -291,7 +297,6 @@ const renderTableRows = (data, table) => {
     })
     rowsEl.appendChild(trEl)
   })
-  initDataTable(table)
 }
 
 const initDataTable = (table) => {
@@ -368,5 +373,6 @@ export { disableArrowKeyScroll,
   handleClickSaveList,
   handleClickSaveRank,
   numWithCommas,
-  renderTableRows
+  renderTableRows,
+  initDataTable
 }
