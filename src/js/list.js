@@ -107,6 +107,9 @@ const addListItems = (list) => {
       M.toast({ html: `Added ${addedItems} items to your list`, displayLength: 1500 })
     }
 
+    const instance = M.Collapsible.getInstance(document.querySelector('.list-collapsible'))
+    instance.open(0)
+
     saveData(listData)
     renderListData()
   }

@@ -23,7 +23,6 @@
         <li><a href="#">Reviews</a></li>
         <li><a href="#">Support Us</a></li>
         <li><a href="#">Videos</a></li>
-        <!-- <li><a id="nav-pm__account" class="dropdown-trigger" href="#!" data-target="account-dropdown"><i class="material-icons">account_circle</i></a></li> -->
       </ul>
     </div>
   </nav>

@@ -347,7 +347,7 @@ const initDataTable = (table) => {
 
   document.querySelector(`#${table}-select-wrapper`).classList.add('complete')
 
-  // // Fix search
+  // Fix search
 
   document.querySelector(`#${table}__table_filter > label > input`).setAttribute('placeholder', 'Search')
   const searchEl = jQuery(`#${table}__table_filter > label > input`).detach()

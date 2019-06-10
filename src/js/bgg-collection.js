@@ -63,8 +63,10 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
     // 1 = invalid username; 2 = timed out, try again later
     if (data === 1) {
       reject(new Error('Invalid username'))
+      alert('Invalid username')
     } else if (data === 2) {
       reject(new Error('Timed Out. Try again later.'))
+      alert('Request timed out. Try again later.')
     } else {
       const listData = getListData()
       const xmlDoc = data.replace(/[\n\r]+/g, '')

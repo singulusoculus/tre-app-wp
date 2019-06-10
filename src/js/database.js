@@ -3,7 +3,7 @@ import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData, renderTableRows } from './functions'
-import { renderMyLists, setupSaveButtons, fadeInSpinner, fadeOutSpinner } from './views'
+import { renderMyLists, setupSaveButtons, fadeInSpinner, fadeOutSpinner, renderTemplateDesc } from './views'
 
 let dbListInfo = {
   template: {
@@ -33,10 +33,13 @@ const setDBListInfoType = (type, updates) => {
   if (typeof updates.desc === 'string') {
     dbListInfo[type].desc = updates.desc
   }
+
+  renderTemplateDesc()
 }
 
 const setDBListInfo = (newData) => {
   dbListInfo = newData
+  renderTemplateDesc()
 }
 
 const clearDBListInfo = () => {
@@ -57,6 +60,7 @@ const clearDBListInfo = () => {
       desc: ''
     }
   }
+  renderTemplateDesc()
 }
 
 const dbGetUserLists = () => new Promise((resolve, reject) => {

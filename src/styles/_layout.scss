@@ -550,4 +550,10 @@
 
 .modal.bottom-sheet {
   max-height: 75% !important;
+  width: 80%;
+  margin: 0 auto;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
 }

@@ -376,6 +376,7 @@ const showListSection = (source) => {
   M.FormSelect.init(categorySelectEl)
   const categoryName = categorySelectEl.selectedOptions[0].innerHTML
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
+  renderTemplateDesc()
   // Show BGG section if category is Board Games
   if (categoryName === 'Board Games') {
     document.querySelector('.bgg-section').classList.remove('hide')
@@ -386,6 +387,8 @@ const showListSection = (source) => {
     enableStepTab('rank')
     enableNextButton()
     enableListSave()
+  } else {
+    disableListSave()
   }
 
   showTab('list')
@@ -433,6 +436,16 @@ const showResultSection = (source) => {
 
   showTab('result')
   showHelpText('result')
+}
+
+const renderTemplateDesc = () => {
+  const dbListInfo = getDBListInfo()
+
+  if (dbListInfo.template.desc) {
+    document.querySelector('.current-template-desc').textContent = `Template: ${dbListInfo.template.desc}`
+  } else {
+    document.querySelector('.current-template-desc').textContent = ''
+  }
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -545,18 +558,6 @@ const setupSaveLogin = async () => {
       el.setAttribute('href', '#login-modal')
     })
 
-    // // Set up Account Menu
-    // const liLogInEl = document.createElement('li')
-    // const aLogInEl = document.createElement('a')
-    // aLogInEl.classList.add('modal-trigger', 'account-login')
-    // aLogInEl.setAttribute('href', '#login-modal')
-    // aLogInEl.textContent = 'Log In'
-    // liLogInEl.appendChild(aLogInEl)
-    // accountMenuEl.appendChild(liLogInEl.cloneNode(true))
-
-    // // SideNav
-    // sideNavEl.appendChild(liLogInEl.cloneNode(true))
-
     clearDBListInfo()
     const update = getDBListInfo()
     const prevData = JSON.parse(localStorage.getItem('saveData'))
@@ -566,56 +567,12 @@ const setupSaveLogin = async () => {
   } else {
     renderMyLists()
     setupSaveButtons()
-
-    // // Set up Account Menu
-    // const liLogInEl = document.createElement('li')
-    // const aLogOutEl = document.createElement('a')
-    // aLogOutEl.setAttribute('href', 'http://localhost:8080/wordpress/wp-login.php?action=logout')
-    // aLogOutEl.textContent = 'Log Out'
-    // aLogOutEl.classList.add('account-log-out')
-    // liLogInEl.appendChild(aLogOutEl)
-
-    // const liMyListsEl = document.createElement('li')
-    // const aMyListsEl = document.createElement('a')
-    // aMyListsEl.setAttribute('href', '#!')
-    // aMyListsEl.classList.add('account-my-lists')
-    // aMyListsEl.textContent = 'My Lists'
-    // liMyListsEl.appendChild(aMyListsEl)
-
-    // accountMenuEl.appendChild(liLogInEl.cloneNode(true))
-    // accountMenuEl.appendChild(liMyListsEl.cloneNode(true))
-
-    // // SideNav
-    // sideNavEl.appendChild(liLogInEl.cloneNode(true))
-    // sideNavEl.appendChild(liMyListsEl.cloneNode(true))
-
-    // const accountMyLists = document.querySelectorAll('.account-my-lists')
-    // accountMyLists.forEach((el) => {
-    //   el.addEventListener('click', () => {
-    //     showMyLists()
-    //   })
-    // })
-
-    // const accountLogOut = document.querySelectorAll('.account-log-out')
-    // accountLogOut.forEach((el) => {
-    //   el.addEventListener('click', () => {
-    //     setReloadInfo('logout')
-    //   })
-    // })
   }
 }
 
 const showMyLists = () => {
-  // const step = getCurrentStep()
-
-  // if (step !== 'Start') {
-  //   showStartSection()
-  // }
-
   const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
   instance.open()
-
-  // M.Collapsible.getInstance(document.querySelector('#start-sections')).open(1)
 }
 
 const renderMyLists = async () => {
@@ -772,5 +729,6 @@ export {
   fadeInSpinner,
   fadeOutSpinner,
   showMyLists,
-  custMessage
+  custMessage,
+  renderTemplateDesc
 }

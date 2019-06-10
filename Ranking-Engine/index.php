@@ -84,9 +84,11 @@
               </div>
             </div>
           </div>
+
           <div class="account right">
-          <a id="nav-pm__account" class="modal-trigger" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
+            <a id="nav-pm__account" class="modal-trigger" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
           </div>
+
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="#">Current Rankings</a></li>
             <li><a href="#">Codex</a></li>
@@ -138,7 +140,7 @@
 
         <div class="divider"></div>
 
-        <h5 class="center-align">Current <?php echo date("Y"); ?> Top 10 Games:</h5>
+        <h5 class="center-align"><?php echo date("Y"); ?> Top 10 Games:</h5>
         <div class="row">
           <div class="col s12 m8 offset-m2">
             <table id="top-ten-year__table" class="striped">
@@ -161,7 +163,8 @@
     <div id="list-wrapper" class="step-wrapper">
       <section id="list-container" class="list-container step-container">
         <div class="row">
-          <h5 class="current-list-category"></h5>
+          <h5 class="current-list-category col s12 m6"></h5>
+          <h5 class ="current-template-desc col s12 m6"></h5>
           <ul class="collapsible col s12 popout">
             <li class="active">
               <div class="collapsible-header"><i class="material-icons">playlist_add</i>Text Entry</div>
@@ -284,7 +287,7 @@
               </div>
             </li>
           </ul>
-          <ul class="collapsible col s12 popout">
+          <ul class="list-collapsible collapsible col s12 popout">
             <li>
               <div class="list-header collapsible-header"><i class="material-icons">view_list</i><span
                   id="list-info">List: 0
