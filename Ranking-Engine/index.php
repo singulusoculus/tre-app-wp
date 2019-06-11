@@ -140,7 +140,7 @@
 
         <div class="divider"></div>
 
-        <h5 class="center-align"><?php echo date("Y"); ?> Top 10 Games:</h5>
+        <h5 class="center-align">Current <?php echo date("Y"); ?> Top Games:</h5>
         <div class="row">
           <div class="col s12 m8 offset-m2">
             <table id="top-ten-year__table" class="striped">

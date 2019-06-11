@@ -3,10 +3,10 @@ import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory } from './category'
-import { setCurrentStep, getCurrentStep } from './step'
+import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, clearDBListInfo, getDBListInfo } from './database'
-import { updateLocalStorageSaveDataItem, setReloadInfo } from './functions'
+import { updateLocalStorageSaveDataItem } from './functions'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
