@@ -129,11 +129,11 @@ jQuery(document).ready(() => {
     handleClickClear()
   })
 
-  document.querySelector('.list-header').addEventListener('click', () => {
-    const listHeader = document.querySelector('.list-header')
-    listHeader.classList.remove('pulse-bc')
-    listHeader.classList.add('clicked')
-  })
+  // document.querySelector('.list-header').addEventListener('click', () => {
+  //   const listHeader = document.querySelector('.list-header')
+  //   listHeader.classList.remove('pulse-bc')
+  //   listHeader.classList.add('clicked')
+  // })
 
   // ***************** Rank Section *****************
   // Handle item1 pick

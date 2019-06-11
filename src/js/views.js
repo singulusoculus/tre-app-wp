@@ -72,14 +72,14 @@ const renderListData = () => {
   listInfoEl.textContent = `Your List: ${count} items`
 
   // Pulse the list section if items are added and it hasn't been clicked yet
-  const listHeader = document.querySelector('.list-header')
-  const clicked = document.querySelector('.list-header').classList.contains('clicked')
+  // const listHeader = document.querySelector('.list-header')
+  // const clicked = document.querySelector('.list-header').classList.contains('clicked')
 
-  if (count > 0 && !clicked) {
-    listHeader.classList.add('pulse-bc')
-  } else {
-    listHeader.classList.remove('pulse-bc')
-  }
+  // if (count > 0 && !clicked) {
+  //   listHeader.classList.add('pulse-bc')
+  // } else {
+  //   listHeader.classList.remove('pulse-bc')
+  // }
 
   const listEl = document.querySelector('#list-items')
 
