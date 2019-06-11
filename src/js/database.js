@@ -364,7 +364,7 @@ const dbSaveResultData = (rankedItems) => {
       })
       saveData(resultData)
 
-      if (category === 2 && itemCount > 10) {
+      if (category === 2) {
         dbUpdateRankings(dbListInfo.result.id)
       }
     }
@@ -412,7 +412,6 @@ const dbUpdateRankings = (listId) => {
     func: 'updateRankings',
     listId: listId
   }, (data, status) => {
-
   })
 }
 

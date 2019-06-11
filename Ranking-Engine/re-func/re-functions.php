@@ -313,14 +313,15 @@ function insertResultRanking() {
   //INSERT finalList rows into re_result_d
   foreach ($finalList as $key => $value) {
 
-      $itemname = stripslashes($value);
+      $itemname = stripslashes($value['name']);
 
       $wpdb->insert(
           're_results_d',
           array(
               'result_id' => $savelistid,
               'item_name' => $itemname,
-              'item_rank' => $key+1
+              'item_rank' => $key+1,
+              'bgg_id' => $value['bggid']
           ),
           array(
               '%d',
@@ -342,7 +343,8 @@ function updateResultRanking() {
   foreach ($rankedItems as $key => $value) {
     $wpdb->update(
       're_results_d',
-      array('item_name' => $value),
+      array('item_name' => $value['name'],
+            'bgg_id' => $value['bggid']),
       array(
         'result_id' => $resultId,
         'item_rank' => $key+1

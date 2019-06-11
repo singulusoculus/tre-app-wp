@@ -237,8 +237,9 @@
                   <p class="center-align bgg-filter-heading">List Types</p>
 
                   <div>
-                    <form class="list-types" action="#">
-                      <label class="bgg-cb">
+                    <form action="#">
+                    <div class="list-types">
+                    <label class="bgg-cb">
                         <input class="fortrade" type="checkbox" />
                         <span>For Trade</span>
                       </label>
@@ -250,6 +251,8 @@
                         <input class="played" type="checkbox" checked />
                         <span>Played</span>
                       </label>
+                    </div>
+                    <div class="list-types">
                       <label class="bgg-cb">
                         <input class="prevowned" type="checkbox" />
                         <span>Prev Owned</span>
@@ -262,6 +265,8 @@
                         <input class="wantintrade" type="checkbox" />
                         <span>Want in Trade</span>
                       </label>
+                    </div>
+                    <div class="list-types">
                       <label class="bgg-cb">
                         <input class="wanttobuy" type="checkbox" />
                         <span>Want to Buy</span>
@@ -274,11 +279,14 @@
                         <input class="wishlist" type="checkbox" />
                         <span>Wishlist</span>
                       </label>
+                    </div>
                     </form>
                   </div>
                   <div class="bgg-personal-rating">
                     <form class="bgg-personal-rating__form" action="#">
+                    <div class="center-align">
                       <span class="bgg-filter-heading">Min Personal Rating</span>
+                    </div>
                       <p class="range-field">
                         <input type="range" id="personal-rating" value="0" min="0" max="10" />
                       </p>
@@ -286,7 +294,6 @@
                   </div>
                   <div class="divider-sm"></div>
                   <div class="collection-header-wrapper">
-                    <h5 class="collection-header section-title">Collection:</h5>
                     <div class="bgg-collection-info"></div>
                     <a id="bgg-add-selected" class="waves-effect waves-light btn"><i
                         class="material-icons right">add</i>Add Filtered</a>

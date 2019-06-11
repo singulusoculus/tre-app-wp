@@ -44,9 +44,9 @@ const handleBGGCollectionRequest = async () => {
     custMessage('Please input your BGG user name')
   } else {
     const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
-    bggCollectionData = await getBGGCollection(user, expansions)
+    // bggCollectionData = await getBGGCollection(user, expansions)
 
-    // bggCollectionData = getBGGData()
+    bggCollectionData = getBGGData()
     showBGGCollectionSection()
     renderBGGCollection()
     fadeOutSpinner()
@@ -111,61 +111,61 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
   })
 })
 
-// const getBGGData = () => {
-//   const listData = getListData()
+const getBGGData = () => {
+  const listData = getListData()
 
-//   let xhttp = ''
+  let xhttp = ''
 
-//   if (window.XMLHttpRequest) {
-//     xhttp = new XMLHttpRequest()
-//   }
+  if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest()
+  }
 
-//   xhttp.open('GET', './wp-content/themes/Ranking-Engine/collection-stats.xml', false)
-//   // xhttp.open('GET', './collection-stats.xml', false)
+  xhttp.open('GET', './wp-content/themes/Ranking-Engine/collection-stats.xml', false)
+  // xhttp.open('GET', './collection-stats.xml', false)
 
-//   // xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
-//   xhttp.send()
+  // xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
+  xhttp.send()
 
-//   const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
+  const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
 
-//   const parser = new DOMParser()
-//   const xml = parser.parseFromString(xmlDoc, 'text/xml')
-//   const data = xmlToJson(xml)
+  const parser = new DOMParser()
+  const xml = parser.parseFromString(xmlDoc, 'text/xml')
+  const data = xmlToJson(xml)
 
-//   const items = data.items.item
+  const items = data.items.item
 
-//   let bggList = []
+  let bggList = []
 
-//   items.forEach((item) => {
-//     const obj = {
-//       id: uuidv4(),
-//       name: item.name['#text'],
-//       source: 'bgg',
-//       image: item.thumbnail['#text'],
-//       yearPublished: parseInt(item.yearpublished['#text']),
-//       bggId: item['@attributes'].objectid,
-//       own: item.status['@attributes'].own === '1',
-//       fortrade: item.status['@attributes'].fortrade === '1',
-//       prevowned: item.status['@attributes'].prevowned === '1',
-//       want: item.status['@attributes'].want === '1',
-//       wanttobuy: item.status['@attributes'].wanttobuy === '1',
-//       wanttoplay: item.status['@attributes'].wanttoplay === '1',
-//       wishlist: item.status['@attributes'].wishlist === '1',
-//       played: item.numplays['#text'] > 0,
-//       rated: item.stats['rating']['@attributes'].value !== 'N/A',
-//       rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
-//       addedToList: false
-//     }
+  items.forEach((item) => {
+    const obj = {
+      id: uuidv4(),
+      name: item.name['#text'],
+      source: 'bgg',
+      image: item.thumbnail['#text'],
+      yearPublished: parseInt(item.yearpublished['#text']),
+      bggId: item['@attributes'].objectid,
+      own: item.status['@attributes'].own === '1',
+      fortrade: item.status['@attributes'].fortrade === '1',
+      prevowned: item.status['@attributes'].prevowned === '1',
+      want: item.status['@attributes'].want === '1',
+      wanttobuy: item.status['@attributes'].wanttobuy === '1',
+      wanttoplay: item.status['@attributes'].wanttoplay === '1',
+      wishlist: item.status['@attributes'].wishlist === '1',
+      played: item.numplays['#text'] > 0,
+      rated: item.stats['rating']['@attributes'].value !== 'N/A',
+      rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
+      addedToList: false
+    }
 
-//     if (listData.map(e => e.bggId).indexOf(obj.bggId) > -1) {
-//       obj.addedToList = true
-//     }
+    if (listData.map(e => e.bggId).indexOf(obj.bggId) > -1) {
+      obj.addedToList = true
+    }
 
-//     bggList.push(obj)
-//   })
+    bggList.push(obj)
+  })
 
-//   return bggList
-// }
+  return bggList
+}
 
 const showBGGCollectionSection = () => {
   document.querySelector('.bgg-list').classList.remove('hide')

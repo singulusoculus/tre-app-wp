@@ -388,7 +388,10 @@ const calcRankedList = () => {
 
   const rankedItems = []
   rankedList.forEach((item) => {
-    rankedItems.push(item.name)
+    rankedItems.push({
+      name: item.name,
+      bggid: item.bggId
+    })
   })
 
   const resultId = getDBListInfo().result.id
