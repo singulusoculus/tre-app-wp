@@ -2,7 +2,7 @@ import { showRankSection, showResultSection, custConfirm, custMessage } from './
 import { setResultData, getResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { setCategory } from './category'
-import { setCurrentStep } from './step'
+import { setCurrentStep, getCurrentStep } from './step'
 import { dbSaveResultData, setDBListInfoType, getDBListInfo, dbUpdateResultData } from './database'
 import { createList } from './list'
 
@@ -462,7 +462,7 @@ const cardFadeIn = () => {
 // Enable use of left, right, and down keys to make selections
 document.onkeydown = function (e) {
   // If a modal is open arrow keys will not work
-  if (!document.querySelector('.modal.open')) {
+  if (!document.querySelector('.modal.open') && getCurrentStep() === 'Rank') {
     switch (e.keyCode) {
       case 37:
         // Left

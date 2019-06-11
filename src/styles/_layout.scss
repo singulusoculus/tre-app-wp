@@ -1,7 +1,7 @@
 
 //////////////////////////////////////////////////////////////////
 ///////////  MISC
-/////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
 .divider-sm {
   border-bottom: 1px solid rgba(160,160,160,0.2);
@@ -13,10 +13,16 @@
   border-bottom: 1px solid rgba(160,160,160,0.2);
 }
 
+.section-title {
+  line-height: 32px;
+  font-size: 1.64rem;
+  font-weight: 300;
+}
+
 
 //////////////////////////////////////////////////////////////////
 ///////////  NAVIGATION
-/////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
 .nav-pm {
   background-color: $color-secondary;
@@ -116,12 +122,29 @@
 }
 
 .list-category-wrapper {
-  padding-top: 1rem;
+  margin-top: 2rem;
 }
 
 .my-lists > div > h4 {
   padding-top: 2rem;
 }
+
+// Previous Session Toast
+.toast .toast-action {
+  margin-left: 0 !important;
+  margin-right: 0 !important
+}
+
+.prev-toast {
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 993px) {
+  #toast-container {
+    top: 12% !important;
+  }
+}
+
 
 
 //////////////////////////////////////////////////////////////////
@@ -188,6 +211,12 @@
   background-color: $color-secondary;
   color: #fff;
   border: 1px solid $color-secondary;
+}
+
+.list-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 //////////////////////////////////////////////////////////////////

@@ -156,6 +156,10 @@ const handleClickRank = () => {
   }
 }
 
+// //////////////////////////////////////////////////////////////////////
+// // MISC
+// //////////////////////////////////////////////////////////////////////
+
 const disableArrowKeyScroll = () => {
   // Disable arrow keys from scrolling
   window.addEventListener('keydown', (e) => {
@@ -220,7 +224,7 @@ const updateLocalStorageSaveDataItem = (type, update) => {
     step = update
   } else if (type === 'dbListInfo') {
     dbListInfo = update
-  } else if (type === data) {
+  } else if (type === 'data') {
     data = update
   }
 

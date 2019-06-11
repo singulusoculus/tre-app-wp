@@ -17,6 +17,7 @@ const handleCategoryChange = () => {
   setCurrentStep('List')
   renderListData()
   showListSection()
+  M.Toast.dismissAll()
 }
 
 export { handleCategoryChange }

@@ -23,36 +23,13 @@ const renderPreviousSession = () => {
     const data = prevData.data
 
     if (Object.keys(data).length > 0 && step !== 'Start') {
-      const containerEl = document.querySelector('.resume-session-container')
+      const toastHTML = `<span>You have a  previous ${step} session available. Want to resume?</span><div class="prev-toast-btns"><button class="btn-flat toast-action resume-prev-btn">Resume</button><button class="btn-flat toast-action discard-prev-btn">Discard</button></div>`
+      M.toast({ html: toastHTML, displayLength: 'stay', classes: 'prev-toast', inDuration: 600 })
 
-      const rowEl = document.createElement('div')
-      rowEl.classList.add('row')
+      const resumeBtnEL = document.querySelector('.resume-prev-btn')
+      const discardBtnEl = document.querySelector('.discard-prev-btn')
 
-      const colEl = document.createElement('div')
-      colEl.classList.add('col', 's12', 'm8', 'offset-m2', 'l6', 'offset-l3')
-
-      const cardEl = document.createElement('div')
-      cardEl.classList.add('card', 'blue-grey', 'darken-1')
-
-      const contentEl = document.createElement('div')
-      contentEl.classList.add('card-content', 'white-text')
-
-      const textEl = document.createElement('p')
-      textEl.classList.add('center-align')
-      textEl.textContent = `You have a previous ${step} session available. Want to resume?`
-
-      const actionEl = document.createElement('div')
-      actionEl.classList.add('card-action', 'center-align')
-
-      const linkEl = document.createElement('a')
-      linkEl.textContent = 'Resume'
-      linkEl.href = '#'
-
-      const dismissEl = document.createElement('a')
-      dismissEl.href = '#'
-      dismissEl.textContent = 'Discard'
-
-      linkEl.addEventListener('click', () => {
+      resumeBtnEL.addEventListener('click', () => {
         const prevData = JSON.parse(localStorage.getItem('saveData'))
         const step = prevData.step
         const data = prevData.data
@@ -67,33 +44,17 @@ const renderPreviousSession = () => {
         } else if (step === 'Result') {
           initPrevResult(category, data)
         }
+
+        M.Toast.dismissAll()
       })
 
-      dismissEl.addEventListener('click', () => {
-        const element = document.querySelector('.resume-session-container')
-        element.classList.add('hide')
-        element.setAttribute('style', 'border-bottom: none')
-
+      discardBtnEl.addEventListener('click', () => {
         // clear localStorage on Discard
         localStorage.removeItem('saveData')
         localStorage.removeItem('rankDataHistory')
+
+        M.Toast.dismissAll()
       })
-
-      actionEl.appendChild(linkEl)
-      actionEl.appendChild(dismissEl)
-
-      contentEl.appendChild(textEl)
-
-      cardEl.appendChild(contentEl)
-      cardEl.appendChild(actionEl)
-
-      colEl.appendChild(cardEl)
-
-      rowEl.appendChild(colEl)
-
-      containerEl.appendChild(rowEl)
-      containerEl.setAttribute('style', 'border-bottom: 1px solid rgba(160,160,160,0.2)')
-      containerEl.classList.remove('hide')
     }
   }
 }
@@ -520,10 +481,6 @@ const custMessage = (message) => {
 const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
   myListsEl.textContent = ''
-  // const accountMenuEl = document.querySelector('#account-dropdown')
-  // accountMenuEl.textContent = ''
-  // const sideNavEl = document.querySelector('#sidenav__account')
-  // sideNavEl.textContent = ''
 
   if (getUserID() === 0) {
     // Create My Lists Login
@@ -676,6 +633,7 @@ const createTableElement = (type, headers, rows) => {
     trEl.addEventListener('click', () => {
       // Go get the clicked list from the database and init the right step
       dbLoadUserList(type, itemID)
+      M.Toast.dismissAll()
     })
     // Delete
     const tdDeleteEl = document.createElement('td')

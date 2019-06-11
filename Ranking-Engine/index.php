@@ -111,60 +111,70 @@
       <section id="start-container" class="start-container step-container">
         <div class="resume-session-container"></div>
 
-        <div class="list-category-wrapper">
-          <h5 class="center-align">Select a list category to get started:</h5>
-          <div class="row">
-            <div id="list-category" class="input-field col s12 m6 offset-m3">
-              <select id="list-category-select">
-                <option value="0" selected>Categories...</option>
-                <option value="1">Beverages</option>
-                <option value="2">Board Games</option>
-                <option value="3">Books</option>
-                <option value="4">Brews</option>
-                <option value="5">Characters</option>
-                <option value="6">Comics</option>
-                <option value="7">Food</option>
-                <option value="8">Movies</option>
-                <option value="9">Music</option>
-                <option value="10">People</option>
-                <option value="11">Places</option>
-                <option value="12">Sports</option>
-                <option value="13">Toys</option>
-                <option value="14">TV Shows</option>
-                <option value="15">Video Games</option>
-                <option value="16">Other</option>
-              </select>
+        <div class="row list-category-wrapper">
+          <div class="col s12 m10 offset-m1 l8 offset-l2 ">
+            <div class="card z-depth-4">
+              <div class="card-content">
+                <span class="card-title center-align">What would you like to rank?</span>
+                  <div id="list-category" class="input-field">
+                    <select id="list-category-select">
+                      <option value="0" selected>Select a category...</option>
+                      <option value="1">Beverages</option>
+                      <option value="2">Board Games</option>
+                      <option value="3">Books</option>
+                      <option value="4">Brews</option>
+                      <option value="5">Characters</option>
+                      <option value="6">Comics</option>
+                      <option value="7">Food</option>
+                      <option value="8">Movies</option>
+                      <option value="9">Music</option>
+                      <option value="10">People</option>
+                      <option value="11">Places</option>
+                      <option value="12">Sports</option>
+                      <option value="13">Toys</option>
+                      <option value="14">TV Shows</option>
+                      <option value="15">Video Games</option>
+                      <option value="16">Other</option>
+                    </select>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="divider"></div>
 
-        <h5 class="center-align">Current <?php echo date("Y"); ?> Top Games:</h5>
-        <div class="row">
-          <div class="col s12 m8 offset-m2">
-            <table id="top-ten-year__table" class="striped">
-              <thead>
-                <tr>
-                  <th scope="col">Rank</th>
-                  <th scope="col">Game</th>
-                </tr>
-              </thead>
-              <tbody id="top-ten-year__rows"></tbody>
-            </table>
+        <div class="current-rankings-wrapper">
+          <!-- <h5 class="center-align">Current <?php echo date("Y"); ?> Top Games:</h5> -->
+          <p class="center-align section-title">Current <?php echo date("Y"); ?> Top Games:</p>
+          <div class="row">
+            <div class="col s12 m8 offset-m2">
+              <table id="top-ten-year__table" class="striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Game</th>
+                  </tr>
+                </thead>
+                <tbody id="top-ten-year__rows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="center-align">
+            <a href="./rankings" class="waves-effect waves-light btn">See All Top Games<i class="material-icons small white-text">chevron_right</i></a>
           </div>
         </div>
-        <div class="center-align">
-          <a href="./rankings" class="waves-effect waves-light btn">See All Top Games<i class="material-icons small white-text">chevron_right</i></a>
-        </div>
+
       </section>
     </div>
 
     <div id="list-wrapper" class="step-wrapper">
       <section id="list-container" class="list-container step-container">
         <div class="row">
-          <h5 class="current-list-category col s12 m6"></h5>
-          <h5 class ="current-template-desc col s12 m6"></h5>
+          <div class="list-info">
+            <h5 class="current-list-category section-title"></h5>
+            <h5 class ="current-template-desc section-title"></h5>
+          </div>
           <ul class="collapsible col s12 popout">
             <li class="active">
               <div class="collapsible-header"><i class="material-icons">playlist_add</i>Text Entry</div>
@@ -222,7 +232,7 @@
                 </div>
                 <div class="bgg-list hide">
                   <div class="divider-sm"></div>
-                  <h5>Filters</h5>
+                  <h5 class="section-title">Filters</h5>
 
                   <p class="center-align bgg-filter-heading">List Types</p>
 
@@ -276,7 +286,7 @@
                   </div>
                   <div class="divider-sm"></div>
                   <div class="collection-header-wrapper">
-                    <h5 class="collection-header">Collection:</h5>
+                    <h5 class="collection-header section-title">Collection:</h5>
                     <div class="bgg-collection-info"></div>
                     <a id="bgg-add-selected" class="waves-effect waves-light btn"><i
                         class="material-icons right">add</i>Add Filtered</a>
