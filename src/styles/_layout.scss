@@ -164,6 +164,15 @@
   }
 }
 
+.list-editor {
+
+  @media only screen and (min-width: 993px) {
+    & {
+      margin: 0 -10% !important;
+    }
+  }
+}
+
 .list-buttons {
   margin-bottom: 0;
 }

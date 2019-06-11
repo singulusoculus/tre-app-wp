@@ -164,7 +164,6 @@
             <a href="./rankings" class="waves-effect waves-light btn">See All Top Games<i class="material-icons small white-text">chevron_right</i></a>
           </div>
         </div>
-
       </section>
     </div>
 
@@ -175,21 +174,22 @@
             <h5 class="current-list-category section-title"></h5>
             <h5 class ="current-template-desc section-title"></h5>
           </div>
-          <ul class="collapsible col s12 popout">
+        </div>
+        <div class="divider-sm"></div>
+        <div class="row list-editor">
+          <ul class="collapsible popout col s12 m12 l6">
             <li class="active">
               <div class="collapsible-header"><i class="material-icons">playlist_add</i>Text Entry</div>
               <div class="collapsible-body">
                 <form>
-                  <div class="row">
-                    <div class="col s12 l2 center-align">
+                    <div class="center-align">
                       <a id="textarea-add-btn" class="waves-effect waves-light btn disabled"><i
                           class="material-icons right">add</i>Add</a>
                     </div>
-                    <div class="input-field col s12 l10">
+                    <div class="input-field">
                       <textarea id="textarea-input" class="materialize-textarea"></textarea>
                       <label for="textarea-input">Type or Paste your items here</label>
                     </div>
-                  </div>
                 </form>
               </div>
             </li>
@@ -297,8 +297,8 @@
               </div>
             </li>
           </ul>
-          <ul class="list-collapsible collapsible col s12 popout">
-            <li>
+          <ul class="list-collapsible collapsible popout col s12 m12 l6">
+            <li class="active">
               <div class="list-header collapsible-header"><i class="material-icons">view_list</i><span
                   id="list-info">List: 0
                   items</span></div>
@@ -316,13 +316,13 @@
                 </div>
 
                 <div class="row">
-                  <div class="col s6 offset-s3 input-field">
+                  <div class="col s12 input-field">
                     <i class="material-icons prefix">filter_list</i>
                     <input id="search-text" type="text" placeholder="Search Items" />
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col s12 m8 offset-m2">
+                  <div class="col s12">
                     <ul id="list-items"></ul>
                   </div>
                 </div>
@@ -330,6 +330,7 @@
             </li>
           </ul>
         </div>
+
       </section>
     </div>
 
