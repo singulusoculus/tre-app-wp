@@ -466,6 +466,14 @@
     display: none;
   }
 
+  & label {
+    color: #fff;
+  }
+
+  &__checkbox:checked+label>.help__icon {
+    color: transparent;
+  }
+
   &__button {
     // position: absolute;
     // top: 5rem;
@@ -494,7 +502,7 @@
 
   &__icon-inline {
     display: inline-block !important;
-    font-size: 1rem !important;
+    font-size: 1.5rem !important;
   }
 
   &__text {
