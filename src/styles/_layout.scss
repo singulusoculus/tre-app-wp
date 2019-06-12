@@ -17,6 +17,7 @@
   line-height: 32px;
   font-size: 1.64rem;
   font-weight: 300;
+  margin: .5rem .2rem 0 .2rem;
 }
 
 
@@ -64,11 +65,7 @@
   }
 }
 
-#nav-pm__account {
-  display: block !important;
-}
-
-.tab.disabled>a {
+.tab.disabled > a {
   color: rgba(255,255,255,0.2) !important;
 }
 
@@ -132,10 +129,10 @@
 // Previous Session Toast
 .toast .toast-action {
   margin-left: 0 !important;
-  margin-right: 0 !important
+  margin-right: 0 !important;
 }
 
-.prev-toast {
+.actionable-toast {
   flex-direction: column;
 }
 
@@ -183,7 +180,7 @@
 
 .collection-header-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -198,11 +195,17 @@
   }
 }
 
+.list-types-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
 .list-types {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   margin-bottom: 1rem;
+  flex-direction: column;
 }
 
 .bgg-filter-heading {
@@ -345,7 +348,13 @@
 
 #results-table {
   width: 80%;
-  margin: 0 auto;
+  margin: 3rem auto;
+
+  @media only screen and (max-width: 600px) {
+    & {
+      width: 100%;
+    }
+  }
 }
 
 .result-container {
@@ -389,6 +398,12 @@
     &.visible {
       opacity: 1;
       transform: translateX(0);
+    }
+
+    @media only screen and (max-width: 600px) { 
+      & {
+        margin-left: 1rem;
+      }
     }
   }
 }
@@ -473,6 +488,15 @@
     transition: all .8s cubic-bezier(0.86, 0, 0.07, 1);
   }
 
+  &__list {
+    display: inline-block;
+  }
+
+  &__icon-inline {
+    display: inline-block !important;
+    font-size: 1rem !important;
+  }
+
   &__text {
     height: 100vh;
     position: fixed;
@@ -486,12 +510,13 @@
     font-size: 1.1rem;
 
     & > div > p,
-    & > div > ol {
+    & > div > ul {
       padding-bottom: 1rem;
     }
 
-    & > div > ol > li {
+    & > div > ul > li {
       padding-bottom: .5rem;
+      list-style-type: square; 
     }
   }
 

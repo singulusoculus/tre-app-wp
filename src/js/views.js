@@ -23,8 +23,8 @@ const renderPreviousSession = () => {
     const data = prevData.data
 
     if (Object.keys(data).length > 0 && step !== 'Start') {
-      const toastHTML = `<span>You have a  previous ${step} session available. Want to resume?</span><div class="prev-toast-btns"><button class="btn-flat toast-action resume-prev-btn">Resume</button><button class="btn-flat toast-action discard-prev-btn">Discard</button></div>`
-      M.toast({ html: toastHTML, displayLength: 'stay', classes: 'prev-toast', inDuration: 600 })
+      const toastHTML = `<span>You have a previous ${step} session available. Want to resume?</span><div class="prev-toast-btns"><button class="btn-flat toast-action resume-prev-btn">Resume</button><button class="btn-flat toast-action discard-prev-btn">Discard</button></div>`
+      M.toast({ html: toastHTML, displayLength: 'stay', classes: 'actionable-toast', inDuration: 600 })
 
       const resumeBtnEL = document.querySelector('.resume-prev-btn')
       const discardBtnEl = document.querySelector('.discard-prev-btn')
@@ -36,6 +36,8 @@ const renderPreviousSession = () => {
         const category = prevData.category
         const dbListInfo = prevData.dbListInfo
 
+        M.Toast.dismissAll()
+
         setDBListInfo(dbListInfo)
         if (step === 'List') {
           initPrevList(category, data)
@@ -44,8 +46,6 @@ const renderPreviousSession = () => {
         } else if (step === 'Result') {
           initPrevResult(category, data)
         }
-
-        M.Toast.dismissAll()
       })
 
       discardBtnEl.addEventListener('click', () => {
@@ -397,16 +397,7 @@ const showResultSection = (source) => {
 
   showTab('result')
   showHelpText('result')
-}
-
-const renderTemplateDesc = () => {
-  const dbListInfo = getDBListInfo()
-
-  if (dbListInfo.template.desc) {
-    document.querySelector('.current-template-desc').textContent = `Template: ${dbListInfo.template.desc}`
-  } else {
-    document.querySelector('.current-template-desc').textContent = ''
-  }
+  document.querySelector('.next-rank').classList.remove('next--visible')
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -548,8 +539,7 @@ const renderMyLists = async () => {
   const iEl = document.createElement('i')
   btnEl.classList.add('waves-effect', 'waves-light', 'btn', 'center-align')
   btnEl.setAttribute('id', 'my-lists-logout-btn')
-  btnEl.setAttribute('href', 'http://localhost:8080/wordpress/wp-login.php?action=logout')
-  // btnEl.setAttribute('href', 'http://rankingengine.pubmeeple.com/wp-login.php?action=logout')
+  btnEl.setAttribute('href', `./wp-login.php?action=logout`)
   btnEl.textContent = 'Log Off'
   iEl.classList.add('material-icons', 'right')
   iEl.textContent = 'account_circle'
@@ -662,6 +652,16 @@ const createTableElement = (type, headers, rows) => {
   divEl.appendChild(tableEl)
 
   return divEl
+}
+
+const renderTemplateDesc = () => {
+  const dbListInfo = getDBListInfo()
+
+  if (dbListInfo.template.desc) {
+    document.querySelector('.current-template-desc').textContent = `Template: ${dbListInfo.template.desc}`
+  } else {
+    document.querySelector('.current-template-desc').textContent = ''
+  }
 }
 
 export {

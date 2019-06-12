@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid'
 import { getListData, initPrevList } from './list'
 import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
@@ -198,9 +199,12 @@ const dbSaveTemplateData = (saveDesc) => {
   fadeInSpinner()
 
   if (dbListInfo.template.id === 0) {
+    const uuid = uuidv4()
+
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'insertTemplateList',
       wpuid,
+      uuid,
       listData: listDataJSON,
       itemCount,
       saveDesc,
@@ -380,6 +384,8 @@ const dbSaveUserResultData = (saveDesc) => {
 
   fadeInSpinner()
 
+  const uuid = uuidv4()
+
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'insertResultUser',
     currentProgressID: dbListInfo.progress.id,
@@ -387,7 +393,8 @@ const dbSaveUserResultData = (saveDesc) => {
     desc: saveDesc,
     itemCount: itemCount,
     category,
-    wpuid
+    wpuid,
+    uuid
   }, (data, status) => {
     if (status === 'success') {
       let newData = parseInt(data.replace(/[\n\r]+/g, ''))
@@ -400,6 +407,10 @@ const dbSaveUserResultData = (saveDesc) => {
       saveData(resultData)
       renderMyLists()
       setupSaveButtons()
+
+      // Set table title
+      const titleEl = document.querySelector('.result-desc')
+      titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
 
       fadeOutSpinner()
       M.toast({ html: `Result List Saved`, displayLength: 2000 })

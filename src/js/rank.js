@@ -380,6 +380,9 @@ const calcRankedList = () => {
     rankedList.push(obj)
   })
 
+  // reset dbListInfo.userResult
+  setDBListInfoType('userResult', { id: 0, desc: '' })
+
   setResultData(rankedList)
   setCurrentStep('Result')
 

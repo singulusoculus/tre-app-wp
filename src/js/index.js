@@ -165,17 +165,17 @@ jQuery(document).ready(() => {
 
   // ***************** Result Section *****************
 
-  document.querySelector('.support-us__dismiss').addEventListener('click', () => {
-    document.querySelector('.support-us').classList.add('hide')
-  })
+  // document.querySelector('.support-us__dismiss').addEventListener('click', () => {
+  //   document.querySelector('.support-us').classList.add('hide')
+  // })
 
+  // ***************** Modals *****************
   document.querySelector('#login-form-button').addEventListener('click', (e) => {
     console.log(e)
     const fromVal = e.target.attributes.from.value
     setReloadInfo(`login-${fromVal}`)
   })
 
-  // ***************** Modals *****************
   document.querySelector('#save-list-btn').addEventListener('click', (e) => {
     // This button is available on List, Rank, and Result sections
     handleClickSave(e)

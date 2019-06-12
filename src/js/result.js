@@ -11,7 +11,6 @@ const initPrevResult = (category, data) => {
   setCategory(category)
   setCurrentStep('Result')
   saveData(resultData)
-  renderResult(resultData)
   showResultSection()
 }
 
@@ -55,7 +54,7 @@ const renderResult = () => {
   })
 
   // Fix Rank column width
-  document.querySelector('.rank-column').setAttribute('style', 'width: 10%')
+  document.querySelector('.rank-column').setAttribute('style', 'width: 18%')
 
   const userResultID = getDBListInfo().userResult.id
   // Put save button in line with other buttons
@@ -80,7 +79,23 @@ const renderResult = () => {
     document.querySelector('#save-description').value = ''
   })
 
+  // Add title to table
+  const resultDesc = getDBListInfo().userResult.desc
+  const tableEl = document.querySelector('#results-table-details_wrapper')
+  const spanEl = document.createElement('span')
+  spanEl.classList.add('section-title', 'result-desc')
+  spanEl.textContent = resultDesc !== '' ? `${resultDesc}` : 'Your Results:'
+  tableEl.prepend(spanEl)
+
   setupSaveLogin()
+
+  // Support Us Toast
+  const toastHTML = `<span class="center-align">Hey, nice list!</span><span class="center-align">If you found this tool useful please consider putting something in our tip jar.</span><div class="prev-toast-btns"><a href="#!"><button class="btn-flat toast-action support-paypal">Paypal</button></a><button class="btn-flat toast-action support-dismiss">Dismiss</button></div>`
+  M.toast({ html: toastHTML, displayLength: 'stay', classes: 'actionable-toast', inDuration: 600 })
+
+  document.querySelector('.support-dismiss').addEventListener('click', () => {
+    M.Toast.dismissAll()
+  })
 }
 
 export { initPrevResult, renderResult, getResultData, setResultData }

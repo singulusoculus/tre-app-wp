@@ -13,7 +13,7 @@ const initRankingEngine = () => {
   dbGetTopTenYear()
 
   let reload = sessionStorage.getItem('reload')
-  if (reload) {
+  if (reload !== null) {
     reload = JSON.parse(reload)
     const step = reload.step
     const type = reload.type
@@ -43,9 +43,10 @@ const initRankingEngine = () => {
     if (type === 'login-my-lists') {
       showMyLists()
     }
+  } else {
+    renderPreviousSession()
   }
-
-  renderPreviousSession()
+  
   setupSaveLogin()
   sessionStorage.removeItem('reload')
 }

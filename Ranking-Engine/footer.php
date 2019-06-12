@@ -3,9 +3,9 @@
       Designed by Brian Casey | © 2019 Pub Meeple
     </div>
     <div class="footer-links">
-      <a class="grey-text text-lighten-4 right" href="#!">About</a>
-      <a class="grey-text text-lighten-4 right" href="#!">Contact</a>
-      <a class="grey-text text-lighten-4 right" href="#!">Support Us</a>
+      <a class="grey-text text-lighten-4 right" href="https://www.pubmeeple.com/about">About</a>
+      <a class="grey-text text-lighten-4 right" href="https://www.pubmeeple.com/contact">Contact</a>
+      <a class="grey-text text-lighten-4 right" href="https://www.pubmeeple.com/support-us">Support Us</a>
     </div>
   </footer>
 </div>

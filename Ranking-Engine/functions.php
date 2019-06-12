@@ -16,7 +16,7 @@ function blankslate_load_scripts() {
 
 function wpse_44020_logout_redirect( $logouturl, $redir )
 {
-    return $logouturl . '&amp;redirect_to=' . 'http://localhost:8080/wordpress/';
+    return $logouturl . '&amp;redirect_to=' . './';
 }
 add_filter( 'logout_url', 'wpse_44020_logout_redirect', 10, 2 );
 

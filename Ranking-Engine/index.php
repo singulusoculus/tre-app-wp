@@ -1,13 +1,6 @@
 
 <?php get_header(); ?>  
 
-  <div class="next-wrapper">
-    <div class="next z-depth-3 next-rank">
-      <span class="next__text">Rank</span>
-      <i class="material-icons medium white-text next__icon">chevron_right</i>
-    </div>
-  </div>
-
   <main class="container">
     <header class="header">
       <nav class="nav-extended nav-tre">
@@ -23,76 +16,78 @@
             <div class="help__background">&nbsp;</div>
 
             <div class="help__text">
-              <h3 class="center-align">Quick Help</h3>
+              <h4 class="center-align">Quick Help</h4>
               <div class="help__text-item help__text--start">
-                <h4 class="center-align">Start</h4>
-                <p>
-                  If you have a previous session available you will be prompted to resume or discard it. Resuming picks
-                  up
-                  where you left off. Discarding deletes the previous session data completely.
-                </p>
-                <p>Otherwise, you have 2 options to get started:</p>
-                <ol>
-                  <li>Create a new list to rank - To get started just select a category for the list you want to create
-                    and you will automatically be taken to the list creation step.</li>
-                  <li>Load a previously saved list - Log in to get access to any previously saved lists. Then from the
-                    My
-                    Lists section select the list you want to load. The kind of list you select will determine where you
-                    end up in the process.</li>
-                </ol>
-                <p><b>- In Progress:</b> this is a list in the process of being ranked. Selecting an In Progress list
-                  will
-                  take
-                  you back to where you left off in the Rank step.</p>
-                <p><b>- Final:</b> this is a list you previously ranked and saved the final outcome. Selecting a Final
-                  list
-                  will
-                  take you to the Result step to view the results again.</p>
-                <p><b>- Template:</b> this is a list saved prior to ranking. Selecting a template will load it into the
-                  List step
-                  for you to edit and start ranking when it is ready</p>
+                <p class="section-title">Start</p>
+                <ul class="help__list">
+                  <li>Select a category to get started creating a list.</li>
+                  <li>You can also see the current top 10 games from the current year here. Click the button below the list to see all of the top games as ranked by users of the Ranking Engine.</li>
+                  <li>If you have a previous session available you will be prompted to resume or discard it. Resuming picks up where you left off. Discarding completely deletes the previous session data.</li>
+                </ul>
               </div>
               <div class="help__text-item help__text--list hide">
-                <h4 class="center-align">List</h4>
-                <p class="center-align">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet ad saepe excepturi reiciendis atque
-                  molestias
-                  consectetur corporis commodi, consequatur architecto ipsum voluptatum impedit sapiente recusandae ab.
-                  Illo quis
-                  commodi aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </p>
+              <p class="section-title">List</p>
+                <ul class="help__list">
+                  <li>To add items to your list, type or paste them into the provided Text Entry area, each item on a separate line, then click Add.</li>
+                  <li>Keep adding and editing your list until you have the list you want to rank, then click the arrow button on the right or the Rank tab to start ranking.</li>
+                </ul>
+                <hr>
+                <p class="section-title">Board Game Geek</p>
+                <ul class="help__list">
+                  <li>If you selected Board Games as your category you will have the option to add games from a BGG collection</li>
+                  <li>Enter the BGG username for the list you would like to request, indicate if you would like expansions included or not, then click Submit.</li>
+                  <li>Give BGG some time to return your list to The Ranking Engine.</li>
+                  <li>You can then filter your list and either add games individually to your List or add a group of filtered games.</li>
+                </ul>
+                <hr>
+                <p class="section-title">Saving a Template</p>
+                <ul class="help__list">
+                  <li>If you create a list you would like access to at a later date you can save it as a template.</li>
+                  <li>Click the Save button in the Your List section, log in (if needed), give your list a description and click Save.</li>
+                  <li>If you are working with an already-saved template, you will have the option to edit it and then Update it.</li>
+                </ul>
               </div>
               <div class=" help__text-item help__text--rank hide">
-                <h4 class="center-align">Rank</h4>
-                <p class="center-align">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet ad saepe excepturi reiciendis atque
-                  molestias
-                  consectetur corporis commodi, consequatur architecto ipsum voluptatum impedit sapiente recusandae ab.
-                  Illo quis
-                  commodi aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </p>
+                <p class="section-title">Rank</p>
+                <ul class="help__list">
+                    <li>Two items will be presented at a time. Click on the one you prefer. Continue making selections until your results are presented</li>
+                    <li>Delete an item from your ranking by clicking the <i class="material-icons small help__icon-inline">delete</i> icon.</li>
+                    <li>Undo a selection by clicking the Undo button</li>
+                    <li>If you are using a keyboard, you can use your left and right arrows to make your selections. The up arrow will trigger undo.</li>
+                    <li>Save your progress by clicking the Save button, logging in (if needed), giving it a description, and clicking Save.</li>
+                  </ul>
               </div>
               <div class=" help__text-item help__text--result hide">
-                <h4 class="center-align">Result</h4>
-                <p class="center-align">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet ad saepe excepturi reiciendis atque
-                  molestias
-                  consectetur corporis commodi, consequatur architecto ipsum voluptatum impedit sapiente recusandae ab.
-                  Illo quis
-                  commodi aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </p>
+                <p class="section-title">Result</p>
+                <ul class="help__list">
+                  <li>Your results will be calculated and presented for you to peruse.</li>
+                  <li>Easily copy your results to your clipboard by clicking the Copy button.</li>
+                  <li>Download a csv file with your results by clicking the CSV button</li>
+                  <li>Save your results by clicking the Save button, logging in (if needed), giving is a description, and clicking Save.</li>
+                  <li>Rerank your results by clicking the Rank tab. You can either rerank the complete list or the top X items from it.</li>
+                </ul>
+              </div>
+              <div class="help__my-lists">
+              <hr>
+              <p class="section-title">Navigation</p>
+              <ul class="help__list">
+                <li>You can navigate to any previous step in the process by clicking the tab.</li>
+              </ul>
+              <hr>
+              <p class="section-title">My Lists</p>
+              <ul class="help__list">
+                <li>If you are logged in, you have access to your saved lists at any time by clicking the <i class="material-icons small help__icon-inline">account_circle</i> in the menu. Just click on a list to load it.</li>
+              </ul>
               </div>
             </div>
           </div>
 
           <div class="account right">
-            <a id="nav-pm__account" class="modal-trigger" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
+            <a id="nav-tre__account" class="modal-trigger" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
           </div>
 
           <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">Current Rankings</a></li>
-            <li><a href="#">Codex</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="./rankings">Current Rankings</a></li>
           </ul>
         </div>
 
@@ -107,8 +102,8 @@
       </nav>
     </header>
 
-    <div id="start-wrapper" class="step-wrapper">
-      <section id="start-container" class="start-container step-container">
+    <section id="start-wrapper" class="step-wrapper">
+      <div id="start-container" class="start-container step-container">
         <div class="resume-session-container"></div>
 
         <div class="row list-category-wrapper">
@@ -164,15 +159,15 @@
             <a href="./rankings" class="waves-effect waves-light btn">See All Top Games<i class="material-icons small white-text">chevron_right</i></a>
           </div>
         </div>
-      </section>
     </div>
+    </section>
 
-    <div id="list-wrapper" class="step-wrapper">
-      <section id="list-container" class="list-container step-container">
+    <section id="list-wrapper" class="step-wrapper">
+      <div id="list-container" class="list-container step-container">
         <div class="row">
           <div class="list-info">
-            <h5 class="current-list-category section-title"></h5>
-            <h5 class ="current-template-desc section-title"></h5>
+            <p class="current-list-category section-title"></p>
+            <p class ="current-template-desc section-title"></p>
           </div>
         </div>
         <div class="divider-sm"></div>
@@ -224,7 +219,7 @@
                   </div>
                 </div>
                 <div class="bgg-username-submitted hide">
-                  <h4 class="bgg-username-header center-align"></h4>
+                  <h4 class="bgg-username-header center-align section-title"></h4>
                   <p class="center-align">
                     <a href="#!" class="change-bgg-username">(Change)</a>
                     <a href="#!" class="update-bgg-collection">(Update)</a>
@@ -237,12 +232,8 @@
                   <p class="center-align bgg-filter-heading">List Types</p>
 
                   <div>
-                    <form action="#">
+                    <form class="list-types-wrapper" action="#">
                     <div class="list-types">
-                    <label class="bgg-cb">
-                        <input class="fortrade" type="checkbox" />
-                        <span>For Trade</span>
-                      </label>
                       <label class="bgg-cb">
                         <input class="own" type="checkbox" checked />
                         <span>Own</span>
@@ -251,6 +242,10 @@
                         <input class="played" type="checkbox" checked />
                         <span>Played</span>
                       </label>
+                      <label class="bgg-cb">
+                        <input class="rated" type="checkbox" />
+                        <span>Rated</span>
+                      </label>
                     </div>
                     <div class="list-types">
                       <label class="bgg-cb">
@@ -258,12 +253,12 @@
                         <span>Prev Owned</span>
                       </label>
                       <label class="bgg-cb">
-                        <input class="rated" type="checkbox" />
-                        <span>Rated</span>
+                        <input class="fortrade" type="checkbox" />
+                        <span>For Trade</span>
                       </label>
                       <label class="bgg-cb">
-                        <input class="wantintrade" type="checkbox" />
-                        <span>Want in Trade</span>
+                        <input class="wishlist" type="checkbox" />
+                        <span>Wishlist</span>
                       </label>
                     </div>
                     <div class="list-types">
@@ -276,8 +271,8 @@
                         <span>Want to Play</span>
                       </label>
                       <label class="bgg-cb">
-                        <input class="wishlist" type="checkbox" />
-                        <span>Wishlist</span>
+                        <input class="wantintrade" type="checkbox" />
+                        <span>Want in Trade</span>
                       </label>
                     </div>
                     </form>
@@ -292,12 +287,14 @@
                       </p>
                     </form>
                   </div>
+                  <div class="center-align">
+                    <a id="bgg-add-selected" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Add Filtered</a>
+                  </div>
                   <div class="divider-sm"></div>
                   <div class="collection-header-wrapper">
-                    <div class="bgg-collection-info"></div>
-                    <a id="bgg-add-selected" class="waves-effect waves-light btn"><i
-                        class="material-icons right">add</i>Add Filtered</a>
+                    <div class="bgg-collection-info section-title"></div>
                   </div>
+                  <div class="divider-sm"></div>
                   <div class="bgg-collection">
                   </div>
                 </div>
@@ -322,27 +319,24 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col s12 input-field">
+                  <div class=" input-field">
                     <i class="material-icons prefix">filter_list</i>
                     <input id="search-text" type="text" placeholder="Search Items" />
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col s12">
+
+                  <div class="">
                     <ul id="list-items"></ul>
                   </div>
-                </div>
               </div>
             </li>
           </ul>
         </div>
 
-      </section>
-    </div>
+     </div>
+    </section>
 
-    <div id="rank-wrapper" class="step-wrapper">
-      <section id="rank-container" class="rank-container step-container">
+    <section id="rank-wrapper" class="step-wrapper">
+      <div id="rank-container" class="rank-container step-container">
         <div class="ranking">
           <div class="row">
             <div class="col s12 m10 offset-m1">
@@ -363,7 +357,7 @@
           <div class="divider"></div>
           <div class="row">
             <div class="col s12 m8 offset-m2 l6">
-              <div id="item-1-card" class="card rank-card">
+              <div id="item-1-card" class="card rank-card z-depth-3">
                 <div class="rank-card-content card-content">
                   <img src="<?php echo get_theme_file_uri('/images/meeple-lime.png'); ?>" alt="" class="rank-card-content__img" id="item-1-img">
                   <p id="item-1-text" class="rank-card-content__text center-align">Game Name 1</p>
@@ -372,7 +366,7 @@
               </div>
             </div>
             <div class="col s12 m8 offset-m2 l6">
-              <div id="item-2-card" class="card rank-card">
+              <div id="item-2-card" class="card rank-card z-depth-3">
                 <div class="rank-card-content card-content">
                   <img src="<?php echo get_theme_file_uri('/images/meeple-orange.png'); ?>" alt="" class="rank-card-content__img" id="item-2-img">
                   <p id="item-2-text" class="rank-card-content__text center-align">Game Name 2</p>
@@ -391,12 +385,12 @@
             </p>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
 
-    <div id="result-wrapper" class="step-wrapper">
-      <section id="result-container" class="result-container step-container">
-        <div class="row support-us">
+    <section id="result-wrapper" class="step-wrapper">
+      <div id="result-container" class="result-container step-container">
+        <!-- <div class="row support-us">
           <div class="col s12 m8 offset-m2 l6 offset-l3">
             <div class="card blue-grey darken-1">
               <div class="card-content white-text">
@@ -410,13 +404,20 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div id="results-table"></div>
-      </section>
-    </div>
-
+      </div>
+    </section>
   </main>
+
+  <!-- Next Button -->
+  <div class="next-wrapper">
+    <div class="next z-depth-3 next-rank">
+      <span class="next__text">Rank</span>
+      <i class="material-icons medium white-text next__icon">chevron_right</i>
+    </div>
+  </div>
 
   <!-- Modals -->
   <!-- Save Modal -->
@@ -480,8 +481,8 @@
       <a href="#!" class="modal-close btn-flat modal-close-x">
         <span aria-hidden="true">&times;</span>
       </a>
-      <h4>A Friendly Reminder</h4>
-      <p class="message-text">Some Message Text</p>
+      <h4 class="center-align">A Friendly Reminder</h4>
+      <p class="message-text center-align">Some Message Text</p>
     </div>
     <div class="modal-footer">
       <a href="#!" id="message-ok-btn" class="modal-close waves-effect waves-green btn-flat">Ok</a>
@@ -491,8 +492,8 @@
   <!-- Alert Modal -->
   <div id="alert-modal" class="modal">
     <div class="modal-content">
-      <h4>Heads Up!</h4>
-      <p class="alert-text">Some Alert Text</p>
+      <h4 class="center-align">Heads Up!</h4>
+      <p class="alert-text center-align">Some Alert Text</p>
     </div>
     <div class="modal-footer">
       <a href="#!" id="alert-ok-btn" class="modal-close waves-effect waves-green btn-flat">Ok</a>
@@ -503,7 +504,7 @@
   <!-- Restart Modal -->
   <div id="restart-modal" class="modal">
     <div class="modal-content">
-      <h4>Restart Options</h4>
+      <h4 class="center-align">Restart Options</h4>
       <div class="rerank-options">
         <form class="rerank-options__radio" action="#">
           <p>
@@ -532,7 +533,7 @@
   </div>
 
     <!-- Bottom Modal -->
-    <div id="account-modal" class="modal bottom-sheet">
+  <div id="account-modal" class="modal bottom-sheet">
     <div class="modal-content">
     <a href="#!" class="modal-close btn-flat modal-close-x">
         <span aria-hidden="true">&times;</span>

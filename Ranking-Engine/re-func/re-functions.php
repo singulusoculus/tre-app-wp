@@ -234,6 +234,7 @@ function insertResultUser() {
   $category = $_POST['category'];
   $wpuid = $_POST['wpuid'];
   $currDate = date("Y-m-d");
+  $uuid = $_POST['uuid'];
   global $version;
 
   $saveData = removeslashes($saveData);
@@ -254,6 +255,7 @@ function insertResultUser() {
     array(
         'result_id' => null,
         'wpuid' => $wpuid,
+        'result_uuid' => $uuid,
         'result_desc' => $desc,
         'finish_date' => $currDate,
         'item_count' => $itemCount,
@@ -264,6 +266,7 @@ function insertResultUser() {
     array(
         '%d',
         '%d',
+        '%s',
         '%s',
         '%s',
         '%d',
@@ -454,6 +457,7 @@ function insertTemplateList() {
   $desc = $_POST['saveDesc'];
   $numItems = $_POST['itemCount'];
   $wpuid = $_POST['wpuid'];
+  $uuid = $_POST['uuid'];
   $category = $_POST['category'];
   $currentDate = date("Y-m-d");
   global $version;
@@ -469,6 +473,7 @@ function insertTemplateList() {
     array(
         'template_id' => null,
         'wpuid' => $wpuid,
+        'template_uuid' => $uuid,
         'template_desc' => $desc,
         'created_date' => $currentDate,
         'updated_date' => $currentDate,
@@ -480,6 +485,7 @@ function insertTemplateList() {
     array(
         '%d',
         '%d',
+        '%s',
         '%s',
         '%s',
         '%s',
