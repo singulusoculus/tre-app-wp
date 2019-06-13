@@ -5,7 +5,7 @@
     <header class="header">
       <nav class="nav-extended nav-tre">
         <div class="nav-wrapper">
-          <p class="brand-logo nav-tre__title">The Ranking Engine</p>
+          <p class="brand-logo nav-tre__title">Ranking Engine</p>
           <div class="help right">
             <input type="checkbox" class="help__checkbox" id="help-toggle">
 
@@ -142,6 +142,9 @@
         <div class="current-rankings-wrapper">
           <!-- <h5 class="center-align">Current <?php echo date("Y"); ?> Top Games:</h5> -->
           <p class="center-align section-title">Current <?php echo date("Y"); ?> Top Games:</p>
+          <div class="center-align">
+            <a href="./rankings" class="waves-effect waves-light btn all-top-games-btn">See All Top Games<i class="material-icons small white-text">chevron_right</i></a>
+          </div>
           <div class="row">
             <div class="col s12 m8 offset-m2">
               <table id="top-ten-year__table" class="striped">
@@ -154,9 +157,6 @@
                 <tbody id="top-ten-year__rows"></tbody>
               </table>
             </div>
-          </div>
-          <div class="center-align">
-            <a href="./rankings" class="waves-effect waves-light btn">See All Top Games<i class="material-icons small white-text">chevron_right</i></a>
           </div>
         </div>
     </div>
@@ -271,7 +271,7 @@
                         <span>Want to Play</span>
                       </label>
                       <label class="bgg-cb">
-                        <input class="wantintrade" type="checkbox" />
+                        <input class="want" type="checkbox" />
                         <span>Want in Trade</span>
                       </label>
                     </div>

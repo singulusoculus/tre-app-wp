@@ -1,6 +1,6 @@
 import { getCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { showTab, renderPreviousSession, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage } from './views'
+import { showTab, renderPreviousSessionToast, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage } from './views'
 import { initPrevList, getListData } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
@@ -44,9 +44,9 @@ const initRankingEngine = () => {
       showMyLists()
     }
   } else {
-    renderPreviousSession()
+    renderPreviousSessionToast()
   }
-  
+
   setupSaveLogin()
   sessionStorage.removeItem('reload')
 }

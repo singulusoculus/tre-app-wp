@@ -99,6 +99,9 @@ jQuery(document).ready(() => {
   document.querySelectorAll('.bgg-cb').forEach((el) => {
     el.addEventListener('change', (e) => {
       const element = e.target.className
+      console.log({
+        [element]: e.target.checked
+      })
       setBGGFilters({
         [element]: e.target.checked
       })

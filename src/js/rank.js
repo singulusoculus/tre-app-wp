@@ -1,7 +1,7 @@
 import { showRankSection, showResultSection, custConfirm, custMessage } from './views'
 import { setResultData, getResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
-import { setCategory } from './category'
+import { setCategory, getCategoryInfo } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
 import { dbSaveResultData, setDBListInfoType, getDBListInfo, dbUpdateResultData } from './database'
 import { createList } from './list'
@@ -129,18 +129,19 @@ const getComparisonInfo = () => {
 
 const showComparison = () => {
   const { item1, item2 } = getComparisonInfo()
+  const categoryName = getCategoryInfo().name
 
   // Image control
   if (item1.image !== '') {
     document.querySelector('#item-1-img').setAttribute('src', item1.image)
   } else {
-    document.querySelector('#item-1-img').setAttribute('src', './wp-content/themes/Ranking-Engine/images/meeple-lime.png')
+    document.querySelector('#item-1-img').setAttribute('src', `./wp-content/themes/Ranking-Engine/images/${categoryName}-lime.png`)
   }
 
   if (item2.image !== '') {
     document.querySelector('#item-2-img').setAttribute('src', item2.image)
   } else {
-    document.querySelector('#item-2-img').setAttribute('src', './wp-content/themes/Ranking-Engine/images/meeple-orange.png')
+    document.querySelector('#item-2-img').setAttribute('src', `./wp-content/themes/Ranking-Engine/images/${categoryName}-orange.png`)
   }
 
   // Text control

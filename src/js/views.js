@@ -2,7 +2,7 @@ import { initPrevList, getListData, removeListItem, loadList, sortListData } fro
 import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
-import { setCategory, getCategory } from './category'
+import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, clearDBListInfo, getDBListInfo } from './database'
@@ -12,7 +12,7 @@ import { updateLocalStorageSaveDataItem } from './functions'
 // // PREVIOUS SESSION
 // //////////////////////////////////////////////////////////////////////
 
-const renderPreviousSession = () => {
+const renderPreviousSessionToast = () => {
   const prevData = JSON.parse(localStorage.getItem('saveData'))
 
   const containerEl = document.querySelector('.resume-session-container')
@@ -138,7 +138,7 @@ const renderBGGCollection = () => {
   const filteredList = filterBGGCollection()
 
   const filteredCount = filteredList.length
-  listInfoEl.textContent = `Total: ${totalCount} | Added: ${addedCount} | Filtered: ${filteredCount} `
+  listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount} `
 
   document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
 
@@ -296,7 +296,7 @@ const showStartSection = (source) => {
   M.FormSelect.init(document.querySelector('#list-category-select'))
   setCategory(0)
   setCurrentStep('Start')
-  renderPreviousSession()
+  renderPreviousSessionToast()
   disableStepTab('list', 'rank', 'result')
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
@@ -331,12 +331,14 @@ const showListSection = (source) => {
   enableStepTab('list')
   disableStepTab('rank', 'result')
 
-  const category = getCategory()
-  const categorySelectEl = document.querySelector('#list-category-select')
-  categorySelectEl.value = category
-  M.FormSelect.init(categorySelectEl)
-  const categoryName = categorySelectEl.selectedOptions[0].innerHTML
+  const categoryName = getCategoryInfo().niceName
+  // const category = getCategory()
+  // const categorySelectEl = document.querySelector('#list-category-select')
+  // categorySelectEl.value = category
+  // M.FormSelect.init(categorySelectEl)
+  // const categoryName = categorySelectEl.selectedOptions[0].innerHTML
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
+
   renderTemplateDesc()
   // Show BGG section if category is Board Games
   if (categoryName === 'Board Games') {
@@ -665,7 +667,7 @@ const renderTemplateDesc = () => {
 }
 
 export {
-  renderPreviousSession,
+  renderPreviousSessionToast,
   showListSection,
   showRankSection,
   showResultSection,

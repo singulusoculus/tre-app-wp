@@ -37,7 +37,6 @@ const initPrevBGGCollection = () => {
 }
 
 const handleBGGCollectionRequest = async () => {
-  // This will replace getBGGData once I can test
   const user = document.querySelector('#bgg-username').value
 
   if (user === '') {
@@ -79,20 +78,22 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
       let bggList = []
 
       items.forEach((item) => {
+        const statusAttributes = item.status['@attributes']
+
         const obj = {
           id: uuidv4(),
-          name: item.name['#text'],
+          name: item.name ? item.name['#text'] : 'No Title',
           source: 'bgg',
-          image: item.thumbnail['#text'],
-          yearPublished: parseInt(item.yearpublished['#text']),
+          image: item.thumbnail ? item.thumbnail['#text'] : './wp-content/themes/Ranking-Engine/images/meeple-lime.png',
+          yearPublished: item.yearpublished ? parseInt(item.yearpublished['#text']) : 0,
           bggId: item['@attributes'].objectid,
-          own: item.status['@attributes'].own === '1',
-          fortrade: item.status['@attributes'].fortrade === '1',
-          prevowned: item.status['@attributes'].prevowned === '1',
-          want: item.status['@attributes'].want === '1',
-          wanttobuy: item.status['@attributes'].wanttobuy === '1',
-          wanttoplay: item.status['@attributes'].wanttoplay === '1',
-          wishlist: item.status['@attributes'].wishlist === '1',
+          own: statusAttributes.own === '1',
+          fortrade: statusAttributes.fortrade === '1',
+          prevowned: statusAttributes.prevowned === '1',
+          want: statusAttributes.want === '1',
+          wanttobuy: statusAttributes.wanttobuy === '1',
+          wanttoplay: statusAttributes.wanttoplay === '1',
+          wishlist: statusAttributes.wishlist === '1',
           played: item.numplays['#text'] > 0,
           rated: item.stats['rating']['@attributes'].value !== 'N/A',
           rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
@@ -120,7 +121,7 @@ const getBGGData = () => {
     xhttp = new XMLHttpRequest()
   }
 
-  xhttp.open('GET', './wp-content/themes/Ranking-Engine/collection-stats.xml', false)
+  xhttp.open('GET', './wp-content/themes/Ranking-Engine/RhodesPhoto.xml', false)
   // xhttp.open('GET', './collection-stats.xml', false)
 
   // xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
@@ -137,20 +138,22 @@ const getBGGData = () => {
   let bggList = []
 
   items.forEach((item) => {
+    const statusAttributes = item.status['@attributes']
+
     const obj = {
       id: uuidv4(),
-      name: item.name['#text'],
+      name: item.name ? item.name['#text'] : 'No Title',
       source: 'bgg',
-      image: item.thumbnail['#text'],
-      yearPublished: parseInt(item.yearpublished['#text']),
+      image: item.thumbnail ? item.thumbnail['#text'] : './wp-content/themes/Ranking-Engine/images/meeple-lime.png',
+      yearPublished: item.yearpublished ? parseInt(item.yearpublished['#text']) : 0,
       bggId: item['@attributes'].objectid,
-      own: item.status['@attributes'].own === '1',
-      fortrade: item.status['@attributes'].fortrade === '1',
-      prevowned: item.status['@attributes'].prevowned === '1',
-      want: item.status['@attributes'].want === '1',
-      wanttobuy: item.status['@attributes'].wanttobuy === '1',
-      wanttoplay: item.status['@attributes'].wanttoplay === '1',
-      wishlist: item.status['@attributes'].wishlist === '1',
+      own: statusAttributes.own === '1',
+      fortrade: statusAttributes.fortrade === '1',
+      prevowned: statusAttributes.prevowned === '1',
+      want: statusAttributes.want === '1',
+      wanttobuy: statusAttributes.wanttobuy === '1',
+      wanttoplay: statusAttributes.wanttoplay === '1',
+      wishlist: statusAttributes.wishlist === '1',
       played: item.numplays['#text'] > 0,
       rated: item.stats['rating']['@attributes'].value !== 'N/A',
       rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
@@ -163,6 +166,8 @@ const getBGGData = () => {
 
     bggList.push(obj)
   })
+
+  console.log(bggList)
 
   return bggList
 }
@@ -202,6 +207,8 @@ const filterBGGCollection = () => {
 
   // gets only true filters
   const listTypeFilters = Object.keys(filters).filter((key) => filters[key] === true)
+
+  console.log(listTypeFilters)
 
   // filter the collection data for the filters marked as true
   listTypeFilters.forEach((filter) => {

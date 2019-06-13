@@ -48,7 +48,7 @@ const setBGGFilters = (updates) => {
   }
 
   if (typeof updates.wanttobuy === 'boolean') {
-    bggFilters.wanttobuy = updates.wantobuy
+    bggFilters.wanttobuy = updates.wanttobuy
   }
 
   if (typeof updates.wanttoplay === 'boolean') {
