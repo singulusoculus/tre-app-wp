@@ -7,17 +7,8 @@ switch ($func) {
   case 'getAllGamesApproved':
     getAllGamesApproved();
     break;
-  case 'getAllGamesPending':
-    getAllGamesPending();
-    break;
-  case 'approveGame':
-    approveGame();
-    break;
   case 'combineGames':
     combineGames();
-    break;
-  case 'rejectGame':
-    rejectGame();
     break;
   case 'getTopGamesAll':
     getTopGamesAll();
@@ -41,48 +32,11 @@ function getAllGamesApproved() {
   , at_times_ranked AS times_ranked
   , CASE WHEN at_rank = 0 THEN \"NR\" ELSE at_rank END AS rank
   FROM re_boardgames 
-  WHERE bg_status = \"A\"
   ORDER BY at_rank ASC", ARRAY_A );
 
 $results_json = json_encode($results);
 
 echo $results_json;
-}
-
-function getAllGamesPending() {
-  global $wpdb;
-
-  $results = $wpdb->get_results ("SELECT bg_id
-  , bg_name
-  , at_times_ranked
-  , round(at_pop_score + at_list_score, 3) AS score 
-  FROM `re_boardgames`
-  WHERE bg_status = \"P\"
-  ORDER BY bg_id ASC", ARRAY_A );
-
-$results_json = json_encode($results);
-
-echo $results_json;
-
-}
-
-function approveGame() {
-  global $wpdb;
-
-  $bgid = $_POST['bgid'];
-
-  $wpdb->update(
-    're_boardgames',
-    array(
-        'bg_status' => 'A',
-    ), 
-    array('bg_id' => $bgid),
-    array(
-        '%s',
-    ),
-    array( '%d' )
-);
-
 }
 
 function combineGames() {
@@ -94,25 +48,6 @@ function combineGames() {
   $query = "CALL `combine_games_by_id`(".$oldid.",".$newid.");";
   $result = $wpdb->query($query);
   echo $result;
-
-}
-
-function rejectGame() {
-  global $wpdb;
-
-  $bgid = $_POST['bgid'];
-
-  $wpdb->update(
-    're_boardgames',
-    array(
-        'bg_status' => 'R',
-    ), 
-    array('bg_id' => $bgid),
-    array(
-        '%s',
-    ),
-    array( '%d' )
-  );
 
 }
 

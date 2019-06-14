@@ -167,8 +167,6 @@ const getBGGData = () => {
     bggList.push(obj)
   })
 
-  console.log(bggList)
-
   return bggList
 }
 
@@ -207,8 +205,6 @@ const filterBGGCollection = () => {
 
   // gets only true filters
   const listTypeFilters = Object.keys(filters).filter((key) => filters[key] === true)
-
-  console.log(listTypeFilters)
 
   // filter the collection data for the filters marked as true
   listTypeFilters.forEach((filter) => {

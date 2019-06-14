@@ -1,0 +1,48 @@
+BEGIN
+
+SET @yperiod = year;
+SET @rownum = 0;
+
+SELECT max_list_count INTO @existscheck
+FROM re_boardgames_maxcounts_hist
+WHERE period = @yperiod;
+
+IF @existscheck IS NULL THEN
+
+-- Update re_boardgames_maxcounts_hist
+INSERT INTO re_boardgames_maxcounts_hist (period_type, period, max_list_count)
+SELECT "Y" AS period_type
+, @yperiod AS period
+, count(bg_id) item_count
+FROM re_final_d
+JOIN re_final_h on re_final_d.list_id = re_final_h.list_id
+WHERE year(finish_date) = @yperiod
+AND bg_id IS NOT NULL
+AND bg_id <> 0
+GROUP BY bg_id
+ORDER BY item_count DESC
+LIMIT 1;
+
+--  Insert history into re_boardgames_year_hist
+INSERT INTO re_boardgames_year_hist (bg_id, period, bg_rank, list_score, pop_score, total_score, times_ranked)
+SELECT bg_id, period, @rownum := @rownum+1, list_score, pop_score, total_score, times_ranked
+FROM
+(SELECT bg_id
+, @yperiod AS period
+, round(avg(((num_of_items-item_rank+1)/num_of_items)*100), 3) AS list_score
+, round(count(re_final_d.list_id)*20/MaxList.max_list_count, 3) AS pop_score
+, round(avg(((num_of_items-item_rank+1)/num_of_items)*100), 3) + round(count(re_final_d.list_id)*20/MaxList.max_list_count, 3) as total_score
+, count(bg_id) as times_ranked
+FROM re_final_d
+JOIN re_final_h on re_final_d.list_id = re_final_h.list_id
+CROSS JOIN (SELECT max_list_count FROM re_boardgames_maxcounts_hist WHERE period = @yperiod AND period_type = "Y") AS MaxList
+WHERE year(finish_date) = @yperiod 
+AND bg_id IS NOT NULL
+AND bg_id <> 0
+GROUP BY bg_id
+HAVING pop_score > 1
+ORDER BY total_score DESC) as bghist;
+
+END IF;
+
+END

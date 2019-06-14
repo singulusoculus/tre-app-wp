@@ -1,13 +1,10 @@
 
 import { handleProgressTransferClick, handleUserResultTransferClick, handleRankingResultsTransferClick } from './transfer'
 import { fadeInSpinner, fadeOutSpinner } from './views'
-import { numWithCommas, renderTableRows } from './functions'
+import { numWithCommas, renderTableRows, initDataTable } from './functions'
 
 const initDashboard = () => {
   fadeInSpinner()
-
-  // Hide top nav account menu
-  document.querySelector('#nav-pm__account').classList.add('hide')
 
   // Get Totals Info
   // getTotals
@@ -24,6 +21,7 @@ const initDashboard = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     renderTableRows(parsedData, 'rankings-at')
+    initDataTable('rankings-at')
   })
 
   // getTopGamesYear
@@ -32,6 +30,7 @@ const initDashboard = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     renderTableRows(parsedData, 'rankings-y')
+    initDataTable('rankings-y')
   })
 
   // getTopGamesD30
@@ -40,6 +39,7 @@ const initDashboard = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     renderTableRows(parsedData, 'rankings-d30')
+    initDataTable('rankings-d30')
   })
 
   // getAllGamesApproved
@@ -48,14 +48,7 @@ const initDashboard = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     renderTableRows(parsedData, 'all-games')
-  })
-
-  // getAllGamesPending
-  jQuery.post(getFilePath('/re-func/re-dashboard-functions.php'), {
-    func: 'getAllGamesPending'
-  }, (data, status) => {
-    const parsedData = JSON.parse(data)
-    renderTableRows(parsedData, 'pending-games')
+    initDataTable('all-games')
   })
 }
 

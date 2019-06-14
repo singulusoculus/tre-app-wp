@@ -508,7 +508,11 @@ const setupSaveLogin = async () => {
       el.setAttribute('href', '#login-modal')
     })
 
-    clearDBListInfo()
+    // Clear user saved list ids if they aren't logged in
+    setDBListInfoType('template', { id: 0, desc: '' })
+    setDBListInfoType('progress', { id: 0, desc: '' })
+    setDBListInfoType('userResult', { id: 0, desc: '' })
+
     const update = getDBListInfo()
     const prevData = JSON.parse(localStorage.getItem('saveData'))
     if (prevData) {

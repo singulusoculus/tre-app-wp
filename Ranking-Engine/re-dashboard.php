@@ -139,17 +139,11 @@ Template Name: RE Dashboard 2.0
         <div class="col s4">
       <a id="combine-games-submit" class="waves-effect waves-light btn">Go!</a>
     </div>
-      </div>
+  </div>
 
-  <div class="row">
-    <div class="col s12">
-      <ul class="tabs tabs-fixed-width">
-        <li class="tab col s3"><a href="#all-games" class="active">Approved</a></li>
-        <li class="tab col s3"><a href="#pending-games">Pending</a></li>
-      </ul>
-    <div class="divider-sm"></div>
-    </div>
-    <div id="all-games" class="col s12">
+  <p class="section-title">All Games</p>
+  <div class="divider-sm"></div>
+  <div id="all-games" class="col s12">
       <table id="all-games__table" class="striped">
         <thead>
             <tr>
@@ -162,22 +156,6 @@ Template Name: RE Dashboard 2.0
         <tbody id="all-games__rows"></tbody>
       </table>
     </div>
-
-    <div id="pending-games" class="col s12">
-      <table id="pending-games__table" class="striped">
-        <thead>
-            <tr>
-              <th scope="col">BGID</th>
-              <th scope="col">Game</th>
-              <th scope="col">Times Ranked</th>
-              <th scope="col">AT Rank</th>
-            </tr>
-        </thead>
-        <tbody id="pending-games__rows"></tbody>
-      </table>
-    </div>
-
-  </div>
 
   <ul class="collapsible popout">
     <li class="">
