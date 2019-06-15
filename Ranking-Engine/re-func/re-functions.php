@@ -89,29 +89,26 @@ function getBGGCollection() {
     $headers = get_headers($url, 1);
     $statusCode = substr($headers[0], 9, 3);
 
-    if ($statusCode == '200') {
-      //$xml = simplexml_load_file($url);
-      // $xml = simplexml_load_string($url);
-      $xml = file_get_contents($url);
+    if ($statusCode == 200) {
+      $xml = simplexml_load_file($url);
 
-      //Check for a valid username
-      if ($xml->error->message == "Invalid username specified") {
+      if ($xml->error->message == "Invalid username specified"){
         echo 1;
       } else {
-        // Send xml back to js
-        // echo $xml;
-        print_r($xml);
-      } 
+        $xmlContents = file_get_contents($url);
+        print_r($xmlContents);
+      }
+ 
     } else {
       $tries++;
-      sleep(10);
+      sleep(9);
     }
 
-    if ($tries == 12) {
+    if ($tries == 3) {
       echo 2;
     }
 
-  } while ($statusCode == '202' && $tries < 13);
+  } while ($statusCode == '202' && $tries < 4);
 }
 
 function getYearTopTen() {
