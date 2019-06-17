@@ -97,7 +97,7 @@ const dbLoadUserList = (type, id) => {
       if (status === 'success') {
         const parsedData = JSON.parse(data)
         const listData = JSON.parse(parsedData[0].template_data)
-        const category = parsedData[0].list_category
+        const category = parseInt(parsedData[0].list_category)
         const desc = parsedData[0].template_desc
         const intID = parseInt(id)
         setDBListInfoType('template', { id: intID, desc })
@@ -112,7 +112,7 @@ const dbLoadUserList = (type, id) => {
       if (status === 'success') {
         const parsedData = JSON.parse(data)
         const rankData = JSON.parse(parsedData[0].progress_data)
-        const category = parsedData[0].list_category
+        const category = parseInt(parsedData[0].list_category)
         const desc = parsedData[0].progress_desc
         resetHistory()
         const intID = parseInt(id)
@@ -128,7 +128,7 @@ const dbLoadUserList = (type, id) => {
       if (status === 'success') {
         const parsedData = JSON.parse(data)
         const resultData = JSON.parse(parsedData[0].result_data)
-        const category = parsedData[0].list_category
+        const category = parseInt(parsedData[0].list_category)
         const desc = parsedData[0].result_desc
         const intID = parseInt(id)
         setDBListInfoType('userResult', { id: intID, desc })
