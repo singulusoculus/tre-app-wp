@@ -3,9 +3,9 @@
 
   <main class="container">
     <header class="header">
-      <nav class="nav-extended nav-tre">
+      <nav class="nav-extended nav-re">
         <div class="nav-wrapper">
-          <p class="brand-logo nav-tre__title">Ranking Engine</p>
+          <p class="brand-logo nav-re__title">Ranking Engine</p>
           <div class="help right">
             <input type="checkbox" class="help__checkbox" id="help-toggle">
 
@@ -83,7 +83,7 @@
           </div>
 
           <div class="account right">
-            <a id="nav-tre__account" class="modal-trigger" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
+            <a id="nav-re__account" class="modal-trigger" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
           </div>
 
           <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -93,18 +93,17 @@
 
         <div class="nav-content">
           <ul id="step-tabs" class="tabs tabs-transparent tabs-fixed-width step-tabs">
-            <li id="start-tab" class="start-tab tab step-tabs__start "><a href="#start-container" id="start-tab-link" class="tooltipped active" data-tooltip="Start over">Start</a></li>
-            <li id="list-tab" class="list-tab tab step-tabs__list disabled"><a href="#list-container" id="list-tab-link" class="" data-tooltip="">List</a></li>
-            <li id="rank-tab" class="rank-tab tab step-tabs__rank disabled"><a href="#rank-container" id="rank-tab-link" class="" data-tooltip="">Rank</a></li>
-            <li id="result-tab" class="result-tab tab step-tabs__result disabled"><a href="#result-container" id="result-tab-link">Result</a></li>
+            <li id="start-tab" class="tab step-tabs__start "><a href="#start-container" id="start-tab-link" class="tooltipped active" data-tooltip="Start over">Start</a></li>
+            <li id="list-tab" class="tab step-tabs__list disabled"><a href="#list-container" id="list-tab-link" class="" data-tooltip="">List</a></li>
+            <li id="rank-tab" class="tab step-tabs__rank disabled"><a href="#rank-container" id="rank-tab-link" class="" data-tooltip="">Rank</a></li>
+            <li id="result-tab" class="tab step-tabs__result disabled"><a href="#result-container" id="result-tab-link">Result</a></li>
           </ul>
         </div>
       </nav>
     </header>
 
     <section id="start-wrapper" class="step-wrapper">
-      <div id="start-container" class="start-container step-container">
-        <div class="resume-session-container"></div>
+      <div id="start-container" class="step-container">
 
         <div class="row list-category-wrapper">
           <div class="col s12 m10 offset-m1 l8 offset-l2 ">
@@ -159,11 +158,11 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
     </section>
 
     <section id="list-wrapper" class="step-wrapper">
-      <div id="list-container" class="list-container step-container">
+      <div id="list-container" class="step-container">
         <div class="row">
           <div class="list-info">
             <p class="current-list-category section-title"></p>
@@ -336,7 +335,7 @@
     </section>
 
     <section id="rank-wrapper" class="step-wrapper">
-      <div id="rank-container" class="rank-container step-container">
+      <div id="rank-container" class="step-container">
         <div class="ranking">
           <div class="row">
             <div class="col s12 m10 offset-m1">
@@ -389,24 +388,9 @@
     </section>
 
     <section id="result-wrapper" class="step-wrapper">
-      <div id="result-container" class="result-container step-container">
-        <!-- <div class="row support-us">
-          <div class="col s12 m8 offset-m2 l6 offset-l3">
-            <div class="card blue-grey darken-1">
-              <div class="card-content white-text">
-                <span class="card-title center-align">Hey, nice list!</span>
-                <p class="center-align">If you found The Ranking Engine useful please consider putting something in our
-                  tip jar.</p>
-              </div>
-              <div class="card-action center-align">
-                <a href="#">Paypal</a>
-                <a href="#" class="support-us__dismiss">Dismiss</a>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
+      <div id="result-container" class="step-container">
         <div id="results-table"></div>
+        <div id="results-table-wrapper"></div>
       </div>
     </section>
   </main>
@@ -481,7 +465,7 @@
       <a href="#!" class="modal-close btn-flat modal-close-x">
         <span aria-hidden="true">&times;</span>
       </a>
-      <h4 class="center-align">A Friendly Reminder</h4>
+      <h4 class="center-align">For Your Info</h4>
       <p class="message-text center-align">Some Message Text</p>
     </div>
     <div class="modal-footer">

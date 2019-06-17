@@ -5,7 +5,7 @@ import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
-import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, clearDBListInfo, getDBListInfo } from './database'
+import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem } from './functions'
 
 // //////////////////////////////////////////////////////////////////////
@@ -14,9 +14,6 @@ import { updateLocalStorageSaveDataItem } from './functions'
 
 const renderPreviousSessionToast = () => {
   const prevData = JSON.parse(localStorage.getItem('saveData'))
-
-  const containerEl = document.querySelector('.resume-session-container')
-  containerEl.textContent = ''
 
   if (prevData !== null) {
     const step = prevData.step
@@ -70,16 +67,6 @@ const renderListData = () => {
 
   const listInfoEl = document.querySelector('#list-info')
   listInfoEl.textContent = `Your List: ${count} items`
-
-  // Pulse the list section if items are added and it hasn't been clicked yet
-  // const listHeader = document.querySelector('.list-header')
-  // const clicked = document.querySelector('.list-header').classList.contains('clicked')
-
-  // if (count > 0 && !clicked) {
-  //   listHeader.classList.add('pulse-bc')
-  // } else {
-  //   listHeader.classList.remove('pulse-bc')
-  // }
 
   const listEl = document.querySelector('#list-items')
 
@@ -332,11 +319,6 @@ const showListSection = (source) => {
   disableStepTab('rank', 'result')
 
   const categoryName = getCategoryInfo().niceName
-  // const category = getCategory()
-  // const categorySelectEl = document.querySelector('#list-category-select')
-  // categorySelectEl.value = category
-  // M.FormSelect.init(categorySelectEl)
-  // const categoryName = categorySelectEl.selectedOptions[0].innerHTML
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
 
   renderTemplateDesc()
@@ -426,7 +408,7 @@ const showTab = (tab) => {
   activeSection[0].classList.remove('active')
   activeSection[0].setAttribute('style', 'display: none')
 
-  const newActiveSection = document.querySelector(`.${tab}-container`)
+  const newActiveSection = document.querySelector(`#${tab}-container`)
   newActiveSection.classList.add('active')
   newActiveSection.removeAttribute('style', 'display: none')
 

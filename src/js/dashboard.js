@@ -20,6 +20,7 @@ const initDashboard = () => {
     func: 'getTopGamesAll'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
+    console.log(parsedData)
     renderTableRows(parsedData, 'rankings-at')
     initDataTable('rankings-at')
   })

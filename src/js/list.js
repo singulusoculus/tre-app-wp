@@ -14,10 +14,6 @@ const initPrevList = (category, data) => {
   setCategory(category)
   setCurrentStep('List')
 
-  // Set the catetgory
-  // document.querySelector('#list-category-select').value = category
-  // M.FormSelect.init(document.querySelector('#list-category-select'))
-
   saveData(listData)
   renderListData()
 

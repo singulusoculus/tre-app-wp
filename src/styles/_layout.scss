@@ -50,7 +50,7 @@
   }
 }
 
-.nav-tre {
+.nav-re {
   background-color: $color-primary !important;
 
   &__title {
@@ -145,8 +145,6 @@
 .all-top-games-btn {
   margin-top: 1rem;
 }
-
-
 
 //////////////////////////////////////////////////////////////////
 ///////////  LIST SECTION
@@ -350,7 +348,7 @@
 ///////////  RESULT SECTION
 //////////////////////////////////////////////////////////////////
 
-#results-table {
+#results-table-wrapper {
   width: 80%;
   margin: 3rem auto;
 
@@ -368,6 +366,12 @@
 .rank-column {
   width: 10%;
 }
+
+#results__header > tr:first-child {
+  width: 10%;
+}
+
+
 
 //////////////////////////////////////////////////////////////////
 ///////////  RERANK OPTIONS
@@ -627,6 +631,8 @@
   max-height: 75% !important;
   width: 80%;
   margin: 0 auto;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 
   @media only screen and (max-width: 600px) {
     width: 100%;

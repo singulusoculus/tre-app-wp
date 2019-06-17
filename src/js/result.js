@@ -1,5 +1,5 @@
 import { showResultSection, setupSaveLogin } from './views'
-import { saveData } from './functions'
+import { saveData, renderTable } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 import { getDBListInfo } from './database'
@@ -21,23 +21,16 @@ const setResultData = (data) => {
 }
 
 const renderResult = () => {
-  let str = ''
-  // let str1 = ''
+  const rankedItems = []
 
-  str += `<table id="results-table-details" class="table-responsive"><thead><tr><th class="rank-column" scope="col">Rank</th><th scope="col">Item</th></tr></thead><tbody>`
+  resultData.forEach((item) => {
+    rankedItems.push({ rank: item.rank, name: item.name })
+  })
 
-  for (let i = 0; i < resultData.length; i++) {
-    str += `<tr><td>${resultData[i].rank}</td><td>${resultData[i].name}</td></tr>`
-  }
-
-  str += `</tbody></table>`
-  // str1 = comparisons ? `<p class="text-center">Total Comparisons: ${comparisons}</p>` : ''
-
-  // document.getElementById('total-comparisons').innerHTML = str1
-  document.getElementById('results-table').innerHTML = str
+  renderTable('results', ['Rank', 'Item'], rankedItems)
 
   // Initialize data table buttons - after results are populated
-  jQuery('#results-table-details').DataTable({
+  jQuery('#results__table').DataTable({
     'paging': false,
     dom: '<"floatright"B>rt',
     buttons: [
@@ -54,7 +47,7 @@ const renderResult = () => {
   })
 
   // Fix Rank column width
-  document.querySelector('.rank-column').setAttribute('style', 'width: 18%')
+  document.querySelector('#results__header > tr > :first-child').setAttribute('style', 'width: 18%')
 
   const userResultID = getDBListInfo().userResult.id
   // Put save button in line with other buttons
@@ -65,6 +58,10 @@ const renderResult = () => {
   } else {
     saveButtonEl.classList.add('disabled')
   }
+  saveButtonEl.addEventListener('click', () => {
+    document.querySelector('#login-form-button').setAttribute('from', '')
+    document.querySelector('#login-form-button').setAttribute('from', 'save')
+  })
   saveButtonEl.setAttribute('id', 'save-results')
   saveButtonEl.setAttribute('href', '#login-modal')
   saveButtonEl.textContent = 'Save'
@@ -81,7 +78,7 @@ const renderResult = () => {
 
   // Add title to table
   const resultDesc = getDBListInfo().userResult.desc
-  const tableEl = document.querySelector('#results-table-details_wrapper')
+  const tableEl = document.querySelector('#results__table_wrapper')
   const spanEl = document.createElement('span')
   spanEl.classList.add('section-title', 'result-desc')
   spanEl.textContent = resultDesc !== '' ? `${resultDesc}` : 'Your Results:'

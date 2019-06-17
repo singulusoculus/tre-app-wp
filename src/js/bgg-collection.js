@@ -42,10 +42,10 @@ const handleBGGCollectionRequest = async () => {
   if (user === '') {
     custMessage('Please input your BGG user name')
   } else {
-    const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
-    bggCollectionData = await getBGGCollection(user, expansions)
+    // const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
+    // bggCollectionData = await getBGGCollection(user, expansions)
 
-    // bggCollectionData = getBGGData()
+    bggCollectionData = getBGGData()
     showBGGCollectionSection()
     renderBGGCollection()
     fadeOutSpinner()
@@ -62,7 +62,6 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
     let newData = parseInt(data.replace(/[\n\r]+/g, ''))
 
     // 1 = invalid username; 2 = timed out, try again later
-    console.log(newData)
 
     if (newData === 1) {
       fadeOutSpinner()
@@ -73,7 +72,6 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
       reject(new Error('Timed Out. Try again later.'))
       custMessage('The request for you collection timed out. BGG servers may be busy. Please try again in a little bit.')
     } else {
-      console.log(newData)
       const listData = getListData()
       const xmlDoc = data.replace(/[\n\r]+/g, '')
       const parser = new DOMParser()
@@ -257,7 +255,5 @@ export {
   handleAddSelectedBGG,
   handleCollectionChangeClick,
   saveBGGCollection,
-  setBGGCollectionData,
-  showBGGCollectionSection,
   initPrevBGGCollection
 }

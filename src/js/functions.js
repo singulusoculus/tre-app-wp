@@ -288,8 +288,40 @@ const setReloadInfo = (type) => {
 
 const numWithCommas = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-const renderTableRows = (data, table) => {
-  const rowsEl = document.querySelector(`#${table}__rows`)
+// columns is an array of column names for the table
+// expects a wrapper div to exist with an id of tableName'-table-wrapper'
+const renderTableHeader = (columns, tableName) => {
+  const tableWrapperEl = document.querySelector(`#${tableName}-table-wrapper`)
+
+  const tableEl = document.createElement('table')
+  tableEl.setAttribute('id', `${tableName}__table`)
+  tableEl.classList.add('table-responsive')
+
+  const theadEl = document.createElement('thead')
+  theadEl.setAttribute('id', `${tableName}__header`)
+  const trEl = document.createElement('tr')
+
+  columns.forEach((col) => {
+    const thEl = document.createElement('th')
+    thEl.setAttribute('scope', 'col')
+    thEl.textContent = col
+    trEl.appendChild(thEl)
+  })
+
+  theadEl.appendChild(trEl)
+  tableEl.appendChild(theadEl)
+
+  const tbodyEl = document.createElement('tbody')
+  tbodyEl.setAttribute('id', `${tableName}__rows`)
+
+  tableEl.appendChild(tbodyEl)
+
+  tableWrapperEl.appendChild(tableEl)
+}
+
+// data is an array of objects with the correct number of items as there are columns in the table
+const renderTableRows = (data, tableName) => {
+  const rowsEl = document.querySelector(`#${tableName}__rows`)
 
   data.forEach((row) => {
     const trEl = document.createElement('tr')
@@ -302,6 +334,11 @@ const renderTableRows = (data, table) => {
     })
     rowsEl.appendChild(trEl)
   })
+}
+
+const renderTable = (tableName, columns, rows) => {
+  renderTableHeader(columns, tableName)
+  renderTableRows(rows, tableName)
 }
 
 const initDataTable = (table) => {
@@ -379,5 +416,7 @@ export { disableArrowKeyScroll,
   handleClickSaveRank,
   numWithCommas,
   renderTableRows,
-  initDataTable
+  initDataTable,
+  renderTable,
+  renderTableHeader
 }
