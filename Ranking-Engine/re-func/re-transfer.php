@@ -171,6 +171,7 @@ function insertResultList() {
           '%d',
           '%s',
           '%s',
+          '%s',
           '%d',
           '%d',
           '%s',
