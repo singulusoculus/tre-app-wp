@@ -379,6 +379,12 @@ const dbSaveUserResultData = (saveDesc) => {
   const wpuid = getUserID()
   let resultData = getResultData()
   const itemCount = resultData.length
+
+  // strip out uuid before saving to database
+  resultData.forEach((item) => {
+    delete item.id
+  })
+
   const resultDataJSON = JSON.stringify(resultData)
   const category = getCategory()
 

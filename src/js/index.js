@@ -6,6 +6,8 @@ import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
+// import LogRocket from 'logrocket'
+// LogRocket.init('r3us4o/ranking-engine-prod')
 
 jQuery(document).ready(() => {
   initRankingEngine()

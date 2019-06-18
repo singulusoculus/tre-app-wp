@@ -12,6 +12,9 @@ const initRankingEngine = () => {
   setCurrentStep('Start')
   dbGetTopTenYear()
 
+  // Check for a previous session on reload from a login/logout
+  // If it does, load the correct step and data.
+  // If it was generated from a save modal, show the save modal. If it was from My Lists then show My Lists
   let reload = sessionStorage.getItem('reload')
   if (reload !== null) {
     reload = JSON.parse(reload)
@@ -293,6 +296,8 @@ const numWithCommas = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '
 const renderTableHeader = (columns, tableName) => {
   const tableWrapperEl = document.querySelector(`#${tableName}-table-wrapper`)
 
+  tableWrapperEl.innerHTML = ''
+
   const tableEl = document.createElement('table')
   tableEl.setAttribute('id', `${tableName}__table`)
   tableEl.classList.add('table-responsive')
@@ -343,6 +348,7 @@ const renderTable = (tableName, columns, rows) => {
 
 const initDataTable = (table) => {
   jQuery(`#${table}__table`).DataTable({
+    'destroy': true,
     dom: 'lfBtip',
     buttons: [
       'copyHtml5',

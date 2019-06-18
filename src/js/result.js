@@ -31,6 +31,7 @@ const renderResult = () => {
 
   // Initialize data table buttons - after results are populated
   jQuery('#results__table').DataTable({
+    'destroy': true,
     'paging': false,
     dom: '<"floatright"B>rt',
     buttons: [
