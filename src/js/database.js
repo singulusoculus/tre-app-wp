@@ -151,6 +151,10 @@ const dbDeleteUserList = (type, id) => {
           renderMyLists()
           setupSaveButtons()
 
+          if (parseInt(id) === dbListInfo.template.id) {
+            setDBListInfoType('template', { id: 0, desc: '' })
+          }
+
           M.toast({ html: `Template Deleted`, displayLength: 2000 })
         }
       })
@@ -163,6 +167,10 @@ const dbDeleteUserList = (type, id) => {
           renderMyLists()
           setupSaveButtons()
 
+          if (parseInt(id) === dbListInfo.progress.id) {
+            setDBListInfoType('progress', { id: 0, desc: '' })
+          }
+
           M.toast({ html: `Progress List Deleted`, displayLength: 2000 })
         }
       })
@@ -173,7 +181,17 @@ const dbDeleteUserList = (type, id) => {
       }, (data, status) => {
         if (status === 'success') {
           renderMyLists()
+
+          if (parseInt(id) === dbListInfo.userResult.id) {
+            setDBListInfoType('userResult', { id: 0, desc: '' })
+            document.querySelector('#save-results').classList.remove('disabled')
+          }
+
           setupSaveButtons()
+
+          // Set table title
+          const titleEl = document.querySelector('.result-desc')
+          titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
 
           M.toast({ html: `Result List Deleted`, displayLength: 2000 })
         }

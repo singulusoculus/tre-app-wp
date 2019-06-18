@@ -652,6 +652,14 @@ const renderTemplateDesc = () => {
   }
 }
 
+const renderResultDesc = () => {
+  const dbListInfo = getDBListInfo()
+
+  // Set table title
+  const titleEl = document.querySelector('.result-desc')
+  titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
+}
+
 export {
   renderPreviousSessionToast,
   showListSection,
@@ -676,5 +684,6 @@ export {
   fadeOutSpinner,
   showMyLists,
   custMessage,
-  renderTemplateDesc
+  renderTemplateDesc,
+  renderResultDesc
 }
