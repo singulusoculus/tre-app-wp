@@ -147,6 +147,7 @@ function insertResultList() {
   $finishDate = $_POST['finishDate'];
   $itemCount = $_POST['itemCount'];
   $category = $_POST['category'];
+  $uuid = $_POST['resultUUID'];
   global $version;
 
   $resultData = removeslashes($resultData);
@@ -157,6 +158,7 @@ function insertResultList() {
       array(
           'result_id' => null,
           'wpuid' => $wpuid,
+          'result_uuid' => $uuid,
           'result_desc' => $desc,
           'finish_date' => $finishDate,
           'item_count' => $itemCount,

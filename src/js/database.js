@@ -186,13 +186,15 @@ const dbSaveTemplateData = (saveDesc) => {
   const wpuid = getUserID()
   let listData = getListData()
 
+  let newListData = JSON.parse(JSON.stringify(listData))
+
   // strip out uuid before saving to database
-  listData.forEach((item) => {
+  newListData.forEach((item) => {
     delete item.id
   })
 
-  const itemCount = listData.length
-  const listDataJSON = JSON.stringify(listData)
+  const itemCount = newListData.length
+  const listDataJSON = JSON.stringify(newListData)
   const category = getCategory()
   setDBListInfoType('template', { id: 0, desc: '' })
 
@@ -229,14 +231,15 @@ const dbSaveTemplateData = (saveDesc) => {
 
 const dbUpdateTemplateData = (saveDesc) => {
   let listData = getListData()
+  let newListData = JSON.parse(JSON.stringify(listData))
 
   // strip out uuid before saving to database
-  listData.forEach((item) => {
+  newListData.forEach((item) => {
     delete item.id
   })
 
-  const itemCount = listData.length
-  const listDataJSON = JSON.stringify(listData)
+  const itemCount = newListData.length
+  const listDataJSON = JSON.stringify(newListData)
 
   fadeInSpinner()
 
@@ -264,16 +267,18 @@ const dbUpdateTemplateData = (saveDesc) => {
 
 const dbSaveProgressData = (saveDesc) => {
   const wpuid = getUserID()
-  let rankData = getRankData()
+  const rankData = getRankData()
+  // create a deep copy before stripping out id
+  let newRankData = JSON.parse(JSON.stringify(rankData))
 
   // strip out uuid before saving to database
-  rankData.masterList.forEach((item) => {
+  newRankData.masterList.forEach((item) => {
     delete item.id
   })
 
-  const itemCount = rankData.masterList.length
-  const percent = Math.floor(rankData.finishSize * 100 / rankData.totalSize)
-  const rankDataJSON = JSON.stringify(rankData)
+  const itemCount = newRankData.masterList.length
+  const percent = Math.floor(newRankData.finishSize * 100 / newRankData.totalSize)
+  const rankDataJSON = JSON.stringify(newRankData)
   const category = getCategory()
 
   fadeInSpinner()
@@ -380,12 +385,14 @@ const dbSaveUserResultData = (saveDesc) => {
   let resultData = getResultData()
   const itemCount = resultData.length
 
+  let newResultData = JSON.parse(JSON.stringify(resultData))
+
   // strip out uuid before saving to database
-  resultData.forEach((item) => {
+  newResultData.forEach((item) => {
     delete item.id
   })
 
-  const resultDataJSON = JSON.stringify(resultData)
+  const resultDataJSON = JSON.stringify(newResultData)
   const category = getCategory()
 
   fadeInSpinner()

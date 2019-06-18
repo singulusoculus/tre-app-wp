@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid'
 import { createList } from './list'
 
 const handleRankingResultsTransferClick = () => {
@@ -57,6 +58,8 @@ const handleUserResultTransferClick = () => {
         const resultJSON = JSON.stringify(result)
         // console.log(result)
 
+        const resultUUID = uuidv4()
+
         jQuery.post(getFilePath('/re-func/re-transfer.php'), {
           func: 'insertResultList',
           resultJSON,
@@ -64,7 +67,8 @@ const handleUserResultTransferClick = () => {
           desc,
           finishDate,
           itemCount,
-          category
+          category,
+          resultUUID
         }, (data, status) => {
           let newData = parseInt(data.replace(/[\n\r]+/g, ''))
           console.log(`Transfered ${listId}. New ID: ${newData}`)
