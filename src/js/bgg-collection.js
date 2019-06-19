@@ -126,7 +126,7 @@ const getBGGData = () => {
     xhttp = new XMLHttpRequest()
   }
 
-  xhttp.open('GET', './wp-content/themes/Ranking-Engine/RhodesPhoto.xml', false)
+  xhttp.open('GET', './wp-content/themes/collections/RhodesPhoto.xml', false)
   // xhttp.open('GET', './collection-stats.xml', false)
 
   // xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
