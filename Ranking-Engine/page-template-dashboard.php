@@ -1,7 +1,7 @@
 <?php
 /*
 
-Template Name: RE Dashboard 2.0
+Template Name: Dashboard
 
 */
 ?>

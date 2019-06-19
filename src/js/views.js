@@ -559,7 +559,10 @@ const renderMyLists = async () => {
   const allListsLength = templateLists.length + progressLists.length + resultLists.length
 
   if (allListsLength === 0) {
-    myListsEl.textContent = 'You have not saved any lists yet.'
+    const noListsEl = document.createElement('p')
+    noListsEl.textContent = 'You have not saved any lists yet.'
+    noListsEl.setAttribute('style', 'margin-bottom: 1rem')
+    myListsEl.prepend(noListsEl)
   }
 }
 

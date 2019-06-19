@@ -1,7 +1,7 @@
 <?php
 /*
 
-Template Name: RE Rankings 2.0
+Template Name: Rankings
 
 */
 ?>
