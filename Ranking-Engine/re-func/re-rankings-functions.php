@@ -1,5 +1,5 @@
 <?php
-require_once('C:\xampp\apps\wordpress\htdocs\wp-load.php');
+require_once('../../../../wp-load.php');
 
 $func = $_POST['func'];
 

@@ -2,7 +2,9 @@
 
 
 // require_once('C:\xampp\apps\wordpress\htdocs\wp-config.php');
-require_once('C:\xampp\apps\wordpress\htdocs\wp-load.php');
+// require_once('C:\xampp\apps\wordpress\htdocs\wp-load.php');
+
+require_once('../../../../wp-load.php');
 
 // require_once($_SERVER['DOCUMENT_ROOT'] . $folder . '/wp-config.php');
 // require_once($_SERVER['DOCUMENT_ROOT'] . $folder . '/wp-load.php');
