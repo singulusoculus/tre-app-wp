@@ -111,10 +111,10 @@ function getTopGamesYear() {
 function getTotals() {
   global $wpdb;
 
-  $users = $wpdb->get_row( "SELECT count(wp_ydlp_usermeta.user_id) AS TotalUsers FROM wp_ydlp_usermeta join wp_ydlp_users on wp_ydlp_usermeta.user_id = wp_ydlp_users.id WHERE meta_key = 'wp_ydlp_user_level' AND meta_value = 0
+  $users = $wpdb->get_row( "SELECT count(re_usermeta.user_id) AS TotalUsers FROM re_usermeta join re_users on re_usermeta.user_id = re_users.id WHERE meta_key = 're_user_level' AND meta_value = 0
   ", ARRAY_A );
 
-  $usersprev = $wpdb->get_row( "SELECT count(wp_ydlp_usermeta.user_id) AS TotalUsers FROM wp_ydlp_usermeta join wp_ydlp_users on wp_ydlp_usermeta.user_id = wp_ydlp_users.id WHERE meta_key = 'wp_ydlp_user_level'  AND meta_value = 0 AND DATE(user_registered) = curdate()
+  $usersprev = $wpdb->get_row( "SELECT count(re_usermeta.user_id) AS TotalUsers FROM re_usermeta join re_users on re_usermeta.user_id = re_users.id WHERE meta_key = 're_user_level'  AND meta_value = 0 AND DATE(user_registered) = curdate()
   ", ARRAY_A );
 
   $lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM re_results_h", ARRAY_A );
