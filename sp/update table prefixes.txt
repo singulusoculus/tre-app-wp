@@ -1,0 +1,43 @@
+-- Change in wp-config file
+
+-- Rename tables to have the prefix
+
+-- update usermeta fields
+
+UPDATE re_usermeta
+SET meta_key = 're_capabilities'
+WHERE meta_key = 'wp_capabilities';
+
+UPDATE re_usermeta
+SET meta_key = 're_dashboard_quick_press_last_post_id'
+WHERE meta_key = 'wp_dashboard_quick_press_last_post_id';
+
+UPDATE re_usermeta
+SET meta_key = 're_media_library_mode'
+WHERE meta_key = 'wp_media_library_mode';
+
+UPDATE re_usermeta
+SET meta_key = 're_user_level'
+WHERE meta_key = 'wp_user_level';
+
+UPDATE re_usermeta
+SET meta_key = 're_user-settings'
+WHERE meta_key = 'wp_user-settings';
+
+UPDATE re_usermeta
+SET meta_key = 're_user-settings-time'
+WHERE meta_key = 'wp_user-settings-time';
+
+UPDATE re_usermeta
+SET meta_key = 're_yoast_notifications'
+WHERE meta_key = 'wp_yoast_notifications';
+
+-- Update option fields
+
+UPDATE re_options 
+SET option_name = 're_user_roles'
+WHERE option_name = 'wp_user_roles'
+
+-----------------------------------------------------------------
+
+
