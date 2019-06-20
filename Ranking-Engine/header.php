@@ -8,7 +8,16 @@
 </head>
 <body <?php body_class(); ?> >
 
-  <div class="loading">Loading&#8230;</div>
+  <!-- <div class="loading">Loading&#8230;</div> -->
+
+  <div class="loading-squares">
+    <div class="scaling-squares-spinner" :style="spinnerStyle">
+      <div class="square"></div>
+      <div class="square"></div>
+      <div class="square"></div>
+      <div class="square"></div>
+    </div>
+  </div>
 
   <div id="ranking-engine-container">
 

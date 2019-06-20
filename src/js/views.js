@@ -250,11 +250,11 @@ const destroyTooltip = (step) => {
 }
 
 const fadeInSpinner = () => {
-  jQuery('.loading').fadeIn()
+  jQuery('.loading-squares').fadeIn()
 }
 
 const fadeOutSpinner = () => {
-  jQuery('.loading').fadeOut()
+  jQuery('.loading-squares').fadeOut()
 }
 
 // //////////////////////////////////////////////////////////////////////
