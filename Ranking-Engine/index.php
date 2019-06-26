@@ -142,7 +142,7 @@
           <!-- <h5 class="center-align">Current <?php echo date("Y"); ?> Top Games:</h5> -->
           <p class="center-align section-title">Current <?php echo date("Y"); ?> Top Games:</p>
           <div class="center-align">
-            <a href="./rankings" class="waves-effect waves-light btn all-top-games-btn">See All Top Games<i class="material-icons small white-text">chevron_right</i></a>
+            <a href="./rankings" class="waves-effect waves-light btn all-top-games-btn">See All Top Games<i class="material-icons right small white-text">chevron_right</i></a>
           </div>
           <div class="row">
             <div class="col s12 m8 offset-m2">

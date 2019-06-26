@@ -31,7 +31,7 @@ function getAllGamesApproved() {
   , bg_name
   , at_times_ranked AS times_ranked
   , CASE WHEN at_rank = 0 THEN \"NR\" ELSE at_rank END AS rank
-  FROM re_boardgames 
+  FROM wp_re_boardgames 
   ORDER BY at_rank ASC", ARRAY_A );
 
 $results_json = json_encode($results);
@@ -60,7 +60,7 @@ function getTopGamesAll() {
   , at_pop_score AS pop_score
   , round(at_list_score + at_pop_score, 3) as total_score
   , at_times_ranked AS times_ranked
-  FROM re_boardgames 
+  FROM wp_re_boardgames 
   WHERE at_rank <> 0
   ORDER BY at_rank ASC", ARRAY_A );
 
@@ -79,7 +79,7 @@ function getTopGamesD30() {
   , d30_pop_score AS pop_score
   , round(d30_list_score + d30_pop_score, 3) as total_score
   , d30_times_ranked AS times_ranked
-  FROM re_boardgames 
+  FROM wp_re_boardgames 
   WHERE d30_rank <> 0
   ORDER BY d30_rank ASC", ARRAY_A );
 
@@ -98,7 +98,7 @@ function getTopGamesYear() {
   , cy_pop_score AS pop_score
   , round(cy_list_score + cy_pop_score, 3) as total_score
   , cy_times_ranked AS times_ranked
-  FROM re_boardgames 
+  FROM wp_re_boardgames 
   WHERE cy_rank <> 0
   ORDER BY cy_rank ASC", ARRAY_A );
 
@@ -111,19 +111,19 @@ function getTopGamesYear() {
 function getTotals() {
   global $wpdb;
 
-  $users = $wpdb->get_row( "SELECT count(re_usermeta.user_id) AS TotalUsers FROM re_usermeta join re_users on re_usermeta.user_id = re_users.id WHERE meta_key = 're_user_level' AND meta_value = 0
+  $users = $wpdb->get_row( "SELECT count(wp_usermeta.user_id) AS TotalUsers FROM wp_usermeta join wp_users on wp_usermeta.user_id = wp_users.id WHERE meta_key = 'wp_user_level' AND meta_value = 0
   ", ARRAY_A );
 
-  $usersprev = $wpdb->get_row( "SELECT count(re_usermeta.user_id) AS TotalUsers FROM re_usermeta join re_users on re_usermeta.user_id = re_users.id WHERE meta_key = 're_user_level'  AND meta_value = 0 AND DATE(user_registered) = curdate()
+  $usersprev = $wpdb->get_row( "SELECT count(wp_usermeta.user_id) AS TotalUsers FROM wp_usermeta join wp_users on wp_usermeta.user_id = wp_users.id WHERE meta_key = 'wp_user_level'  AND meta_value = 0 AND DATE(user_registered) = curdate()
   ", ARRAY_A );
 
-  $lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM re_results_h", ARRAY_A );
+  $lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h", ARRAY_A );
 
-  $listsprev = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM re_results_h WHERE finish_date = curdate()", ARRAY_A );
+  $listsprev = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE finish_date = curdate()", ARRAY_A );
 
-  $items = $wpdb->get_row( "SELECT count(id) AS TotalItems FROM re_results_d", ARRAY_A );
+  $items = $wpdb->get_row( "SELECT count(id) AS TotalItems FROM wp_re_results_d", ARRAY_A );
 
-  $itemsprev = $wpdb->get_row( "SELECT count(re_results_d.id) AS TotalItems  FROM re_results_d  JOIN re_results_h on re_results_d.result_id = re_results_h.result_id WHERE finish_date = curdate()
+  $itemsprev = $wpdb->get_row( "SELECT count(wp_re_results_d.id) AS TotalItems  FROM wp_re_results_d  JOIN wp_re_results_h on wp_re_results_d.result_id = wp_re_results_h.result_id WHERE finish_date = curdate()
   ", ARRAY_A );
 
   $data = array();

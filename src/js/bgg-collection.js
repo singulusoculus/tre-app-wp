@@ -42,10 +42,10 @@ const handleBGGCollectionRequest = async () => {
   if (user === '') {
     custMessage('Please input your BGG user name')
   } else {
-    // const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
-    // bggCollectionData = await getBGGCollection(user, expansions)
+    const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
+    bggCollectionData = await getBGGCollection(user, expansions)
 
-    bggCollectionData = getBGGData()
+    // bggCollectionData = getBGGData()
     showBGGCollectionSection()
     renderBGGCollection()
     fadeOutSpinner()

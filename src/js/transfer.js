@@ -15,6 +15,7 @@ const handleRankingResultsTransferClick = () => {
 }
 
 const handleUserResultTransferClick = () => {
+  console.log('Started User Result Transfer')
   // Get lists to transfer and list info from re_final_h
   jQuery.post(getFilePath('/re-func/re-transfer.php'), {
     func: 'getOldResultLists'
@@ -30,6 +31,8 @@ const handleUserResultTransferClick = () => {
       const finishDate = list.finish_date
       const itemCount = list.item_count
       const category = list.list_category
+
+      console.log(listId)
 
       jQuery.post(getFilePath('/re-func/re-transfer.php'), {
         func: 'getOldResultDetails',

@@ -41,7 +41,7 @@ function getOldProgressList() {
     global $wpdb;
     $progressid = $_POST['progressid'];
       
-    $results = $wpdb->get_results( "SELECT wpuid, list_desc, save_date, num_of_items, percent_complete, save_data FROM re_progress_transfer WHERE list_id = $progressid", ARRAY_A );
+    $results = $wpdb->get_results( "SELECT wpuid, list_desc, save_date, num_of_items, percent_complete, save_data FROM re_progress WHERE list_id = $progressid", ARRAY_A );
   
     $results_json = json_encode($results);
   
@@ -66,7 +66,7 @@ function insertProgressList() {
 
   //INSERT
   $wpdb->insert(
-      're_rank_progress',
+      'wp_re_rank_progress',
       array(
           'progress_id' => null,
           'wpuid' => $wpuid,
@@ -101,7 +101,7 @@ function insertProgressList() {
 function getOldProgressListIDs() {
   global $wpdb;
 
-  $results = $wpdb->get_results( "SELECT list_id FROM re_progress_transfer", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT list_id FROM re_progress", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -112,7 +112,7 @@ function deleteOldProgressList() {
   global $wpdb;
   $listid = $_POST['listid'];
 
-  $wpdb->delete( 're_progress_transfer', array('list_id' => $listid ));
+  $wpdb->delete( 're_progress', array('list_id' => $listid ));
 }
 
 function getOldResultLists() {
@@ -151,7 +151,7 @@ function insertResultList() {
 
   //INSERT
   $wpdb->insert(
-      're_results_user',
+      'wp_re_results_user',
       array(
           'result_id' => null,
           'wpuid' => $wpuid,
@@ -184,7 +184,7 @@ function insertResultList() {
 function transferRankingResultsD() {
   global $wpdb;
 
-  $query = "INSERT INTO re_results_d (result_id, bg_id, item_name, item_rank)
+  $query = "INSERT INTO wp_re_results_d (result_id, bg_id, item_name, item_rank)
   SELECT list_id, bg_id, case when item_name_fixed is null then item_name else item_name_fixed end AS item_name, item_rank 
   FROM `re_final_d`";
 
@@ -194,7 +194,7 @@ function transferRankingResultsD() {
 function transferRankingResultsH() {
   global $wpdb;
 
-  $query = "INSERT INTO re_results_h (result_id, finish_date, item_count, bgg_flag, list_category, re_version)
+  $query = "INSERT INTO wp_re_results_h (result_id, finish_date, item_count, bgg_flag, list_category, re_version)
   SELECT list_id, finish_date, num_of_items, bgg_flag, list_category, \"2.0.0\"
   FROM re_final_h";
 

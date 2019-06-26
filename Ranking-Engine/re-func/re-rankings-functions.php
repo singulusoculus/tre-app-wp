@@ -24,7 +24,7 @@ function getTopGamesAll() {
     $results = $wpdb->get_results ("SELECT at_rank AS rank
     , bg_name
     , round(at_list_score + at_pop_score, 3) as total_score
-    FROM re_boardgames 
+    FROM wp_re_boardgames 
     WHERE at_rank <> 0
     ORDER BY at_rank ASC
     LIMIT 300", ARRAY_A );
@@ -41,7 +41,7 @@ function getTopGamesAll() {
     $results = $wpdb->get_results ("SELECT d30_rank AS rank
     , bg_name
     , round(d30_list_score + d30_pop_score, 3) as total_score
-    FROM re_boardgames 
+    FROM wp_re_boardgames 
     WHERE d30_rank <> 0
     ORDER BY d30_rank ASC
     LIMIT 300", ARRAY_A );
@@ -58,7 +58,7 @@ function getTopGamesAll() {
     $results = $wpdb->get_results ("SELECT cy_rank AS rank
     , bg_name
     , round(cy_list_score + cy_pop_score, 3) as total_score
-    FROM re_boardgames 
+    FROM wp_re_boardgames 
     WHERE cy_rank <> 0
     ORDER BY cy_rank ASC
     LIMIT 300", ARRAY_A );
@@ -72,9 +72,9 @@ function getTopGamesAll() {
 function getTotals() {
     global $wpdb;
   
-    $lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM re_results_h", ARRAY_A );
+    $lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h", ARRAY_A );
   
-    $items = $wpdb->get_row( "SELECT count(id) AS TotalItems FROM re_results_d", ARRAY_A );
+    $items = $wpdb->get_row( "SELECT count(id) AS TotalItems FROM wp_re_results_d", ARRAY_A );
   
     $data = array();
     array_push($data, $lists, $items);
