@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width" />
 <?php wp_head(); ?>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body <?php body_class(); ?> >
 
