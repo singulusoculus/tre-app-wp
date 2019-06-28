@@ -91,8 +91,11 @@ const renderResult = () => {
   const toastHTML = `<span class="center-align">Hey, nice list!</span><span class="center-align">If you found this tool useful please consider putting something in our tip jar.</span><div class="prev-toast-btns"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pubmeeple@gmail.com&item_name=Friends+of+the+Pub&item_number=For+RE&currency_code=USD"><button class="btn-flat toast-action support-paypal">Paypal</button></a><button class="btn-flat toast-action support-dismiss">Dismiss</button></div>`
   M.toast({ html: toastHTML, displayLength: 'stay', classes: 'actionable-toast', inDuration: 600 })
 
-  document.querySelector('.support-dismiss').addEventListener('click', () => {
-    M.Toast.dismissAll()
+  const supportDismissEls = document.querySelectorAll('.support-dismiss')
+  supportDismissEls.forEach((el) => {
+    el.addEventListener('click', () => {
+      M.Toast.dismissAll()
+    })
   })
 }
 

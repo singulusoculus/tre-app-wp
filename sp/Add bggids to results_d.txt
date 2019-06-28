@@ -1,0 +1,5 @@
+  UPDATE wp_re_results_d
+  JOIN wp_re_boardgames ON wp_re_results_d.bg_id = wp_re_boardgames.bg_id
+  SET wp_re_results_d.bgg_id = wp_re_boardgames.bgg_id
+  WHERE wp_re_results_d.bgg_id IS NULL
+  AND wp_re_boardgames.bgg_id > 0
