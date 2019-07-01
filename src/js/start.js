@@ -3,6 +3,7 @@ import { clearListData } from './list'
 import { setCurrentStep } from './step'
 import { renderListData, showListSection } from './views'
 import { setDBListInfoType } from './database'
+import { handleCollectionChangeClick } from './bgg-collection'
 
 const handleCategoryChange = () => {
   const category = parseInt(document.querySelector('#list-category-select').value)
@@ -14,6 +15,7 @@ const handleCategoryChange = () => {
   })
 
   clearListData()
+  handleCollectionChangeClick()
   setCurrentStep('List')
   renderListData()
   showListSection()

@@ -37,7 +37,7 @@ const initPrevBGGCollection = () => {
 }
 
 const handleBGGCollectionRequest = async () => {
-  const user = document.querySelector('#bgg-username').value
+  const user = document.querySelector('#bgg-username').value.trim().replace(' ', '%20')
 
   if (user === '') {
     custMessage('Please input your BGG user name')
@@ -185,6 +185,7 @@ const showBGGCollectionSection = () => {
 }
 
 const handleCollectionChangeClick = () => {
+  bggCollectionData = []
   document.querySelector('.bgg-list').classList.add('hide')
   document.querySelector('.bgg-username-submit').classList.remove('hide')
   document.querySelector('.bgg-username-submitted').classList.add('hide')

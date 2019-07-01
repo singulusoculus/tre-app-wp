@@ -3,6 +3,7 @@
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <meta name="viewport" content="width=device-width" />
+<title>Ranking Engine</title>
 <?php wp_head(); ?>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -41,6 +42,8 @@
 
 
   <ul class="sidenav" id="mobile-nav-pm">
+    <li><a href="./">Ranking Engine Home</a></li>
+    <div class="divider"></div>
     <li><a href="https://www.pubmeeple.com/category/articles">Articles</a></li>
     <li><a href="./rankings">Current Rankings</a></li>
     <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
@@ -49,6 +52,4 @@
     <li><a href="https://www.pubmeeple.com/category/reviews">Reviews</a></li>
     <li><a href="ttps://www.pubmeeple.com/support-us">Support Us</a></li>
     <li><a href="https://www.pubmeeple.com/category/videos">Videos</a></li>
-    <div class="divider"></div>
-    <div id="sidenav__account"></div>
   </ul>
