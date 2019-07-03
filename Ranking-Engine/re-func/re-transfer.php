@@ -4,7 +4,7 @@ require_once('../../../../wp-load.php');
 // require_once($_SERVER['DOCUMENT_ROOT'] . $folder . '/wp-config.php');
 // require_once($_SERVER['DOCUMENT_ROOT'] . $folder . '/wp-load.php');
 
-$version = '2.0.0';
+$version = getRankingEngineVersion();
 $func = $_POST['func'];
 
 switch ($func) {

@@ -61,7 +61,7 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
   }, (data, status) => {
     let newData = parseInt(data.replace(/[\n\r]+/g, ''))
 
-    // 1 = invalid username; 2 = timed out, try again later
+    // 1 = invalid username; 2 = timed out, try again later; Too Many Requests
 
     if (newData === 1) {
       fadeOutSpinner()
@@ -71,6 +71,10 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
       fadeOutSpinner()
       reject(new Error('Timed Out. Try again later.'))
       custMessage('The request for you collection timed out. BGG servers may be busy. Please try again in a little bit.')
+    } else if (data.indexOf('Too Many Requests') > 0) {
+      fadeOutSpinner()
+      reject(new Error('Too Many Requests'))
+      custMessage('BGG servers are busy at the moment. Please wait a minute and try again')
     } else {
       const listData = getListData()
       const xmlDoc = data.replace(/[\n\r]+/g, '')
