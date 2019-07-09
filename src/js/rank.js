@@ -394,7 +394,8 @@ const calcRankedList = () => {
   rankedList.forEach((item) => {
     rankedItems.push({
       name: item.name,
-      bggid: item.bggId
+      bggid: item.bggId,
+      yearPublished: item.yearPublished
     })
   })
 

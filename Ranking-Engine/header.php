@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-<meta charset="<?php bloginfo( 'charset' ); ?>" />
-<meta name="viewport" content="width=device-width" />
-<title>Ranking Engine</title>
-<?php wp_head(); ?>
+  <meta charset="<?php bloginfo( 'charset' ); ?>" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Ranking Engine</title>
+  <?php wp_head(); ?>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143419312-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-143419312-1');
+  </script>
 </head>
 <body <?php body_class(); ?> >
-
-  <!-- <div class="loading">Loading&#8230;</div> -->
 
   <div class="loading-squares">
     <div class="scaling-squares-spinner" :style="spinnerStyle">
@@ -38,8 +46,6 @@
       </ul>
     </div>
   </nav>
-
-
 
   <ul class="sidenav" id="mobile-nav-pm">
     <li><a href="./">Ranking Engine Home</a></li>

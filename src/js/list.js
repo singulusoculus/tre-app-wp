@@ -39,7 +39,8 @@ const createListObject = (data) => {
     image: data.image || '',
     source: data.source,
     rank: data.rank || 0,
-    bggId: data.bggId || ''
+    bggId: data.bggId || '',
+    yearPublished: data.yearPublished || ''
   }
   return obj
 }

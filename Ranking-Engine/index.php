@@ -182,7 +182,7 @@
                     </div>
                     <div class="input-field">
                       <textarea id="textarea-input" class="materialize-textarea"></textarea>
-                      <label for="textarea-input">Type or Paste your items here</label>
+                      <label for="textarea-input">Enter items here (multiple lines allowed)</label>
                     </div>
                 </form>
               </div>
@@ -190,15 +190,15 @@
             <li class="bgg-section hide">
               <div class="collapsible-header"><i class="material-icons">cloud_download</i>Add from BGG</div>
               <div class="collapsible-body">
-                <div class="bgg-username-submit">
+                <form autocomplete="off" action="#" class="bgg-username-submit">
                   <div class="row">
-                    <div class="input-field col s12">
+                    <div class="col s12 input-field">
                       <input id="bgg-username" type="text">
                       <label for="bgg-username">BGG Username</label>
                     </div>
                   </div>
                   <div class="row">
-                    <form class="col s6">
+                    <div class="col s6">
                       <div class="switch center-align">
                         <span class="bgg-filter-heading">Include Expansions?</span>
                         <p>
@@ -210,18 +210,19 @@
                           </label>
                         </p>
                       </div>
-                    </form>
+                    </div>
                     <div class="col s6">
-                      <a id="bgg-submit" class="waves-effect waves-light btn"><i
-                          class="material-icons right">arrow_forward</i>Submit</a>
+                      <button type="submit" id="bgg-submit" class="waves-effect waves-light btn"><i
+                          class="material-icons right">arrow_forward</i>Submit
+                      </button>
                     </div>
                   </div>
-                </div>
+                </form>
                 <div class="bgg-username-submitted hide">
                   <h4 class="bgg-username-header center-align section-title"></h4>
                   <p class="center-align">
                     <a href="#!" class="change-bgg-username">(Change)</a>
-                    <a href="#!" class="update-bgg-collection">(Update)</a>
+                    <!-- <a href="#!" class="update-bgg-collection">(Update)</a> -->
                   </p>
                 </div>
                 <div class="bgg-list hide">
@@ -318,9 +319,11 @@
                   </div>
                 </div>
 
-                  <div class=" input-field">
-                    <i class="material-icons prefix">filter_list</i>
-                    <input id="search-text" type="text" placeholder="Search Items" />
+                  <div class="input-field">
+                    <form autocomplete="off">
+                      <i class="material-icons prefix">filter_list</i>
+                      <input id="search-text" type="text" placeholder="Search Items" />
+                    </form>
                   </div>
 
                   <div class="">

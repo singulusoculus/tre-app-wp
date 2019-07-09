@@ -157,7 +157,7 @@ Template Name: Dashboard
       </table>
     </div>
 
-  <ul class="collapsible popout">
+  <!-- <ul class="collapsible popout">
     <li class="">
     <div class="collapsible-header">2.0 Transfer Processes</div>
     <div class="collapsible-body center-align">
@@ -166,7 +166,7 @@ Template Name: Dashboard
     <a id="result-transfer" class="waves-effect waves-light btn">Ranking Result Transfer</a>
     </div>
     </li>
-  </ul>
+  </ul> -->
 
   <script src="<?php echo get_theme_file_uri('/dist/dashboard-bundle.js'); ?>"></script>
 

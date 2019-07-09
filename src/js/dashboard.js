@@ -1,5 +1,4 @@
 
-import { handleProgressTransferClick, handleUserResultTransferClick, handleRankingResultsTransferClick } from './transfer'
 import { fadeInSpinner, fadeOutSpinner } from './views'
 import { numWithCommas, renderTableRows, initDataTable } from './functions'
 

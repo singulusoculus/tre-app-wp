@@ -324,11 +324,13 @@ function insertResultRanking() {
               'result_id' => $savelistid,
               'item_name' => $itemname,
               'item_rank' => $key+1,
-              'bgg_id' => $value['bggid']
+              'bgg_id' => $value['bggid'],
+              'bgg_year_published' => $value['yearPublished']
           ),
           array(
               '%d',
               '%s',
+              '%d',
               '%d'
           )
       );
@@ -347,12 +349,17 @@ function updateResultRanking() {
     $wpdb->update(
       'wp_re_results_d',
       array('item_name' => $value['name'],
-            'bgg_id' => $value['bggid']),
+            'bgg_id' => $value['bggid'],
+            'bgg_year_published' => $value['yearPublished']),
       array(
         'result_id' => $resultId,
         'item_rank' => $key+1
       ),
-      array('%s'),
+      array(
+        '%s',
+        '%d',
+        '%d'
+        ),
       array(
         '%d',
         '%d'

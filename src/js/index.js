@@ -6,8 +6,8 @@ import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
-import LogRocket from 'logrocket'
-LogRocket.init('r3us4o/ranking-engine-prod')
+// import LogRocket from 'logrocket'
+// LogRocket.init('r3us4o/ranking-engine-prod')
 
 // Check for mobile browser and fix category select to work better for mobile browsers
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
@@ -99,9 +99,9 @@ jQuery(document).ready(() => {
     handleCollectionChangeClick()
   })
 
-  document.querySelector('.update-bgg-collection').addEventListener('click', () => {
-    handleBGGCollectionRequest()
-  })
+  // document.querySelector('.update-bgg-collection').addEventListener('click', () => {
+  //   handleBGGCollectionRequest()
+  // })
 
   // BGG Filters
   document.querySelectorAll('.bgg-cb').forEach((el) => {
