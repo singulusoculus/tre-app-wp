@@ -190,7 +190,7 @@
             <li class="bgg-section hide">
               <div class="collapsible-header"><i class="material-icons">cloud_download</i>Add from BGG</div>
               <div class="collapsible-body">
-                <form autocomplete="off" action="#" class="bgg-username-submit">
+                <form autocomplete="off" onsubmit="return false;" class="bgg-username-submit">
                   <div class="row">
                     <div class="col s12 input-field">
                       <input id="bgg-username" type="text">
