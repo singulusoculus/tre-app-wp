@@ -1,3 +1,0 @@
-DELETE re_results_d, re_results_h
-FROM re_results_d JOIN re_results_h ON re_results_d.result_id = re_results_h = result_id 
-WHERE bgg_flag = 2

@@ -49,6 +49,8 @@ const handleBGGCollectionRequest = async () => {
     showBGGCollectionSection()
     renderBGGCollection()
     fadeOutSpinner()
+
+    // Save new bgg games to database - dbNewBGGGames(bggCollectionData)
   }
 }
 
