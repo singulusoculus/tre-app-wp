@@ -50,12 +50,35 @@ const handleBGGCollectionRequest = async () => {
     renderBGGCollection()
     fadeOutSpinner()
 
-    // Save new bgg games to database - dbNewBGGGames(bggCollectionData)
+    // get additional bgg data
+    const ids = []
+    let dataURL = 'https://boardgamegeek.com/xmlapi2/thing?id='
+    bggCollectionData.forEach((item) => {
+      ids.push(item.bggId)
+      dataURL += item.bggId + ','
+    })
+    let xhttp = ''
+    if (window.XMLHttpRequest) {
+      xhttp = new XMLHttpRequest()
+    }
+    xhttp.open('GET', dataURL, false)
+    xhttp.send()
+    const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
+    const parser = new DOMParser()
+    const xml = parser.parseFromString(xmlDoc, 'text/xml')
+    const dataJSON = xmlToJson(xml)
+
+    const items = dataJSON.items.item
+
+    console.log(items)
+
+    // Save new bgg games to database - dbCaptureNewBGGGames(bggCollectionData)
   }
 }
 
 const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => {
   fadeInSpinner()
+  // Get collection - this excludes played-only games
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'getBGGCollection',
     bggUsername: user,
@@ -64,7 +87,6 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
     let newData = parseInt(data.replace(/[\n\r]+/g, ''))
 
     // 1 = invalid username; 2 = timed out, try again later; Too Many Requests
-
     if (newData === 1) {
       fadeOutSpinner()
       reject(new Error('Invalid username'))
@@ -78,50 +100,68 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
       reject(new Error('Too Many Requests'))
       custMessage('BGG servers are busy at the moment. Please wait a minute and try again')
     } else {
-      const listData = getListData()
-      const xmlDoc = data.replace(/[\n\r]+/g, '')
-      const parser = new DOMParser()
-      const xml = parser.parseFromString(xmlDoc, 'text/xml')
-      const dataJSON = xmlToJson(xml)
+      let bggList = createBGGList(data)
 
-      const items = dataJSON.items.item
-
-      let bggList = []
-
-      items.forEach((item) => {
-        const statusAttributes = item.status['@attributes']
-
-        const obj = {
-          id: uuidv4(),
-          name: item.name ? item.name['#text'] : 'No Title',
-          source: 'bgg',
-          image: item.thumbnail ? item.thumbnail['#text'] : './wp-content/themes/Ranking-Engine/images/meeple-lime.png',
-          yearPublished: item.yearpublished ? parseInt(item.yearpublished['#text']) : 0,
-          bggId: item['@attributes'].objectid,
-          own: statusAttributes.own === '1',
-          fortrade: statusAttributes.fortrade === '1',
-          prevowned: statusAttributes.prevowned === '1',
-          want: statusAttributes.want === '1',
-          wanttobuy: statusAttributes.wanttobuy === '1',
-          wanttoplay: statusAttributes.wanttoplay === '1',
-          wishlist: statusAttributes.wishlist === '1',
-          played: item.numplays['#text'] > 0,
-          rated: item.stats['rating']['@attributes'].value !== 'N/A',
-          rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
-          addedToList: false
-        }
-
-        if (listData.map(e => e.bggId).indexOf(obj.bggId) > -1) {
-          obj.addedToList = true
-        }
-
-        bggList.push(obj)
+      // Get all played games then merge the lists into one
+      jQuery.post(getFilePath('/re-func/re-functions.php'), {
+        func: 'getBGGPlayed',
+        bggUsername: user,
+        expansions: expansions
+      }, (data, status) => {
+        const played = createBGGList(data)
+        played.forEach((item) => {
+          bggList.push(item)
+        })
+        // Filter out duplicate bggIds
+        bggList = bggList.filter((list, index, self) => self.findIndex(l => l.bggId === list.bggId) === index)
+        resolve(bggList)
       })
-
-      resolve(bggList)
     }
   })
 })
+
+const createBGGList = (data) => {
+  const listData = getListData()
+  const xmlDoc = data.replace(/[\n\r]+/g, '')
+  const parser = new DOMParser()
+  const xml = parser.parseFromString(xmlDoc, 'text/xml')
+  const dataJSON = xmlToJson(xml)
+  const items = dataJSON.items.item
+  let bggList = []
+
+  items.forEach((item) => {
+    const statusAttributes = item.status['@attributes']
+
+    const obj = {
+      id: uuidv4(),
+      name: item.name ? item.name['#text'] : 'No Title',
+      source: 'bgg',
+      image: item.thumbnail ? item.thumbnail['#text'] : './wp-content/themes/Ranking-Engine/images/meeple-lime.png',
+      yearPublished: item.yearpublished ? parseInt(item.yearpublished['#text']) : 0,
+      bggId: item['@attributes'].objectid,
+      own: statusAttributes.own === '1',
+      fortrade: statusAttributes.fortrade === '1',
+      prevowned: statusAttributes.prevowned === '1',
+      want: statusAttributes.want === '1',
+      wanttobuy: statusAttributes.wanttobuy === '1',
+      wanttoplay: statusAttributes.wanttoplay === '1',
+      wishlist: statusAttributes.wishlist === '1',
+      played: item.numplays['#text'] > 0,
+      plays: item.numplays['#text'],
+      rated: item.stats['rating']['@attributes'].value !== 'N/A',
+      rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
+      addedToList: false
+    }
+
+    if (listData.map(e => e.bggId).indexOf(obj.bggId) > -1) {
+      obj.addedToList = true
+    }
+
+    bggList.push(obj)
+  })
+
+  return bggList
+}
 
 const getBGGData = () => {
   const listData = getListData()

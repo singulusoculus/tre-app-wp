@@ -19,6 +19,9 @@ switch ($func) {
   case 'getBGGCollection':
     getBGGCollection();
     break;
+  case 'getBGGPlayed':
+    getBGGPlayed();
+    break;
   case 'getYearTopTen':
     getYearTopTen();
   case 'deleteUserResultList':
@@ -80,6 +83,46 @@ function getBGGCollection() {
 
 
   $url = 'https://www.boardgamegeek.com/xmlapi2/collection?username='.$bggUsername.'&stats=1';
+
+  //filter out expansions if checked
+  if ($expansions === '0') {
+    $url = $url.'&excludesubtype=boardgameexpansion';
+  }
+
+  $tries = 1;
+
+  do {
+    $headers = get_headers($url, 1);
+    $statusCode = substr($headers[0], 9, 3);
+
+    if ($statusCode == 200) {
+      $xml = simplexml_load_file($url);
+
+      if ($xml->error->message == "Invalid username specified"){
+        echo 1;
+      } else {
+        $xmlContents = file_get_contents($url);
+        print_r($xmlContents);
+      }
+ 
+    } else {
+      $tries++;
+      sleep(9);
+    }
+
+    if ($tries == 3) {
+      echo 2;
+    }
+
+  } while ($statusCode == '202' && $tries < 4);
+}
+
+function getBGGPlayed() {
+  $bggUsername = $_POST['bggUsername'];
+  $expansions = $_POST['expansions'];
+
+
+  $url = 'https://www.boardgamegeek.com/xmlapi2/collection?username='.$bggUsername.'&stats=1&played=1';
 
   //filter out expansions if checked
   if ($expansions === '0') {
