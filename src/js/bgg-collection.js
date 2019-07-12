@@ -50,30 +50,102 @@ const handleBGGCollectionRequest = async () => {
     renderBGGCollection()
     fadeOutSpinner()
 
-    // get additional bgg data
-    const ids = []
-    let dataURL = 'https://boardgamegeek.com/xmlapi2/thing?id='
-    bggCollectionData.forEach((item) => {
-      ids.push(item.bggId)
-      dataURL += item.bggId + ','
-    })
-    let xhttp = ''
-    if (window.XMLHttpRequest) {
-      xhttp = new XMLHttpRequest()
-    }
-    xhttp.open('GET', dataURL, false)
-    xhttp.send()
-    const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
-    const parser = new DOMParser()
-    const xml = parser.parseFromString(xmlDoc, 'text/xml')
-    const dataJSON = xmlToJson(xml)
-
-    const items = dataJSON.items.item
-
-    console.log(items)
+    getAdditionalBGGData()
 
     // Save new bgg games to database - dbCaptureNewBGGGames(bggCollectionData)
   }
+}
+
+const getAdditionalBGGData = () => {
+  // get additional bgg data
+  const ids = []
+  let dataURL = 'https://boardgamegeek.com/xmlapi2/thing?id='
+  bggCollectionData.forEach((item) => {
+    ids.push(item.bggId)
+    dataURL += item.bggId + ','
+  })
+  let xhttp = ''
+  if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest()
+  }
+  xhttp.open('GET', dataURL, false)
+  xhttp.send()
+  const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
+  const parser = new DOMParser()
+  const xml = parser.parseFromString(xmlDoc, 'text/xml')
+  const dataJSON = xmlToJson(xml)
+
+  const items = dataJSON.items.item
+  console.log(items)
+
+  let gameData = []
+  items.forEach((item) => {
+    let gameDataDetails = {}
+    gameDataDetails.id = item['@attributes'].id
+    gameDataDetails.type = item['@attributes'].type
+    gameDataDetails.minPlayers = item.minplayers['@attributes'].value
+    gameDataDetails.maxPlayers = item.maxplayers['@attributes'].value
+    gameDataDetails.minPlaytime = item.minplaytime['@attributes'].value
+    gameDataDetails.maxPlaytime = item.maxplaytime['@attributes'].value
+    gameDataDetails.playingtime = item.playingtime['@attributes'].value
+    gameDataDetails.thumbnail = item.thumbnail['#text']
+    gameDataDetails.image = item.image['#text']
+
+    // Links
+    let mechanisms = []
+    let categories = []
+    let artists = []
+    let designers = []
+    let publishers = []
+    item.link.forEach((link) => {
+      if (link['@attributes'].type === 'boardgamemechanic') {
+        mechanisms.push(link['@attributes'].value)
+      }
+      if (link['@attributes'].type === 'boardgamecategory') {
+        categories.push(link['@attributes'].value)
+      }
+      if (link['@attributes'].type === 'boardgameartist') {
+        artists.push(link['@attributes'].value)
+      }
+      if (link['@attributes'].type === 'boardgamedesigner') {
+        designers.push(link['@attributes'].value)
+      }
+      if (link['@attributes'].type === 'boardgamepublisher') {
+        publishers.push(link['@attributes'].value)
+      }
+    })
+    gameDataDetails.mechanisms = mechanisms
+    gameDataDetails.categories = categories
+    gameDataDetails.artists = artists
+    gameDataDetails.designers = designers
+    gameDataDetails.publishers = publishers
+    mechanisms = []
+    categories = []
+    artists = []
+    designers = []
+    publishers = []
+
+    // Names
+    let altNames = []
+    if (Array.isArray(item.name)) {
+      item.name.forEach((name) => {
+        if (name['@attributes'].type === 'primary') {
+          gameDataDetails.name = name['@attributes'].value
+        }
+        if (name['@attributes'].type === 'alternate') {
+          altNames.push(name['@attributes'].value)
+        }
+      })
+    } else {
+      gameDataDetails.name = item.name['@attributes'].value
+    }
+
+    gameDataDetails.altNames = altNames
+    altNames = []
+
+    gameData.push(gameDataDetails)
+  })
+  console.log(gameData)
 }
 
 const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => {
