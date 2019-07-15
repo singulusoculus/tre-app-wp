@@ -51,24 +51,23 @@ const handleBGGCollectionRequest = async () => {
     fadeOutSpinner()
 
     // Save new bgg games to database
-    // bggGameData = getBGGGameData()
+    let bggIds = []
+    bggCollectionData.forEach((item) => {
+      bggIds.push(item.bggId)
+    })
+    const bggGameData = getBGGGameData(bggIds)
+    console.log(bggGameData)
     // dbCaptureNewBGGGames(bggGameData)
   }
 }
 
-const getBGGGameData = () => {
-  // limit to requesting 100
+const getBGGGameData = (bggIds) => {
   // get all ids in bggCollectionData and then break them apart into arrays with a max size of 100
-
-  let allIds = []
-  bggCollectionData.forEach((item) => {
-    allIds.push(item.bggId)
-  })
 
   // break allIds into chunks for smaller queries to bgg
   const perChunk = 100
 
-  let idArrays = allIds.reduce((resultArray, item, index) => {
+  let idArrays = bggIds.reduce((resultArray, item, index) => {
     const chunkIndex = Math.floor(index / perChunk)
 
     if (!resultArray[chunkIndex]) {
@@ -171,7 +170,6 @@ const getBGGGameData = () => {
       bggGameData.push(item)
     })
   })
-  console.log(bggGameData)
   return bggGameData
 }
 
