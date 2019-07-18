@@ -1,4 +1,4 @@
-import { initPrevList, getListData, removeListItem, loadList, sortListData } from './list'
+import { initPrevList, getListData, removeListItem, loadList, sortListData, estimateTotalComparisons } from './list'
 import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
@@ -64,6 +64,8 @@ const renderListData = () => {
   const data = getListData()
   const filters = getFilters()
   const count = data.length
+
+  // const comparisonEstimate = estimateTotalComparisons(data)
 
   const listInfoEl = document.querySelector('#list-info')
   listInfoEl.textContent = `Your List: ${count} items`

@@ -170,6 +170,37 @@ const clearListData = () => {
   }
 }
 
+const estimateTotalComparisons = (list) => {
+  let n = 0
+  let mid
+  let sortList = []
+  sortList[n] = []
+  let estimatedSize = 0
+
+  list.forEach((item, index) => {
+    sortList[n][index] = index
+  })
+
+  n++
+
+  for (let i = 0; i < sortList.length; i++) {
+    // Initialize sortList
+    if (sortList[i].length >= 2) {
+      mid = Math.ceil(sortList[i].length / 2)
+      sortList[n] = []
+      sortList[n] = sortList[i].slice(0, mid)
+      estimatedSize += (sortList[n].length * 0.55)
+      n++
+      sortList[n] = []
+      sortList[n] = sortList[i].slice(mid, sortList[i].length)
+      estimatedSize += (sortList[n].length * 0.55)
+      n++
+    }
+  }
+
+  return Math.round(estimatedSize)
+}
+
 const sortListData = (list, sortBy) => {
   if (sortBy === 'alphabetical') {
     // for alpha sorts it is flipped - earlier letter in the alphabet is higher
@@ -208,5 +239,6 @@ export {
   createList,
   createListObject,
   handleClickClear,
-  handleAddTextItems
+  handleAddTextItems,
+  estimateTotalComparisons
 }
