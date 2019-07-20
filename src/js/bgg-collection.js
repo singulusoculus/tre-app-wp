@@ -51,12 +51,12 @@ const handleBGGCollectionRequest = async () => {
     fadeOutSpinner()
 
     // Save new bgg games to database
-    let bggIds = []
-    bggCollectionData.forEach((item) => {
-      bggIds.push(item.bggId)
-    })
-    const bggGameData = getBGGGameData(bggIds)
-    console.log(bggGameData)
+    // let bggIds = []
+    // bggCollectionData.forEach((item) => {
+    //   bggIds.push(item.bggId)
+    // })
+    // const bggGameData = getBGGGameData(bggIds)
+    // console.log(bggGameData)
     // dbCaptureNewBGGGames(bggGameData)
   }
 }
@@ -205,12 +205,14 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
         bggUsername: user,
         expansions: expansions
       }, (data, status) => {
-        const played = createBGGList(data)
-        played.forEach((item) => {
-          bggList.push(item)
-        })
-        // Filter out duplicate bggIds
-        bggList = bggList.filter((list, index, self) => self.findIndex(l => l.bggId === list.bggId) === index)
+        if (data.indexOf('totalitems="0"') === 0) {
+          const played = createBGGList(data)
+          played.forEach((item) => {
+            bggList.push(item)
+          })
+          // Filter out duplicate bggIds
+          bggList = bggList.filter((list, index, self) => self.findIndex(l => l.bggId === list.bggId) === index)
+        }
         resolve(bggList)
       })
     }
