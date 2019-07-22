@@ -205,7 +205,7 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
         bggUsername: user,
         expansions: expansions
       }, (data, status) => {
-        if (data.indexOf('totalitems="0"') === 0) {
+        if (data.indexOf('totalitems="0"') === -1) {
           const played = createBGGList(data)
           played.forEach((item) => {
             bggList.push(item)
