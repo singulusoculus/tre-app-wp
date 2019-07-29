@@ -1,7 +1,7 @@
 import { getCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { showTab, renderPreviousSessionToast, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage } from './views'
-import { initPrevList, getListData } from './list'
+import { initPrevList, getListData, estimateTotalComparisons } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
 import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear } from './database'
@@ -144,8 +144,11 @@ const handleClickRank = () => {
   const source = getCurrentStep()
   if (source === 'List') {
     const listData = getListData()
-    if (listData.length > 0) {
-      const message = 'Are you ready to start ranking this list?'
+    const listLength = listData.length
+    if (listLength > 0) {
+      const comparisonEstimate = estimateTotalComparisons(listData)
+      const message = `You are about to rank ${listLength} items. This will take an estimated ${comparisonEstimate} comparisons. Do you want to continue?`
+      // const message = 'Are you ready to start ranking this list?'
       custConfirm(message, showRankSection, source)
     }
   } else if (source === 'Rank') {

@@ -65,8 +65,6 @@ const renderListData = () => {
   const filters = getFilters()
   const count = data.length
 
-  // const comparisonEstimate = estimateTotalComparisons(data)
-
   const listInfoEl = document.querySelector('#list-info')
   listInfoEl.textContent = `Your List: ${count} items`
 

@@ -37,7 +37,8 @@ const initPrevBGGCollection = () => {
 }
 
 const handleBGGCollectionRequest = async () => {
-  const user = document.querySelector('#bgg-username').value.trim().replace(' ', '%20')
+  const user = document.querySelector('#bgg-username').value.trim().replace(/ /g, '%20')
+  console.log(user)
 
   if (user === '') {
     custMessage('Please input your BGG user name')
