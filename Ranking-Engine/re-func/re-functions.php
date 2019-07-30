@@ -69,6 +69,9 @@ switch ($func) {
   case 'updateRankings':
     updateRankings();
     break;
+  case 'getSharedResult':
+    getSharedResult();
+    break;
   default:
     echo 'Could not find the specified function';
 }
@@ -602,6 +605,23 @@ function updateRankings() {
   $query = "CALL `update_re_boardgames_on_list_completion`(".$listid.");";
   $result = $wpdb->query($query);
   echo $query;
+}
+
+///////////////////////////////////////
+// SHARED LISTS
+///////////////////////////////////////
+
+function getSharedResult() {
+  global $wpdb;
+  $id = $_POST['id'];
+
+  $str_id = removeslashes($id);
+    
+  $results = $wpdb->get_results( "SELECT result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
+
+  $results_json = json_encode($results);
+
+  echo $results_json;
 }
 
 

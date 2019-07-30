@@ -4,9 +4,9 @@ import { showTab, renderPreviousSessionToast, setupSaveLogin, custConfirm, showS
 import { initPrevList, getListData, estimateTotalComparisons } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedResult } from './database'
 
-const initRankingEngine = () => {
+const initRankingEngine = async () => {
   initMaterializeComponents()
   showTab('start')
   setCurrentStep('Start')
@@ -47,11 +47,40 @@ const initRankingEngine = () => {
       showMyLists()
     }
   } else {
-    renderPreviousSessionToast()
+    const param = checkForURLParam()
+    if (param) {
+      if (param.type === 'r') {
+        console.log(`load result: ${param.id}`)
+        const result = await dbGetSharedResult(param.id)
+        const category = result[0].list_category
+        const data = JSON.parse(result[0].result_data)
+        initPrevResult(category, data)
+      } else if (param.type === 't') {
+        console.log(`load template: ${param.id}`)
+        // loadSharedTemplate
+      }
+    } else {
+      renderPreviousSessionToast()
+    }
   }
 
   setupSaveLogin()
   sessionStorage.removeItem('reload')
+}
+
+const checkForURLParam = () => {
+  const url = new URL(window.location.href)
+
+  if (url.search === '') {
+    return false
+  } else {
+    return {
+      url,
+      search: url.search,
+      type: url.search.substring(1, 2),
+      id: url.search.substring(3)
+    }
+  }
 }
 
 const handleClickSave = (e) => {
