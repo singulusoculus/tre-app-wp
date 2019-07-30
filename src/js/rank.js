@@ -22,11 +22,13 @@ const initPrevRanking = (category, data) => {
   updateProgressBar()
   showRankSection()
 
-  const history = JSON.parse(localStorage.getItem('rankDataHistory'))
-  if (history.length > 0) {
-    rankDataHistory = history
-    document.querySelector('#undo-btn').classList.remove('disabled')
-  }
+  document.querySelector('#undo-btn').classList.add('disabled')
+
+  // const history = JSON.parse(localStorage.getItem('rankDataHistory'))
+  // if (history.length > 0) {
+  //   rankDataHistory = history
+  //   document.querySelector('#undo-btn').classList.remove('disabled')
+  // }
 }
 
 const getRankData = () => rankData
@@ -58,6 +60,8 @@ const populateRankData = (r, data) => {
 const initRanking = (itemsList, category) => {
   disableArrowKeyScroll()
   populateRankData(false)
+
+  document.querySelector('#undo-btn').classList.add('disabled')
 
   itemsList = createList(itemsList)
 
@@ -261,13 +265,13 @@ const setHistory = () => {
   }
 
   document.querySelector('#undo-btn').classList.remove('disabled')
-  saveRankDataHistory()
+  // saveRankDataHistory()
 }
 
 const resetHistory = () => {
   rankDataHistory = []
   document.querySelector('#undo-btn').classList.add('disabled')
-  saveRankDataHistory()
+  // saveRankDataHistory()
 }
 
 const saveRankDataHistory = () => {
@@ -296,7 +300,7 @@ const handleUndo = () => {
     }, 400)
 
     saveData(rankData)
-    saveRankDataHistory()
+    // saveRankDataHistory()
   }
 
   const newHistoryLength = rankDataHistory.length
@@ -322,7 +326,7 @@ const deleteItem = (flag) => {
   rankData.deletedItems.push(indexToDelete)
 
   saveData(rankData)
-  saveRankDataHistory()
+  // saveRankDataHistory()
 
   cmpCheck()
 }
@@ -388,7 +392,7 @@ const calcRankedList = () => {
   setCurrentStep('Result')
 
   rankDataHistory = []
-  saveRankDataHistory()
+  // saveRankDataHistory()
 
   const rankedItems = []
   rankedList.forEach((item) => {
