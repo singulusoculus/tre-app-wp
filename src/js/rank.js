@@ -8,6 +8,7 @@ import { createList } from './list'
 
 let rankData = {}
 let rankDataHistory = []
+let localStorageHistoryEnabled = true
 
 const initPrevRanking = (category, data) => {
   disableArrowKeyScroll()
@@ -24,11 +25,13 @@ const initPrevRanking = (category, data) => {
 
   document.querySelector('#undo-btn').classList.add('disabled')
 
-  // const history = JSON.parse(localStorage.getItem('rankDataHistory'))
-  // if (history.length > 0) {
-  //   rankDataHistory = history
-  //   document.querySelector('#undo-btn').classList.remove('disabled')
-  // }
+  const history = JSON.parse(localStorage.getItem('rankDataHistory'))
+  if (Array.isArray(history)) {
+    if (history.length > 0) {
+      rankDataHistory = history
+      document.querySelector('#undo-btn').classList.remove('disabled')
+    }
+  }
 }
 
 const getRankData = () => rankData
@@ -251,7 +254,7 @@ const cmpCheck = () => {
 // History and Undo
 const setHistory = () => {
   let maxHistory
-  if (rankData.masterList.length > 1000) {
+  if (rankData.masterList.length > 700) {
     maxHistory = 4
   } else {
     maxHistory = 10
@@ -265,17 +268,25 @@ const setHistory = () => {
   }
 
   document.querySelector('#undo-btn').classList.remove('disabled')
-  // saveRankDataHistory()
+  saveRankDataHistory()
 }
 
 const resetHistory = () => {
   rankDataHistory = []
   document.querySelector('#undo-btn').classList.add('disabled')
-  // saveRankDataHistory()
+  saveRankDataHistory()
 }
 
 const saveRankDataHistory = () => {
-  localStorage.setItem('rankDataHistory', JSON.stringify(rankDataHistory))
+  if (localStorageHistoryEnabled) {
+    try {
+      localStorage.setItem('rankDataHistory', JSON.stringify(rankDataHistory))
+    } catch (error) {
+      localStorageHistoryEnabled = false
+      localStorage.removeItem('rankDataHistory')
+      console.log(error)
+    }
+  }
 }
 
 const handleUndo = () => {
@@ -300,7 +311,7 @@ const handleUndo = () => {
     }, 400)
 
     saveData(rankData)
-    // saveRankDataHistory()
+    saveRankDataHistory()
   }
 
   const newHistoryLength = rankDataHistory.length
@@ -326,7 +337,7 @@ const deleteItem = (flag) => {
   rankData.deletedItems.push(indexToDelete)
 
   saveData(rankData)
-  // saveRankDataHistory()
+  saveRankDataHistory()
 
   cmpCheck()
 }
@@ -392,7 +403,7 @@ const calcRankedList = () => {
   setCurrentStep('Result')
 
   rankDataHistory = []
-  // saveRankDataHistory()
+  saveRankDataHistory()
 
   const rankedItems = []
   rankedList.forEach((item) => {

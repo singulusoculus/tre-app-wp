@@ -210,9 +210,9 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
           played.forEach((item) => {
             bggList.push(item)
           })
-          // Filter out duplicate bggIds
-          bggList = bggList.filter((list, index, self) => self.findIndex(l => l.bggId === list.bggId) === index)
         }
+        bggList = bggList.filter((list, index, self) => self.findIndex(l => l.bggId === list.bggId) === index)
+
         resolve(bggList)
       })
     }
