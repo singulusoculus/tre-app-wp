@@ -470,7 +470,18 @@ const dbGetSharedResult = (id) => {
       resolve(parsedData)
     })
   })
+}
 
+const dbGetSharedTemplate = (id) => {
+  return new Promise((resolve, reject) => {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: 'getSharedTemplate',
+      id: `"${id}"`
+    }, (data, status) => {
+      const parsedData = JSON.parse(data)
+      resolve(parsedData)
+    })
+  })
 }
 
 export { dbSaveTemplateData,
@@ -487,5 +498,6 @@ export { dbSaveTemplateData,
   dbDeleteUserList,
   clearDBListInfo,
   dbGetTopTenYear,
-  dbGetSharedResult
+  dbGetSharedResult,
+  dbGetSharedTemplate
 }

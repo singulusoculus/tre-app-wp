@@ -72,6 +72,9 @@ switch ($func) {
   case 'getSharedResult':
     getSharedResult();
     break;
+  case 'getSharedTemplate':
+    getSharedTemplate();
+    break;
   default:
     echo 'Could not find the specified function';
 }
@@ -618,6 +621,19 @@ function getSharedResult() {
   $str_id = removeslashes($id);
     
   $results = $wpdb->get_results( "SELECT result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
+
+  $results_json = json_encode($results);
+
+  echo $results_json;
+}
+
+function getSharedTemplate() {
+  global $wpdb;
+  $id = $_POST['id'];
+
+  $str_id = removeslashes($id);
+    
+  $results = $wpdb->get_results( "SELECT template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id", ARRAY_A );
 
   $results_json = json_encode($results);
 

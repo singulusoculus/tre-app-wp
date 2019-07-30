@@ -9,6 +9,10 @@ let listData = []
 
 const getListData = () => listData
 
+const setListData = (data) => {
+  listData = createList(data)
+}
+
 const initPrevList = (category, data) => {
   listData = createList(data)
   setCategory(category)
@@ -240,5 +244,6 @@ export {
   createListObject,
   handleClickClear,
   handleAddTextItems,
-  estimateTotalComparisons
+  estimateTotalComparisons,
+  setListData
 }

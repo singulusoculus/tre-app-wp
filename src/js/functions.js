@@ -1,10 +1,10 @@
-import { getCategory } from './category'
+import { getCategory, setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { showTab, renderPreviousSessionToast, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage } from './views'
-import { initPrevList, getListData, estimateTotalComparisons } from './list'
-import { initPrevRanking } from './rank'
+import { initPrevList, getListData, estimateTotalComparisons, setListData } from './list'
+import { initPrevRanking, initRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedResult } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedResult, dbGetSharedTemplate } from './database'
 
 const initRankingEngine = async () => {
   initMaterializeComponents()
@@ -52,12 +52,19 @@ const initRankingEngine = async () => {
       if (param.type === 'r') {
         console.log(`load result: ${param.id}`)
         const result = await dbGetSharedResult(param.id)
-        const category = result[0].list_category
+        const category = parseInt(result[0].list_category)
         const data = JSON.parse(result[0].result_data)
         initPrevResult(category, data)
+        document.querySelector('#save-results').classList.add('disabled')
       } else if (param.type === 't') {
-        console.log(`load template: ${param.id}`)
+        console.log(`load template to rank: ${param.id}`)
         // loadSharedTemplate
+        const template = await dbGetSharedTemplate(param.id)
+        const category = parseInt(template[0].list_category)
+        const data = JSON.parse(template[0].template_data)
+        setListData(data)
+        setCategory(category)
+        showRankSection('List')
       }
     } else {
       renderPreviousSessionToast()
