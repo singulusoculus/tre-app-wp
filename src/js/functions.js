@@ -15,68 +15,16 @@ const initRankingEngine = async () => {
   // Check for a previous session on reload from a login/logout
   // If it does, load the correct step and data.
   // If it was generated from a save modal, show the save modal. If it was from My Lists then show My Lists
-  let reload = sessionStorage.getItem('reload')
-  if (reload !== null) {
-    reload = JSON.parse(reload)
-    const step = reload.step
-    const type = reload.type
-
-    const prevData = JSON.parse(localStorage.getItem('saveData'))
-    if (prevData) {
-      const data = prevData.data
-      const category = prevData.category
-      const loginStep = prevData.step
-      const dbListInfo = prevData.dbListInfo
-
-      if (step !== 'Start') {
-        if (loginStep === 'List') {
-          initPrevList(category, data)
-        } else if (loginStep === 'Rank') {
-          initPrevRanking(category, data)
-        } else if (loginStep === 'Result') {
-          initPrevResult(category, data)
-        }
-        if (type === 'login-save') {
-          const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
-          modal.open()
-          setDBListInfo(dbListInfo)
-        }
-      }
-    }
-    if (type === 'login-my-lists') {
-      showMyLists()
-    }
-  } else {
+  let reload = checkForReload()
+  if (reload) {
+    initRankingEngineReload(reload)
+  } else { // If it is not a reload, check for a url parameter or a previous session
+    // If a URL parameter exists, process it and load the list
     const param = checkForURLParam()
     if (param) {
-      try {
-        if (param.type === 'r') {
-          console.log(`loading result: ${param.id}`)
-          const result = await dbGetSharedList(param.id, 'Result')
-          const category = parseInt(result[0].list_category)
-          const data = JSON.parse(result[0].result_data)
-          initPrevResult(category, data)
-          document.querySelector('#save-results').classList.add('disabled')
-        } else if (param.type === 't') {
-          console.log(`loading template to rank: ${param.id}`)
-          const template = await dbGetSharedList(param.id, 'Template')
-          const category = parseInt(template[0].list_category)
-          const data = JSON.parse(template[0].template_data)
-          setListData(data)
-          setCategory(category)
-          showRankSection('List')
-        } else if (param.type === 'p') {
-          console.log(`loading progress list: ${param.id}`)
-          const progress = await dbGetSharedList(param.id, 'Progress')
-          const category = parseInt(progress[0].list_category)
-          const data = JSON.parse(progress[0].progress_data)
-          initPrevRanking(category, data)
-        }
-      } catch (error) {
-        custMessage('The specified list does not exist. Please check the id and try again')
-        throw new Error('The specified list does not exist')
-      }
+      initRankingEngineUrlParam(param)
     } else {
+      // If a previous session exists then render a notification toast
       renderPreviousSessionToast()
     }
   }
@@ -85,9 +33,17 @@ const initRankingEngine = async () => {
   sessionStorage.removeItem('reload')
 }
 
+const checkForReload = () => {
+  const reload = sessionStorage.getItem('reload')
+  if (reload === null) {
+    return false
+  } else {
+    return reload
+  }
+}
+
 const checkForURLParam = () => {
   const url = new URL(window.location.href)
-
   if (url.search === '') {
     return false
   } else {
@@ -97,6 +53,68 @@ const checkForURLParam = () => {
       type: url.search.substring(1, 2),
       id: url.search.substring(3)
     }
+  }
+}
+
+const initRankingEngineReload = (reload) => {
+  reload = JSON.parse(reload)
+  const step = reload.step
+  const type = reload.type
+
+  const prevData = JSON.parse(localStorage.getItem('saveData'))
+  if (prevData) {
+    const data = prevData.data
+    const category = prevData.category
+    const loginStep = prevData.step
+    const dbListInfo = prevData.dbListInfo
+
+    if (step !== 'Start') {
+      if (loginStep === 'List') {
+        initPrevList(category, data)
+      } else if (loginStep === 'Rank') {
+        initPrevRanking(category, data)
+      } else if (loginStep === 'Result') {
+        initPrevResult(category, data)
+      }
+      if (type === 'login-save') {
+        const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
+        modal.open()
+        setDBListInfo(dbListInfo)
+      }
+    }
+  }
+  if (type === 'login-my-lists') {
+    showMyLists()
+  }
+}
+
+const initRankingEngineUrlParam = async (param) => {
+  try {
+    if (param.type === 'r') {
+      console.log(`loading result: ${param.id}`)
+      const result = await dbGetSharedList(param.id, 'Result')
+      const category = parseInt(result[0].list_category)
+      const data = JSON.parse(result[0].result_data)
+      initPrevResult(category, data)
+      document.querySelector('#save-results').classList.add('disabled')
+    } else if (param.type === 't') {
+      console.log(`loading template to rank: ${param.id}`)
+      const template = await dbGetSharedList(param.id, 'Template')
+      const category = parseInt(template[0].list_category)
+      const data = JSON.parse(template[0].template_data)
+      setListData(data)
+      setCategory(category)
+      showRankSection('List')
+    } else if (param.type === 'p') {
+      console.log(`loading progress list: ${param.id}`)
+      const progress = await dbGetSharedList(param.id, 'Progress')
+      const category = parseInt(progress[0].list_category)
+      const data = JSON.parse(progress[0].progress_data)
+      initPrevRanking(category, data)
+    }
+  } catch (error) {
+    custMessage('The specified list does not exist. Please check the id and try again')
+    throw new Error('The specified list does not exist')
   }
 }
 
