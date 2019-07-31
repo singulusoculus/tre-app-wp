@@ -302,10 +302,13 @@ const dbSaveProgressData = (saveDesc) => {
   fadeInSpinner()
 
   if (dbListInfo.progress.id === 0) {
+    const uuid = uuidv4()
+
     // INSERT
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'insertProgressList',
       wpuid,
+      uuid,
       rankData: rankDataJSON,
       saveDesc,
       itemCount,

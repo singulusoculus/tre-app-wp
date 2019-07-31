@@ -419,6 +419,7 @@ function insertProgressList() {
   $numitems = $_POST['itemCount'];
   $percent = $_POST['percent'];
   $wpuid = $_POST['wpuid'];
+  $uuid = $_POST['uuid'];
   $currdate = date("Y-m-d");
   $category = $_POST['category'];
   global $version;
@@ -434,6 +435,7 @@ function insertProgressList() {
       array(
           'progress_id' => null,
           'wpuid' => $wpuid,
+          'progress_uuid' => $uuid,
           'progress_desc' => $desc,
           'created_date' => $currdate,
           'save_date' => $currdate,
@@ -446,6 +448,7 @@ function insertProgressList() {
       array(
           '%d',
           '%d',
+          '%s',
           '%s',
           '%s',
           '%s',
