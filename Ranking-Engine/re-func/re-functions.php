@@ -225,9 +225,14 @@ function getUserLists() {
 
   $templateLists = $wpdb->get_results("SELECT template_id, created_date, updated_date, item_count, template_desc FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
 
+  $progressIds = $wpdb->get_results( "SELECT progress_id AS id, progress_uuid AS uuid, progress_desc AS descr FROM wp_re_rank_progress WHERE wpuid = $wpuid ORDER BY progress_id DESC", ARRAY_A );
+  $resultIds = $wpdb->get_results("SELECT result_id AS id, result_uuid AS uuid, result_desc AS descr FROM wp_re_results_user WHERE wpuid = $wpuid ORDER BY result_id DESC" , ARRAY_A );
+  $templateIds =  $wpdb->get_results("SELECT template_id AS id, template_uuid AS uuid, template_desc AS descr, shared FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
+  
+
   // push list data in to array
   $userLists = array();
-  array_push($userLists, $templateLists, $progressLists, $resultLists );
+  array_push($userLists, $templateLists, $progressLists, $resultLists, $templateIds, $progressIds, $resultIds);
 
   // send it in json
   $lists_json = json_encode($userLists);
@@ -638,32 +643,6 @@ function getSharedList() {
     break;
   }
 }
-
-// function getSharedTemplate() {
-//   global $wpdb;
-//   $id = $_POST['id'];
-
-//   $str_id = removeslashes($id);
-    
-//   $results = $wpdb->get_results( "SELECT template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id", ARRAY_A );
-
-//   $results_json = json_encode($results);
-
-//   echo $results_json;
-// }
-
-// function getSharedProgress() {
-//   global $wpdb;
-//   $id = $_POST['id'];
-
-//   $str_id = removeslashes($id);
-    
-//   $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_uuid = $str_id", ARRAY_A );
-
-//   $results_json = json_encode($results);
-
-//   echo $results_json;
-// }
 
 
 function removeslashes($string) {

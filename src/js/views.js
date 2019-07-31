@@ -1,4 +1,4 @@
-import { initPrevList, getListData, removeListItem, loadList, sortListData, estimateTotalComparisons } from './list'
+import { initPrevList, getListData, removeListItem, loadList, sortListData } from './list'
 import { getFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
@@ -522,6 +522,12 @@ const renderMyLists = async () => {
   const progressLists = data[1]
   const resultLists = data[2]
 
+  let myListIds = {
+    templates: data[3],
+    progress: data[4],
+    results: data[5]
+  }
+
   // Create Logout button
   const btnEl = document.createElement('a')
   const iEl = document.createElement('i')
@@ -537,22 +543,22 @@ const renderMyLists = async () => {
 
   // Templates
   if (templateLists.length > 0) {
-    const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '']
-    const templateTable = createTableElement('templates', templateHeaders, templateLists)
+    const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '', '']
+    const templateTable = createTableElement('templates', templateHeaders, templateLists, myListIds)
     myListsEl.appendChild(templateTable)
   }
 
   // Progress
   if (progressLists.length > 0) {
     const progressHeaders = ['Saved', 'Items', '% Comp', 'Desc', '']
-    const progressTable = createTableElement('progress', progressHeaders, progressLists)
+    const progressTable = createTableElement('progress', progressHeaders, progressLists, myListIds)
     myListsEl.appendChild(progressTable)
   }
 
   // Results
   if (resultLists.length > 0) {
     const resultsHeaders = ['Completed', 'Items', 'Desc', '']
-    const resultsTable = createTableElement('results', resultsHeaders, resultLists)
+    const resultsTable = createTableElement('results', resultsHeaders, resultLists, myListIds)
     myListsEl.appendChild(resultsTable)
   }
 
@@ -574,7 +580,7 @@ const setupSaveButtons = () => {
   })
 }
 
-const createTableElement = (type, headers, rows) => {
+const createTableElement = (type, headers, rows, myListIds) => {
   // Main table div
   const divEl = document.createElement('div')
   divEl.classList.add(`my-lists__${type}`)
@@ -601,11 +607,12 @@ const createTableElement = (type, headers, rows) => {
   const tbodyEl = document.createElement('tbody')
 
   // Rows
-  rows.forEach((row) => {
+  rows.forEach((row, index) => {
     const trEl = document.createElement('tr')
     const items = Object.values(row)
-    const itemID = items[0]
-    trEl.classList.add(`${type}-${itemID}`, `${type}-list`, 'modal-close')
+    const itemID = myListIds[type][index].id
+    const uuid = myListIds[type][index].uuid
+    trEl.classList.add(`${type}-${index}`, `${type}-list`, 'modal-close')
     items.slice(1).forEach((item) => {
       const tdEl = document.createElement('td')
       tdEl.textContent = item
@@ -616,6 +623,28 @@ const createTableElement = (type, headers, rows) => {
       dbLoadUserList(type, itemID)
       M.Toast.dismissAll()
     })
+
+    // Share
+    if (type === 'templates') {
+      const tdShareEl = document.createElement('td')
+      const aShareEl = document.createElement('a')
+      aShareEl.classList.add('secondary-content', 'modal-trigger')
+      aShareEl.setAttribute('href', '#share-modal')
+      const iShareEl = document.createElement('i')
+      iShareEl.classList.add('material-icons')
+      iShareEl.textContent = 'share'
+
+      aShareEl.addEventListener('click', (e) => {
+        console.log(`Show Sharing Modal for list: ${itemID} ${uuid}`)
+        openShareModal(myListIds[type][index])
+        e.stopPropagation()
+      })
+
+      aShareEl.appendChild(iShareEl)
+      tdShareEl.appendChild(aShareEl)
+      trEl.appendChild(tdShareEl)
+    }
+
     // Delete
     const tdDeleteEl = document.createElement('td')
     const aEl = document.createElement('a')
@@ -643,6 +672,28 @@ const createTableElement = (type, headers, rows) => {
   divEl.appendChild(tableEl)
 
   return divEl
+}
+
+const openShareModal = (data) => {
+  const modal = M.Modal.getInstance(document.querySelector('#share-modal'))
+  const descEl = document.querySelector('.share-list__heading')
+  descEl.textContent = data.descr
+  const urlEl = document.querySelector('#share-list__url')
+  urlEl.value = `https://rankingengine.pubmeeple.com/?t=${data.uuid}`
+  const switchEl = document.querySelector('#share-switch')
+  const shared = parseInt(data.shared)
+  shared === 1 ? switchEl.checked = true : switchEl.checked = false
+  const urlFieldEl = document.getElementById('share-list__url')
+  const copyBtnEl = document.getElementById('share-list__copy')
+
+  if (shared === 1) {
+    urlFieldEl.removeAttribute('disabled')
+    copyBtnEl.classList.remove('disabled')
+  } else {
+    urlFieldEl.setAttribute('disabled', '')
+    copyBtnEl.classList.add('disabled')
+  }
+  modal.open()
 }
 
 const renderTemplateDesc = () => {

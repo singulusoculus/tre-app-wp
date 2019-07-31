@@ -474,42 +474,6 @@ const dbGetSharedList = (id, type) => {
   })
 }
 
-// const dbGetSharedResult = (id) => {
-//   return new Promise((resolve, reject) => {
-//     jQuery.post(getFilePath('/re-func/re-functions.php'), {
-//       func: 'getSharedResult',
-//       id: `"${id}"`
-//     }, (data, status) => {
-//       const parsedData = JSON.parse(data)
-//       resolve(parsedData)
-//     })
-//   })
-// }
-
-// const dbGetSharedTemplate = (id) => {
-//   return new Promise((resolve, reject) => {
-//     jQuery.post(getFilePath('/re-func/re-functions.php'), {
-//       func: 'getSharedTemplate',
-//       id: `"${id}"`
-//     }, (data, status) => {
-//       const parsedData = JSON.parse(data)
-//       resolve(parsedData)
-//     })
-//   })
-// }
-
-// const dbGetSharedProgress = (id) => {
-//   return new Promise((resolve, reject) => {
-//     jQuery.post(getFilePath('/re-func/re-functions.php'), {
-//       func: 'getSharedProgress',
-//       id: `"${id}"`
-//     }, (data, status) => {
-//       const parsedData = JSON.parse(data)
-//       resolve(parsedData)
-//     })
-//   })
-// }
-
 export { dbSaveTemplateData,
   dbSaveProgressData,
   dbSaveResultData,

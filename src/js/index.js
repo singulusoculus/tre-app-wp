@@ -5,7 +5,7 @@ import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
+import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank, copyURLText } from './functions'
 // import LogRocket from 'logrocket'
 // LogRocket.init('r3us4o/ranking-engine-prod')
 
@@ -167,10 +167,6 @@ jQuery(document).ready(() => {
 
   // ***************** Result Section *****************
 
-  // document.querySelector('.support-us__dismiss').addEventListener('click', () => {
-  //   document.querySelector('.support-us').classList.add('hide')
-  // })
-
   // ***************** Modals *****************
   document.querySelector('#login-form-button').addEventListener('click', (e) => {
     const fromVal = e.target.attributes.from.value
@@ -200,6 +196,25 @@ jQuery(document).ready(() => {
       document.querySelector('#login-form-button').setAttribute('from', '')
       document.querySelector('#login-form-button').setAttribute('from', 'save')
     })
+  })
+
+  document.querySelector('#share-switch').addEventListener('change', () => {
+    const value = document.querySelector('#share-switch').checked ? 1 : 0
+    // Send value to database --need the list id
+    const urlFieldEl = document.getElementById('share-list__url')
+    const copyBtnEl = document.getElementById('share-list__copy')
+
+    if (value === 1) {
+      urlFieldEl.removeAttribute('disabled')
+      copyBtnEl.classList.remove('disabled')
+    } else {
+      urlFieldEl.setAttribute('disabled', '')
+      copyBtnEl.classList.add('disabled')
+    }
+  })
+
+  document.querySelector('#share-list__copy').addEventListener('click', () => {
+    copyURLText()
   })
 
 // End of document.ready

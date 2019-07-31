@@ -473,6 +473,13 @@ const initDataTable = (table) => {
   searchEl.appendTo(newFilterEl)
 }
 
+const copyURLText = () => {
+  const copyText = document.getElementById('share-list__url')
+  copyText.select()
+  document.execCommand('copy')
+  M.toast({ html: 'Copied Url' })
+}
+
 export { disableArrowKeyScroll,
   saveData,
   xmlToJson,
@@ -491,5 +498,6 @@ export { disableArrowKeyScroll,
   renderTableRows,
   initDataTable,
   renderTable,
-  renderTableHeader
+  renderTableHeader,
+  copyURLText
 }
