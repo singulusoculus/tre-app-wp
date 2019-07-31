@@ -460,11 +460,13 @@ const dbUpdateRankings = (listId) => {
   })
 }
 
-const dbGetSharedResult = (id) => {
+// type - Result, Template, Progress
+const dbGetSharedList = (id, type) => {
   return new Promise((resolve, reject) => {
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
-      func: 'getSharedResult',
-      id: `"${id}"`
+      func: `getSharedList`,
+      id: `"${id}"`,
+      type: type
     }, (data, status) => {
       const parsedData = JSON.parse(data)
       resolve(parsedData)
@@ -472,17 +474,41 @@ const dbGetSharedResult = (id) => {
   })
 }
 
-const dbGetSharedTemplate = (id) => {
-  return new Promise((resolve, reject) => {
-    jQuery.post(getFilePath('/re-func/re-functions.php'), {
-      func: 'getSharedTemplate',
-      id: `"${id}"`
-    }, (data, status) => {
-      const parsedData = JSON.parse(data)
-      resolve(parsedData)
-    })
-  })
-}
+// const dbGetSharedResult = (id) => {
+//   return new Promise((resolve, reject) => {
+//     jQuery.post(getFilePath('/re-func/re-functions.php'), {
+//       func: 'getSharedResult',
+//       id: `"${id}"`
+//     }, (data, status) => {
+//       const parsedData = JSON.parse(data)
+//       resolve(parsedData)
+//     })
+//   })
+// }
+
+// const dbGetSharedTemplate = (id) => {
+//   return new Promise((resolve, reject) => {
+//     jQuery.post(getFilePath('/re-func/re-functions.php'), {
+//       func: 'getSharedTemplate',
+//       id: `"${id}"`
+//     }, (data, status) => {
+//       const parsedData = JSON.parse(data)
+//       resolve(parsedData)
+//     })
+//   })
+// }
+
+// const dbGetSharedProgress = (id) => {
+//   return new Promise((resolve, reject) => {
+//     jQuery.post(getFilePath('/re-func/re-functions.php'), {
+//       func: 'getSharedProgress',
+//       id: `"${id}"`
+//     }, (data, status) => {
+//       const parsedData = JSON.parse(data)
+//       resolve(parsedData)
+//     })
+//   })
+// }
 
 export { dbSaveTemplateData,
   dbSaveProgressData,
@@ -498,6 +524,5 @@ export { dbSaveTemplateData,
   dbDeleteUserList,
   clearDBListInfo,
   dbGetTopTenYear,
-  dbGetSharedResult,
-  dbGetSharedTemplate
+  dbGetSharedList
 }

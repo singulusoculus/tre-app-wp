@@ -2,9 +2,9 @@ import { getCategory, setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { showTab, renderPreviousSessionToast, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage } from './views'
 import { initPrevList, getListData, estimateTotalComparisons, setListData } from './list'
-import { initPrevRanking, initRanking } from './rank'
+import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedResult, dbGetSharedTemplate } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList } from './database'
 
 const initRankingEngine = async () => {
   initMaterializeComponents()
@@ -49,22 +49,32 @@ const initRankingEngine = async () => {
   } else {
     const param = checkForURLParam()
     if (param) {
-      if (param.type === 'r') {
-        console.log(`load result: ${param.id}`)
-        const result = await dbGetSharedResult(param.id)
-        const category = parseInt(result[0].list_category)
-        const data = JSON.parse(result[0].result_data)
-        initPrevResult(category, data)
-        document.querySelector('#save-results').classList.add('disabled')
-      } else if (param.type === 't') {
-        console.log(`load template to rank: ${param.id}`)
-        // loadSharedTemplate
-        const template = await dbGetSharedTemplate(param.id)
-        const category = parseInt(template[0].list_category)
-        const data = JSON.parse(template[0].template_data)
-        setListData(data)
-        setCategory(category)
-        showRankSection('List')
+      try {
+        if (param.type === 'r') {
+          console.log(`loading result: ${param.id}`)
+          const result = await dbGetSharedList(param.id, 'Result')
+          const category = parseInt(result[0].list_category)
+          const data = JSON.parse(result[0].result_data)
+          initPrevResult(category, data)
+          document.querySelector('#save-results').classList.add('disabled')
+        } else if (param.type === 't') {
+          console.log(`loading template to rank: ${param.id}`)
+          const template = await dbGetSharedList(param.id, 'Template')
+          const category = parseInt(template[0].list_category)
+          const data = JSON.parse(template[0].template_data)
+          setListData(data)
+          setCategory(category)
+          showRankSection('List')
+        } else if (param.type === 'p') {
+          console.log(`loading progress list: ${param.id}`)
+          const progress = await dbGetSharedList(param.id, 'Progress')
+          const category = parseInt(progress[0].list_category)
+          const data = JSON.parse(progress[0].progress_data)
+          initPrevRanking(category, data)
+        }
+      } catch (error) {
+        custMessage('The specified list does not exist. Please check the id and try again')
+        throw new Error('The specified list does not exist')
       }
     } else {
       renderPreviousSessionToast()

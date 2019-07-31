@@ -69,11 +69,8 @@ switch ($func) {
   case 'updateRankings':
     updateRankings();
     break;
-  case 'getSharedResult':
-    getSharedResult();
-    break;
-  case 'getSharedTemplate':
-    getSharedTemplate();
+  case 'getSharedList':
+    getSharedList();
     break;
   default:
     echo 'Could not find the specified function';
@@ -614,31 +611,59 @@ function updateRankings() {
 // SHARED LISTS
 ///////////////////////////////////////
 
-function getSharedResult() {
+function getSharedList() {
   global $wpdb;
   $id = $_POST['id'];
+  $type = $_POST['type'];
 
   $str_id = removeslashes($id);
-    
-  $results = $wpdb->get_results( "SELECT result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
 
-  $results_json = json_encode($results);
+  switch($type) {
+    case 'Template':
+    $results = $wpdb->get_results( "SELECT template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id", ARRAY_A );
+    $results_json = json_encode($results);
+    echo $results_json;
+    break;
 
-  echo $results_json;
+    case 'Progress':
+    $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_uuid = $str_id", ARRAY_A );
+    $results_json = json_encode($results);
+    echo $results_json;
+    break;
+
+    case 'Result':
+    $results = $wpdb->get_results( "SELECT result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
+    $results_json = json_encode($results);
+    echo $results_json;
+    break;
+  }
 }
 
-function getSharedTemplate() {
-  global $wpdb;
-  $id = $_POST['id'];
+// function getSharedTemplate() {
+//   global $wpdb;
+//   $id = $_POST['id'];
 
-  $str_id = removeslashes($id);
+//   $str_id = removeslashes($id);
     
-  $results = $wpdb->get_results( "SELECT template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id", ARRAY_A );
+//   $results = $wpdb->get_results( "SELECT template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id", ARRAY_A );
 
-  $results_json = json_encode($results);
+//   $results_json = json_encode($results);
 
-  echo $results_json;
-}
+//   echo $results_json;
+// }
+
+// function getSharedProgress() {
+//   global $wpdb;
+//   $id = $_POST['id'];
+
+//   $str_id = removeslashes($id);
+    
+//   $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_uuid = $str_id", ARRAY_A );
+
+//   $results_json = json_encode($results);
+
+//   echo $results_json;
+// }
 
 
 function removeslashes($string) {
