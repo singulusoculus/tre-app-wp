@@ -7,6 +7,7 @@ import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem } from './functions'
+import { openShareModal, getMyListsInfo, setMyListsInfo } from './list-sharing'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -522,11 +523,13 @@ const renderMyLists = async () => {
   const progressLists = data[1]
   const resultLists = data[2]
 
-  let myListIds = {
+  let myListsInfo = {
     templates: data[3],
     progress: data[4],
     results: data[5]
   }
+
+  setMyListsInfo(myListsInfo)
 
   // Create Logout button
   const btnEl = document.createElement('a')
@@ -544,21 +547,21 @@ const renderMyLists = async () => {
   // Templates
   if (templateLists.length > 0) {
     const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '', '']
-    const templateTable = createTableElement('templates', templateHeaders, templateLists, myListIds)
+    const templateTable = createTableElement('templates', templateHeaders, templateLists, myListsInfo)
     myListsEl.appendChild(templateTable)
   }
 
   // Progress
   if (progressLists.length > 0) {
     const progressHeaders = ['Saved', 'Items', '% Comp', 'Desc', '']
-    const progressTable = createTableElement('progress', progressHeaders, progressLists, myListIds)
+    const progressTable = createTableElement('progress', progressHeaders, progressLists, myListsInfo)
     myListsEl.appendChild(progressTable)
   }
 
   // Results
   if (resultLists.length > 0) {
     const resultsHeaders = ['Completed', 'Items', 'Desc', '']
-    const resultsTable = createTableElement('results', resultsHeaders, resultLists, myListIds)
+    const resultsTable = createTableElement('results', resultsHeaders, resultLists, myListsInfo)
     myListsEl.appendChild(resultsTable)
   }
 
@@ -580,7 +583,7 @@ const setupSaveButtons = () => {
   })
 }
 
-const createTableElement = (type, headers, rows, myListIds) => {
+const createTableElement = (type, headers, rows, myListsInfo) => {
   // Main table div
   const divEl = document.createElement('div')
   divEl.classList.add(`my-lists__${type}`)
@@ -610,8 +613,8 @@ const createTableElement = (type, headers, rows, myListIds) => {
   rows.forEach((row, index) => {
     const trEl = document.createElement('tr')
     const items = Object.values(row)
-    const itemID = myListIds[type][index].id
-    const uuid = myListIds[type][index].uuid
+    const itemID = myListsInfo[type][index].id
+    const uuid = myListsInfo[type][index].uuid
     trEl.classList.add(`${type}-${index}`, `${type}-list`, 'modal-close')
     items.slice(1).forEach((item) => {
       const tdEl = document.createElement('td')
@@ -636,7 +639,7 @@ const createTableElement = (type, headers, rows, myListIds) => {
 
       aShareEl.addEventListener('click', (e) => {
         console.log(`Show Sharing Modal for list: ${itemID} ${uuid}`)
-        openShareModal(myListIds[type][index])
+        openShareModal(myListsInfo[type][index])
         e.stopPropagation()
       })
 
@@ -672,28 +675,6 @@ const createTableElement = (type, headers, rows, myListIds) => {
   divEl.appendChild(tableEl)
 
   return divEl
-}
-
-const openShareModal = (data) => {
-  const modal = M.Modal.getInstance(document.querySelector('#share-modal'))
-  const descEl = document.querySelector('.share-list__heading')
-  descEl.textContent = data.descr
-  const urlEl = document.querySelector('#share-list__url')
-  urlEl.value = `https://rankingengine.pubmeeple.com/?t=${data.uuid}`
-  const switchEl = document.querySelector('#share-switch')
-  const shared = parseInt(data.shared)
-  shared === 1 ? switchEl.checked = true : switchEl.checked = false
-  const urlFieldEl = document.getElementById('share-list__url')
-  const copyBtnEl = document.getElementById('share-list__copy')
-
-  if (shared === 1) {
-    urlFieldEl.removeAttribute('disabled')
-    copyBtnEl.classList.remove('disabled')
-  } else {
-    urlFieldEl.setAttribute('disabled', '')
-    copyBtnEl.classList.add('disabled')
-  }
-  modal.open()
 }
 
 const renderTemplateDesc = () => {

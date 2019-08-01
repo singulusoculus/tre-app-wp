@@ -5,6 +5,7 @@ import { initPrevList, getListData, estimateTotalComparisons, setListData } from
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
 import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList } from './database'
+import { getParentList, setParentList } from './list-sharing'
 
 const initRankingEngine = async () => {
   initMaterializeComponents()
@@ -67,11 +68,13 @@ const initRankingEngineReload = (reload) => {
     const category = prevData.category
     const loginStep = prevData.step
     const dbListInfo = prevData.dbListInfo
+    const parentList = prevData.parentList
 
     if (step !== 'Start') {
       if (loginStep === 'List') {
         initPrevList(category, data)
       } else if (loginStep === 'Rank') {
+        setParentList(parentList)
         initPrevRanking(category, data)
       } else if (loginStep === 'Result') {
         initPrevResult(category, data)
@@ -97,6 +100,7 @@ const initRankingEngineUrlParam = async (param) => {
       const data = JSON.parse(result[0].result_data)
       initPrevResult(category, data)
       document.querySelector('#save-results').classList.add('disabled')
+      removeURLParam()
     } else if (param.type === 't') {
       console.log(`loading template to rank: ${param.id}`)
       const template = await dbGetSharedList(param.id, 'Template')
@@ -105,17 +109,23 @@ const initRankingEngineUrlParam = async (param) => {
       setListData(data)
       setCategory(category)
       showRankSection('List')
+      removeURLParam()
     } else if (param.type === 'p') {
       console.log(`loading progress list: ${param.id}`)
       const progress = await dbGetSharedList(param.id, 'Progress')
       const category = parseInt(progress[0].list_category)
       const data = JSON.parse(progress[0].progress_data)
       initPrevRanking(category, data)
+      removeURLParam()
     }
   } catch (error) {
-    custMessage('The specified list does not exist. Please check the id and try again')
-    throw new Error('The specified list does not exist')
+    custMessage('The specified list does not exist or is not shared. Please check the id and try again')
+    throw new Error('The specified list does not exist or is not shared')
   }
+}
+
+const removeURLParam = () => {
+  window.history.pushState('object or string', 'Title', window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1))
 }
 
 const handleClickSave = (e) => {
@@ -262,6 +272,7 @@ const saveData = (data) => {
   const category = getCategory()
   const step = getCurrentStep()
   const dbListInfo = getDBListInfo()
+  const parentList = getParentList()
   // const rankDataHistory = getRankDataHistory()
 
   // if (step === 'List') {
@@ -276,7 +287,8 @@ const saveData = (data) => {
     category,
     step,
     dbListInfo,
-    data
+    data,
+    parentList
   }
   localStorage.setItem('saveData', JSON.stringify(obj))
 }
@@ -473,13 +485,6 @@ const initDataTable = (table) => {
   searchEl.appendTo(newFilterEl)
 }
 
-const copyURLText = () => {
-  const copyText = document.getElementById('share-list__url')
-  copyText.select()
-  document.execCommand('copy')
-  M.toast({ html: 'Copied Url' })
-}
-
 export { disableArrowKeyScroll,
   saveData,
   xmlToJson,
@@ -498,6 +503,5 @@ export { disableArrowKeyScroll,
   renderTableRows,
   initDataTable,
   renderTable,
-  renderTableHeader,
-  copyURLText
+  renderTableHeader
 }

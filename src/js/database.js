@@ -469,8 +469,18 @@ const dbGetSharedList = (id, type) => {
       type: type
     }, (data, status) => {
       const parsedData = JSON.parse(data)
+      console.log(parsedData)
       resolve(parsedData)
     })
+  })
+}
+
+const dbSetShareFlag = (id, value) => {
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
+    func: `setShareFlag`,
+    id: parseInt(id),
+    value: parseInt(value)
+  }, (data, status) => {
   })
 }
 
@@ -488,5 +498,6 @@ export { dbSaveTemplateData,
   dbDeleteUserList,
   clearDBListInfo,
   dbGetTopTenYear,
-  dbGetSharedList
+  dbGetSharedList,
+  dbSetShareFlag
 }

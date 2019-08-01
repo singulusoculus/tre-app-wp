@@ -72,6 +72,9 @@ switch ($func) {
   case 'getSharedList':
     getSharedList();
     break;
+  case 'setShareFlag':
+    setShareFlag();
+    break;
   default:
     echo 'Could not find the specified function';
 }
@@ -625,23 +628,36 @@ function getSharedList() {
 
   switch($type) {
     case 'Template':
-    $results = $wpdb->get_results( "SELECT template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id", ARRAY_A );
+    $results = $wpdb->get_results( "SELECT template_id, template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id AND shared = 1", ARRAY_A );
     $results_json = json_encode($results);
     echo $results_json;
     break;
 
     case 'Progress':
-    $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_uuid = $str_id", ARRAY_A );
+    $results = $wpdb->get_results( "SELECT progress_id, progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_uuid = $str_id", ARRAY_A );
     $results_json = json_encode($results);
     echo $results_json;
     break;
 
     case 'Result':
-    $results = $wpdb->get_results( "SELECT result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
+    $results = $wpdb->get_results( "SELECT result_id, result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
     $results_json = json_encode($results);
     echo $results_json;
     break;
   }
+}
+
+function setShareFlag() {
+  global $wpdb;
+  $templateId = $_POST['id'];
+  $value = $_POST['value'];
+
+  $wpdb->update('wp_re_list_templates', // Table to update
+    array('shared' => $value), // Update field
+    array('template_id' => $templateId), // Where parameter
+    array( '%d' ), // Update field data type
+    array( '%d' ) // Where parameter data type
+  );
 }
 
 

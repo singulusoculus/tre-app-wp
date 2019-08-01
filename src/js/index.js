@@ -5,7 +5,8 @@ import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank, copyURLText } from './functions'
+import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
+import { copyURLText, handleShareSwitchChange } from './list-sharing'
 // import LogRocket from 'logrocket'
 // LogRocket.init('r3us4o/ranking-engine-prod')
 
@@ -199,18 +200,7 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#share-switch').addEventListener('change', () => {
-    const value = document.querySelector('#share-switch').checked ? 1 : 0
-    // Send value to database --need the list id
-    const urlFieldEl = document.getElementById('share-list__url')
-    const copyBtnEl = document.getElementById('share-list__copy')
-
-    if (value === 1) {
-      urlFieldEl.removeAttribute('disabled')
-      copyBtnEl.classList.remove('disabled')
-    } else {
-      urlFieldEl.setAttribute('disabled', '')
-      copyBtnEl.classList.add('disabled')
-    }
+    handleShareSwitchChange()
   })
 
   document.querySelector('#share-list__copy').addEventListener('click', () => {
