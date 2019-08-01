@@ -257,7 +257,7 @@ function getProgressList() {
   global $wpdb;
   $progressid = $_POST['progressid'];
     
-  $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_id = $progressid", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc, parent_list_id FROM wp_re_rank_progress WHERE progress_id = $progressid", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -342,6 +342,7 @@ function insertResultRanking() {
   $templateID = $_POST['templateID'];
   $currdate = date("Y-m-d");
   $listCategory = $_POST['category'];
+  $parentList = $_POST['parentList'];
   global $version;
 
   //INSERT data into wp_re_final_h
@@ -349,6 +350,7 @@ function insertResultRanking() {
       'wp_re_results_h',
       array(
           'result_id' => null,
+          'parent_list_id' => $parentList === "0" ? NULL : $parentList,
           'finish_date' => $currdate,
           'item_count' => $itemCount,
           'bgg_flag' => $bggFlag,
@@ -356,6 +358,7 @@ function insertResultRanking() {
           're_version' => $version
       ),
       array(
+          '%d',
           '%d',
           '%s',
           '%d',
@@ -433,6 +436,7 @@ function insertProgressList() {
   $uuid = $_POST['uuid'];
   $currdate = date("Y-m-d");
   $category = $_POST['category'];
+  $parentList = $_POST['parentList'];
   global $version;
 
   $savedata = removeslashes($savedata);
@@ -447,6 +451,7 @@ function insertProgressList() {
           'progress_id' => null,
           'wpuid' => $wpuid,
           'progress_uuid' => $uuid,
+          'parent_list_id' => $parentList,
           'progress_desc' => $desc,
           'created_date' => $currdate,
           'save_date' => $currdate,
@@ -460,6 +465,7 @@ function insertProgressList() {
           '%d',
           '%d',
           '%s',
+          '%d',
           '%s',
           '%s',
           '%s',

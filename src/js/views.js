@@ -7,7 +7,7 @@ import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem } from './functions'
-import { openShareModal, getMyListsInfo, setMyListsInfo } from './list-sharing'
+import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -19,6 +19,7 @@ const renderPreviousSessionToast = () => {
   if (prevData !== null) {
     const step = prevData.step
     const data = prevData.data
+    const parentList = prevData.parentList
 
     if (Object.keys(data).length > 0 && step !== 'Start') {
       const toastHTML = `<span>You have a previous ${step} session available. Want to resume?</span><div class="prev-toast-btns"><button class="btn-flat toast-action resume-prev-btn">Resume</button><button class="btn-flat toast-action discard-prev-btn">Discard</button></div>`
@@ -40,6 +41,7 @@ const renderPreviousSessionToast = () => {
         if (step === 'List') {
           initPrevList(category, data)
         } else if (step === 'Rank') {
+          setParentList(parentList)
           initPrevRanking(category, data)
         } else if (step === 'Result') {
           initPrevResult(category, data)
@@ -292,6 +294,7 @@ const showStartSection = (source) => {
   setupSaveLogin()
 
   // Clears result database link
+  setParentList(0)
   setDBListInfoType('result', { id: 0 })
   setDBListInfoType('userResult', { id: 0, desc: '' })
 }
@@ -306,9 +309,11 @@ const showListSection = (source) => {
     } else {
       list = data.masterList
     }
+    setParentList(0)
     loadList(list)
   } else if (source === 'Result') {
     const data = getResultData()
+    setParentList(0)
     loadList(data)
   }
 
@@ -638,7 +643,6 @@ const createTableElement = (type, headers, rows, myListsInfo) => {
       iShareEl.textContent = 'share'
 
       aShareEl.addEventListener('click', (e) => {
-        console.log(`Show Sharing Modal for list: ${itemID} ${uuid}`)
         openShareModal(myListsInfo[type][index])
         e.stopPropagation()
       })

@@ -106,8 +106,10 @@ const initRankingEngineUrlParam = async (param) => {
       const template = await dbGetSharedList(param.id, 'Template')
       const category = parseInt(template[0].list_category)
       const data = JSON.parse(template[0].template_data)
+      const templateId = parseInt(template[0].template_id)
       setListData(data)
       setCategory(category)
+      setParentList(templateId)
       showRankSection('List')
       removeURLParam()
     } else if (param.type === 'p') {

@@ -5,6 +5,7 @@ import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData, renderTableRows } from './functions'
 import { renderMyLists, setupSaveButtons, fadeInSpinner, fadeOutSpinner, renderTemplateDesc } from './views'
+import { getParentList, setParentList } from './list-sharing'
 
 let dbListInfo = {
   template: {
@@ -114,9 +115,11 @@ const dbLoadUserList = (type, id) => {
         const rankData = JSON.parse(parsedData[0].progress_data)
         const category = parseInt(parsedData[0].list_category)
         const desc = parsedData[0].progress_desc
+        const parentList = parsedData[0].parent_list_id
         resetHistory()
         const intID = parseInt(id)
         setDBListInfoType('progress', { id: intID, desc })
+        setParentList(parentList)
         initPrevRanking(category, rankData)
       }
     })
@@ -286,6 +289,7 @@ const dbUpdateTemplateData = (saveDesc) => {
 const dbSaveProgressData = (saveDesc) => {
   const wpuid = getUserID()
   const rankData = getRankData()
+
   // create a deep copy before stripping out id
   let newRankData = JSON.parse(JSON.stringify(rankData))
 
@@ -303,6 +307,7 @@ const dbSaveProgressData = (saveDesc) => {
 
   if (dbListInfo.progress.id === 0) {
     const uuid = uuidv4()
+    const parentList = getParentList()
 
     // INSERT
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
@@ -313,7 +318,8 @@ const dbSaveProgressData = (saveDesc) => {
       saveDesc,
       itemCount,
       percent,
-      category
+      category,
+      parentList
     }, (data, status) => {
       if (status === 'success') {
         let newData = parseInt(data.replace(/[\n\r]+/g, ''))
@@ -378,6 +384,7 @@ const dbSaveResultData = (rankedItems) => {
   const bggFlag = rankData.bggFlag
   const templateID = dbListInfo.template.id
   const category = getCategory()
+  const parentList = getParentList()
 
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'insertResultRanking',
@@ -385,7 +392,8 @@ const dbSaveResultData = (rankedItems) => {
     itemCount,
     bggFlag,
     templateID,
-    category
+    category,
+    parentList
   }, (data, status) => {
     if (status === 'success') {
       let newData = parseInt(data.replace(/[\n\r]+/g, ''))
