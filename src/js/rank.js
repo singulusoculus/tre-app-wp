@@ -323,7 +323,7 @@ const handleUndo = () => {
 // Delete
 const deleteItem = (flag) => {
   let indexToDelete
-  const { item1Ref, item2Ref } = getComparisonInfo()
+  const { item1, item2, item1Ref, item2Ref } = getComparisonInfo()
 
   // decide which item to delete of the two listed. Set to indexToDelete
   if (flag < 0) {
@@ -336,8 +336,13 @@ const deleteItem = (flag) => {
 
   rankData.deletedItems.push(indexToDelete)
 
+  updateRec(flag)
+  sortList()
+
   saveData(rankData)
   saveRankDataHistory()
+
+  cardFadeOut(item1.id, item2.id)
 
   cmpCheck()
 }
