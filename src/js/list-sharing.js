@@ -40,21 +40,43 @@ const openShareModal = (data) => {
   const descEl = document.querySelector('.share-list__heading')
   descEl.textContent = data.descr
   const urlEl = document.querySelector('#share-list__url')
-  urlEl.value = `https://rankingengine.pubmeeple.com/?t=${data.uuid}`
+  const siteURL = getSiteURL()
+  urlEl.value = `${siteURL}?t=${data.uuid}`
   const switchEl = document.querySelector('#share-switch')
   const shared = data.shared
   shared === 1 ? switchEl.checked = true : switchEl.checked = false
-  // const urlFieldEl = document.getElementById('share-list__url')
-  const copyBtnEl = document.getElementById('share-list__copy')
-
+  renderShareOptions(shared)
   if (shared === 1) {
-    // urlFieldEl.removeAttribute('disabled')
-    copyBtnEl.classList.remove('disabled')
+    const btnsEl = document.querySelector('.share-list__btns')
+    const button = createStatsBtn(data)
+    btnsEl.appendChild(button)
   } else {
-    // urlFieldEl.setAttribute('disabled', '')
-    copyBtnEl.classList.add('disabled')
+    const button = document.querySelector('.share-list__stats')
+    if (button !== null) {
+      button.remove()
+    }
   }
   modal.open()
+}
+
+const createStatsBtn = (listData) => {
+  const aEl = document.createElement('a')
+  const iEl = document.createElement('i')
+
+  aEl.href = `./shared-rankings`
+  aEl.textContent = 'Shared Stats'
+  aEl.classList.add('waves-effect', 'waves-light', 'btn', 'share-list__stats')
+
+  iEl.textContent = 'info'
+  iEl.classList.add('material-icons', 'right', 'small', 'white-text')
+
+  aEl.addEventListener('click', (e) => {
+    localStorage.setItem('sharedRankingsList', JSON.stringify(listData))
+  })
+
+  aEl.appendChild(iEl)
+
+  return aEl
 }
 
 const copyURLText = () => {
@@ -73,20 +95,20 @@ const handleShareSwitchChange = () => {
   const listId = selectedList.id
   dbSetShareFlag(listId, value)
   setMyListsInfoShared(listId, value)
-  // const urlFieldEl = document.getElementById('share-list__url')
-  const copyBtnEl = document.getElementById('share-list__copy')
+  renderShareOptions(value)
+}
 
-  if (value === 1) {
+const renderShareOptions = (switchValue) => {
+  const copyBtnEl = document.getElementById('share-list__copy')
+  // const urlFieldEl = document.getElementById('share-list__url')
+
+  if (switchValue === 1) {
     // urlFieldEl.removeAttribute('disabled')
     copyBtnEl.classList.remove('disabled')
   } else {
     // urlFieldEl.setAttribute('disabled', '')
     copyBtnEl.classList.add('disabled')
   }
-}
-
-const renderShareOptions = (switchValue) => {
-
 }
 
 export { getMyListsInfo, setMyListsInfo, openShareModal, copyURLText, handleShareSwitchChange, getParentList, setParentList }

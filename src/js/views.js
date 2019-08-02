@@ -252,14 +252,6 @@ const destroyTooltip = (step) => {
   }
 }
 
-const fadeInSpinner = () => {
-  jQuery('.loading-squares').fadeIn()
-}
-
-const fadeOutSpinner = () => {
-  jQuery('.loading-squares').fadeOut()
-}
-
 // //////////////////////////////////////////////////////////////////////
 // // SECTION CONTROLS
 // //////////////////////////////////////////////////////////////////////
@@ -719,8 +711,6 @@ export {
   showTab,
   renderMyLists,
   setupSaveButtons,
-  fadeInSpinner,
-  fadeOutSpinner,
   showMyLists,
   custMessage,
   renderTemplateDesc,

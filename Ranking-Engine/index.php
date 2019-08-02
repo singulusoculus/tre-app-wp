@@ -544,7 +544,7 @@
 
     <!-- Bottom Modal -->
   <div id="account-modal" class="modal bottom-sheet">
-    <div class="modal-content">
+    <div class="modal-content account-modal__content">
     <a href="#!" class="modal-close btn-flat modal-close-x">
         <span aria-hidden="true">&times;</span>
       </a>
@@ -578,10 +578,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s12 center-align">
+          <div class="col s12 center-align share-list__btns">
             <a href="#" id="share-list__copy" class="waves-effect waves-light btn disabled">Copy URL</a>
           </div>
         </div>
+        <p class="share-list__important-text center-align">**Important: Sharing must be turned on for the link to work</p>
     </div>
   </div>
 

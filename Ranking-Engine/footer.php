@@ -25,6 +25,10 @@
       const themePath = '<?php echo get_theme_file_uri(); ?>'
       return `${themePath}${file}`
     }
+
+    const getSiteURL = () => {
+      return '<?php echo get_site_url() ?>/'
+    }
   </script>
   </body>
 </html>

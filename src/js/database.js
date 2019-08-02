@@ -4,7 +4,8 @@ import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData, renderTableRows } from './functions'
-import { renderMyLists, setupSaveButtons, fadeInSpinner, fadeOutSpinner, renderTemplateDesc } from './views'
+import { renderMyLists, setupSaveButtons, renderTemplateDesc } from './views'
+import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { getParentList, setParentList } from './list-sharing'
 
 let dbListInfo = {
