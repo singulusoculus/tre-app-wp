@@ -45,17 +45,7 @@ const openShareModal = (data) => {
   const switchEl = document.querySelector('#share-switch')
   const shared = data.shared
   shared === 1 ? switchEl.checked = true : switchEl.checked = false
-  renderShareOptions(shared)
-  if (shared === 1) {
-    const btnsEl = document.querySelector('.share-list__btns')
-    const button = createStatsBtn(data)
-    btnsEl.appendChild(button)
-  } else {
-    const button = document.querySelector('.share-list__stats')
-    if (button !== null) {
-      button.remove()
-    }
-  }
+  renderShareOptions(shared, data)
   modal.open()
 }
 
@@ -63,16 +53,19 @@ const createStatsBtn = (listData) => {
   const aEl = document.createElement('a')
   const iEl = document.createElement('i')
 
-  aEl.href = `./shared-rankings`
+  aEl.href = `./shared-rankings/?l=${listData.uuid}`
   aEl.textContent = 'Shared Stats'
   aEl.classList.add('waves-effect', 'waves-light', 'btn', 'share-list__stats')
 
   iEl.textContent = 'info'
   iEl.classList.add('material-icons', 'right', 'small', 'white-text')
 
-  aEl.addEventListener('click', (e) => {
-    localStorage.setItem('sharedRankingsList', JSON.stringify(listData))
-  })
+  // aEl.addEventListener('click', (e) => {
+  //   localStorage.removeItem('sharedRankingsList')
+  //   const user = getUserID()
+  //   listData = { ...listData, user }
+  //   localStorage.setItem('sharedRankingsList', JSON.stringify(listData))
+  // })
 
   aEl.appendChild(iEl)
 
@@ -98,7 +91,7 @@ const handleShareSwitchChange = () => {
   renderShareOptions(value)
 }
 
-const renderShareOptions = (switchValue) => {
+const renderShareOptions = (switchValue, data) => {
   const copyBtnEl = document.getElementById('share-list__copy')
   // const urlFieldEl = document.getElementById('share-list__url')
 
@@ -108,6 +101,17 @@ const renderShareOptions = (switchValue) => {
   } else {
     // urlFieldEl.setAttribute('disabled', '')
     copyBtnEl.classList.add('disabled')
+  }
+
+  if (switchValue === 1) {
+    const btnsEl = document.querySelector('.share-list__btns')
+    const button = createStatsBtn(data)
+    btnsEl.appendChild(button)
+  } else {
+    const button = document.querySelector('.share-list__stats')
+    if (button !== null) {
+      button.remove()
+    }
   }
 }
 

@@ -15,7 +15,7 @@ Template Name: Shared Rankings
 
   <div class="loading">Loading&#8230;</div>
 
-  <h4 class="center-align">Shared Rankings</h4>
+  <h4 id="page-header" class="center-align">Shared Rankings</h4>
 
   <div class="row">
     <div class="col s12 m6 offset-m3">
