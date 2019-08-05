@@ -562,7 +562,6 @@
         <span aria-hidden="true">&times;</span>
       </a>
       <h4 class="center-align share-list__heading">Sharing Options</h4>
-      <p class="share-list-desc"></p>
       <div class="switch center-align">
         <p class="bgg-filter-heading">Sharing: </p>
         <label>
@@ -572,11 +571,11 @@
           On
         </label>
       </div>
-        <div class="row">
-          <div class="input-field col s12">
+
+          <div class="input-field">
             <input disabled value="URL" class="center-align" id="share-list__url" type="text">
           </div>
-        </div>
+
         <div class="row">
           <div class="col s12 center-align share-list__btns">
             <a href="#" id="share-list__copy" class="waves-effect waves-light btn disabled">Copy URL</a>

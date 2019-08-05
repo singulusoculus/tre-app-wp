@@ -15,7 +15,7 @@ Template Name: Shared Rankings
 
   <div class="loading">Loading&#8230;</div>
 
-  <h4 id="page-header" class="center-align">Shared Rankings</h4>
+  <h4 id="page-header" class="center-align">Results for:</h4>
 
   <div class="row">
     <div class="col s12 m6 offset-m3">
@@ -28,7 +28,24 @@ Template Name: Shared Rankings
     </div>
   </div>
   <div class="divider-sm"></div>
-  <p id="listid"></p>
+  <div class="options-section">
+    <!-- <h4 class="section-title center-align">Options:</h4>
+
+      <div class="switch center-align">
+        <p class="bgg-filter-heading">Make Results Public:</p>
+        <label>
+          Off
+          <input id="results-public-switch" type="checkbox">
+          <span class="lever"></span>
+          On
+        </label>
+      </div> -->
+
+  </div>
+  
+
+
+  <!-- <div class="divider-sm"></div> -->
 
   <div id="rankings-at" class="col s12">
       <table id="rankings-at__table" class="striped">

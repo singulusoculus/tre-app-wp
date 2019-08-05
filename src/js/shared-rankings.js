@@ -1,17 +1,26 @@
-import { dbGetTemplateListData } from './shared-rankings-db'
+import { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag } from './shared-rankings-db'
+import { renderTableRows, initDataTable } from './functions'
+import { fadeInSpinner, fadeOutSpinner } from './spinner'
 
-window.onload = () => {
+let templateListData = {}
+
+const setTemplateListData = (data) => {
+  templateListData = data[0]
+
+  templateListData.results_public = parseInt(templateListData.results_public)
+  templateListData.shared = parseInt(templateListData.shared)
+  templateListData.template_id = parseInt(templateListData.template_id)
+  templateListData.wpuid = parseInt(templateListData.wpuid)
+}
+
+jQuery(document).ready(() => {
   // get uuid param
   const urlParam = checkForURLParam()
 
   if (urlParam) {
     initSharedRankingURLParam(urlParam.id)
   }
-
-  // if the shared_results_public flag is false then get the current user id and check it against the one that created the list
-
-  // if the user ids match then go get the results data and render it
-}
+})
 
 const checkForURLParam = () => {
   const url = new URL(window.location.href)
@@ -28,33 +37,101 @@ const checkForURLParam = () => {
 }
 
 const initSharedRankingURLParam = async (urlParam) => {
-  try {
-    const templateListData = await dbGetTemplateListData(urlParam)
-    console.log(templateListData)
-    const templateId = parseInt(templateListData[0].template_id)
-    const templateDesc = templateListData[0].template_desc
-    const wpuid = parseInt(templateListData[0].wpuid)
-    const resultsPublic = parseInt(templateListData[0].results_public) === 1 ? true : false
-    console.log(resultsPublic)
+  fadeInSpinner()
+  const data = await dbGetTemplateListData(urlParam)
+  setTemplateListData(data)
+  const wpuid = templateListData.wpuid
+  const resultsPublic = templateListData.results_public === 1 ? true : false
 
-    // if the shared_results_public flag is false then get the current user id
-    if (!resultsPublic) {
-      // check template owner against current user
-      const currentUser = getUserID()
-      console.log(currentUser)
-      console.log(wpuid)
-      if (currentUser === wpuid) {
-        // render results
-        document.querySelector('#page-header').textContent = `Results for: ${templateDesc}`
-      } else {
-        console.log('You are not authorized to view these results')
-      }
-    } else {
-      // render results
-      document.querySelector('#page-header').textContent = `Results for: ${templateDesc}`
-    }
-  } catch (error) {
-    // custMessage('The specified list does not exist or is not shared. Please check the id and try again')
-    throw new Error('The specified list does not exist or is not shared')
+  // if the shared_results_public flag is false then get the current user id
+  const currentUser = getUserID()
+  if (currentUser === wpuid) {
+    renderOptions()
+    document.querySelector('#results-public-switch').addEventListener('change', () => {
+      handleResultsShareSwitchChange()
+    })
+  }
+
+  if (!resultsPublic && currentUser === wpuid) {
+    renderResults()
+  } else if (!resultsPublic && currentUser !== wpuid) {
+    console.log(`You do not have access to view these results`)
+  } else if (resultsPublic) {
+    renderResults()
   }
 }
+
+const renderResults = async () => {
+  // get results
+  const results = await dbGetSharedResults(templateListData.template_id)
+  // get times ranked
+  const timesRankedArray = await dbGetTimesRanked(templateListData.template_id)
+  const timesRanked = timesRankedArray[0].total_lists
+  // render times ranked
+  document.querySelector('#count-lists').textContent = timesRanked
+
+  let newResults = []
+  results.forEach((item, index) => {
+    newResults.push({ rank: index + 1, ...item })
+  })
+  // render results
+  renderTableRows(newResults, 'rankings-at')
+  initDataTable('rankings-at')
+  document.querySelector('#page-header').textContent = `Results for: ${templateListData.template_desc}`
+}
+
+const handleResultsShareSwitchChange = () => {
+  const value = document.querySelector('#results-public-switch').checked ? 1 : 0
+  // Send value to database --need the list id
+  const listId = templateListData.template_id
+  dbSetShareResultsFlag(listId, value)
+  templateListData.results_public = value
+}
+
+const renderOptions = () => {
+  const wrapperEl = document.querySelector('.options-section')
+  // heading
+  const headingEl = document.createElement('h4')
+  headingEl.classList.add('section-title', 'center-align')
+  headingEl.textContent = 'Options:'
+
+  wrapperEl.appendChild(headingEl)
+
+  // public switch
+  const switchWrapperEl = document.createElement('div')
+  switchWrapperEl.classList.add('switch', 'center-align')
+
+  const pEl = document.createElement('p')
+  pEl.classList.add('bgg-filter-heading')
+  pEl.textContent = 'Make Results Public'
+  switchWrapperEl.appendChild(pEl)
+
+  const labelEl = document.createElement('label')
+  const inputEl = document.createElement('input')
+  inputEl.setAttribute('id', 'results-public-switch')
+  inputEl.setAttribute('type', 'checkbox')
+  const resultsPublic = templateListData.results_public === 1 || false
+  inputEl.checked = resultsPublic
+
+  const spanEl = document.createElement('span')
+  spanEl.classList.add('lever')
+
+  const inputHTML = inputEl.outerHTML
+  const spanHTML = spanEl.outerHTML
+
+  labelEl.innerHTML = `Off ${inputHTML} ${spanHTML} On`
+
+  switchWrapperEl.appendChild(labelEl)
+  wrapperEl.appendChild(switchWrapperEl)
+
+  const dividerEl = document.createElement('div')
+  dividerEl.classList.add('divider-sm')
+
+  wrapperEl.appendChild(dividerEl)
+
+}
+
+jQuery(document).ajaxStop(() => {
+  M.AutoInit()
+  fadeOutSpinner()
+})

@@ -230,7 +230,7 @@ function getUserLists() {
 
   $progressIds = $wpdb->get_results( "SELECT progress_id AS id, progress_uuid AS uuid, progress_desc AS descr FROM wp_re_rank_progress WHERE wpuid = $wpuid ORDER BY progress_id DESC", ARRAY_A );
   $resultIds = $wpdb->get_results("SELECT result_id AS id, result_uuid AS uuid, result_desc AS descr FROM wp_re_results_user WHERE wpuid = $wpuid ORDER BY result_id DESC" , ARRAY_A );
-  $templateIds =  $wpdb->get_results("SELECT template_id AS id, template_uuid AS uuid, template_desc AS descr, shared FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
+  $templateIds =  $wpdb->get_results("SELECT template_id AS id, template_uuid AS uuid, template_desc AS descr, shared, ranked FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
   
 
   // push list data in to array
@@ -342,15 +342,25 @@ function insertResultRanking() {
   $templateID = $_POST['templateID'];
   $currdate = date("Y-m-d");
   $listCategory = $_POST['category'];
-  $parentList = $_POST['parentList'];
+  $parentList = intval($_POST['parentList']);
   global $version;
+
+  // if parentList > 0 then set the update wp_re_list_tempaltes.ranked = 1
+  if ($parentList > 0) {
+    $wpdb->update('wp_re_list_templates', // Table to update
+    array('ranked' => 1), // Update field
+    array('template_id' => $parentList), // Where parameter
+    array( '%d' ), // Update field data type
+    array( '%d' ) // Where parameter data type
+    );
+  }
 
   //INSERT data into wp_re_final_h
   $wpdb->insert(
       'wp_re_results_h',
       array(
           'result_id' => null,
-          'parent_list_id' => $parentList === "0" ? NULL : $parentList,
+          'parent_list_id' => $parentList === 0 ? NULL : $parentList,
           'finish_date' => $currdate,
           'item_count' => $itemCount,
           'bgg_flag' => $bggFlag,

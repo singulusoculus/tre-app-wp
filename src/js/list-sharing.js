@@ -12,6 +12,7 @@ const setMyListsInfo = (data) => {
   myListsInfo.templates.forEach((item) => {
     item.id = parseInt(item.id)
     item.shared = parseInt(item.shared)
+    item.ranked = parseInt(item.ranked)
   })
 
   myListsInfo.progress.forEach((i) => {
@@ -54,10 +55,11 @@ const createStatsBtn = (listData) => {
   const iEl = document.createElement('i')
 
   aEl.href = `./shared-rankings/?l=${listData.uuid}`
-  aEl.textContent = 'Shared Stats'
-  aEl.classList.add('waves-effect', 'waves-light', 'btn', 'share-list__stats')
+  aEl.target = '_blank'
+  aEl.textContent = 'Results'
+  aEl.classList.add('waves-effect', 'waves-light', 'btn', 'share-list__results')
 
-  iEl.textContent = 'info'
+  iEl.textContent = 'show_chart'
   iEl.classList.add('material-icons', 'right', 'small', 'white-text')
 
   // aEl.addEventListener('click', (e) => {
@@ -88,7 +90,7 @@ const handleShareSwitchChange = () => {
   const listId = selectedList.id
   dbSetShareFlag(listId, value)
   setMyListsInfoShared(listId, value)
-  renderShareOptions(value)
+  renderShareOptions(value, selectedList)
 }
 
 const renderShareOptions = (switchValue, data) => {
@@ -103,15 +105,16 @@ const renderShareOptions = (switchValue, data) => {
     copyBtnEl.classList.add('disabled')
   }
 
-  if (switchValue === 1) {
-    const btnsEl = document.querySelector('.share-list__btns')
-    const button = createStatsBtn(data)
-    btnsEl.appendChild(button)
-  } else {
-    const button = document.querySelector('.share-list__stats')
-    if (button !== null) {
-      button.remove()
-    }
+  // remove previous stats button
+  const btnsEl = document.querySelector('.share-list__btns')
+  const button = document.querySelector('.share-list__results')
+  if (button !== null) {
+    button.remove()
+  }
+  // render stats button if it has been ranked
+  if (data.ranked === 1) {
+    const buttonEl = createStatsBtn(data)
+    btnsEl.appendChild(buttonEl)
   }
 }
 
