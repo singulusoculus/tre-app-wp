@@ -55,7 +55,7 @@ const initSharedRankingURLParam = async (urlParam) => {
   if (!resultsPublic && currentUser === wpuid) {
     renderResults()
   } else if (!resultsPublic && currentUser !== wpuid) {
-    console.log(`You do not have access to view these results`)
+    alert(`You do not have access to view these results`)
   } else if (resultsPublic) {
     renderResults()
   }

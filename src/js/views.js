@@ -6,7 +6,7 @@ import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
-import { updateLocalStorageSaveDataItem } from './functions'
+import { updateLocalStorageSaveDataItem, renderTableRows } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 
 // //////////////////////////////////////////////////////////////////////
@@ -612,23 +612,34 @@ const createTableElement = (type, headers, rows, myListsInfo) => {
     const items = Object.values(row)
     const itemID = myListsInfo[type][index].id
     const uuid = myListsInfo[type][index].uuid
+    const shared = myListsInfo[type][index].shared === 1 || false
+    const ranked = myListsInfo[type][index].ranked === 1 || false
     trEl.classList.add(`${type}-${index}`, `${type}-list`, 'modal-close')
     items.slice(1).forEach((item) => {
       const tdEl = document.createElement('td')
       tdEl.textContent = item
       trEl.appendChild(tdEl)
     })
-    trEl.addEventListener('click', () => {
+
+    if (!shared) {
+      trEl.addEventListener('click', () => {
       // Go get the clicked list from the database and init the right step
-      dbLoadUserList(type, itemID)
-      M.Toast.dismissAll()
-    })
+        dbLoadUserList(type, itemID)
+        M.Toast.dismissAll()
+      })
+    } else {
+      // render the list in a modal then open the modal
+      // renderReadOnlyTemplate(itemID)
+    }
 
     // Share
     if (type === 'templates') {
       const tdShareEl = document.createElement('td')
       const aShareEl = document.createElement('a')
       aShareEl.classList.add('secondary-content', 'modal-trigger')
+      if (shared) {
+        aShareEl.classList.add('shared-template')
+      }
       aShareEl.setAttribute('href', '#share-modal')
       const iShareEl = document.createElement('i')
       iShareEl.classList.add('material-icons')
@@ -671,6 +682,11 @@ const createTableElement = (type, headers, rows, myListsInfo) => {
   divEl.appendChild(tableEl)
 
   return divEl
+}
+
+const renderReadOnlyTemplate = async (id) => {
+  const listInfo = await dbGetSharedList(id, 'Template')
+  renderTableRows(listInfo, 'read-only-template')
 }
 
 const renderTemplateDesc = () => {

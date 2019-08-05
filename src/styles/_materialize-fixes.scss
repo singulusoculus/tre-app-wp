@@ -26,6 +26,10 @@ input[type=text]:not(.browser-default):focus:not([readonly])+label {
   color: $color-primary !important;
 }
 
+.shared-template {
+  color: #C24040 !important;
+}
+
 .btn {
   background-color: #343A40 !important;
 }

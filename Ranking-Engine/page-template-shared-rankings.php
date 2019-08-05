@@ -28,24 +28,7 @@ Template Name: Shared Rankings
     </div>
   </div>
   <div class="divider-sm"></div>
-  <div class="options-section">
-    <!-- <h4 class="section-title center-align">Options:</h4>
-
-      <div class="switch center-align">
-        <p class="bgg-filter-heading">Make Results Public:</p>
-        <label>
-          Off
-          <input id="results-public-switch" type="checkbox">
-          <span class="lever"></span>
-          On
-        </label>
-      </div> -->
-
-  </div>
-  
-
-
-  <!-- <div class="divider-sm"></div> -->
+  <div class="options-section"></div>
 
   <div id="rankings-at" class="col s12">
       <table id="rankings-at__table" class="striped">

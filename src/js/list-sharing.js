@@ -1,4 +1,5 @@
 import { dbSetShareFlag } from './database'
+import { renderMyLists } from './views';
 
 let myListsInfo = {}
 let selectedList = {}
@@ -91,6 +92,7 @@ const handleShareSwitchChange = () => {
   dbSetShareFlag(listId, value)
   setMyListsInfoShared(listId, value)
   renderShareOptions(value, selectedList)
+  renderMyLists()
 }
 
 const renderShareOptions = (switchValue, data) => {

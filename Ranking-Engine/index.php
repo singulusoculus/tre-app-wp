@@ -585,6 +585,22 @@
     </div>
   </div>
 
+  <!-- Read Only Template -->
+  <div id="read-only-modal" class="modal">
+    <div class="modal-content">
+      <h4 class="center-align"></h4>
+      <p class="center-align"></p>
+      <table id="read_only_template__table" class="striped">
+        <thead>
+          <tr>
+            <th scope="col">Item Name</th>
+          </tr>
+        </thead>
+        <tbody id="read_only_template__rows"></tbody>
+      </table>
+    </div>
+  </div>
+
   <script src="<?php echo get_theme_file_uri('/dist/index-bundle.js'); ?>"></script>
 
   <?php get_footer();
