@@ -35,7 +35,7 @@ Template Name: Shared Rankings
         <thead>
             <tr>
             <th scope="col">Rank</th>
-            <th scope="col">Game</th>
+            <th scope="col">Item</th>
             <th scope="col">Pct Score</th>
             <th scope="col">Pop Score</th>
             <th scope="col">Total Score</th>
