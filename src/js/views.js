@@ -5,7 +5,7 @@ import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
-import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
+import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo, dbGetSharedList } from './database'
 import { updateLocalStorageSaveDataItem, renderTableRows } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 
@@ -621,15 +621,21 @@ const createTableElement = (type, headers, rows, myListsInfo) => {
       trEl.appendChild(tdEl)
     })
 
-    if (!shared) {
+    if (!ranked) {
       trEl.addEventListener('click', () => {
       // Go get the clicked list from the database and init the right step
         dbLoadUserList(type, itemID)
         M.Toast.dismissAll()
       })
     } else {
-      // render the list in a modal then open the modal
-      // renderReadOnlyTemplate(itemID)
+      trEl.classList.add('tooltipped')
+      trEl.setAttribute('data-tooltip', 'This template is locked for editing since it has been shared and ranked')
+      M.Tooltip.init(trEl)
+      // open the share modal
+      trEl.addEventListener('click', (e) => {
+        openShareModal(myListsInfo[type][index])
+        e.stopPropagation()
+      })
     }
 
     // Share
@@ -682,11 +688,6 @@ const createTableElement = (type, headers, rows, myListsInfo) => {
   divEl.appendChild(tableEl)
 
   return divEl
-}
-
-const renderReadOnlyTemplate = async (id) => {
-  const listInfo = await dbGetSharedList(id, 'Template')
-  renderTableRows(listInfo, 'read-only-template')
 }
 
 const renderTemplateDesc = () => {

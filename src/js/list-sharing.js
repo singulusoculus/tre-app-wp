@@ -1,5 +1,6 @@
-import { dbSetShareFlag } from './database'
-import { renderMyLists } from './views';
+import { dbSetShareFlag, dbGetSharedList } from './database'
+import { renderMyLists } from './views'
+import { renderTableRows } from './functions'
 
 let myListsInfo = {}
 let selectedList = {}
@@ -48,7 +49,40 @@ const openShareModal = (data) => {
   const shared = data.shared
   shared === 1 ? switchEl.checked = true : switchEl.checked = false
   renderShareOptions(shared, data)
+
+  const listData = JSON.parse(data.templateData)
+  const items = []
+  listData.forEach((i) => {
+    items.push({ name: i.name })
+  })
+
+  renderReadOnlyTemplate(items)
+
   modal.open()
+}
+
+const renderReadOnlyTemplate = (items) => {
+  // clear list data
+  const readOnlyTemplateEl = document.querySelector('.read-only-template')
+  readOnlyTemplateEl.innerHTML = ''
+
+  // create DOM Elements
+  const tableEl = document.createElement('table')
+  tableEl.classList.add('striped')
+  const theadEl = document.createElement('thead')
+  const trEl = document.createElement('tr')
+  const thEl = document.createElement('th')
+  thEl.setAttribute('scope', 'col')
+  thEl.textContent = 'Item Name'
+  trEl.appendChild(thEl)
+  theadEl.appendChild(trEl)
+  tableEl.appendChild(theadEl)
+  const tbodyEl = document.createElement('tbody')
+  tbodyEl.setAttribute('id', 'read-only-template__rows')
+  tableEl.appendChild(tbodyEl)
+  readOnlyTemplateEl.appendChild(tableEl)
+
+  renderTableRows(items, 'read-only-template')
 }
 
 const createStatsBtn = (listData) => {

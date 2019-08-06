@@ -645,7 +645,12 @@
     padding: 8px !important;
   }
 }
-.top-nine-canvas {
+
+// Shared Result Page
+.shared-result-options {
+  display: flex;
+  justify-content: space-around;
+}.top-nine-canvas {
   width: 300px;
   height: 300px;
   padding: 0;

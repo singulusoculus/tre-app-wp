@@ -7,7 +7,7 @@ const dbGetTemplateListData = (uuid) => {
     }, (data, status) => {
       if (status === 'success') {
         const parsedData = JSON.parse(data)
-        parsedData ? resolve(parsedData) : reject(new Error('No data returned'))
+        parsedData ? resolve(parsedData) : reject(new Error('The provided id does not exist.'))
       }
     })
   })
@@ -50,4 +50,12 @@ const dbSetShareResultsFlag = (id, value) => {
   })
 }
 
-export { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag }
+const dbClearSharedRankingResults = (id) => {
+  jQuery.post(getFilePath('/re-func/re-shared-rankings-functions.php'), {
+    func: `clearSharedRankingResults`,
+    id: id
+  }, (data, status) => {
+  })
+}
+
+export { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag, dbClearSharedRankingResults }

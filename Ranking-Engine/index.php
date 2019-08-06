@@ -574,6 +574,7 @@
 
           <div class="input-field">
             <input disabled value="URL" class="center-align" id="share-list__url" type="text">
+            <p class="share-list__important-text center-align">**Important: Sharing must be turned on for the link to work</p>
           </div>
 
         <div class="row">
@@ -581,23 +582,7 @@
             <a href="#" id="share-list__copy" class="waves-effect waves-light btn disabled">Copy URL</a>
           </div>
         </div>
-        <p class="share-list__important-text center-align">**Important: Sharing must be turned on for the link to work</p>
-    </div>
-  </div>
-
-  <!-- Read Only Template -->
-  <div id="read-only-modal" class="modal">
-    <div class="modal-content">
-      <h4 class="center-align"></h4>
-      <p class="center-align"></p>
-      <table id="read_only_template__table" class="striped">
-        <thead>
-          <tr>
-            <th scope="col">Item Name</th>
-          </tr>
-        </thead>
-        <tbody id="read_only_template__rows"></tbody>
-      </table>
+        <div class="read-only-template"></div>
     </div>
   </div>
 

@@ -230,7 +230,7 @@ function getUserLists() {
 
   $progressIds = $wpdb->get_results( "SELECT progress_id AS id, progress_uuid AS uuid, progress_desc AS descr FROM wp_re_rank_progress WHERE wpuid = $wpuid ORDER BY progress_id DESC", ARRAY_A );
   $resultIds = $wpdb->get_results("SELECT result_id AS id, result_uuid AS uuid, result_desc AS descr FROM wp_re_results_user WHERE wpuid = $wpuid ORDER BY result_id DESC" , ARRAY_A );
-  $templateIds =  $wpdb->get_results("SELECT template_id AS id, template_uuid AS uuid, template_desc AS descr, shared, ranked FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
+  $templateIds =  $wpdb->get_results("SELECT template_id AS id, template_uuid AS uuid, template_desc AS descr, shared, ranked, template_data AS templateData FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
   
 
   // push list data in to array

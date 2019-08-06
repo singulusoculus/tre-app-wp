@@ -1,4 +1,4 @@
-import { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag } from './shared-rankings-db'
+import { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag, dbClearSharedRankingResults } from './shared-rankings-db'
 import { renderTableRows, initDataTable } from './functions'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 
@@ -97,9 +97,13 @@ const renderOptions = () => {
 
   wrapperEl.appendChild(headingEl)
 
+  // row
+  const rowEl = document.createElement('div')
+  rowEl.classList.add('shared-result-options')
+
   // public switch
   const switchWrapperEl = document.createElement('div')
-  switchWrapperEl.classList.add('switch', 'center-align')
+  switchWrapperEl.classList.add('switch', 'center-align', 'col')
 
   const pEl = document.createElement('p')
   pEl.classList.add('bgg-filter-heading')
@@ -122,13 +126,34 @@ const renderOptions = () => {
   labelEl.innerHTML = `Off ${inputHTML} ${spanHTML} On`
 
   switchWrapperEl.appendChild(labelEl)
-  wrapperEl.appendChild(switchWrapperEl)
+  rowEl.appendChild(switchWrapperEl)
 
+  // clear results button
+  const aEl = document.createElement('a')
+  aEl.classList.add('waves-effect', 'waves-light', 'btn', 'col')
+  aEl.href = '#'
+  aEl.textContent = 'Clear Results'
+  aEl.addEventListener('click', () => {
+    const r = confirm('Are you sure you want to clear all results?')
+    console.log(r)
+    if (r) {
+      // clear results from data base - clear parent_list from results_h, flip ranked to 0 on template
+      console.log(templateListData)
+      dbClearSharedRankingResults(templateListData.template_id)
+      // navigate the user back to the ranking engine
+      window.location.href = getSiteURL()
+    }
+  })
+
+  rowEl.appendChild(aEl)
+
+  wrapperEl.appendChild(rowEl)
+
+  // divider
   const dividerEl = document.createElement('div')
   dividerEl.classList.add('divider-sm')
 
   wrapperEl.appendChild(dividerEl)
-
 }
 
 jQuery(document).ajaxStop(() => {

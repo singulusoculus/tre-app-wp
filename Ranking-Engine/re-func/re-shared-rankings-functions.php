@@ -16,6 +16,9 @@ switch ($func) {
   case 'setShareResultsFlag':
     setShareResultsFlag();
     break;
+  case 'clearSharedRankingResults':
+    clearSharedRankingResults();
+    break;
 }
 
 function getTemplateListData() {
@@ -72,6 +75,27 @@ function setShareResultsFlag() {
   $wpdb->update('wp_re_list_templates', // Table to update
     array('results_public' => $value), // Update field
     array('template_id' => $templateId), // Where parameter
+    array( '%d' ), // Update field data type
+    array( '%d' ) // Where parameter data type
+  );
+}
+
+function clearSharedRankingResults() {
+  global $wpdb;
+  $templateId = $_POST['id'];
+
+  // Change ranked back to 0
+  $wpdb->update('wp_re_list_templates', // Table to update
+    array('ranked' => 0), // Update field
+    array('template_id' => $templateId), // Where parameter
+    array( '%d' ), // Update field data type
+    array( '%d' ) // Where parameter data type
+  );
+
+  // Set parent_list_id to NULL
+  $wpdb->update('wp_re_results_h', // Table to update
+    array('parent_list_id' => NULL), // Update field
+    array('parent_list_id' => $templateId), // Where parameter
     array( '%d' ), // Update field data type
     array( '%d' ) // Where parameter data type
   );
