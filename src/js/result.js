@@ -3,6 +3,7 @@ import { saveData, renderTable } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 import { getDBListInfo } from './database'
+import { checkforImages, renderTopNine } from './top-nine'
 
 let resultData
 
@@ -51,6 +52,7 @@ const renderResult = () => {
   document.querySelector('#results__header > tr > :first-child').setAttribute('style', 'width: 18%')
 
   const userResultID = getDBListInfo().userResult.id
+
   // Put save button in line with other buttons
   const saveButtonEl = document.createElement('a')
   saveButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'modal-trigger', 'save-btn')
@@ -72,10 +74,34 @@ const renderResult = () => {
   saveButtonEl.appendChild(saveIconEl)
   const dtButtonsEl = document.querySelector('.dt-buttons')
   dtButtonsEl.appendChild(saveButtonEl)
+
   saveButtonEl.addEventListener('click', () => {
     document.querySelector('#save-list-btn').textContent = 'Save'
     document.querySelector('#save-description').value = ''
   })
+
+  // Check for top nine images
+  const images = checkforImages(resultData)
+  console.log(images)
+
+  // Top Nine Button
+  if (images) {
+    const topNineButtonEl = document.createElement('a')
+    topNineButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'top-nine-btn')
+    topNineButtonEl.textContent = 'Top Nine'
+    topNineButtonEl.addEventListener('click', () => {
+      renderTopNine(images)
+      const topNineModal = M.Modal.getInstance(document.querySelector('#top-nine-modal'))
+      topNineModal.open()
+    })
+
+    const topNineIconEl = document.createElement('i')
+    topNineIconEl.classList.add('material-icons', 'right')
+    topNineIconEl.textContent = 'grid_on'
+
+    topNineButtonEl.appendChild(topNineIconEl)
+    dtButtonsEl.appendChild(topNineButtonEl)
+  }
 
   // Add title to table
   const resultDesc = getDBListInfo().userResult.desc
