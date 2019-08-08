@@ -107,11 +107,23 @@ const initRankingEngineUrlParam = async (param) => {
       const category = parseInt(template[0].list_category)
       const data = JSON.parse(template[0].template_data)
       const templateId = parseInt(template[0].template_id)
-      setListData(data)
-      setCategory(category)
-      setParentList(templateId)
-      showRankSection('List')
-      removeURLParam()
+
+      // check localStorage for templateId
+      const lsParentLists = JSON.parse(localStorage.getItem('str'))
+      console.log(lsParentLists)
+      const listIndex = lsParentLists.indexOf(templateId)
+      console.log(listIndex)
+
+      if (listIndex > -1) {
+        custMessage(`You've already ranked this list`)
+        removeURLParam()
+      } else if (listIndex === -1) {
+        setListData(data)
+        setCategory(category)
+        setParentList(templateId)
+        showRankSection('List')
+        removeURLParam()
+      }
     } else if (param.type === 'p') {
       console.log(`loading progress list: ${param.id}`)
       const progress = await dbGetSharedList(param.id, 'Progress')

@@ -403,6 +403,17 @@ const dbSaveResultData = (rankedItems) => {
       })
       saveData(resultData)
 
+      // get str items from localStorage
+      const lsParentLists = JSON.parse(localStorage.getItem('str'))
+      // if null then set it / else push new ParentList into the array and set it
+      if (lsParentLists === null) {
+        const parentListArray = JSON.stringify([parentList])
+        localStorage.setItem('str', parentListArray)
+      } else {
+        lsParentLists.push(parentList)
+        localStorage.setItem('str', JSON.stringify(lsParentLists))
+      }
+
       if (category === 2) {
         dbUpdateRankings(dbListInfo.result.id)
       }
