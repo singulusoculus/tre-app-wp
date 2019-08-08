@@ -642,9 +642,10 @@ const createTableElement = (type, headers, rows, myListsInfo) => {
     if (type === 'templates') {
       const tdShareEl = document.createElement('td')
       const aShareEl = document.createElement('a')
-      aShareEl.classList.add('secondary-content', 'modal-trigger')
+      aShareEl.classList.add('secondary-content', 'modal-trigger', 'unshared-template')
       if (shared) {
-        aShareEl.classList.add('shared-template')
+        // aShareEl.classList.add('shared-template')
+        aShareEl.classList.remove('unshared-template')
       }
       aShareEl.setAttribute('href', '#share-modal')
       const iShareEl = document.createElement('i')
