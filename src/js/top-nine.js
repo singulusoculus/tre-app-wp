@@ -101,16 +101,16 @@ const renderImage = (info, ctx) => {
 
 const renderImages = (images, ctx) => {
   return new Promise((resolve, reject) => {
-    images.forEach((image, index) => {
+    const promises = images.map((image, index) => new Promise((resolve, reject) => {
       getImageWidthHeight(image, index)
         .then(obj => calcImageProperties(obj))
         .then(obj => renderTempCanvas(obj))
         .then(info => {
           renderImage(info, ctx)
+          resolve()
         })
-    })
-
-    resolve()
+    }))
+    resolve(Promise.all(promises))
   })
 }
 
