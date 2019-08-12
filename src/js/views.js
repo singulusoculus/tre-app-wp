@@ -8,6 +8,7 @@ import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCol
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo, dbGetSharedList } from './database'
 import { updateLocalStorageSaveDataItem, renderTableRows } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
+import { uploadFile, resizeImage } from './image-upload'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -81,7 +82,7 @@ const renderListData = () => {
   listEl.innerHTML = ''
 
   if (filteredList.length > 0) {
-    filteredList.forEach((item) => {
+    filteredList.forEach((item, index) => {
       const itemEl = generateListDataDOM(item)
       listEl.appendChild(itemEl)
     })
@@ -99,7 +100,35 @@ const generateListDataDOM = (item) => {
   imgDiv.classList.add('list-item__image-container')
   const imgEl = document.createElement('img')
   imgEl.classList.add('list-item__image')
-  imgEl.src = item.image !== '' ? item.image : getFilePath('/images/noimg.jpg')
+  if (item.image !== '') {
+    imgEl.src = item.image
+  } else {
+    imgEl.src = getFilePath('/images/noimg.jpg')
+    // Add event listeners for click and drag/drop to add images via cloudinary
+    // Hidden Input Element
+    const inputEl = document.createElement('input')
+    inputEl.type = 'file'
+    inputEl.setAttribute('id', 'file-upload')
+    inputEl.accept = 'image/*'
+    inputEl.style = 'display: none;'
+    inputEl.addEventListener('change', (e) => {
+      const info = {
+        file: e.srcElement.files[0],
+        maxSize: 150
+      }
+      resizeImage(info).then((image) => {
+        uploadFile(image, item.id)
+      })
+      // uploadFile(e.srcElement.files[0], item.id)
+    })
+    imgDiv.appendChild(inputEl)
+
+    // event listener for file select
+    imgEl.addEventListener('click', (e) => {
+      inputEl.click()
+      e.preventDefault()
+    })
+  }
   imgDiv.appendChild(imgEl)
   itemEl.appendChild(imgDiv)
 
