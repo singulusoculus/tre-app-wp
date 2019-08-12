@@ -91,14 +91,24 @@ const renderListData = () => {
 
 // Generate DOM for each item in createList
 const generateListDataDOM = (item) => {
+  console.log(item)
   const itemEl = document.createElement('li')
-  itemEl.classList.add('collection-item')
+  itemEl.classList.add('collection-item', 'list-item')
+
+  const imgDiv = document.createElement('div')
+  imgDiv.classList.add('list-item__image-container')
+  const imgEl = document.createElement('img')
+  imgEl.classList.add('list-item__image')
+  imgEl.src = item.image !== '' ? item.image : getFilePath('/images/noimg.jpg')
+  imgDiv.appendChild(imgEl)
+  itemEl.appendChild(imgDiv)
 
   const itemNameEl = document.createElement('span')
+  itemNameEl.classList.add('list-item__title')
   itemNameEl.textContent = item.name
 
   const iconEl = document.createElement('a')
-  iconEl.classList.add('secondary-content')
+  iconEl.classList.add('list-item__icon')
   iconEl.href = '#!'
   iconEl.innerHTML = '<i class="material-icons">delete</i>'
   iconEl.addEventListener('click', (e) => {

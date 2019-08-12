@@ -188,6 +188,39 @@
   flex-wrap: wrap;
 }
 
+.list-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  &__image-container {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__image {
+    max-width: 50px;
+    max-height: 50px;
+  }
+
+  &__title {
+    margin-left: 10px;
+    justify-self: start;
+    flex-grow: 1;
+  }
+
+  &__icon {
+    position: unset;
+    color: #527A45 !important;
+  }
+
+}
+
+.collection-item__image {
+  width: 50px;
+}
+
 .bgg-personal-rating {
   width: 100%;
   display: flex;
