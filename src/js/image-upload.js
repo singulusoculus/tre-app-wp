@@ -2,7 +2,6 @@ import { getListData } from './list'
 import { renderListData } from './views'
 
 const uploadFile = (file, id) => {
-  console.log(file)
   const cloudName = 'du5uog7ql'
   const unsignedUploadPreset = 'tjnvqgbf'
 
@@ -17,7 +16,6 @@ const uploadFile = (file, id) => {
       // File uploaded successfully
       const response = JSON.parse(xhr.responseText)
       const url = response.secure_url
-      console.log(url)
 
       const listData = getListData()
       const objIndex = listData.findIndex(obj => obj.id === id)
@@ -33,11 +31,12 @@ const uploadFile = (file, id) => {
 }
 
 const resizeImage = (settings) => {
-  var file = settings.file
-  var maxSize = settings.maxSize
-  var reader = new FileReader()
-  var image = new Image()
-  var canvas = document.createElement('canvas')
+  const file = settings.file
+  const maxWidth = settings.maxWidth
+  const maxHeight = settings.maxHeight
+  const reader = new FileReader()
+  const image = new Image()
+  const canvas = document.createElement('canvas')
 
   // var dataURItoBlob = function (dataURI) {
   //   var bytes = dataURI.split(',')[0].indexOf('base64') >= 0 ? atob(dataURI.split(',')[1]) : unescape(dataURI.split(',')[1])
@@ -51,23 +50,23 @@ const resizeImage = (settings) => {
   // }
 
   const resize = function () {
-    var width = image.width
-    var height = image.height
+    let width = image.width
+    let height = image.height
     if (width > height) {
-      if (width > maxSize) {
-        height *= maxSize / width
-        width = maxSize
+      if (width > maxWidth) {
+        height *= maxWidth / width
+        width = maxWidth
       }
     } else {
-      if (height > maxSize) {
-        width *= maxSize / height
-        height = maxSize
+      if (height > maxHeight) {
+        width *= maxHeight / height
+        height = maxHeight
       }
     }
     canvas.width = width
     canvas.height = height
     canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-    var dataUrl = canvas.toDataURL('image/png')
+    const dataUrl = canvas.toDataURL('image/png')
     // return dataURItoBlob(dataUrl)
     return dataUrl
   }

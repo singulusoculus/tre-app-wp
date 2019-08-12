@@ -5,8 +5,8 @@ import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
-import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo, dbGetSharedList } from './database'
-import { updateLocalStorageSaveDataItem, renderTableRows } from './functions'
+import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
+import { updateLocalStorageSaveDataItem } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 import { uploadFile, resizeImage } from './image-upload'
 
@@ -92,7 +92,6 @@ const renderListData = () => {
 
 // Generate DOM for each item in createList
 const generateListDataDOM = (item) => {
-  console.log(item)
   const itemEl = document.createElement('li')
   itemEl.classList.add('collection-item', 'list-item')
 
@@ -114,7 +113,8 @@ const generateListDataDOM = (item) => {
     inputEl.addEventListener('change', (e) => {
       const info = {
         file: e.srcElement.files[0],
-        maxSize: 150
+        maxWidth: 150,
+        maxHeight: 200
       }
       resizeImage(info).then((image) => {
         uploadFile(image, item.id)
