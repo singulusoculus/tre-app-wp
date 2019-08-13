@@ -217,6 +217,12 @@
 
 }
 
+.dragdrop {
+  border: dashed gray !important;
+  border-width: 2px !important;
+  background-color: rgba(155, 155, 155, .1) !important;
+}
+
 .collection-item__image {
   width: 50px;
 }

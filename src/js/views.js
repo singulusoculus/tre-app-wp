@@ -103,7 +103,53 @@ const generateListDataDOM = (item) => {
     imgEl.src = item.image
   } else {
     imgEl.src = getFilePath('/images/noimg.jpg')
-    // Add event listeners for click and drag/drop to add images via cloudinary
+    // Add event listeners for drag/drop to add images via cloudinary
+    const dragenter = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      itemEl.classList.add('dragdrop')
+    }
+
+    const dragover = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      itemEl.classList.add('dragdrop')
+    }
+
+    const dragleave = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      itemEl.classList.remove('dragdrop')
+    }
+
+    const dragexit = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      itemEl.classList.remove('dragdrop')
+    }
+
+    const drop = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      const dt = e.dataTransfer
+      const file = dt.files[0]
+      const info = {
+        file,
+        maxWidth: 150,
+        maxHeight: 200
+      }
+      resizeImage(info).then((image) => {
+        uploadFile(image, item.id)
+      })
+      itemEl.classList.remove('dragdrop')
+    }
+
+    itemEl.addEventListener('dragenter', dragenter, false)
+    itemEl.addEventListener('dragover', dragover, false)
+    itemEl.addEventListener('dragleave', dragleave, false)
+    itemEl.addEventListener('dragexit', dragexit, false)
+    itemEl.addEventListener('drop', drop, false)
+
     // Hidden Input Element
     const inputEl = document.createElement('input')
     inputEl.type = 'file'
@@ -119,7 +165,6 @@ const generateListDataDOM = (item) => {
       resizeImage(info).then((image) => {
         uploadFile(image, item.id)
       })
-      // uploadFile(e.srcElement.files[0], item.id)
     })
     imgDiv.appendChild(inputEl)
 

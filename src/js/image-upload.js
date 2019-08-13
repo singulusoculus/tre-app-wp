@@ -1,9 +1,14 @@
 import { getListData } from './list'
 import { renderListData } from './views'
+import { saveData } from './functions'
+import { getCategoryInfo } from './category';
 
 const uploadFile = (file, id) => {
   const cloudName = 'du5uog7ql'
   const unsignedUploadPreset = 'tjnvqgbf'
+
+  const listData = getListData()
+  const objIndex = listData.findIndex(obj => obj.id === id)
 
   const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
   const xhr = new XMLHttpRequest()
@@ -17,15 +22,33 @@ const uploadFile = (file, id) => {
       const response = JSON.parse(xhr.responseText)
       const url = response.secure_url
 
-      const listData = getListData()
-      const objIndex = listData.findIndex(obj => obj.id === id)
       listData[objIndex].image = url
 
+      saveData(listData)
       renderListData()
     }
   }
 
+  // create folder name
+  var d = new Date()
+  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  const year = d.getFullYear()
+  const month = months[d.getMonth()]
+  const folder = year + '-' + month
+
+  // get tags
+  const category = getCategoryInfo().name
+  const name = listData[objIndex].name
+  const nameParts = name.split(' ')
+  const tags = []
+  tags.push(category)
+  nameParts.forEach((i) => {
+    tags.push(i)
+  })
+
   fd.append('upload_preset', unsignedUploadPreset)
+  fd.append('folder', folder)
+  fd.append('tags', tags)
   fd.append('file', file)
   xhr.send(fd)
 }
