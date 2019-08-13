@@ -202,6 +202,7 @@
   &__image {
     max-width: 50px;
     max-height: 50px;
+    border-radius: 2px;
   }
 
   &__title {
@@ -294,15 +295,17 @@
   display: flex;
   align-items: center;
   position: relative;
-  min-height:200px;
+  min-height: 248px;
 
   &__img {
     max-width: 15rem;
     margin-right: 1.5rem;
+    border-radius: 3px;
   }
 
   &__text {
     text-transform: uppercase;
+    flex-grow: 1;
   }
 
   &__delete {
@@ -315,6 +318,7 @@
   @media only screen and (max-width: 600px) {
     & {
       padding: 1rem !important;
+      min-height: 228px;
     }
 
     &__img {
