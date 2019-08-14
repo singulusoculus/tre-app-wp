@@ -103,6 +103,8 @@ const generateListDataDOM = (item) => {
     imgEl.src = item.image
   } else {
     imgEl.src = getFilePath('/images/noimg.jpg')
+
+    // BEGIN add images functionality
     // Add event listeners for drag/drop to add images via cloudinary
     const dragenter = (e) => {
       e.stopPropagation()
@@ -173,6 +175,7 @@ const generateListDataDOM = (item) => {
       inputEl.click()
       e.preventDefault()
     })
+    // END Add Image Functionality
   }
   imgDiv.appendChild(imgEl)
   itemEl.appendChild(imgDiv)
