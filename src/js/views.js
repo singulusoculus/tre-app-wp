@@ -102,7 +102,7 @@ const generateListDataDOM = (item) => {
   if (item.image !== '') {
     imgEl.src = item.image
   } else {
-    imgEl.src = getFilePath('/images/noimg.jpg')
+    imgEl.src = getFilePath('/images/add-image.png')
 
     // BEGIN add images functionality
     // Add event listeners for drag/drop to add images via cloudinary
