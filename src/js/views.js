@@ -103,6 +103,7 @@ const generateListDataDOM = (item) => {
     imgEl.src = item.image
   } else {
     imgEl.src = getFilePath('/images/add-image.png')
+    imgEl.classList.add('list-item__no-image')
 
     // BEGIN add images functionality
     // Add event listeners for drag/drop to add images via cloudinary
@@ -137,8 +138,8 @@ const generateListDataDOM = (item) => {
       const file = dt.files[0]
       const info = {
         file,
-        maxWidth: 150,
-        maxHeight: 200
+        maxWidth: 200,
+        maxHeight: 150
       }
       resizeImage(info).then((image) => {
         uploadFile(image, item.id)
@@ -161,8 +162,8 @@ const generateListDataDOM = (item) => {
     inputEl.addEventListener('change', (e) => {
       const info = {
         file: e.srcElement.files[0],
-        maxWidth: 150,
-        maxHeight: 200
+        maxWidth: 200,
+        maxHeight: 150
       }
       resizeImage(info).then((image) => {
         uploadFile(image, item.id)

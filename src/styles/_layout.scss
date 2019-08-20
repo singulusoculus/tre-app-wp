@@ -205,6 +205,10 @@
     border-radius: 2px;
   }
 
+  &__no-image {
+    cursor: pointer;
+  }
+
   &__title {
     margin-left: 10px;
     justify-self: start;
@@ -295,7 +299,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  min-height: 248px;
+  min-height: 200px;
 
   &__img {
     max-width: 15rem;
@@ -318,7 +322,7 @@
   @media only screen and (max-width: 600px) {
     & {
       padding: 1rem !important;
-      min-height: 228px;
+      min-height: 160px;
     }
 
     &__img {
