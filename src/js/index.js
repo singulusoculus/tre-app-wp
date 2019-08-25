@@ -7,6 +7,7 @@ import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
 import { copyURLText, handleShareSwitchChange } from './list-sharing'
+import { handleQuickHelpClick } from './quick-help'
 // import LogRocket from 'logrocket'
 // LogRocket.init('r3us4o/ranking-engine-prod')
 
@@ -18,6 +19,13 @@ if (isMobile) {
 
 jQuery(document).ready(() => {
   initRankingEngine()
+
+  // Quick Help
+
+  document.querySelector('.help__button').addEventListener('click', (e) => {
+    e.preventDefault()
+    handleQuickHelpClick()
+  })
 
   // //////////////////////////////////////////////////////////////////////
   // // STEP TAB CONTROLS

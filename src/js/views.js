@@ -370,7 +370,7 @@ const showStartSection = (source) => {
   disableStepTab('list', 'rank', 'result')
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
-  showHelpText('start')
+  // showHelpText('start')
   setupSaveLogin()
 
   // Clears result database link
@@ -423,7 +423,7 @@ const showListSection = (source) => {
   }
 
   showTab('list')
-  showHelpText('list')
+  // showHelpText('list')
 }
 
 const showRankSection = (source) => {
@@ -456,7 +456,7 @@ const showRankSection = (source) => {
 
   if (source !== 'Rank') {
     showTab('rank')
-    showHelpText('rank')
+    // showHelpText('rank')
   }
   document.querySelector('.next-rank').classList.remove('next--visible')
 }
@@ -466,7 +466,7 @@ const showResultSection = (source) => {
   renderResult()
 
   showTab('result')
-  showHelpText('result')
+  // showHelpText('result')
   document.querySelector('.next-rank').classList.remove('next--visible')
 }
 

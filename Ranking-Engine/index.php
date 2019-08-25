@@ -6,87 +6,14 @@
       <nav class="nav-extended nav-re">
         <div class="nav-wrapper">
           <p class="brand-logo nav-re__title">Ranking Engine</p>
+          
           <div class="help right">
             <input type="checkbox" class="help__checkbox" id="help-toggle">
-
             <label for="help-toggle" class="help__button">
               <i class="material-icons help__icon">help</i>
             </label>
-
             <div class="help__background">&nbsp;</div>
-
-            <div class="help__text">
-              <h4 class="center-align">Quick Help</h4>
-              <div class="help__text-item help__text--start">
-                <p class="section-title">Start</p>
-                <ul class="help__list">
-                  <li>Select a category to get started creating a list.</li>
-                  <li>You can also see the current top 10 games from the current year here. Click the button below the list to see all of the top games as ranked by users of the Ranking Engine.</li>
-                  <li>If you have a previous session available you will be prompted to resume or discard it. Resuming picks up where you left off. Discarding completely deletes the previous session data.</li>
-                </ul>
-              </div>
-              <div class="help__text-item help__text--list hide">
-              <p class="section-title">List</p>
-                <ul class="help__list">
-                  <li>To add items to your list, type or paste them into the provided Text Entry area, each item on a separate line, then click Add.</li>
-                  <li>Keep adding and editing your list until you have the list you want to rank, then click the arrow button on the right or the Rank tab to start ranking.</li>
-                </ul>
-                <hr>
-                <p class="section-title">Board Game Geek</p>
-                <ul class="help__list">
-                  <li>If you selected Board Games as your category you will have the option to add games from a BGG collection</li>
-                  <li>Enter the BGG username for the list you would like to request, indicate if you would like expansions included or not, then click Submit.</li>
-                  <li>Give BGG some time to return your list to The Ranking Engine.</li>
-                  <li>You can then filter your list and either add games individually to your List or add a group of filtered games.</li>
-                </ul>
-                <hr>
-                <p class="section-title">Saving a Template</p>
-                <ul class="help__list">
-                  <li>If you create a list you would like access to at a later date you can save it as a template.</li>
-                  <li>Click the Save button in the Your List section, log in (if needed), give your list a description and click Save.</li>
-                  <li>If you are working with an already-saved template, you will have the option to edit it and then Update it.</li>
-                </ul>
-              </div>
-              <div class=" help__text-item help__text--rank hide">
-                <p class="section-title">Rank</p>
-                <ul class="help__list">
-                    <li>Two items will be presented at a time. Click on the one you prefer. Continue making selections until your results are presented</li>
-                    <li>Delete an item from your ranking by clicking the <i class="material-icons small help__icon-inline">delete</i> icon.</li>
-                    <li>Undo a selection by clicking the Undo button</li>
-                    <li>If you are using a keyboard, you can use your left and right arrows to make your selections. The up arrow will trigger undo.</li>
-                    <li>Save your progress by clicking the Save button, logging in (if needed), giving it a description, and clicking Save.</li>
-                  </ul>
-              </div>
-              <div class=" help__text-item help__text--result hide">
-                <p class="section-title">Result</p>
-                <ul class="help__list">
-                  <li>Your results will be calculated and presented for you to peruse.</li>
-                  <li>Easily copy your results to your clipboard by clicking the Copy button.</li>
-                  <li>Download a csv file with your results by clicking the CSV button</li>
-                  <li>Save your results by clicking the Save button, logging in (if needed), giving is a description, and clicking Save.</li>
-                  <li>Rerank your results by clicking the Rank tab. You can either rerank the complete list or the top X items from it.</li>
-                </ul>
-              </div>
-              <div class="help__my-lists">
-              <hr>
-              <p class="section-title">Navigation</p>
-              <ul class="help__list">
-                <li>You can navigate to any previous step in the process by clicking the tab.</li>
-              </ul>
-              <hr>
-              <p class="section-title">My Lists</p>
-              <ul class="help__list">
-                <li>If you are logged in, you have access to your saved lists at any time by clicking the <i class="material-icons small help__icon-inline">account_circle</i> in the menu. Just click on a list to load it.</li>
-                <li>Sharing a template: after you save a template it can be shared. Click <i class="material-icons small help__icon-inline">share</i> to bring up the share modal. A gray icon means the list is not shared. A green icon means it is.</li>
-              </ul>
-              <p class="section-title">Share Modal</p>
-              <ul class="help__list">
-                <li>To share the selected template, flip the Sharing switch to On. This option must be turned on for the provided link to work.</li>
-                <li>Copy the link and share it out with the people you want to share the template with. Going to the provided link will load the template into the ranking process.</li>
-                <li>If the list has been ranked via the shared link, a Results button will be available. Clicking this will show you the current results.</li>
-              </ul>
-              </div>
-            </div>
+            <div class="help__text"></div>
           </div>
 
           <div class="account right">
