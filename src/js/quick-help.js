@@ -19,7 +19,8 @@ const getListHelpText = () => {
       title: 'List',
       listItems: [
         'To add items to your list, type or paste them into the provided Text Entry area, each item on a separate line, then click Add.',
-        'Keep adding and editing your list until you have the list you want to rank, then click the arrow button on the right or the Rank tab to start ranking.'
+        'Keep adding and editing your list until you have the list you want to rank, then click the arrow button on the right or the Rank tab to start ranking.',
+        'If an item does not have an image, you can add one by clicking the "No Image" area or by dragging and dropping the image to the list item you want to add it to.'
       ]
     },
     {
@@ -63,6 +64,7 @@ const getResultHelpText = () => {
       title: 'Result',
       listItems: [
         'Your results will be calculated and presented for you to peruse.',
+        'If you list has at least nine items and your top nine items have images, you will be able to download a top nine image to share by clicking the Top Nine button',
         'Easily copy your results to your clipboard by clicking the Copy button.',
         'Download a csv file with your results by clicking the CSV button',
         'Save your results by clicking the Save button, logging in (if needed), giving is a description, and clicking Save.',
