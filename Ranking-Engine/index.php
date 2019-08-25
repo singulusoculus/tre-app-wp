@@ -77,6 +77,13 @@
               <p class="section-title">My Lists</p>
               <ul class="help__list">
                 <li>If you are logged in, you have access to your saved lists at any time by clicking the <i class="material-icons small help__icon-inline">account_circle</i> in the menu. Just click on a list to load it.</li>
+                <li>Sharing a template: after you save a template it can be shared. Click <i class="material-icons small help__icon-inline">share</i> to bring up the share modal. A gray icon means the list is not shared. A green icon means it is.</li>
+              </ul>
+              <p class="section-title">Share Modal</p>
+              <ul class="help__list">
+                <li>To share the selected template, flip the Sharing switch to On. This option must be turned on for the provided link to work.</li>
+                <li>Copy the link and share it out with the people you want to share the template with. Going to the provided link will load the template into the ranking process.</li>
+                <li>If the list has been ranked via the shared link, a Results button will be available. Clicking this will show you the current results.</li>
               </ul>
               </div>
             </div>
