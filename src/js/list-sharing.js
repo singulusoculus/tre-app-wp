@@ -1,4 +1,4 @@
-import { dbSetShareFlag, dbGetSharedList } from './database'
+import { dbSetShareFlag } from './database'
 import { renderMyLists } from './views'
 import { renderTableRows } from './functions'
 
@@ -96,13 +96,6 @@ const createStatsBtn = (listData) => {
 
   iEl.textContent = 'show_chart'
   iEl.classList.add('material-icons', 'right', 'small', 'white-text')
-
-  // aEl.addEventListener('click', (e) => {
-  //   localStorage.removeItem('sharedRankingsList')
-  //   const user = getUserID()
-  //   listData = { ...listData, user }
-  //   localStorage.setItem('sharedRankingsList', JSON.stringify(listData))
-  // })
 
   aEl.appendChild(iEl)
 

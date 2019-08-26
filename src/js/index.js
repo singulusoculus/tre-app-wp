@@ -20,8 +20,9 @@ if (isMobile) {
 jQuery(document).ready(() => {
   initRankingEngine()
 
-  // Quick Help
-
+  // //////////////////////////////////////////////////////////////////////
+  // // QUICK HELP
+  // //////////////////////////////////////////////////////////////////////
   document.querySelector('.help__button').addEventListener('click', (e) => {
     e.preventDefault()
     handleQuickHelpClick()
@@ -107,10 +108,6 @@ jQuery(document).ready(() => {
   document.querySelector('.change-bgg-username').addEventListener('click', () => {
     handleCollectionChangeClick()
   })
-
-  // document.querySelector('.update-bgg-collection').addEventListener('click', () => {
-  //   handleBGGCollectionRequest()
-  // })
 
   // BGG Filters
   document.querySelectorAll('.bgg-cb').forEach((el) => {

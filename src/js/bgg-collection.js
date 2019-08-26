@@ -263,64 +263,6 @@ const createBGGList = (data) => {
   return bggList
 }
 
-const getBGGData = () => {
-  const listData = getListData()
-
-  let xhttp = ''
-
-  if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest()
-  }
-
-  xhttp.open('GET', './wp-content/themes/collections/RhodesPhoto.xml', false)
-  // xhttp.open('GET', './collection-stats.xml', false)
-
-  // xhttp.open('GET', 'https://www.boardgamegeek.com/xmlapi2/collection?username=singulusoculus&stats=1', false)
-  xhttp.send()
-
-  const xmlDoc = xhttp.responseText.replace(/[\n\r]+/g, '')
-
-  const parser = new DOMParser()
-  const xml = parser.parseFromString(xmlDoc, 'text/xml')
-  const data = xmlToJson(xml)
-
-  const items = data.items.item
-
-  let bggList = []
-
-  items.forEach((item) => {
-    const statusAttributes = item.status['@attributes']
-
-    const obj = {
-      id: uuidv4(),
-      name: item.name ? item.name['#text'] : 'No Title',
-      source: 'bgg',
-      image: item.thumbnail ? item.thumbnail['#text'] : './wp-content/themes/Ranking-Engine/images/meeple-lime.png',
-      yearPublished: item.yearpublished ? parseInt(item.yearpublished['#text']) : 0,
-      bggId: item['@attributes'].objectid,
-      own: statusAttributes.own === '1',
-      fortrade: statusAttributes.fortrade === '1',
-      prevowned: statusAttributes.prevowned === '1',
-      want: statusAttributes.want === '1',
-      wanttobuy: statusAttributes.wanttobuy === '1',
-      wanttoplay: statusAttributes.wanttoplay === '1',
-      wishlist: statusAttributes.wishlist === '1',
-      played: item.numplays['#text'] > 0,
-      rated: item.stats['rating']['@attributes'].value !== 'N/A',
-      rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
-      addedToList: false
-    }
-
-    if (listData.map(e => e.bggId).indexOf(obj.bggId) > -1) {
-      obj.addedToList = true
-    }
-
-    bggList.push(obj)
-  })
-
-  return bggList
-}
-
 const showBGGCollectionSection = () => {
   document.querySelector('.bgg-list').classList.remove('hide')
   document.querySelector('.bgg-username-submit').classList.add('hide')

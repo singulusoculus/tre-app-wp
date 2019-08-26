@@ -296,17 +296,6 @@ const disableListSave = () => {
   saveButton.classList.add('disabled')
 }
 
-// Help Text
-const showHelpText = (step) => {
-  const textEls = document.querySelectorAll('.help__text-item')
-  textEls.forEach((el) => {
-    el.classList.add('hide')
-  })
-
-  const activeTextEl = document.querySelector(`.help__text--${step}`)
-  activeTextEl.classList.remove('hide')
-}
-
 const updateTabIndicator = () => {
   const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
   tabs.updateTabIndicator()
@@ -370,7 +359,6 @@ const showStartSection = (source) => {
   disableStepTab('list', 'rank', 'result')
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
-  // showHelpText('start')
   setupSaveLogin()
 
   // Clears result database link
@@ -423,7 +411,6 @@ const showListSection = (source) => {
   }
 
   showTab('list')
-  // showHelpText('list')
 }
 
 const showRankSection = (source) => {
@@ -456,7 +443,6 @@ const showRankSection = (source) => {
 
   if (source !== 'Rank') {
     showTab('rank')
-    // showHelpText('rank')
   }
   document.querySelector('.next-rank').classList.remove('next--visible')
 }
@@ -466,7 +452,6 @@ const showResultSection = (source) => {
   renderResult()
 
   showTab('result')
-  // showHelpText('result')
   document.querySelector('.next-rank').classList.remove('next--visible')
 }
 

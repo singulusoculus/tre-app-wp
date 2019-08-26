@@ -287,15 +287,6 @@ const saveData = (data) => {
   const step = getCurrentStep()
   const dbListInfo = getDBListInfo()
   const parentList = getParentList()
-  // const rankDataHistory = getRankDataHistory()
-
-  // if (step === 'List') {
-  //   data = getListData()
-  // } else if (step === 'Rank') {
-  //   data = getRankData()
-  // } else if (step === 'Result') {
-  //   data = getResultData()
-  // }
 
   const obj = {
     category,

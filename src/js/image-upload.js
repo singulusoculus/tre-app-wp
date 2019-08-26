@@ -1,7 +1,7 @@
 import { getListData } from './list'
 import { renderListData } from './views'
 import { saveData } from './functions'
-import { getCategoryInfo } from './category';
+import { getCategoryInfo } from './category'
 
 const uploadFile = (file, id) => {
   const cloudName = 'du5uog7ql'
@@ -61,17 +61,6 @@ const resizeImage = (settings) => {
   const image = new Image()
   const canvas = document.createElement('canvas')
 
-  // var dataURItoBlob = function (dataURI) {
-  //   var bytes = dataURI.split(',')[0].indexOf('base64') >= 0 ? atob(dataURI.split(',')[1]) : unescape(dataURI.split(',')[1])
-  //   var mime = dataURI.split(',')[0].split(':')[1].split(';')[0]
-  //   var max = bytes.length
-  //   var ia = new Uint8Array(max)
-  //   for (var i = 0; i < max; i++) {
-  //     ia[i] = bytes.charCodeAt(i)
-  //     return new Blob([ia], { type: mime })
-  //   }
-  // }
-
   const resize = function () {
     let width = image.width
     let height = image.height
@@ -90,7 +79,6 @@ const resizeImage = (settings) => {
     canvas.height = height
     canvas.getContext('2d').drawImage(image, 0, 0, width, height)
     const dataUrl = canvas.toDataURL('image/png')
-    // return dataURItoBlob(dataUrl)
     return dataUrl
   }
 
