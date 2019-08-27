@@ -90,6 +90,14 @@ const renderListData = () => {
   }
 }
 
+function urltoFile (url, filename, mimeType) {
+  mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1]
+  return (fetch(url)
+    .then(function (res) { return res.arrayBuffer() })
+    .then(function (buf) { return new File([buf], filename, { type: mimeType })})
+  )
+}
+
 // Generate DOM for each item in createList
 const generateListDataDOM = (item) => {
   const itemEl = document.createElement('li')
@@ -132,18 +140,37 @@ const generateListDataDOM = (item) => {
     }
 
     const drop = (e) => {
+      console.log(e)
       e.stopPropagation()
       e.preventDefault()
       const dt = e.dataTransfer
-      const file = dt.files[0]
-      const info = {
-        file,
-        maxWidth: 200,
-        maxHeight: 150
+      if (dt.files.length > 0) {
+        const file = dt.files[0]
+        const info = {
+          file,
+          maxWidth: 200,
+          maxHeight: 150
+        }
+        resizeImage(info).then((image) => {
+          uploadFile(image, item.id)
+        })
+      } else {
+        const imgUrl = e.dataTransfer.getData('text/html')
+        const rex = /src="?([^"\s]+)"?\s*/
+        let url
+        url = rex.exec(imgUrl)
+        urltoFile(url[1], 'a.png')
+          .then((file) => {
+            const info = {
+              file,
+              maxWidth: 200,
+              maxHeight: 150
+            }
+            resizeImage(info).then((image) => {
+              uploadFile(image, item.id)
+            })
+          })
       }
-      resizeImage(info).then((image) => {
-        uploadFile(image, item.id)
-      })
       itemEl.classList.remove('dragdrop')
     }
 
