@@ -8,7 +8,6 @@ import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCol
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
-import { uploadFile, resizeImage, urlToFile } from './image-upload'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -101,103 +100,8 @@ const generateListDataDOM = (item) => {
   imgEl.classList.add('list-item__image')
   if (item.image !== '') {
     imgEl.src = item.image
-  } else {
-    imgEl.src = getFilePath('/images/add-image.png')
-    imgEl.classList.add('list-item__no-image')
-
-    // BEGIN add images functionality
-    // Add event listeners for drag/drop to add images via cloudinary
-    const dragenter = (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      itemEl.classList.add('dragdrop')
-    }
-
-    const dragover = (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      itemEl.classList.add('dragdrop')
-    }
-
-    const dragleave = (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      itemEl.classList.remove('dragdrop')
-    }
-
-    const dragexit = (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      itemEl.classList.remove('dragdrop')
-    }
-
-    const drop = (e) => {
-      console.log(e)
-      e.stopPropagation()
-      e.preventDefault()
-      const dt = e.dataTransfer
-      if (dt.files.length > 0) {
-        const file = dt.files[0]
-        const info = {
-          file,
-          maxWidth: 200,
-          maxHeight: 150
-        }
-        resizeImage(info).then((image) => {
-          uploadFile(image, item.id)
-        })
-      } else {
-        const imgUrl = e.dataTransfer.getData('text/html')
-        const rex = /src="?([^"\s]+)"?\s*/
-        let url
-        url = rex.exec(imgUrl)
-        urlToFile(url[1], 'a.png')
-          .then((file) => {
-            const info = {
-              file,
-              maxWidth: 200,
-              maxHeight: 150
-            }
-            resizeImage(info).then((image) => {
-              uploadFile(image, item.id)
-            })
-          })
-      }
-      itemEl.classList.remove('dragdrop')
-    }
-
-    itemEl.addEventListener('dragenter', dragenter, false)
-    itemEl.addEventListener('dragover', dragover, false)
-    itemEl.addEventListener('dragleave', dragleave, false)
-    itemEl.addEventListener('dragexit', dragexit, false)
-    itemEl.addEventListener('drop', drop, false)
-
-    // Hidden Input Element
-    const inputEl = document.createElement('input')
-    inputEl.type = 'file'
-    inputEl.setAttribute('id', 'file-upload')
-    inputEl.accept = 'image/*'
-    inputEl.style = 'display: none;'
-    inputEl.addEventListener('change', (e) => {
-      const info = {
-        file: e.srcElement.files[0],
-        maxWidth: 200,
-        maxHeight: 150
-      }
-      resizeImage(info).then((image) => {
-        uploadFile(image, item.id)
-      })
-    })
-    imgDiv.appendChild(inputEl)
-
-    // event listener for file select
-    imgEl.addEventListener('click', (e) => {
-      inputEl.click()
-      e.preventDefault()
-    })
-    // END Add Image Functionality
+    imgDiv.appendChild(imgEl)
   }
-  imgDiv.appendChild(imgEl)
   itemEl.appendChild(imgDiv)
 
   const itemNameEl = document.createElement('span')
