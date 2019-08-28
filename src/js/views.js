@@ -8,7 +8,7 @@ import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCol
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
-import { uploadFile, resizeImage } from './image-upload'
+import { uploadFile, resizeImage, urlToFile } from './image-upload'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -90,14 +90,6 @@ const renderListData = () => {
   }
 }
 
-function urltoFile (url, filename, mimeType) {
-  mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1]
-  return (fetch(url)
-    .then(function (res) { return res.arrayBuffer() })
-    .then(function (buf) { return new File([buf], filename, { type: mimeType })})
-  )
-}
-
 // Generate DOM for each item in createList
 const generateListDataDOM = (item) => {
   const itemEl = document.createElement('li')
@@ -159,7 +151,7 @@ const generateListDataDOM = (item) => {
         const rex = /src="?([^"\s]+)"?\s*/
         let url
         url = rex.exec(imgUrl)
-        urltoFile(url[1], 'a.png')
+        urlToFile(url[1], 'a.png')
           .then((file) => {
             const info = {
               file,
