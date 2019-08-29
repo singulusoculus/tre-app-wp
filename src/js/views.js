@@ -98,8 +98,8 @@ const generateListDataDOM = (item) => {
   imgDiv.classList.add('list-item__image-container')
   const imgEl = document.createElement('img')
   imgEl.classList.add('list-item__image')
-  if (item.image !== '') {
-    imgEl.src = item.image
+  if (item.thumbnail !== '') {
+    imgEl.src = item.thumbnail
     imgDiv.appendChild(imgEl)
   }
   itemEl.appendChild(imgDiv)

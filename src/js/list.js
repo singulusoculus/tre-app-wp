@@ -41,6 +41,7 @@ const createListObject = (data) => {
     id: data.id || uuidv4(),
     name: data.name,
     image: data.image || '',
+    thumbnail: data.thumbnail || '',
     source: data.source,
     rank: data.rank || 0,
     bggId: data.bggId || '',

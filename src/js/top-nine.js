@@ -47,6 +47,8 @@ const getImageWidthHeight = (image, index) => {
       height: img.height,
       x: baseCoordinates[index].x,
       y: baseCoordinates[index].y,
+      resizeWidth: 0,
+      resizeHeight: 0,
       coverWidth: 0,
       coverHeight: 0,
       xOffset: 0,
@@ -61,15 +63,31 @@ const getImageWidthHeight = (image, index) => {
 const calcImageProperties = (obj) => {
   return new Promise((resolve, reject) => {
   // Calculate cover dimensions
-    const widthCalc = 210 - obj.width
-    const heightCalc = 210 - obj.height
+
+    if (obj.width > obj.height) {
+      if (obj.width > 210) {
+        obj.resizeHeight = obj.height * (210 / obj.width)
+        obj.resizeWidth = 210
+      }
+    } else if (obj.height > obj.width) {
+      if (obj.height > 210) {
+        obj.resizeWidth = obj.width * (210 / obj.height)
+        obj.resizeHeight = 210
+      }
+    } else {
+      obj.resizeWidth = 210
+      obj.resizeHeight = 210
+    }
+
+    const widthCalc = 210 - obj.resizeWidth
+    const heightCalc = 210 - obj.resizeHeight
 
     if (widthCalc > heightCalc) {
-      obj.coverWidth = obj.width + widthCalc
-      obj.coverHeight = obj.height + widthCalc
+      obj.coverWidth = obj.resizeWidth + widthCalc
+      obj.coverHeight = obj.resizeHeight + widthCalc
     } else if (heightCalc > widthCalc) {
-      obj.coverWidth = obj.width + heightCalc
-      obj.coverHeight = obj.height + heightCalc
+      obj.coverWidth = obj.resizeWidth + heightCalc
+      obj.coverHeight = obj.resizeHeight + heightCalc
     } else {
       obj.coverWidth = 210
       obj.coverHeight = 210
@@ -80,6 +98,8 @@ const calcImageProperties = (obj) => {
       const xOffset = (210 - obj.coverWidth) / 2
       obj.xOffset = xOffset
     }
+
+    console.log(obj)
 
     resolve(obj)
   })
