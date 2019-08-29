@@ -1,14 +1,26 @@
 
+// const baseCoordinates = [
+//   { x: 2.5, y: 2.5 },
+//   { x: 215, y: 2.5 },
+//   { x: 427.5, y: 2.5 },
+//   { x: 2.5, y: 215 },
+//   { x: 215, y: 215 },
+//   { x: 427.5, y: 215 },
+//   { x: 2.5, y: 427.5 },
+//   { x: 215, y: 427.5 },
+//   { x: 427.5, y: 427.5 }
+// ]
+
 const baseCoordinates = [
-  { x: 2.5, y: 2.5 },
-  { x: 215, y: 2.5 },
-  { x: 427.5, y: 2.5 },
-  { x: 2.5, y: 215 },
-  { x: 215, y: 215 },
-  { x: 427.5, y: 215 },
-  { x: 2.5, y: 427.5 },
-  { x: 215, y: 427.5 },
-  { x: 427.5, y: 427.5 }
+  { x: 6, y: 6 },
+  { x: 364, y: 6 },
+  { x: 722, y: 6 },
+  { x: 6, y: 364 },
+  { x: 364, y: 364 },
+  { x: 722, y: 364 },
+  { x: 6, y: 722 },
+  { x: 364, y: 722 },
+  { x: 722, y: 722 }
 ]
 
 const checkforImages = (data) => {
@@ -62,25 +74,28 @@ const getImageWidthHeight = (image, index) => {
 
 const calcImageProperties = (obj) => {
   return new Promise((resolve, reject) => {
-  // Calculate cover dimensions
+    // const maxSize = 210
+    const maxSize = 352
 
+    // Calculate resize dimensions
     if (obj.width > obj.height) {
-      if (obj.width > 210) {
-        obj.resizeHeight = obj.height * (210 / obj.width)
-        obj.resizeWidth = 210
+      if (obj.width > maxSize) {
+        obj.resizeHeight = obj.height * (maxSize / obj.width)
+        obj.resizeWidth = maxSize
       }
     } else if (obj.height > obj.width) {
-      if (obj.height > 210) {
-        obj.resizeWidth = obj.width * (210 / obj.height)
-        obj.resizeHeight = 210
+      if (obj.height > maxSize) {
+        obj.resizeWidth = obj.width * (maxSize / obj.height)
+        obj.resizeHeight = maxSize
       }
     } else {
-      obj.resizeWidth = 210
-      obj.resizeHeight = 210
+      obj.resizeWidth = maxSize
+      obj.resizeHeight = maxSize
     }
-
-    const widthCalc = 210 - obj.resizeWidth
-    const heightCalc = 210 - obj.resizeHeight
+    
+    // Calculate cover dimensions
+    const widthCalc = maxSize - obj.resizeWidth
+    const heightCalc = maxSize - obj.resizeHeight
 
     if (widthCalc > heightCalc) {
       obj.coverWidth = obj.resizeWidth + widthCalc
@@ -89,17 +104,15 @@ const calcImageProperties = (obj) => {
       obj.coverWidth = obj.resizeWidth + heightCalc
       obj.coverHeight = obj.resizeHeight + heightCalc
     } else {
-      obj.coverWidth = 210
-      obj.coverHeight = 210
+      obj.coverWidth = maxSize
+      obj.coverHeight = maxSize
     }
 
-    // calculate offset - if widthe is longer than 210
-    if (obj.coverWidth > 210) {
-      const xOffset = (210 - obj.coverWidth) / 2
+    // calculate offset - if widthe is longer than maxSize
+    if (obj.coverWidth > maxSize) {
+      const xOffset = (maxSize - obj.coverWidth) / 2
       obj.xOffset = xOffset
     }
-
-    console.log(obj)
 
     resolve(obj)
   })
@@ -145,7 +158,8 @@ const renderBackground = (ctx) => {
 const renderLogo = (ctx) => {
   const image = getFilePath(`/images/pm-logo-sm.png`)
   return createImg(image).then(img => {
-    ctx.drawImage(img, 590, 590)
+    // ctx.drawImage(img, 590, 590)
+    ctx.drawImage(img, 995, 995)
   })
 }
 
@@ -161,6 +175,7 @@ const renderTopNine = (images) => {
       return renderLogo(ctx)
     })
     .catch(error => console.log(error))
+
 }
 
 export { renderTopNine, checkforImages }

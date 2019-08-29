@@ -80,29 +80,6 @@ const renderResult = () => {
     document.querySelector('#save-description').value = ''
   })
 
-  // Check for top nine images
-  const images = checkforImages(resultData)
-  console.log(images)
-
-  // Top Nine Button
-  if (images) {
-    const topNineButtonEl = document.createElement('a')
-    topNineButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'top-nine-btn')
-    topNineButtonEl.textContent = 'Top Nine'
-    topNineButtonEl.addEventListener('click', () => {
-      renderTopNine(images)
-      const topNineModal = M.Modal.getInstance(document.querySelector('#top-nine-modal'))
-      topNineModal.open()
-    })
-
-    const topNineIconEl = document.createElement('i')
-    topNineIconEl.classList.add('material-icons', 'right')
-    topNineIconEl.textContent = 'grid_on'
-
-    topNineButtonEl.appendChild(topNineIconEl)
-    dtButtonsEl.appendChild(topNineButtonEl)
-  }
-
   // Add title to table
   const resultDesc = getDBListInfo().userResult.desc
   const tableEl = document.querySelector('#results__table_wrapper')
@@ -123,6 +100,28 @@ const renderResult = () => {
       M.Toast.dismissAll()
     })
   })
+
+  // Check for top nine images
+  const images = checkforImages(resultData)
+  // Top Nine Button
+  if (images) {
+    renderTopNine(images)
+    const topNineButtonEl = document.createElement('a')
+    topNineButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'top-nine-btn')
+    topNineButtonEl.textContent = 'Top Nine'
+    topNineButtonEl.addEventListener('click', () => {
+      // renderTopNine(images)
+      const topNineModal = M.Modal.getInstance(document.querySelector('#top-nine-modal'))
+      topNineModal.open()
+    })
+
+    const topNineIconEl = document.createElement('i')
+    topNineIconEl.classList.add('material-icons', 'right')
+    topNineIconEl.textContent = 'grid_on'
+
+    topNineButtonEl.appendChild(topNineIconEl)
+    dtButtonsEl.appendChild(topNineButtonEl)
+  }
 }
 
 export { initPrevResult, renderResult, getResultData, setResultData }
