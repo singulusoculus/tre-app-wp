@@ -68,7 +68,7 @@ const clearDBListInfo = () => {
 
 const dbGetUserLists = () => new Promise((resolve, reject) => {
   const wpuid = getUserID()
-  fadeInSpinner()
+  // fadeInSpinner()
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'getUserLists',
     wpuid
@@ -76,7 +76,7 @@ const dbGetUserLists = () => new Promise((resolve, reject) => {
     if (status === 'success') {
       const parsedData = JSON.parse(data)
       parsedData ? resolve(parsedData) : reject(new Error('No data returned'))
-      fadeOutSpinner()
+      // fadeOutSpinner()
     }
   })
 })
@@ -287,7 +287,7 @@ const dbUpdateTemplateData = (saveDesc) => {
   })
 }
 
-const dbSaveProgressData = (saveDesc) => {
+const dbSaveProgressData = (saveDesc = dbListInfo.progress.desc) => {
   const wpuid = getUserID()
   const rankData = getRankData()
 
@@ -304,7 +304,8 @@ const dbSaveProgressData = (saveDesc) => {
   const rankDataJSON = JSON.stringify(newRankData)
   const category = getCategory()
 
-  fadeInSpinner()
+  const saveBtnEl = document.querySelector('#save-ranking')
+  saveBtnEl.classList.add('disabled')
 
   if (dbListInfo.progress.id === 0) {
     const uuid = uuidv4()
@@ -332,7 +333,8 @@ const dbSaveProgressData = (saveDesc) => {
         renderMyLists()
         setupSaveButtons()
 
-        fadeOutSpinner()
+        saveBtnEl.classList.remove('disabled')
+
         M.toast({ html: `Progress List Saved`, displayLength: 2000 })
       }
     })
@@ -354,8 +356,9 @@ const dbSaveProgressData = (saveDesc) => {
         renderMyLists()
         setupSaveButtons()
 
-        fadeOutSpinner()
-        M.toast({ html: `Progress List Updated`, displayLength: 2000 })
+        saveBtnEl.classList.remove('disabled')
+
+        M.toast({ html: `Progress List Saved`, displayLength: 2000 })
       }
     })
   }

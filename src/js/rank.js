@@ -3,7 +3,7 @@ import { setResultData, getResultData } from './result'
 import { disableArrowKeyScroll, saveData } from './functions'
 import { setCategory, getCategoryInfo } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
-import { dbSaveResultData, setDBListInfoType, getDBListInfo, dbUpdateResultData } from './database'
+import { dbSaveResultData, setDBListInfoType, getDBListInfo, dbUpdateResultData, dbSaveProgressData } from './database'
 import { createList } from './list'
 
 let rankData = {}
@@ -244,6 +244,12 @@ const cmpCheck = () => {
   } else {
     checkForDeletedItems()
     updateProgressBar()
+
+    // auto save
+    const dbListInfo = getDBListInfo()
+    if (dbListInfo.progress.id > 0 && rankData.numQuestion % 5 === 0) {
+      dbSaveProgressData()
+    }
 
     setTimeout(() => {
       showComparison()

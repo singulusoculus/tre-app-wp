@@ -507,7 +507,7 @@ function updateProgressList() {
   //sanitize description
   $desc = sanitize_text_field($desc);
 
-  $wpdb->update(
+ $wpdb->update(
     'wp_re_rank_progress',
     array(
       'progress_desc' => $desc,
