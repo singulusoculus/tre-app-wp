@@ -105,12 +105,10 @@ const renderResult = () => {
   const images = checkforImages(resultData)
   // Top Nine Button
   if (images) {
-    renderTopNine(images)
     const topNineButtonEl = document.createElement('a')
     topNineButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'top-nine-btn')
     topNineButtonEl.textContent = 'Top Nine'
     topNineButtonEl.addEventListener('click', () => {
-      // renderTopNine(images)
       const topNineModal = M.Modal.getInstance(document.querySelector('#top-nine-modal'))
       topNineModal.open()
     })
@@ -121,6 +119,7 @@ const renderResult = () => {
 
     topNineButtonEl.appendChild(topNineIconEl)
     dtButtonsEl.appendChild(topNineButtonEl)
+    renderTopNine(images)
   }
 }
 

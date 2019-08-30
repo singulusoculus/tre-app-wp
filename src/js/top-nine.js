@@ -1,16 +1,4 @@
 
-// const baseCoordinates = [
-//   { x: 2.5, y: 2.5 },
-//   { x: 215, y: 2.5 },
-//   { x: 427.5, y: 2.5 },
-//   { x: 2.5, y: 215 },
-//   { x: 215, y: 215 },
-//   { x: 427.5, y: 215 },
-//   { x: 2.5, y: 427.5 },
-//   { x: 215, y: 427.5 },
-//   { x: 427.5, y: 427.5 }
-// ]
-
 const baseCoordinates = [
   { x: 6, y: 6 },
   { x: 364, y: 6 },
@@ -74,7 +62,6 @@ const getImageWidthHeight = (image, index) => {
 
 const calcImageProperties = (obj) => {
   return new Promise((resolve, reject) => {
-    // const maxSize = 210
     const maxSize = 352
 
     // Calculate resize dimensions
@@ -92,7 +79,7 @@ const calcImageProperties = (obj) => {
       obj.resizeWidth = maxSize
       obj.resizeHeight = maxSize
     }
-    
+
     // Calculate cover dimensions
     const widthCalc = maxSize - obj.resizeWidth
     const heightCalc = maxSize - obj.resizeHeight
@@ -120,7 +107,9 @@ const calcImageProperties = (obj) => {
 
 const renderTempCanvas = (info) => {
   return new Promise((resolve, reject) => {
-    let canvas = document.querySelector(`.tc-${info.index}`)
+    const canvas = document.createElement('canvas')
+    canvas.width = 352
+    canvas.height = 352
     let ctx = canvas.getContext('2d')
     ctx.drawImage(info.imgEl, 0 + info.xOffset, 0 + info.yOffset, info.coverWidth, info.coverHeight)
     info = { ...info, canvas: canvas }
@@ -156,7 +145,7 @@ const renderBackground = (ctx) => {
 }
 
 const renderLogo = (ctx) => {
-  const image = getFilePath(`/images/pm-logo-sm.png`)
+  const image = getFilePath(`/images/pm-logo-md.png`)
   return createImg(image).then(img => {
     // ctx.drawImage(img, 590, 590)
     ctx.drawImage(img, 995, 995)
@@ -175,7 +164,6 @@ const renderTopNine = (images) => {
       return renderLogo(ctx)
     })
     .catch(error => console.log(error))
-
 }
 
 export { renderTopNine, checkforImages }

@@ -462,26 +462,6 @@
         <h4 class="center-align">Your Top Nine</h4>
         <p class="center-align">To save the image, right click (on desktop) or long press (on mobile) and select Save Image</p>
         <canvas width="1080" height="1080" class="top-nine-canvas"></canvas>
-        <div class="tc-wrapper" style="display: none">
-          <!-- <canvas width="210" height="210" class="tc-0"></canvas>
-          <canvas width="210" height="210" class="tc-1"></canvas>
-          <canvas width="210" height="210" class="tc-2"></canvas>
-          <canvas width="210" height="210" class="tc-3"></canvas>
-          <canvas width="210" height="210" class="tc-4"></canvas>
-          <canvas width="210" height="210" class="tc-5"></canvas>
-          <canvas width="210" height="210" class="tc-6"></canvas>
-          <canvas width="210" height="210" class="tc-7"></canvas>
-          <canvas width="210" height="210" class="tc-8"></canvas> -->
-          <canvas width="352" height="352" class="tc-0"></canvas>
-          <canvas width="352" height="352" class="tc-1"></canvas>
-          <canvas width="352" height="352" class="tc-2"></canvas>
-          <canvas width="352" height="352" class="tc-3"></canvas>
-          <canvas width="352" height="352" class="tc-4"></canvas>
-          <canvas width="352" height="352" class="tc-5"></canvas>
-          <canvas width="352" height="352" class="tc-6"></canvas>
-          <canvas width="352" height="352" class="tc-7"></canvas>
-          <canvas width="352" height="352" class="tc-8"></canvas>
-        </div>
       </div>
   </div>
 
