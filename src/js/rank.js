@@ -139,14 +139,14 @@ const showComparison = () => {
   const categoryName = getCategoryInfo().name
 
   // Image control
-  if (item1.thumbnail !== '') {
-    document.querySelector('#item-1-img').setAttribute('src', item1.thumbnail)
+  if (item1.image !== '') {
+    document.querySelector('#item-1-img').setAttribute('src', item1.image)
   } else {
     document.querySelector('#item-1-img').setAttribute('src', getFilePath(`/images/${categoryName}-lime.png`))
   }
 
-  if (item2.thumbnail !== '') {
-    document.querySelector('#item-2-img').setAttribute('src', item2.thumbnail)
+  if (item2.image !== '') {
+    document.querySelector('#item-2-img').setAttribute('src', item2.image)
   } else {
     document.querySelector('#item-2-img').setAttribute('src', getFilePath(`/images/${categoryName}-orange.png`))
   }

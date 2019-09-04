@@ -40,8 +40,8 @@ const createListObject = (data) => {
   const obj = {
     id: data.id || uuidv4(),
     name: data.name,
+    imageOriginal: data.imageOriginal || '',
     image: data.image || '',
-    thumbnail: data.thumbnail || '',
     source: data.source,
     rank: data.rank || 0,
     bggId: data.bggId || '',
@@ -53,6 +53,7 @@ const createListObject = (data) => {
 // data takes in array of objects
 const createList = (data) => {
   let list = []
+  console.log(data)
   data.forEach((item) => {
     const obj = createListObject(item)
     list.push(obj)

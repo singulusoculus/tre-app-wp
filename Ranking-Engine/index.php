@@ -461,7 +461,8 @@
         </a>
         <h4 class="center-align">Your Top Nine</h4>
         <p class="center-align">To save the image, right click (on desktop) or long press (on mobile) and select Save Image</p>
-        <canvas width="1080" height="1080" class="top-nine-canvas"></canvas>
+        <img src="" alt="" class="top-nine-image">
+        <!-- <canvas width="1080" height="1080" class="top-nine-canvas"></canvas> -->
       </div>
   </div>
 

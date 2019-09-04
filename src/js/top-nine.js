@@ -15,8 +15,8 @@ const checkforImages = (data) => {
   const topNine = data.slice(0, 9)
   const images = []
   topNine.forEach(i => {
-    if (i.image !== '') {
-      images.push(i.image)
+    if (i.imageOriginal !== '') {
+      images.push(i.imageOriginal)
     }
   })
 
@@ -27,143 +27,140 @@ const checkforImages = (data) => {
   }
 }
 
-const createImg = (image) => {
+const renderTopNine = (images) => {
+  const canvasEl = document.createElement('canvas')
+  canvasEl.width = 1080
+  canvasEl.height = 1080
+  const canvasElctx = canvasEl.getContext('2d')
+
+  // background
+  const backgroundImage = new Image()
+  backgroundImage.src = getFilePath(`/images/background.png`)
+  canvasElctx.drawImage(backgroundImage, 0, 0)
+
+  images.map((image, index) => new Promise((resolve, reject) => {
+    const filename = `${index}.png`
+    const mimeType = 'image/jpeg'
+    urlToFile(image, filename, mimeType)
+      .then((file) => {
+        return resizeImage(file, index)
+      })
+      .then((data) => {
+        return renderSingleCanvas(data, canvasElctx)
+      })
+      .then(() => {
+        const logoImage = new Image()
+        logoImage.src = getFilePath(`/images/pm-logo-md.png`)
+        canvasElctx.drawImage(logoImage, 995, 995)
+
+        const finalImage = canvasEl.toDataURL('image/png')
+        document.querySelector('.top-nine-image').src = finalImage
+      })
+  }))
+}
+
+const renderSingleCanvas = (data, canvasElctx) => {
   return new Promise((resolve, reject) => {
-    const img = new Image()
-    img.onload = () => {
-      resolve(img)
-    }
-    img.src = image
+    const canvasSingle = document.createElement('canvas')
+    canvasSingle.width = 352
+    canvasSingle.height = 352
+    const ctxSingle = canvasSingle.getContext('2d')
+    ctxSingle.drawImage(data.newImageEl, 0 + data.xOffset, 0 + data.yOffset, data.coverWidth, data.coverHeight)
+    canvasElctx.drawImage(canvasSingle, data.x, data.y)
+    resolve()
   })
 }
 
-const getImageWidthHeight = (image, index) => {
-  return new Promise((resolve, reject) => {
-    let img = new Image()
-    img.onload = () => resolve({
-      image: image,
-      imgEl: img,
-      width: img.width,
-      height: img.height,
-      x: baseCoordinates[index].x,
-      y: baseCoordinates[index].y,
-      resizeWidth: 0,
-      resizeHeight: 0,
-      coverWidth: 0,
-      coverHeight: 0,
-      xOffset: 0,
-      yOffset: 0,
-      index: index
-    })
-    img.onerror = reject
-    img.src = image
-  })
+const urlToFile = (url, filename, mimeType) => {
+  const proxyURL = 'https://mighty-waters-78900.herokuapp.com/' // my implementation of cors-anywhere
+  mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1]
+  return (fetch(proxyURL + url)
+    .then(function (res) { return res.arrayBuffer() })
+    .then(function (buf) { return new File([buf], filename, { type: mimeType }) })
+  )
 }
 
-const calcImageProperties = (obj) => {
-  return new Promise((resolve, reject) => {
-    const maxSize = 352
+const resizeImage = (file, index) => {
+  // const file = result
+  const maxWidth = 352
+  const maxHeight = 352
+  const reader = new FileReader()
+  const image = new Image()
+  const canvas = document.createElement('canvas')
 
-    // Calculate resize dimensions
-    if (obj.width > obj.height) {
-      if (obj.width > maxSize) {
-        obj.resizeHeight = obj.height * (maxSize / obj.width)
-        obj.resizeWidth = maxSize
-      }
-    } else if (obj.height > obj.width) {
-      if (obj.height > maxSize) {
-        obj.resizeWidth = obj.width * (maxSize / obj.height)
-        obj.resizeHeight = maxSize
+  const resize = function () {
+    let width = image.width
+    let height = image.height
+    if (width > height) {
+      if (width > maxWidth) {
+        height *= maxWidth / width
+        width = maxWidth
       }
     } else {
-      obj.resizeWidth = maxSize
-      obj.resizeHeight = maxSize
+      if (height > maxHeight) {
+        width *= maxHeight / height
+        height = maxHeight
+      }
     }
 
     // Calculate cover dimensions
-    const widthCalc = maxSize - obj.resizeWidth
-    const heightCalc = maxSize - obj.resizeHeight
+    const widthCalc = maxWidth - width
+    const heightCalc = maxHeight - height
+    let coverWidth = 0
+    let coverHeight = 0
+    let xOffset = 0
+    let yOffset = 0
 
     if (widthCalc > heightCalc) {
-      obj.coverWidth = obj.resizeWidth + widthCalc
-      obj.coverHeight = obj.resizeHeight + widthCalc
+      coverWidth = width + widthCalc
+      coverHeight = height + widthCalc
     } else if (heightCalc > widthCalc) {
-      obj.coverWidth = obj.resizeWidth + heightCalc
-      obj.coverHeight = obj.resizeHeight + heightCalc
+      coverWidth = width + heightCalc
+      coverHeight = height + heightCalc
     } else {
-      obj.coverWidth = maxSize
-      obj.coverHeight = maxSize
+      coverWidth = maxWidth
+      coverHeight = maxHeight
     }
 
     // calculate offset - if widthe is longer than maxSize
-    if (obj.coverWidth > maxSize) {
-      const xOffset = (maxSize - obj.coverWidth) / 2
-      obj.xOffset = xOffset
+    if (coverWidth > maxWidth) {
+      xOffset = (maxWidth - coverWidth) / 2
     }
 
-    resolve(obj)
-  })
-}
+    canvas.width = width
+    canvas.height = height
+    canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+    const dataUrl = canvas.toDataURL('image/png')
 
-const renderTempCanvas = (info) => {
+    const newImageEl = new Image()
+    newImageEl.src = dataUrl
+
+    return {
+      newImageEl,
+      dataUrl,
+      width,
+      height,
+      x: baseCoordinates[index].x,
+      y: baseCoordinates[index].y,
+      coverWidth,
+      coverHeight,
+      xOffset,
+      yOffset,
+      index
+    }
+  }
+
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 352
-    canvas.height = 352
-    let ctx = canvas.getContext('2d')
-    ctx.drawImage(info.imgEl, 0 + info.xOffset, 0 + info.yOffset, info.coverWidth, info.coverHeight)
-    info = { ...info, canvas: canvas }
-    resolve(info)
+    if (!file.type.match(/image.*/)) {
+      reject(new Error('Not an image'))
+      return
+    }
+    reader.onload = function (readerEvent) {
+      image.onload = function () { return resolve(resize()) }
+      image.src = readerEvent.target.result
+    }
+    reader.readAsDataURL(file)
   })
-}
-
-const renderImage = (info, ctx) => {
-  ctx.drawImage(info.canvas, info.x, info.y)
-}
-
-const renderImages = (images, ctx) => {
-  return new Promise((resolve, reject) => {
-    const promises = images.map((image, index) => new Promise((resolve, reject) => {
-      getImageWidthHeight(image, index)
-        .then(obj => calcImageProperties(obj))
-        .then(obj => renderTempCanvas(obj))
-        .then(info => {
-          renderImage(info, ctx)
-          resolve()
-        })
-    }))
-    resolve(Promise.all(promises))
-  })
-}
-
-const renderBackground = (ctx) => {
-  const image = getFilePath(`/images/background.png`)
-  return createImg(image)
-    .then(img => {
-      ctx.drawImage(img, 0, 0)
-    })
-}
-
-const renderLogo = (ctx) => {
-  const image = getFilePath(`/images/pm-logo-md.png`)
-  return createImg(image).then(img => {
-    // ctx.drawImage(img, 590, 590)
-    ctx.drawImage(img, 995, 995)
-  })
-}
-
-const renderTopNine = (images) => {
-  const canvas = document.querySelector('.top-nine-canvas')
-  const ctx = canvas.getContext('2d')
-
-  renderBackground(ctx)
-    .then(() => {
-      return renderImages(images, ctx)
-    })
-    .then(() => {
-      return renderLogo(ctx)
-    })
-    .catch(error => console.log(error))
 }
 
 export { renderTopNine, checkforImages }

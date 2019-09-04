@@ -93,13 +93,13 @@ const renderListData = () => {
 const generateListDataDOM = (item) => {
   const itemEl = document.createElement('li')
   itemEl.classList.add('collection-item', 'list-item')
-
+  console.log(item)
   const imgDiv = document.createElement('div')
   imgDiv.classList.add('list-item__image-container')
   const imgEl = document.createElement('img')
   imgEl.classList.add('list-item__image')
-  if (item.thumbnail !== '') {
-    imgEl.src = item.thumbnail
+  if (item.image !== '') {
+    imgEl.src = item.image
     imgDiv.appendChild(imgEl)
   }
   itemEl.appendChild(imgDiv)
