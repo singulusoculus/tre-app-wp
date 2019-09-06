@@ -492,7 +492,6 @@ const dbGetSharedList = (id, type) => {
       type: type
     }, (data, status) => {
       const parsedData = JSON.parse(data)
-      console.log(parsedData)
       resolve(parsedData)
     })
   })

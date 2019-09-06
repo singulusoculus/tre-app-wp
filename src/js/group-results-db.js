@@ -1,7 +1,7 @@
 
 const dbGetTemplateListData = (uuid) => {
   return new Promise((resolve, reject) => {
-    jQuery.post(getFilePath('/re-func/re-shared-rankings-functions.php'), {
+    jQuery.post(getFilePath('/re-func/re-group-results-functions.php'), {
       func: 'getTemplateListData',
       uuid: `"${uuid}"`
     }, (data, status) => {
@@ -15,7 +15,7 @@ const dbGetTemplateListData = (uuid) => {
 
 const dbGetTimesRanked = (id) => {
   return new Promise((resolve, reject) => {
-    jQuery.post(getFilePath('/re-func/re-shared-rankings-functions.php'), {
+    jQuery.post(getFilePath('/re-func/re-group-results-functions.php'), {
       func: 'getTimesRanked',
       id
     }, (data, status) => {
@@ -29,7 +29,7 @@ const dbGetTimesRanked = (id) => {
 
 const dbGetSharedResults = (id) => {
   return new Promise((resolve, reject) => {
-    jQuery.post(getFilePath('/re-func/re-shared-rankings-functions.php'), {
+    jQuery.post(getFilePath('/re-func/re-group-results-functions.php'), {
       func: 'getSharedResults',
       id
     }, (data, status) => {
@@ -42,7 +42,7 @@ const dbGetSharedResults = (id) => {
 }
 
 const dbSetShareResultsFlag = (id, value) => {
-  jQuery.post(getFilePath('/re-func/re-shared-rankings-functions.php'), {
+  jQuery.post(getFilePath('/re-func/re-group-results-functions.php'), {
     func: `setShareResultsFlag`,
     id: id,
     value: value
@@ -51,7 +51,7 @@ const dbSetShareResultsFlag = (id, value) => {
 }
 
 const dbClearSharedRankingResults = (id) => {
-  jQuery.post(getFilePath('/re-func/re-shared-rankings-functions.php'), {
+  jQuery.post(getFilePath('/re-func/re-group-results-functions.php'), {
     func: `clearSharedRankingResults`,
     id: id
   }, (data, status) => {

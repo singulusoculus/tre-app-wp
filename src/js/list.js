@@ -53,7 +53,6 @@ const createListObject = (data) => {
 // data takes in array of objects
 const createList = (data) => {
   let list = []
-  console.log(data)
   data.forEach((item) => {
     const obj = createListObject(item)
     list.push(obj)

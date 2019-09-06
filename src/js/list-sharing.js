@@ -89,7 +89,7 @@ const createStatsBtn = (listData) => {
   const aEl = document.createElement('a')
   const iEl = document.createElement('i')
 
-  aEl.href = `./shared-rankings/?l=${listData.uuid}`
+  aEl.href = `./group-results/?l=${listData.uuid}`
   aEl.target = '_blank'
   aEl.textContent = 'Results'
   aEl.classList.add('waves-effect', 'waves-light', 'btn', 'share-list__results')

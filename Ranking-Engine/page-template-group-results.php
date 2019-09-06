@@ -1,7 +1,7 @@
 <?php
 /*
 
-Template Name: Shared Rankings
+Template Name: Group Results
 
 */
 ?>
@@ -48,6 +48,6 @@ Template Name: Shared Rankings
 
 </main>
 
-<script src="<?php echo get_theme_file_uri('/dist/sharedrankings-bundle.js'); ?>"></script>
+<script src="<?php echo get_theme_file_uri('/dist/groupresults-bundle.js'); ?>"></script>
 
 <?php get_footer(); ?>

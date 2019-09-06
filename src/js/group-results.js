@@ -1,4 +1,4 @@
-import { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag, dbClearSharedRankingResults } from './shared-rankings-db'
+import { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag, dbClearSharedRankingResults } from './group-results-db'
 import { renderTableRows, initDataTable } from './functions'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 
@@ -135,10 +135,8 @@ const renderOptions = () => {
   aEl.textContent = 'Clear Results'
   aEl.addEventListener('click', () => {
     const r = confirm('Are you sure you want to clear all results?')
-    console.log(r)
     if (r) {
       // clear results from data base - clear parent_list from results_h, flip ranked to 0 on template
-      console.log(templateListData)
       dbClearSharedRankingResults(templateListData.template_id)
       // navigate the user back to the ranking engine
       window.location.href = getSiteURL()

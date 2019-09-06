@@ -94,7 +94,7 @@ const initRankingEngineReload = (reload) => {
 const initRankingEngineUrlParam = async (param) => {
   try {
     if (param.type === 'r') {
-      console.log(`loading result: ${param.id}`)
+      // console.log(`loading result: ${param.id}`)
       const result = await dbGetSharedList(param.id, 'Result')
       const category = parseInt(result[0].list_category)
       const data = JSON.parse(result[0].result_data)
@@ -102,7 +102,7 @@ const initRankingEngineUrlParam = async (param) => {
       document.querySelector('#save-results').classList.add('disabled')
       removeURLParam()
     } else if (param.type === 't') {
-      console.log(`loading template to rank: ${param.id}`)
+      // console.log(`loading template to rank: ${param.id}`)
       const template = await dbGetSharedList(param.id, 'Template')
       const category = parseInt(template[0].list_category)
       const data = JSON.parse(template[0].template_data)
@@ -110,9 +110,9 @@ const initRankingEngineUrlParam = async (param) => {
 
       // check localStorage for templateId
       const lsParentLists = JSON.parse(localStorage.getItem('str'))
-      console.log(lsParentLists)
+      // console.log(lsParentLists)
       const listIndex = lsParentLists.indexOf(templateId)
-      console.log(listIndex)
+      // console.log(listIndex)
 
       if (listIndex > -1) {
         custMessage(`You've already ranked this list`)
@@ -125,7 +125,7 @@ const initRankingEngineUrlParam = async (param) => {
         removeURLParam()
       }
     } else if (param.type === 'p') {
-      console.log(`loading progress list: ${param.id}`)
+      // console.log(`loading progress list: ${param.id}`)
       const progress = await dbGetSharedList(param.id, 'Progress')
       const category = parseInt(progress[0].list_category)
       const data = JSON.parse(progress[0].progress_data)

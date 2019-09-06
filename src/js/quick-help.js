@@ -122,7 +122,6 @@ const handleQuickHelpClick = () => {
     const headingEl = document.createElement('h4')
     headingEl.textContent = 'Quick Help'
     headingEl.classList.add('center-align')
-    console.log(headingEl)
     helpTextEl.appendChild(headingEl)
     let helpText = ''
 

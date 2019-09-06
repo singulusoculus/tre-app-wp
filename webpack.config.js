@@ -10,7 +10,7 @@ module.exports = {
     index: ['babel-polyfill', './src/js/index.js'],
     dashboard: ['babel-polyfill', './src/js/dashboard.js'],
     rankings: ['babel-polyfill', './src/js/rankings.js'],
-    sharedrankings: ['babel-polyfill', './src/js/shared-rankings.js']
+    groupresults: ['babel-polyfill', './src/js/group-results.js']
   },
   output: {
     path: path.resolve(__dirname, 'Ranking-Engine/dist'),
