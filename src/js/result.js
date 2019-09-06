@@ -111,6 +111,17 @@ const renderResult = () => {
     topNineButtonEl.addEventListener('click', () => {
       const topNineModal = M.Modal.getInstance(document.querySelector('#top-nine-modal'))
       topNineModal.open()
+      try {
+        jQuery('.top-nine-image').fadeOut(1, renderTopNine(images))
+      } catch (e) {
+        jQuery('.ball-loading').fadeOut()
+        const imageWrapper = document.querySelector('.image-wrapper')
+        const pEl = document.createElement('p')
+        pEl.textContent = 'Sorry, we were unable to generate your top nine image. You can try again by closing this dialog and clicking the Top Nine button again'
+        imageWrapper.appendChild(pEl)
+        console.log(e)
+        throw new Error('Unable to render top nine Image')
+      }
     })
 
     const topNineIconEl = document.createElement('i')
@@ -119,7 +130,6 @@ const renderResult = () => {
 
     topNineButtonEl.appendChild(topNineIconEl)
     dtButtonsEl.appendChild(topNineButtonEl)
-    renderTopNine(images)
   }
 }
 

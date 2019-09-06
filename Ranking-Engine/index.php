@@ -460,9 +460,14 @@
           <span aria-hidden="true">&times;</span>
         </a>
         <h4 class="center-align">Your Top Nine</h4>
-        <p class="center-align">To save the image, right click (on desktop) or long press (on mobile) and select Save Image</p>
-        <img src="" alt="" class="top-nine-image">
-        <!-- <canvas width="1080" height="1080" class="top-nine-canvas"></canvas> -->
+        <p class="center-align">To save the image, right click (on desktop) or long press (on mobile) and select Save Image. If there is an issue with the image, close this dialog and click the Top Nine button again to regenerate the image.</p>
+        <div class="image-wrapper">
+          <img src="" alt="" class="top-nine-image" style="display: none">
+          <div class="ball-loading" style="display: none">
+            <i class="ball"></i>
+          </div>
+          <!-- <canvas width="1080" height="1080" class="top-nine-canvas"></canvas> -->
+        </div>
       </div>
   </div>
 

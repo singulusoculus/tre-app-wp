@@ -1,16 +1,4 @@
 
-const baseCoordinates = [
-  { x: 6, y: 6 },
-  { x: 364, y: 6 },
-  { x: 722, y: 6 },
-  { x: 6, y: 364 },
-  { x: 364, y: 364 },
-  { x: 722, y: 364 },
-  { x: 6, y: 722 },
-  { x: 364, y: 722 },
-  { x: 722, y: 722 }
-]
-
 const checkforImages = (data) => {
   const topNine = data.slice(0, 9)
   const images = []
@@ -28,35 +16,64 @@ const checkforImages = (data) => {
 }
 
 const renderTopNine = (images) => {
+  jQuery('.ball-loading').fadeIn()
   const canvasEl = document.createElement('canvas')
   canvasEl.width = 1080
   canvasEl.height = 1080
   const canvasElctx = canvasEl.getContext('2d')
 
-  // background
-  const backgroundImage = new Image()
-  backgroundImage.src = getFilePath(`/images/background.png`)
-  canvasElctx.drawImage(backgroundImage, 0, 0)
+  renderBackground(canvasElctx)
+    .then(() => renderImages(images, canvasElctx))
+    .then(() => renderLogo(canvasElctx))
+    .then(() => renderFinalImage(canvasEl, canvasElctx))
+}
 
-  images.map((image, index) => new Promise((resolve, reject) => {
-    const filename = `${index}.png`
-    const mimeType = 'image/jpeg'
-    urlToFile(image, filename, mimeType)
-      .then((file) => {
-        return resizeImage(file, index)
-      })
-      .then((data) => {
-        return renderSingleCanvas(data, canvasElctx)
-      })
-      .then(() => {
-        const logoImage = new Image()
-        logoImage.src = getFilePath(`/images/pm-logo-md.png`)
-        canvasElctx.drawImage(logoImage, 995, 995)
+const renderBackground = (ctx) => {
+  return new Promise((resolve, reject) => {
+    const backgroundImage = new Image()
+    backgroundImage.onload = () => {
+      ctx.drawImage(backgroundImage, 0, 0)
+      resolve()
+    }
+    backgroundImage.src = getFilePath(`/images/background.png`)
+  })
+}
 
-        const finalImage = canvasEl.toDataURL('image/png')
-        document.querySelector('.top-nine-image').src = finalImage
-      })
-  }))
+const renderLogo = (ctx) => {
+  return new Promise((resolve, reject) => {
+    const logoImage = new Image()
+    logoImage.onload = () => {
+      ctx.drawImage(logoImage, 995, 995)
+      resolve()
+    }
+    logoImage.src = getFilePath(`/images/pm-logo-md.png`)
+  })
+}
+
+const renderImages = (images, ctx) => {
+  return new Promise((resolve, reject) => {
+    const promises = images.map((image, index) => new Promise((resolve, reject) => {
+      const filename = `${index}.png`
+      const mimeType = 'image/jpeg'
+      const proxyURL = 'https://mighty-waters-78900.herokuapp.com/' // my implementation of cors-anywhere
+
+      urlToFile(image, filename, mimeType, proxyURL)
+        .then(file => resizeImage(file, index))
+        .then(data => renderSingleCanvas(data, ctx))
+        .then(() => {
+          resolve()
+        })
+    }))
+    resolve(Promise.all(promises))
+  })
+}
+
+const renderFinalImage = (canvas, ctx) => {
+  jQuery('.ball-loading').fadeOut('veryslow', () => {
+    const finalImage = canvas.toDataURL('image/png')
+    document.querySelector('.top-nine-image').src = finalImage
+    jQuery('.top-nine-image').fadeIn('slow')
+  })
 }
 
 const renderSingleCanvas = (data, canvasElctx) => {
@@ -71,8 +88,8 @@ const renderSingleCanvas = (data, canvasElctx) => {
   })
 }
 
-const urlToFile = (url, filename, mimeType) => {
-  const proxyURL = 'https://mighty-waters-78900.herokuapp.com/' // my implementation of cors-anywhere
+const urlToFile = (url, filename, mimeType, proxyURL = '') => {
+  // const proxyURL = 'https://mighty-waters-78900.herokuapp.com/' // my implementation of cors-anywhere
   mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1]
   return (fetch(proxyURL + url)
     .then(function (res) { return res.arrayBuffer() })
@@ -81,7 +98,6 @@ const urlToFile = (url, filename, mimeType) => {
 }
 
 const resizeImage = (file, index) => {
-  // const file = result
   const maxWidth = 352
   const maxHeight = 352
   const reader = new FileReader()
@@ -134,6 +150,18 @@ const resizeImage = (file, index) => {
 
     const newImageEl = new Image()
     newImageEl.src = dataUrl
+
+    const baseCoordinates = [
+      { x: 6, y: 6 },
+      { x: 364, y: 6 },
+      { x: 722, y: 6 },
+      { x: 6, y: 364 },
+      { x: 364, y: 364 },
+      { x: 722, y: 364 },
+      { x: 6, y: 722 },
+      { x: 364, y: 722 },
+      { x: 722, y: 722 }
+    ]
 
     return {
       newImageEl,
