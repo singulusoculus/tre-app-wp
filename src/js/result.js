@@ -130,6 +130,11 @@ const renderResult = () => {
 
     topNineButtonEl.appendChild(topNineIconEl)
     dtButtonsEl.appendChild(topNineButtonEl)
+  } else {
+    const topNineButtonEl = document.querySelector('.top-nine-button')
+    if (topNineButtonEl) {
+      topNineButtonEl.remove()
+    }
   }
 }
 

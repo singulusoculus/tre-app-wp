@@ -147,7 +147,7 @@
                     </div>
                     <div class="col s6">
                       <button type="submit" id="bgg-submit" class="waves-effect waves-light btn"><i
-                          class="material-icons right">arrow_forward</i>Submit
+                          class="material-icons right">arrow_forward</i>Go
                       </button>
                     </div>
                   </div>

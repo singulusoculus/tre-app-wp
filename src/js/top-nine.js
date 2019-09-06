@@ -3,7 +3,7 @@ const checkforImages = (data) => {
   const topNine = data.slice(0, 9)
   const images = []
   topNine.forEach(i => {
-    if (i.imageOriginal !== '') {
+    if (i.imageOriginal !== '' && i.imageOriginal !== undefined) {
       images.push(i.imageOriginal)
     }
   })
