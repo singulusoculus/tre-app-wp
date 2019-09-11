@@ -345,5 +345,6 @@ export {
   handleAddSelectedBGG,
   handleCollectionChangeClick,
   saveBGGCollection,
-  initPrevBGGCollection
+  initPrevBGGCollection,
+  getBGGGameData
 }

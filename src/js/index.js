@@ -8,6 +8,7 @@ import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChang
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
 import { copyURLText, handleShareSwitchChange } from './list-sharing'
 import { handleQuickHelpClick } from './quick-help'
+import { handleBGGSearch } from './bgg-search'
 // import LogRocket from 'logrocket'
 // LogRocket.init('r3us4o/ranking-engine-prod')
 
@@ -16,6 +17,8 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 if (isMobile) {
   document.querySelector('#list-category-select').classList.add('browser-default')
 }
+
+handleBGGSearch('star wars: rebellion')
 
 jQuery(document).ready(() => {
   initRankingEngine()
