@@ -110,8 +110,8 @@ const getBGGGameData = (bggIds) => {
       gameDataDetails.minPlaytime = item.minplaytime['@attributes'].value
       gameDataDetails.maxPlaytime = item.maxplaytime['@attributes'].value
       gameDataDetails.playingtime = item.playingtime['@attributes'].value
-      gameDataDetails.thumbnail = item.thumbnail['#text']
-      gameDataDetails.image = item.image['#text']
+      gameDataDetails.thumbnail = item.thumbnail ? item.thumbnail['#text'] : ''
+      gameDataDetails.image = item.image ? item.image['#text'] : ''
 
       // Links
       let mechanisms = []
