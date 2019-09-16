@@ -62,6 +62,19 @@ input[type=range]::-ms-thumb {
   background-color: rgba($color-primary, .6);
 }
 
+// RADIO
+.type-radio label input[type=radio]:checked+span:after {
+  background-color: $color-primary;
+}
+
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after {
+  border: 2px solid $color-primary;
+}
+
+// .type-radio label input[type=radio]:checked+span:before {
+//   border: 2px solid rgba($color-primary, .6);
+// }
+
 // CHECKBOX
 [type="checkbox"]:checked+span:not(.lever):before {
   border-right: 2px solid $color-primary;

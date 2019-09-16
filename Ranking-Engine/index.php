@@ -73,7 +73,6 @@
         <div class="divider"></div>
 
         <div class="current-rankings-wrapper">
-          <!-- <h5 class="center-align">Current <?php echo date("Y"); ?> Top Games:</h5> -->
           <p class="center-align section-title">Current <?php echo date("Y"); ?> Top Games:</p>
           <div class="center-align">
             <a href="./rankings" class="waves-effect waves-light btn all-top-games-btn">See All Top Games<i class="material-icons right small white-text">chevron_right</i></a>
@@ -122,7 +121,7 @@
               </div>
             </li>
             <li class="bgg-section hide">
-              <div class="collapsible-header"><i class="material-icons">cloud_download</i>Add from BGG</div>
+              <div class="collapsible-header"><i class="material-icons">cloud_download</i>BGG Collection</div>
               <div class="collapsible-body">
                 <form autocomplete="off" onsubmit="return false;" class="bgg-username-submit">
                   <div class="row">
@@ -233,6 +232,47 @@
                   </div>
                 </div>
               </div>
+            </li>
+            <li class="bgg-search">
+              <div class="collapsible-header"><i class="material-icons">cloud_download</i>BGG Search</div>
+              <div class="collapsible-body">
+                <form autocomplete="off" onsubmit="return false;" class="bgg-search-submit">
+                    <div class="row">
+                      <div class="col s12 input-field">
+                        <input id="bgg-search" type="text">
+                        <label for="bgg-search">Search Text</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col s8">
+                        <div class="">
+                          <span class="bgg-filter-heading">Search For:</span>
+                          <p class="type-radio">
+                            <label>
+                              <input class="with-gap" name="bgg-search-type" type="radio" checked  />
+                              <span>Board Games</span>
+                            </label>
+                            <label>
+                              <input class="with-gap" name="bgg-search-type" type="radio"  />
+                              <span>Expansions</span>
+                            </label>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col s4">
+                        <button type="submit" id="bgg-search-submit" class="waves-effect waves-light btn"><i
+                            class="material-icons right">arrow_forward</i>Go
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="bgg-search-results-wrapper hide">
+                    <div class="divider-sm"></div>
+                    <h4 class="center-align section-title">Results:</h4>
+                    <div class="bgg-search-results"></div>
+                  </div>
+              </div>
+
             </li>
           </ul>
           <ul class="list-collapsible collapsible popout col s12 m12 l6">
