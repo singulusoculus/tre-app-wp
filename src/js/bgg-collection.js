@@ -1,7 +1,7 @@
 import { renderBGGCollection, custMessage } from './views'
 import { addListItems, sortListData, getListData, createList } from './list'
 import { getBGGFilters, updateBGGFilters } from './filters'
-import { xmlToJson } from './functions'
+import { xmlToJson } from './bgg-functions'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import uuidv4 from 'uuid'
 

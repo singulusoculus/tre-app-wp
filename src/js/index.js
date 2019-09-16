@@ -18,8 +18,6 @@ if (isMobile) {
   document.querySelector('#list-category-select').classList.add('browser-default')
 }
 
-handleBGGSearch('star wars: rebellion')
-
 jQuery(document).ready(() => {
   initRankingEngine()
 
