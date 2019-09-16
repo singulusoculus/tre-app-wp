@@ -110,9 +110,12 @@ const initRankingEngineUrlParam = async (param) => {
 
       // check localStorage for templateId
       const lsParentLists = JSON.parse(localStorage.getItem('str'))
-      // console.log(lsParentLists)
-      const listIndex = lsParentLists.indexOf(templateId)
-      // console.log(listIndex)
+
+      let listIndex = -1
+
+      if (lsParentLists !== null) {
+        listIndex = lsParentLists.indexOf(templateId)
+      }
 
       if (listIndex > -1) {
         custMessage(`You've already ranked this list`)
