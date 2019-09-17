@@ -47,9 +47,11 @@ const handleBGGCollectionRequest = async () => {
     bggCollectionData = await getBGGCollection(user, expansions)
 
     // bggCollectionData = getBGGData()
-    showBGGCollectionSection()
-    renderBGGCollection()
-    fadeOutSpinner()
+    // fadeOutSpinner()
+    jQuery('.ball-loading.collection').fadeOut(() => {
+      showBGGCollectionSection()
+      renderBGGCollection()
+    })
 
     // Save new bgg games to database
     // let bggIds = []
@@ -63,7 +65,8 @@ const handleBGGCollectionRequest = async () => {
 }
 
 const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => {
-  fadeInSpinner()
+  // fadeInSpinner()
+  jQuery('.ball-loading.collection').fadeIn()
   // Get collection - this excludes played-only games
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'getBGGCollection',

@@ -475,9 +475,13 @@ const showListSection = (source) => {
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
 
   renderTemplateDesc()
-  // Show BGG section if category is Board Games
+  // Show BGG section if category is Board Games, hide if not
   if (categoryName === 'Board Games') {
     document.querySelector('.bgg-section').classList.remove('hide')
+    document.querySelector('.bgg-search').classList.remove('hide')
+  } else {
+    document.querySelector('.bgg-section').classList.add('hide')
+    document.querySelector('.bgg-search').classList.add('hide')
   }
 
   const list = getListData()

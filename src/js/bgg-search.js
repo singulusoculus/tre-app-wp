@@ -8,6 +8,8 @@ let bggSearchData = []
 const getBGGSearchData = () => bggSearchData
 
 const handleBGGSearch = async (searchText, type) => {
+  document.querySelector('.bgg-search__wrapper').classList.add('hide')
+  jQuery('.ball-loading.search-results').fadeIn()
   bggSearchData = []
   searchText = searchText.trim().replace(/ /g, '+')
 
@@ -21,14 +23,24 @@ const handleBGGSearch = async (searchText, type) => {
 
     searchUrl = `https://boardgamegeek.com/xmlapi2/search?query=${searchText}&type=boardgameexpansion`
     let exResults = await getBGGData(searchUrl)
+    console.log(exResults)
 
-    let expansionIds = []
-    exResults.forEach((item) => {
-      expansionIds.push(item['@attributes'].id)
-    })
+    if (exResults) {
+      let expansionIds = []
+      if (Array.isArray(exResults)) {
+        exResults.forEach((item) => {
+          expansionIds.push(item['@attributes'].id)
+        })
+      } else {
+        expansionIds.push(exResults ? exResults['@attributes'].id : 0)
+      }
+  
+      // filter for boardgame type only by comparing exResults to bgResults
+      results = bgResults.filter((i) => expansionIds.indexOf(i['@attributes'].id) < 0, expansionIds)
+    } else {
+      results = bgResults
+    }
 
-    // filter for boardgame type only by comparing exResults to bgResults
-    results = bgResults.filter((i) => expansionIds.indexOf(i['@attributes'].id) < 0, expansionIds)
   } else {
     searchUrl = `https://boardgamegeek.com/xmlapi2/search?query=${searchText}&type=boardgameexpansion`
     results = await getBGGData(searchUrl)
@@ -37,43 +49,55 @@ const handleBGGSearch = async (searchText, type) => {
   let bggSearchItems = []
 
   if (!Array.isArray(results)) {
-    bggSearchItems.push(results)
+    if (results) {
+      bggSearchItems.push(results)
+    }
   } else {
     results.forEach((i) => {
       bggSearchItems.push(i)
     })
   }
 
-  // Filter out duplicate bggIds
-  bggSearchItems = bggSearchItems.filter((list, index, self) => self.findIndex(l => l['@attributes'].id === list['@attributes'].id) === index)
+  if (results) {
+    // Filter out duplicate bggIds
+    bggSearchItems = bggSearchItems.filter((list, index, self) => self.findIndex(l => l['@attributes'].id === list['@attributes'].id) === index)
 
-  // Filter for games with primary names only
-  bggSearchItems = bggSearchItems.filter(item => item.name['@attributes'].type === 'primary')
+    // Filter for games with primary names only
+    bggSearchItems = bggSearchItems.filter(item => item.name['@attributes'].type === 'primary')
 
-  // Cut list down to 50
-  bggSearchItems = bggSearchItems.slice(0, 50)
-  console.log('Filtered Search Results', bggSearchItems)
+    // Cut list down to 50
+    bggSearchItems = bggSearchItems.slice(0, 50)
+    console.log('Filtered Search Results', bggSearchItems)
 
-  let bggIds = []
-  bggSearchItems.forEach((item) => {
-    if (item.name['@attributes'].type === 'primary') {
-      bggIds.push(item['@attributes'].id)
-    }
-  })
+    let bggIds = []
+    bggSearchItems.forEach((item) => {
+      if (item.name['@attributes'].type === 'primary') {
+        bggIds.push(item['@attributes'].id)
+      }
+    })
 
-  const gameDetails = await getBGGGameDetailData(bggIds)
-  gameDetails.sort((a, b) => {
-    if (a.bggRank > b.bggRank) {
-      return 1
-    } else if (a.bggRank < b.bggRank) {
-      return -1
-    } else {
-      return 0
-    }
-  })
-  console.log('Cleaned BGG Game Data Object', gameDetails)
-  bggSearchData = gameDetails
-  renderCollection('bgg-search')
+    const gameDetails = await getBGGGameDetailData(bggIds)
+    gameDetails.sort((a, b) => {
+      if (a.bggRank > b.bggRank) {
+        return 1
+      } else if (a.bggRank < b.bggRank) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+    console.log('Cleaned BGG Game Data Object', gameDetails)
+    bggSearchData = gameDetails
+
+    jQuery('.ball-loading.search-results').fadeOut(() => {
+      renderCollection('bgg-search')
+    })
+  } else {
+    bggSearchData = []
+    jQuery('.ball-loading.search-results').fadeOut(() => {
+      renderCollection('bgg-search')
+    })
+  }
 }
 
 export { handleBGGSearch, getBGGSearchData }

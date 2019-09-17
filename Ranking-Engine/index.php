@@ -151,6 +151,9 @@
                     </div>
                   </div>
                 </form>
+                <div class="ball-loading collection" style="display: none">
+                  <i class="ball"></i>
+                </div>
                 <div class="bgg-username-submitted hide">
                   <h4 class="bgg-username-header center-align section-title"></h4>
                   <p class="center-align">
@@ -233,7 +236,7 @@
                 </div>
               </div>
             </li>
-            <li class="bgg-search">
+            <li class="bgg-search hide">
               <div class="collapsible-header"><i class="material-icons">cloud_download</i>BGG Search</div>
               <div class="collapsible-body">
                 <form autocomplete="off" onsubmit="return false;" class="bgg-search-submit">
@@ -266,9 +269,12 @@
                       </div>
                     </div>
                   </form>
+                  <div class="ball-loading search-results" style="display: none">
+                    <i class="ball"></i>
+                  </div>
                   <div class="bgg-search__wrapper hide">
                     <div class="divider-sm"></div>
-                    <h4 class="center-align section-title">Results:</h4>
+                    <h4 class="center-align section-title">Search Results:</h4>
                     <div class="bgg-search__items"></div>
                   </div>
               </div>
@@ -503,7 +509,7 @@
         <p class="center-align">To save the image, right click (on desktop) or long press (on mobile) and select Save Image. If there is an issue with the image, close this dialog and click the Top Nine button again to regenerate the image.</p>
         <div class="image-wrapper">
           <img src="" alt="" class="top-nine-image" style="display: none">
-          <div class="ball-loading" style="display: none">
+          <div class="ball-loading top-nine" style="display: none">
             <i class="ball"></i>
           </div>
           <!-- <canvas width="1080" height="1080" class="top-nine-canvas"></canvas> -->

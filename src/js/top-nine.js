@@ -16,7 +16,7 @@ const checkforImages = (data) => {
 }
 
 const renderTopNine = (images) => {
-  jQuery('.ball-loading').fadeIn()
+  jQuery('.ball-loading.top-nine').fadeIn()
   const canvasEl = document.createElement('canvas')
   canvasEl.width = 1080
   canvasEl.height = 1080
@@ -69,7 +69,7 @@ const renderImages = (images, ctx) => {
 }
 
 const renderFinalImage = (canvas, ctx) => {
-  jQuery('.ball-loading').fadeOut('veryslow', () => {
+  jQuery('.ball-loading.top-nine').fadeOut('veryslow', () => {
     const finalImage = canvas.toDataURL('image/png')
     document.querySelector('.top-nine-image').src = finalImage
     jQuery('.top-nine-image').fadeIn('slow')

@@ -114,7 +114,7 @@ const renderResult = () => {
       try {
         jQuery('.top-nine-image').fadeOut(1, renderTopNine(images))
       } catch (e) {
-        jQuery('.ball-loading').fadeOut()
+        jQuery('.ball-loading.top-nine').fadeOut()
         const imageWrapper = document.querySelector('.image-wrapper')
         const pEl = document.createElement('p')
         pEl.textContent = 'Sorry, we were unable to generate your top nine image. You can try again by closing this dialog and clicking the Top Nine button again'
