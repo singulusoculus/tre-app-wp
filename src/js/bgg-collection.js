@@ -46,7 +46,6 @@ const handleBGGCollectionRequest = async () => {
     const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
     bggCollectionData = await getBGGCollection(user, expansions)
 
-    // bggCollectionData = getBGGData()
     // fadeOutSpinner()
     jQuery('.ball-loading.collection').fadeOut(() => {
       showBGGCollectionSection()
@@ -77,15 +76,18 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
 
     // 1 = invalid username; 2 = timed out, try again later; Too Many Requests
     if (newData === 1) {
-      fadeOutSpinner()
+      // fadeOutSpinner()
+      jQuery('.ball-loading.collection').fadeOut()
       reject(new Error('Invalid username'))
       custMessage('Invalid username. Please try again.')
     } else if (newData === 2) {
-      fadeOutSpinner()
+      // fadeOutSpinner()
+      jQuery('.ball-loading.collection').fadeOut()
       reject(new Error('Timed Out. Try again later.'))
       custMessage('The request for you collection timed out. BGG servers may be busy. Please try again in a little bit.')
     } else if (data.indexOf('Too Many Requests') > 0) {
-      fadeOutSpinner()
+      // fadeOutSpinner()
+      jQuery('.ball-loading.collection').fadeOut()
       reject(new Error('Too Many Requests'))
       custMessage('BGG servers are busy at the moment. Please wait a minute and try again')
     } else {
