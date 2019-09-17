@@ -154,7 +154,7 @@
                 <div class="ball-loading collection" style="display: none">
                   <i class="ball"></i>
                 </div>
-                <div class="bgg-username-submitted hide">
+                <div class="bgg-collection__wrapper hide">
                   <h4 class="bgg-username-header center-align section-title"></h4>
                   <p class="center-align">
                     <a href="#!" class="change-bgg-username">(Change)</a>
@@ -231,13 +231,13 @@
                     <div class="bgg-collection-info section-title"></div>
                   </div>
                   <div class="divider-sm"></div>
-                  <div class="bgg-collection">
+                  <div class="bgg-collection__items">
                   </div>
                 </div>
               </div>
             </li>
             <li class="bgg-search hide">
-              <div class="collapsible-header"><i class="material-icons">cloud_download</i>BGG Search</div>
+              <div class="collapsible-header"><i class="material-icons">search</i>BGG Search</div>
               <div class="collapsible-body">
                 <form autocomplete="off" onsubmit="return false;" class="bgg-search-submit">
                     <div class="row">

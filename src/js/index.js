@@ -1,5 +1,5 @@
 import '../styles/main.scss'
-import { renderListData, renderBGGCollection } from './views'
+import { renderListData, renderBGGCollection, renderCollection } from './views'
 import { handleClickClear, handleAddTextItems } from './list'
 import { setFilters, setBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
@@ -132,7 +132,8 @@ jQuery(document).ready(() => {
       setBGGFilters({
         [element]: e.target.checked
       })
-      renderBGGCollection()
+      // renderBGGCollection()
+      renderCollection('bgg-collection')
     })
   })
 
@@ -140,7 +141,8 @@ jQuery(document).ready(() => {
     setBGGFilters({
       rating: parseInt(e.target.value)
     })
-    renderBGGCollection()
+    // renderBGGCollection()
+    renderCollection('bgg-collection')
   })
 
   document.querySelector('#bgg-add-selected').addEventListener('click', (e) => {

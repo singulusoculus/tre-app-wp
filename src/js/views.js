@@ -150,7 +150,8 @@ const generateCollectionDOM = (item, type) => {
     iconEl.innerHTML = '<i class="material-icons">add</i>'
     iconEl.addEventListener('click', (e) => {
       addBGGItemToList(item, type)
-      renderBGGCollection()
+      // renderBGGCollection()
+      renderCollection('bgg-collection')
       renderListData()
     })
     // I may be able to combine the two bgg items into one
@@ -322,7 +323,8 @@ const generateBGGCollectionDOM = (item) => {
   iconEl.innerHTML = '<i class="material-icons">add</i>'
   iconEl.addEventListener('click', (e) => {
     addBGGItemToList(item, 'bgg-collection')
-    renderBGGCollection()
+    // renderBGGCollection()
+    renderCollection('bgg-collection')
     renderListData()
   })
 

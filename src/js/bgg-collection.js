@@ -32,7 +32,8 @@ const initPrevBGGCollection = () => {
       document.querySelector('#bgg-username').value = bggData.bggUsername
       showBGGCollectionSection()
       updateBGGFilters()
-      renderBGGCollection()
+      // renderBGGCollection()
+      renderCollection('bgg-collection')
     }
   }
 }
@@ -49,7 +50,8 @@ const handleBGGCollectionRequest = async () => {
     // fadeOutSpinner()
     jQuery('.ball-loading.collection').fadeOut(() => {
       showBGGCollectionSection()
-      renderBGGCollection()
+      // renderBGGCollection()
+      renderCollection('bgg-collection')
     })
 
     // Save new bgg games to database
@@ -163,7 +165,7 @@ const showBGGCollectionSection = () => {
   document.querySelector('.bgg-username-submit').classList.add('hide')
   const bggUsername = document.querySelector('#bgg-username').value
   document.querySelector('.bgg-username-header').textContent = `BGG Collection: ${bggUsername}`
-  const bggUsernameSubmittedEl = document.querySelector('.bgg-username-submitted')
+  const bggUsernameSubmittedEl = document.querySelector('.bgg-collection__wrapper')
   bggUsernameSubmittedEl.classList.remove('hide')
 }
 
@@ -171,7 +173,7 @@ const handleCollectionChangeClick = () => {
   bggCollectionData = []
   document.querySelector('.bgg-list').classList.add('hide')
   document.querySelector('.bgg-username-submit').classList.remove('hide')
-  document.querySelector('.bgg-username-submitted').classList.add('hide')
+  document.querySelector('.bgg-collection__wrapper').classList.add('hide')
 
   sessionStorage.removeItem('bggCollection')
 }
@@ -185,7 +187,8 @@ const addBGGItemToList = (item, type) => {
   addListItems(list)
 
   if (type === 'bgg-collection') {
-    renderBGGCollection()
+    // renderBGGCollection()
+    renderCollection('bgg-collection')
   } else if (type === 'bgg-search') {
     renderCollection('bgg-search')
   }
@@ -232,7 +235,8 @@ const handleAddSelectedBGG = () => {
   const list = createList(filteredList)
   addListItems(list)
 
-  renderBGGCollection()
+  // renderBGGCollection()
+  renderCollection('bgg-collection')
 }
 
 export {
