@@ -40,15 +40,15 @@ const createBGGGameDataObjects = (items) => {
   let bggGameData = []
   items.forEach((item) => {
     let gameDataDetails = {}
-    gameDataDetails.id = item['@attributes'].id
+    gameDataDetails.bggId = item['@attributes'].id
     gameDataDetails.type = item['@attributes'].type
     gameDataDetails.minPlayers = item.minplayers['@attributes'].value
     gameDataDetails.maxPlayers = item.maxplayers['@attributes'].value
     gameDataDetails.minPlaytime = item.minplaytime['@attributes'].value
     gameDataDetails.maxPlaytime = item.maxplaytime['@attributes'].value
     gameDataDetails.playingtime = item.playingtime['@attributes'].value
-    gameDataDetails.thumbnail = item.thumbnail ? item.thumbnail['#text'] : ''
-    gameDataDetails.image = item.image ? item.image['#text'] : ''
+    gameDataDetails.image = item.thumbnail ? item.thumbnail['#text'] : ''
+    gameDataDetails.imageOriginal = item.image ? item.image['#text'] : ''
 
     // Links
     let mechanisms = []
@@ -123,6 +123,10 @@ const createBGGGameDataObjects = (items) => {
 
     gameDataDetails.altNames = altNames
     altNames = []
+
+    gameDataDetails.addedToList = false
+    gameDataDetails.source = 'bgg'
+    gameDataDetails.sourceType = 'search'
 
     bggGameData.push(gameDataDetails)
   })

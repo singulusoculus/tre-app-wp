@@ -1,4 +1,4 @@
-import { renderBGGCollection, custMessage } from './views'
+import { renderBGGCollection, custMessage, renderCollection } from './views'
 import { addListItems, sortListData, getListData, createList } from './list'
 import { getBGGFilters, updateBGGFilters } from './filters'
 import { xmlToJson } from './bgg-functions'
@@ -124,6 +124,7 @@ const createBGGList = (data) => {
       id: uuidv4(),
       name: item.name ? item.name['#text'] : 'No Title',
       source: 'bgg',
+      sourceType: 'collection',
       imageOriginal: item.image ? item.image['#text'] : './wp-content/themes/Ranking-Engine/images/meeple-lime.png',
       image: item.thumbnail ? item.thumbnail['#text'] : './wp-content/themes/Ranking-Engine/images/meeple-lime.png',
       yearPublished: item.yearpublished ? parseInt(item.yearpublished['#text']) : 0,
@@ -170,18 +171,22 @@ const handleCollectionChangeClick = () => {
   sessionStorage.removeItem('bggCollection')
 }
 
-const addBGGItemToList = (id) => {
-  const itemID = bggCollectionData.findIndex((item) => item.id === id)
-  const item = bggCollectionData[itemID]
+const addBGGItemToList = (item, type) => {
+  // const itemID = bggCollectionData.findIndex((item) => item.id === id)
+  // const item = bggCollectionData[itemID]
   item.addedToList = true
 
   const list = createList([item])
   addListItems(list)
 
-  renderBGGCollection()
+  if (type === 'bgg-collection') {
+    renderBGGCollection()
+  } else if (type === 'bgg-search') {
+    renderCollection('bgg-search')
+  }
 }
 
-const filterBGGCollection = () => {
+const filterBGGCollectionOLD = () => {
   const filters = getBGGFilters()
 
   let filteredList = []
@@ -213,7 +218,7 @@ const filterBGGCollection = () => {
 }
 
 const handleAddSelectedBGG = () => {
-  const filteredList = filterBGGCollection()
+  const filteredList = filterBGGCollectionOLD()
 
   filteredList.forEach((item) => {
     item.addedToList = true
@@ -229,7 +234,7 @@ export {
   handleBGGCollectionRequest,
   getBGGCollectionData,
   addBGGItemToList,
-  filterBGGCollection,
+  filterBGGCollectionOLD,
   handleAddSelectedBGG,
   handleCollectionChangeClick,
   saveBGGCollection,

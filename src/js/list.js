@@ -1,9 +1,10 @@
 import uuidv4 from 'uuid'
-import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderBGGCollection } from './views'
+import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderBGGCollection, renderCollection } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { getBGGCollectionData, initPrevBGGCollection } from './bgg-collection'
+import { getBGGSearchData } from './bgg-search'
 
 let listData = []
 
@@ -43,6 +44,7 @@ const createListObject = (data) => {
     imageOriginal: data.imageOriginal || '',
     image: data.image || '',
     source: data.source,
+    sourceType: data.sourceType || '',
     rank: data.rank || 0,
     bggId: data.bggId || '',
     yearPublished: data.yearPublished || ''
@@ -73,7 +75,8 @@ const handleAddTextItems = (textList) => {
   textList.forEach((name) => {
     data.push({
       name,
-      source: 'text'
+      source: 'text',
+      sourceType: 'textarea'
     })
   })
 
@@ -121,22 +124,27 @@ const filterDuplicates = () => {
   listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name) === index)
 }
 
-const removeListItem = (id) => {
-  const itemID = listData.findIndex((item) => item.id === id)
+const removeListItem = (item) => {
+  // const itemID = listData.findIndex((item) => item.id === id)
 
   // Show removed item back in Collection data
-  if (listData[itemID].source === 'bgg') {
+  if (item.sourceType === 'collection') {
     const bggData = getBGGCollectionData()
-    const bggId = listData[itemID].bggId
+    const bggId = item.bggId
     const bggItem = bggData.findIndex((item) => item.bggId === bggId)
     bggData[bggItem].addedToList = false
     renderBGGCollection()
+  } else if (item.sourceType === 'search') {
+    const searchData = getBGGSearchData()
+    const bggId = item.bggId
+    const bggItem = searchData.findIndex((item) => item.bggId === bggId)
+    searchData[bggItem].addedToList = false
+    renderCollection('bgg-search')
   }
 
-  if (itemID > -1) {
-    listData.splice(itemID, 1)
-    saveData(listData)
-  }
+  listData.splice(item.id, 1)
+  saveData(listData)
+
   if (listData.length === 0) {
     disableStepTab('rank')
     disableListSave()
@@ -170,6 +178,12 @@ const clearListData = () => {
     })
 
     renderBGGCollection()
+
+    const searchData = getBGGSearchData()
+    searchData.forEach((item) => {
+      item.addedToList = false
+    })
+    renderCollection('bgg-search')
   } else {
     listData = []
   }

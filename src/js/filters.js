@@ -1,17 +1,17 @@
-const filters = {
+const listFilters = {
   searchText: '',
   sortBy: 'alphabetical'
 }
 
-const getFilters = () => filters
+const getListFilters = () => listFilters
 
-const setFilters = (updates) => {
+const setListFilters = (updates) => {
   if (typeof updates.searchText === 'string') {
-    filters.searchText = updates.searchText
+    listFilters.searchText = updates.searchText
   }
 
   if (typeof updates.sortBy === 'string') {
-    filters.sortBy = updates.sortBy
+    listFilters.sortBy = updates.sortBy
   }
 }
 
@@ -94,4 +94,4 @@ const updateBGGFilters = () => {
   })
 }
 
-export { getFilters, setFilters, getBGGFilters, setBGGFilters, updateBGGFilters }
+export { getListFilters, setListFilters, getBGGFilters, setBGGFilters, updateBGGFilters }

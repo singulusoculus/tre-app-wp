@@ -249,11 +249,11 @@
                           <span class="bgg-filter-heading">Search For:</span>
                           <p class="type-radio">
                             <label>
-                              <input class="with-gap" name="bgg-search-type" type="radio" checked  />
+                              <input class="with-gap" id="boardgames" name="bgg-search-type" type="radio" checked  />
                               <span>Board Games</span>
                             </label>
                             <label>
-                              <input class="with-gap" name="bgg-search-type" type="radio"  />
+                              <input class="with-gap" id="expansions" name="bgg-search-type" type="radio"  />
                               <span>Expansions</span>
                             </label>
                           </p>
@@ -266,10 +266,10 @@
                       </div>
                     </div>
                   </form>
-                  <div class="bgg-search-results-wrapper hide">
+                  <div class="bgg-search__wrapper hide">
                     <div class="divider-sm"></div>
                     <h4 class="center-align section-title">Results:</h4>
-                    <div class="bgg-search-results"></div>
+                    <div class="bgg-search__items"></div>
                   </div>
               </div>
 

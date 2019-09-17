@@ -1,13 +1,14 @@
 import { initPrevList, getListData, removeListItem, loadList, sortListData } from './list'
-import { getFilters } from './filters'
+import { getListFilters, getBGGFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
-import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
+import { addBGGItemToList, filterBGGCollectionOLD, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
+import { getBGGSearchData } from './bgg-search'
 
 // //////////////////////////////////////////////////////////////////////
 // // PREVIOUS SESSION
@@ -60,12 +61,169 @@ const renderPreviousSessionToast = () => {
 }
 
 // //////////////////////////////////////////////////////////////////////
+// // RENDER COLLECTIONS
+// //////////////////////////////////////////////////////////////////////
+
+const renderCollection = (type) => {
+  // Element to render header and items in
+  const wrapperEl = document.querySelector(`.${type}__wrapper`)
+
+  // data
+  let data
+  if (type === 'list') {
+    data = getListData()
+  } else if (type === 'bgg-collection') {
+    data = getBGGCollectionData()
+  } else if (type === 'bgg-search') {
+    data = getBGGSearchData()
+  }
+
+  // filtering
+  let filteredItems
+  if (type === 'list') {
+    filteredItems = filterListData(data)
+  } else if (type === 'bgg-collection') {
+    filteredItems = filterBGGCollection(data)
+  } else if (type === 'bgg-search') {
+    // there is currently no filtering on bgg search
+    filteredItems = filterBGGSearch(data)
+  }
+
+  // render header
+  if (type === 'list') {
+    const count = data.length
+    const listInfoEl = document.querySelector('#list-info')
+    listInfoEl.textContent = `Your List: ${count} items`
+  } if (type === 'bgg-collection') {
+    const listInfoEl = document.querySelector('.bgg-collection-info')
+    const totalCount = data.length
+    const addedList = data.filter((item) => item.addedToList !== false)
+    const addedCount = addedList.length
+    const filteredCount = filteredItems.length
+    listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount} `
+    document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
+  }
+
+  // render items
+  const collectionItemsEl = document.querySelector(`.${type}__items`)
+  collectionItemsEl.innerHTML = ''
+
+  if (filteredItems.length > 0) {
+    filteredItems.forEach((item) => {
+      const itemEl = generateCollectionDOM(item, type)
+      collectionItemsEl.appendChild(itemEl)
+    })
+    collectionItemsEl.classList.add('collection')
+  }
+  wrapperEl.classList.remove('hide')
+}
+
+const generateCollectionDOM = (item, type) => {
+  const itemEl = document.createElement('li')
+  itemEl.classList.add('collection-item', 'list-item')
+  const imgDiv = document.createElement('div')
+  imgDiv.classList.add('list-item__image-container')
+  const imgEl = document.createElement('img')
+  imgEl.classList.add('list-item__image')
+  if (item.image !== '') {
+    imgEl.src = item.image
+    imgDiv.appendChild(imgEl)
+  }
+  itemEl.appendChild(imgDiv)
+
+  const itemNameEl = document.createElement('span')
+  itemNameEl.classList.add('list-item__title')
+  itemNameEl.textContent = item.name
+
+  const iconEl = document.createElement('a')
+  iconEl.classList.add('list-item__icon')
+  iconEl.href = '#!'
+
+  // Add icons and click events
+  if (type === 'list') {
+    iconEl.innerHTML = '<i class="material-icons">delete</i>'
+    iconEl.addEventListener('click', (e) => {
+      removeListItem(item)
+      renderListData()
+    })
+  } else if (type === 'bgg-collection') {
+    iconEl.innerHTML = '<i class="material-icons">add</i>'
+    iconEl.addEventListener('click', (e) => {
+      addBGGItemToList(item, type)
+      renderBGGCollection()
+      renderListData()
+    })
+    // I may be able to combine the two bgg items into one
+  } else if (type === 'bgg-search') {
+    iconEl.innerHTML = '<i class="material-icons">add</i>'
+    iconEl.addEventListener('click', (e) => {
+      addBGGItemToList(item, type)
+      // renderBGGCollection()
+      renderListData()
+    })
+  }
+
+  itemEl.appendChild(itemNameEl)
+  itemEl.appendChild(iconEl)
+
+  return itemEl
+}
+
+const filterListData = (data) => {
+  const filters = getListFilters()
+  let filteredList
+
+  // filter based on text input
+  filteredList = data.filter((item) => item.name.toLowerCase().includes(filters.searchText.toLowerCase()))
+  // sort the list
+  filteredList = sortListData(filteredList, 'alphabetical')
+
+  return filteredList
+}
+
+const filterBGGCollection = (data) => {
+  const filters = getBGGFilters()
+
+  let filteredList = []
+
+  // gets only true filters
+  const listTypeFilters = Object.keys(filters).filter((key) => filters[key] === true)
+
+  // filter the collection data for the filters marked as true
+  listTypeFilters.forEach((filter) => {
+    const list = data.filter((item) => item[filter])
+    list.forEach((item) => {
+      filteredList.push(item)
+    })
+  })
+
+  // Filter duplicates out
+  filteredList = filteredList.filter((list, index, self) => self.findIndex(l => l.id === list.id) === index)
+
+  // Filter for Personal Rating
+  filteredList = filteredList.filter((item) => item.rating >= filters.rating)
+
+  // Filter out already added games
+  filteredList = filteredList.filter((item) => item.addedToList === false)
+
+  // Sort alphabetical
+  filteredList = sortListData(filteredList, 'alphabetical')
+
+  return filteredList
+}
+
+const filterBGGSearch = (data) => {
+  let filteredList = data.filter((item) => item.addedToList === false)
+  return filteredList
+}
+
+// //////////////////////////////////////////////////////////////////////
 // // RENDER LIST DATA
 // //////////////////////////////////////////////////////////////////////
 
 const renderListData = () => {
   const data = getListData()
-  const filters = getFilters()
+  const filters = getListFilters()
   const count = data.length
 
   const listInfoEl = document.querySelector('#list-info')
@@ -112,7 +270,7 @@ const generateListDataDOM = (item) => {
   iconEl.href = '#!'
   iconEl.innerHTML = '<i class="material-icons">delete</i>'
   iconEl.addEventListener('click', (e) => {
-    removeListItem(item.id)
+    removeListItem(item)
     renderListData()
   })
 
@@ -135,11 +293,10 @@ const renderBGGCollection = () => {
   const addedList = bggData.filter((item) => item.addedToList !== false)
   const addedCount = addedList.length
 
-  const filteredList = filterBGGCollection()
+  const filteredList = filterBGGCollectionOLD()
 
   const filteredCount = filteredList.length
   listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount} `
-
   document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
 
   listEl.innerHTML = ''
@@ -164,7 +321,7 @@ const generateBGGCollectionDOM = (item) => {
   iconEl.href = '#!'
   iconEl.innerHTML = '<i class="material-icons">add</i>'
   iconEl.addEventListener('click', (e) => {
-    addBGGItemToList(item.id)
+    addBGGItemToList(item, 'bgg-collection')
     renderBGGCollection()
     renderListData()
   })
@@ -727,5 +884,6 @@ export {
   showMyLists,
   custMessage,
   renderTemplateDesc,
-  renderResultDesc
+  renderResultDesc,
+  renderCollection
 }

@@ -1,4 +1,5 @@
 import { getBGGData, getBGGGameDetailData } from './bgg-functions'
+import { renderCollection } from './views'
 
 // https://boardgamegeek.com/xmlapi2/search?type=boardgame,boardgameexpansion&query=xia
 
@@ -7,12 +8,12 @@ let bggSearchData = []
 const getBGGSearchData = () => bggSearchData
 
 const handleBGGSearch = async (searchText, type) => {
-  // bggSearchData = []
+  bggSearchData = []
   searchText = searchText.trim().replace(/ /g, '+')
 
   let searchUrl = ''
   let results
-  if (type === 'boardgame') {
+  if (type === 'boardgames') {
     // when asking for type boardgame, bgg returns both boardgame and boardgameexpansion types but does not label the expansions properly.
     // I have to request expansions explicitly and then filter based on that list
     searchUrl = `https://boardgamegeek.com/xmlapi2/search?query=${searchText}&type=boardgame`
@@ -72,6 +73,7 @@ const handleBGGSearch = async (searchText, type) => {
   })
   console.log('Cleaned BGG Game Data Object', gameDetails)
   bggSearchData = gameDetails
+  renderCollection('bgg-search')
 }
 
 export { handleBGGSearch, getBGGSearchData }

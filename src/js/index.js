@@ -110,6 +110,21 @@ jQuery(document).ready(() => {
     handleCollectionChangeClick()
   })
 
+  document.querySelector('#bgg-search-submit').addEventListener('click', () => {
+    const searchText = document.querySelector('#bgg-search').value
+    const typeEls = document.getElementsByName('bgg-search-type')
+    console.log(typeEls)
+    let type
+    typeEls.forEach((i) => {
+      if (i.checked) {
+        type = i.id
+        console.log(type)
+      }
+    })
+
+    handleBGGSearch(searchText, type)
+  })
+
   // BGG Filters
   document.querySelectorAll('.bgg-cb').forEach((el) => {
     el.addEventListener('change', (e) => {
