@@ -154,7 +154,8 @@ jQuery(document).ready(() => {
     setFilters({
       searchText: e.target.value
     })
-    renderListData()
+    // renderListData()
+    renderCollection('list')
   })
 
   document.querySelector('#clear-list').addEventListener('click', () => {

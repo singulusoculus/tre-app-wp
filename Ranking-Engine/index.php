@@ -274,7 +274,17 @@
                   </div>
                   <div class="bgg-search__wrapper hide">
                     <div class="divider-sm"></div>
-                    <h4 class="center-align section-title">Search Results:</h4>
+                    <div class="bgg-search-results-header">
+                      <h4 class="section-title bgg-search-results-header__title">Search Results:</h4>
+                      <div class="input-field bgg-search-results-header__select">
+                        <select>
+                          <option value="bgg-rating" selected>BGG Rating</option>
+                          <option value="alphabetical">Alphabetical</option>
+                        </select>
+                        <label>Sort Results By:</label>
+                      </div>
+                    </div>
+                    <div class="divider-sm"></div>
                     <div class="bgg-search__items"></div>
                   </div>
               </div>
@@ -306,8 +316,8 @@
                     </form>
                   </div>
 
-                  <div class="">
-                    <ul id="list-items"></ul>
+                  <div class="list__items">
+                    <!-- <ul id="list__items"></ul> -->
                   </div>
               </div>
             </li>

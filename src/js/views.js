@@ -61,13 +61,10 @@ const renderPreviousSessionToast = () => {
 }
 
 // //////////////////////////////////////////////////////////////////////
-// // RENDER COLLECTIONS
+// // RENDER LIST COLLECTIONS
 // //////////////////////////////////////////////////////////////////////
 
 const renderCollection = (type) => {
-  // Element to render header and items in
-  const wrapperEl = document.querySelector(`.${type}__wrapper`)
-
   // data
   let data
   if (type === 'list') {
@@ -115,7 +112,10 @@ const renderCollection = (type) => {
     })
     collectionItemsEl.classList.add('collection')
   }
-  wrapperEl.classList.remove('hide')
+  if (type !== 'list') {
+    const wrapperEl = document.querySelector(`.${type}__wrapper`)
+    wrapperEl.classList.remove('hide')
+  }
 }
 
 const generateCollectionDOM = (item, type) => {
@@ -144,7 +144,8 @@ const generateCollectionDOM = (item, type) => {
     iconEl.innerHTML = '<i class="material-icons">delete</i>'
     iconEl.addEventListener('click', (e) => {
       removeListItem(item)
-      renderListData()
+      // renderListData()
+      renderCollection('list')
     })
   } else if (type === 'bgg-collection') {
     iconEl.innerHTML = '<i class="material-icons">add</i>'
@@ -152,7 +153,8 @@ const generateCollectionDOM = (item, type) => {
       addBGGItemToList(item, type)
       // renderBGGCollection()
       renderCollection('bgg-collection')
-      renderListData()
+      // renderListData()
+      renderCollection('list')
     })
     // I may be able to combine the two bgg items into one
   } else if (type === 'bgg-search') {
@@ -160,7 +162,8 @@ const generateCollectionDOM = (item, type) => {
     iconEl.addEventListener('click', (e) => {
       addBGGItemToList(item, type)
       // renderBGGCollection()
-      renderListData()
+      // renderListData()
+      renderCollection('list')
     })
   }
 
@@ -272,7 +275,8 @@ const generateListDataDOM = (item) => {
   iconEl.innerHTML = '<i class="material-icons">delete</i>'
   iconEl.addEventListener('click', (e) => {
     removeListItem(item)
-    renderListData()
+    // renderListData()
+    renderCollection('list')
   })
 
   itemEl.appendChild(itemNameEl)
@@ -325,7 +329,8 @@ const generateBGGCollectionDOM = (item) => {
     addBGGItemToList(item, 'bgg-collection')
     // renderBGGCollection()
     renderCollection('bgg-collection')
-    renderListData()
+    // renderListData()
+    renderCollection('list')
   })
 
   itemEl.appendChild(itemNameEl)

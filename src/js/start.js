@@ -1,7 +1,7 @@
 import { setCategory } from './category'
 import { clearListData } from './list'
 import { setCurrentStep } from './step'
-import { renderListData, showListSection } from './views'
+import { renderListData, showListSection, renderCollection } from './views'
 import { setDBListInfoType } from './database'
 import { handleCollectionChangeClick } from './bgg-collection'
 
@@ -17,7 +17,8 @@ const handleCategoryChange = () => {
   clearListData()
   handleCollectionChangeClick()
   setCurrentStep('List')
-  renderListData()
+  // renderListData()
+  renderCollection('list')
   showListSection()
   M.Toast.dismissAll()
 }

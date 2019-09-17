@@ -192,6 +192,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  min-height: 71px;
 
   &__image-container {
     width: 50px;
@@ -276,6 +277,22 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+}
+
+.bgg-search-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: 1;
+
+  &__title {
+    align-self: left;
+    flex-grow: 1;
+  }
+
+  &__select {
+    flex-grow:1;
+  }
 }
 
 //////////////////////////////////////////////////////////////////

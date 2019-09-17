@@ -20,7 +20,8 @@ const initPrevList = (category, data) => {
   setCurrentStep('List')
 
   saveData(listData)
-  renderListData()
+  // renderListData()
+  renderCollection('list')
 
   initPrevBGGCollection()
 
@@ -33,7 +34,8 @@ const loadList = (list) => {
   setCurrentStep('List')
   if (listData.length > 0) {
     saveData(listData)
-    renderListData()
+    // renderListData()
+    renderCollection('list')
   }
 }
 
@@ -116,7 +118,8 @@ const addListItems = (list) => {
     instance.open(0)
 
     saveData(listData)
-    renderListData()
+    // renderListData()
+    renderCollection('list')
   }
 }
 
@@ -125,7 +128,7 @@ const filterDuplicates = () => {
 }
 
 const removeListItem = (item) => {
-  // const itemID = listData.findIndex((item) => item.id === id)
+  const itemID = listData.findIndex((i) => i.id === item.id)
 
   // Show removed item back in Collection data
   if (item.sourceType === 'collection') {
@@ -143,7 +146,7 @@ const removeListItem = (item) => {
     renderCollection('bgg-search')
   }
 
-  listData.splice(item.id, 1)
+  listData.splice(itemID, 1)
   saveData(listData)
 
   if (listData.length === 0) {
@@ -171,7 +174,8 @@ const clearListData = () => {
 
     saveData(listData)
 
-    renderListData()
+    // renderListData()
+    renderCollection('list')
 
     const bggData = getBGGCollectionData()
     bggData.forEach((item) => {
