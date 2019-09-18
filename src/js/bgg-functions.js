@@ -7,6 +7,13 @@ const getBGGData = (url) => {
       .then(data => {
         const dataJSON = xmlToJson(data)
         let bggJSONData = dataJSON.items.item
+        if (!Array.isArray(bggJSONData)) {
+          if (bggJSONData) {
+            bggJSONData = [bggJSONData]
+          } else {
+            bggJSONData = []
+          }
+        }
         resolve(bggJSONData)
       })
   })
@@ -56,6 +63,11 @@ const createBGGGameDataObjects = (items) => {
     let artists = []
     let designers = []
     let publishers = []
+
+    if (!Array.isArray(item.link)) {
+      item.link = [item.link]
+    }
+
     item.link.forEach((link) => {
       if (link['@attributes'].type === 'boardgamemechanic') {
         mechanisms.push(link['@attributes'].value)
@@ -91,35 +103,60 @@ const createBGGGameDataObjects = (items) => {
     gameDataDetails.numOwned = stats.owned['@attributes'].value
 
     // bggRank
-    if (Array.isArray(stats.ranks.rank)) {
-      const rank = stats.ranks.rank.find((e) => e['@attributes'].name === 'boardgame')
-      if (rank['@attributes'].value === 'Not Ranked') {
-        gameDataDetails.bggRank = 1000000
-      } else {
-        gameDataDetails.bggRank = parseInt(rank['@attributes'].value)
-      }
-    } else {
-      if (stats.ranks.rank['@attributes'].value === 'Not Ranked') {
-        gameDataDetails.bggRank = 1000000
-      } else {
-        gameDataDetails.bggRank = parseInt(stats.ranks.rank['@attributes'].value)
-      }
+    if (!Array.isArray(stats.ranks.rank)) {
+      stats.ranks.rank = [stats.ranks.rank]
     }
+
+    const rank = stats.ranks.rank.find((e) => e['@attributes'].name === 'boardgame')
+    if (rank['@attributes'].value === 'Not Ranked') {
+      gameDataDetails.bggRank = 1000000
+    } else {
+      gameDataDetails.bggRank = parseInt(rank['@attributes'].value)
+    }
+
+    // if (Array.isArray(stats.ranks.rank)) {
+    //   const rank = stats.ranks.rank.find((e) => e['@attributes'].name === 'boardgame')
+    //   if (rank['@attributes'].value === 'Not Ranked') {
+    //     gameDataDetails.bggRank = 1000000
+    //   } else {
+    //     gameDataDetails.bggRank = parseInt(rank['@attributes'].value)
+    //   }
+    // } else {
+    //   if (stats.ranks.rank['@attributes'].value === 'Not Ranked') {
+    //     gameDataDetails.bggRank = 1000000
+    //   } else {
+    //     gameDataDetails.bggRank = parseInt(stats.ranks.rank['@attributes'].value)
+    //   }
+    // }
 
     // Names
     let altNames = []
-    if (Array.isArray(item.name)) {
-      item.name.forEach((name) => {
-        if (name['@attributes'].type === 'primary') {
-          gameDataDetails.name = name['@attributes'].value
-        }
-        if (name['@attributes'].type === 'alternate') {
-          altNames.push(name['@attributes'].value)
-        }
-      })
-    } else {
-      gameDataDetails.name = item.name['@attributes'].value
+
+    if (!Array.isArray(item.name)) {
+      item.name = [item.name]
     }
+
+    item.name.forEach((name) => {
+      if (name['@attributes'].type === 'primary') {
+        gameDataDetails.name = name['@attributes'].value
+      }
+      if (name['@attributes'].type === 'alternate') {
+        altNames.push(name['@attributes'].value)
+      }
+    })
+
+    // if (Array.isArray(item.name)) {
+    //   item.name.forEach((name) => {
+    //     if (name['@attributes'].type === 'primary') {
+    //       gameDataDetails.name = name['@attributes'].value
+    //     }
+    //     if (name['@attributes'].type === 'alternate') {
+    //       altNames.push(name['@attributes'].value)
+    //     }
+    //   })
+    // } else {
+    //   gameDataDetails.name = item.name['@attributes'].value
+    // }
 
     gameDataDetails.altNames = altNames
     altNames = []

@@ -124,7 +124,7 @@ const addListItems = (list) => {
 }
 
 const filterDuplicates = () => {
-  listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name) === index)
+  listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name && l.bggId === list.bggId) === index)
 }
 
 const removeListItem = (item) => {

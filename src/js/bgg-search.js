@@ -1,5 +1,6 @@
 import { getBGGData, getBGGGameDetailData } from './bgg-functions'
 import { renderCollection } from './views'
+import { sortListData } from './list'
 
 // https://boardgamegeek.com/xmlapi2/search?type=boardgame,boardgameexpansion&query=xia
 
@@ -23,23 +24,13 @@ const handleBGGSearch = async (searchText, type) => {
 
     searchUrl = `https://boardgamegeek.com/xmlapi2/search?query=${searchText}&type=boardgameexpansion`
     let exResults = await getBGGData(searchUrl)
-    console.log(exResults)
 
-    if (exResults) {
-      let expansionIds = []
-      if (Array.isArray(exResults)) {
-        exResults.forEach((item) => {
-          expansionIds.push(item['@attributes'].id)
-        })
-      } else {
-        expansionIds.push(exResults ? exResults['@attributes'].id : 0)
-      }
+    let expansionIds = []
+    exResults.forEach((item) => {
+      expansionIds.push(item['@attributes'].id)
+    })
 
-      // filter for boardgame type only by comparing exResults to bgResults
-      results = bgResults.filter((i) => expansionIds.indexOf(i['@attributes'].id) < 0, expansionIds)
-    } else {
-      results = bgResults
-    }
+    results = bgResults.filter((i) => expansionIds.indexOf(i['@attributes'].id) < 0, expansionIds)
   } else {
     searchUrl = `https://boardgamegeek.com/xmlapi2/search?query=${searchText}&type=boardgameexpansion`
     results = await getBGGData(searchUrl)
@@ -66,7 +57,6 @@ const handleBGGSearch = async (searchText, type) => {
 
     // Cut list down to 50
     bggSearchItems = bggSearchItems.slice(0, 50)
-    console.log('Filtered Search Results', bggSearchItems)
 
     let bggIds = []
     bggSearchItems.forEach((item) => {
@@ -75,17 +65,9 @@ const handleBGGSearch = async (searchText, type) => {
       }
     })
 
-    const gameDetails = await getBGGGameDetailData(bggIds)
-    gameDetails.sort((a, b) => {
-      if (a.bggRank > b.bggRank) {
-        return 1
-      } else if (a.bggRank < b.bggRank) {
-        return -1
-      } else {
-        return 0
-      }
-    })
-    console.log('Cleaned BGG Game Data Object', gameDetails)
+    let gameDetails = await getBGGGameDetailData(bggIds)
+    gameDetails = sortListData(gameDetails, 'bgg-rank')
+
     bggSearchData = gameDetails
 
     jQuery('.ball-loading.search-results').fadeOut(() => {

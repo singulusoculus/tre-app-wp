@@ -284,6 +284,7 @@
                         <label>Sort Results By:</label>
                       </div>
                     </div>
+                    <p>The Ranking Engine only returns 50 search results at a time. It tries to be smart about this but if you do not see what you are looking for please be more specific in your search.</p>
                     <div class="divider-sm"></div>
                     <div class="bgg-search__items"></div>
                   </div>

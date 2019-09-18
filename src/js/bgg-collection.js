@@ -1,4 +1,4 @@
-import { custMessage, renderCollection } from './views'
+import { custMessage, renderCollection, filterBGGCollection } from './views'
 import { addListItems, sortListData, getListData, createList } from './list'
 import { getBGGFilters, updateBGGFilters } from './filters'
 import { xmlToJson } from './bgg-functions'
@@ -225,7 +225,8 @@ const filterBGGCollectionOLD = () => {
 }
 
 const handleAddSelectedBGG = () => {
-  const filteredList = filterBGGCollectionOLD()
+  // const filteredList = filterBGGCollectionOLD()
+  const filteredList = filterBGGCollection(bggCollectionData)
 
   filteredList.forEach((item) => {
     item.addedToList = true

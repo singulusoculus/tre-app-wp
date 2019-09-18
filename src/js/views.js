@@ -4,7 +4,7 @@ import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
-import { addBGGItemToList, filterBGGCollectionOLD, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
+import { addBGGItemToList, getBGGCollectionData } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
@@ -82,7 +82,6 @@ const renderCollection = (type) => {
   } else if (type === 'bgg-collection') {
     filteredItems = filterBGGCollection(data)
   } else if (type === 'bgg-search') {
-    // there is currently no filtering on bgg search
     filteredItems = filterBGGSearch(data)
   }
 
@@ -123,12 +122,14 @@ const generateCollectionDOM = (item, type) => {
   itemEl.classList.add('collection-item', 'list-item')
   const imgDiv = document.createElement('div')
   imgDiv.classList.add('list-item__image-container')
+  // if (type === 'list') {
   const imgEl = document.createElement('img')
   imgEl.classList.add('list-item__image')
   if (item.image !== '') {
     imgEl.src = item.image
     imgDiv.appendChild(imgEl)
   }
+  // }
   itemEl.appendChild(imgDiv)
 
   const itemNameEl = document.createElement('span')
@@ -144,16 +145,13 @@ const generateCollectionDOM = (item, type) => {
     iconEl.innerHTML = '<i class="material-icons">delete</i>'
     iconEl.addEventListener('click', (e) => {
       removeListItem(item)
-      // renderListData()
       renderCollection('list')
     })
   } else if (type === 'bgg-collection') {
     iconEl.innerHTML = '<i class="material-icons">add</i>'
     iconEl.addEventListener('click', (e) => {
       addBGGItemToList(item, type)
-      // renderBGGCollection()
       renderCollection('bgg-collection')
-      // renderListData()
       renderCollection('list')
     })
     // I may be able to combine the two bgg items into one
@@ -161,8 +159,6 @@ const generateCollectionDOM = (item, type) => {
     iconEl.innerHTML = '<i class="material-icons">add</i>'
     iconEl.addEventListener('click', (e) => {
       addBGGItemToList(item, type)
-      // renderBGGCollection()
-      // renderListData()
       renderCollection('list')
     })
   }
@@ -221,124 +217,6 @@ const filterBGGSearch = (data) => {
   let sortBy = getBGGSearchFilters().sortBy
   filteredList = sortListData(filteredList, sortBy)
   return filteredList
-}
-
-// //////////////////////////////////////////////////////////////////////
-// // RENDER LIST DATA
-// //////////////////////////////////////////////////////////////////////
-
-const renderListData = () => {
-  const data = getListData()
-  const filters = getListFilters()
-  const count = data.length
-
-  const listInfoEl = document.querySelector('#list-info')
-  listInfoEl.textContent = `Your List: ${count} items`
-
-  const listEl = document.querySelector('#list-items')
-
-  // filter based on text input
-  let filteredList = data.filter((item) => item.name.toLowerCase().includes(filters.searchText.toLowerCase()))
-  // sort the list
-  filteredList = sortListData(filteredList, 'alphabetical')
-
-  listEl.innerHTML = ''
-
-  if (filteredList.length > 0) {
-    filteredList.forEach((item, index) => {
-      const itemEl = generateListDataDOM(item)
-      listEl.appendChild(itemEl)
-    })
-    listEl.classList.add('collection')
-  }
-}
-
-// Generate DOM for each item in createList
-const generateListDataDOM = (item) => {
-  const itemEl = document.createElement('li')
-  itemEl.classList.add('collection-item', 'list-item')
-  const imgDiv = document.createElement('div')
-  imgDiv.classList.add('list-item__image-container')
-  const imgEl = document.createElement('img')
-  imgEl.classList.add('list-item__image')
-  if (item.image !== '') {
-    imgEl.src = item.image
-    imgDiv.appendChild(imgEl)
-  }
-  itemEl.appendChild(imgDiv)
-
-  const itemNameEl = document.createElement('span')
-  itemNameEl.classList.add('list-item__title')
-  itemNameEl.textContent = item.name
-
-  const iconEl = document.createElement('a')
-  iconEl.classList.add('list-item__icon')
-  iconEl.href = '#!'
-  iconEl.innerHTML = '<i class="material-icons">delete</i>'
-  iconEl.addEventListener('click', (e) => {
-    removeListItem(item)
-    // renderListData()
-    renderCollection('list')
-  })
-
-  itemEl.appendChild(itemNameEl)
-  itemEl.appendChild(iconEl)
-
-  return itemEl
-}
-
-// //////////////////////////////////////////////////////////////////////
-// // RENDER BGG DATA
-// //////////////////////////////////////////////////////////////////////
-
-const renderBGGCollection = () => {
-  const listInfoEl = document.querySelector('.bgg-collection-info')
-  const listEl = document.querySelector('.bgg-collection')
-  const bggData = getBGGCollectionData()
-  const totalCount = bggData.length
-
-  const addedList = bggData.filter((item) => item.addedToList !== false)
-  const addedCount = addedList.length
-
-  const filteredList = filterBGGCollectionOLD()
-
-  const filteredCount = filteredList.length
-  listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount} `
-  document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
-
-  listEl.innerHTML = ''
-
-  filteredList.forEach((item) => {
-    const itemEl = generateBGGCollectionDOM(item)
-    listEl.appendChild(itemEl)
-  })
-  listEl.classList.add('collection')
-  saveBGGCollection()
-}
-
-const generateBGGCollectionDOM = (item) => {
-  const itemEl = document.createElement('li')
-  itemEl.classList.add('collection-item')
-
-  const itemNameEl = document.createElement('span')
-  itemNameEl.textContent = item.name
-
-  const iconEl = document.createElement('a')
-  iconEl.classList.add('secondary-content')
-  iconEl.href = '#!'
-  iconEl.innerHTML = '<i class="material-icons">add</i>'
-  iconEl.addEventListener('click', (e) => {
-    addBGGItemToList(item, 'bgg-collection')
-    // renderBGGCollection()
-    renderCollection('bgg-collection')
-    // renderListData()
-    renderCollection('list')
-  })
-
-  itemEl.appendChild(itemNameEl)
-  itemEl.appendChild(iconEl)
-
-  return itemEl
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -879,7 +757,6 @@ export {
   showListSection,
   showRankSection,
   showResultSection,
-  renderListData,
   showStartSection,
   selectTab,
   sectionTransition,
@@ -890,7 +767,6 @@ export {
   disableListSave,
   setupSaveLogin,
   custConfirm,
-  renderBGGCollection,
   showTab,
   renderMyLists,
   setupSaveButtons,
@@ -898,5 +774,6 @@ export {
   custMessage,
   renderTemplateDesc,
   renderResultDesc,
-  renderCollection
+  renderCollection,
+  filterBGGCollection
 }
