@@ -219,6 +219,12 @@
   &__icon {
     position: unset;
     color: #527A45 !important;
+    transition: all .4s ease-in-out;
+
+    &.added {
+      transform: translateX(20px);
+      opacity: 0;
+    }
   }
 
 }

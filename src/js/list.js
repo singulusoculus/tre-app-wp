@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderBGGCollection, renderCollection } from './views'
+import { showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderCollection } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -243,6 +243,16 @@ const sortListData = (list, sortBy) => {
       if (a.rank > b.rank) {
         return 1
       } else if (a.rank < b.rank) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+  } else if (sortBy === 'bgg-rank') {
+    return list.sort((a, b) => {
+      if (a.bggRank > b.bggRank) {
+        return 1
+      } else if (a.bggRank < b.bggRank) {
         return -1
       } else {
         return 0

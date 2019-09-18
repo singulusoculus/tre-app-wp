@@ -15,6 +15,18 @@ const setListFilters = (updates) => {
   }
 }
 
+const bggSearchFilters = {
+  sortBy: 'bgg-rating'
+}
+
+const getBGGSearchFilters = () => bggSearchFilters
+
+const setBGGSearchFilters = (updates) => {
+  if (typeof updates.sortBy === 'string') {
+    bggSearchFilters.sortBy = updates.sortBy
+  }
+}
+
 const bggFilters = {
   own: true,
   fortrade: false,
@@ -94,4 +106,11 @@ const updateBGGFilters = () => {
   })
 }
 
-export { getListFilters, setListFilters, getBGGFilters, setBGGFilters, updateBGGFilters }
+export { getListFilters,
+  setListFilters,
+  getBGGFilters,
+  setBGGFilters,
+  updateBGGFilters,
+  getBGGSearchFilters,
+  setBGGSearchFilters
+}

@@ -1,7 +1,7 @@
 import { setCategory } from './category'
 import { clearListData } from './list'
 import { setCurrentStep } from './step'
-import { renderListData, showListSection, renderCollection } from './views'
+import { showListSection, renderCollection } from './views'
 import { setDBListInfoType } from './database'
 import { handleCollectionChangeClick } from './bgg-collection'
 

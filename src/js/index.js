@@ -1,7 +1,7 @@
 import '../styles/main.scss'
-import { renderListData, renderBGGCollection, renderCollection } from './views'
+import { renderCollection } from './views'
 import { handleClickClear, handleAddTextItems } from './list'
-import { setFilters, setBGGFilters } from './filters'
+import { setFilters, setBGGFilters, setBGGSearchFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
@@ -113,16 +113,21 @@ jQuery(document).ready(() => {
   document.querySelector('#bgg-search-submit').addEventListener('click', () => {
     const searchText = document.querySelector('#bgg-search').value
     const typeEls = document.getElementsByName('bgg-search-type')
-    console.log(typeEls)
     let type
     typeEls.forEach((i) => {
       if (i.checked) {
         type = i.id
-        console.log(type)
       }
     })
 
     handleBGGSearch(searchText, type)
+  })
+
+  document.querySelector('#bgg-search-sort-select').addEventListener('change', (e) => {
+    setBGGSearchFilters({
+      sortBy: e.target.value
+    })
+    renderCollection('bgg-search')
   })
 
   // BGG Filters

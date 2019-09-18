@@ -1,5 +1,5 @@
 import { initPrevList, getListData, removeListItem, loadList, sortListData } from './list'
-import { getListFilters, getBGGFilters } from './filters'
+import { getListFilters, getBGGFilters, getBGGSearchFilters } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
@@ -75,7 +75,7 @@ const renderCollection = (type) => {
     data = getBGGSearchData()
   }
 
-  // filtering
+  // filtering and sorting
   let filteredItems
   if (type === 'list') {
     filteredItems = filterListData(data)
@@ -218,6 +218,8 @@ const filterBGGCollection = (data) => {
 
 const filterBGGSearch = (data) => {
   let filteredList = data.filter((item) => item.addedToList === false)
+  let sortBy = getBGGSearchFilters().sortBy
+  filteredList = sortListData(filteredList, sortBy)
   return filteredList
 }
 

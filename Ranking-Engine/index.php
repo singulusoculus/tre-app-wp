@@ -277,7 +277,7 @@
                     <div class="bgg-search-results-header">
                       <h4 class="section-title bgg-search-results-header__title">Search Results:</h4>
                       <div class="input-field bgg-search-results-header__select">
-                        <select>
+                        <select id="bgg-search-sort-select">
                           <option value="bgg-rating" selected>BGG Rating</option>
                           <option value="alphabetical">Alphabetical</option>
                         </select>

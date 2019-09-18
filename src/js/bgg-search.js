@@ -34,13 +34,12 @@ const handleBGGSearch = async (searchText, type) => {
       } else {
         expansionIds.push(exResults ? exResults['@attributes'].id : 0)
       }
-  
+
       // filter for boardgame type only by comparing exResults to bgResults
       results = bgResults.filter((i) => expansionIds.indexOf(i['@attributes'].id) < 0, expansionIds)
     } else {
       results = bgResults
     }
-
   } else {
     searchUrl = `https://boardgamegeek.com/xmlapi2/search?query=${searchText}&type=boardgameexpansion`
     results = await getBGGData(searchUrl)
