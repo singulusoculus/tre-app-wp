@@ -26,10 +26,11 @@ const getListHelpText = () => {
     {
       title: 'Board Game Geek',
       listItems: [
-        'If you selected Board Games as your category you will have the option to add games from a BGG collection',
+        'If you selected Board Games as your category you will have the option to add games from a BGG Collection or a BGG Search',
         'Enter the BGG username for the list you would like to request, indicate if you would like expansions included or not, then click Submit.',
         'Give BGG some time to return your list to The Ranking Engine.',
-        'You can then filter your list and either add games individually to your List or add a group of filtered games.'
+        'You can then filter your list and either add games individually to your List or add a group of filtered games.',
+        `Search: In the BGG Search section, type in your search query and click Go. This will return up to 50 items from BGG that you can add to your list. If you don't see the game you want, make your search more specific.`
       ]
     },
     {
