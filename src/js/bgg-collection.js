@@ -243,7 +243,6 @@ export {
   handleBGGCollectionRequest,
   getBGGCollectionData,
   addBGGItemToList,
-  filterBGGCollectionOLD,
   handleAddSelectedBGG,
   handleCollectionChangeClick,
   saveBGGCollection,

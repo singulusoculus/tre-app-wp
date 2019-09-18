@@ -136,7 +136,6 @@ const removeListItem = (item) => {
     const bggId = item.bggId
     const bggItem = bggData.findIndex((item) => item.bggId === bggId)
     bggData[bggItem].addedToList = false
-    // renderBGGCollection()
     renderCollection('bgg-collection')
   } else if (item.sourceType === 'search') {
     const searchData = getBGGSearchData()

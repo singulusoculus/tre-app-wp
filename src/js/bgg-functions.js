@@ -14,6 +14,7 @@ const getBGGData = (url) => {
             bggJSONData = []
           }
         }
+        // Always resolves an array
         resolve(bggJSONData)
       })
   })
@@ -29,15 +30,9 @@ const getBGGGameDetailData = (bggIds) => {
     const results = await getBGGData(dataURL)
     let items = []
 
-    if (!Array.isArray(results)) {
-      items.push(results)
-    } else {
-      results.forEach((i) => {
-        items.push(i)
-      })
-    }
-
-    console.log('Returned BGG Game Data Object', items)
+    results.forEach((i) => {
+      items.push(i)
+    })
 
     resolve(createBGGGameDataObjects(items))
   })
@@ -114,21 +109,6 @@ const createBGGGameDataObjects = (items) => {
       gameDataDetails.bggRank = parseInt(rank['@attributes'].value)
     }
 
-    // if (Array.isArray(stats.ranks.rank)) {
-    //   const rank = stats.ranks.rank.find((e) => e['@attributes'].name === 'boardgame')
-    //   if (rank['@attributes'].value === 'Not Ranked') {
-    //     gameDataDetails.bggRank = 1000000
-    //   } else {
-    //     gameDataDetails.bggRank = parseInt(rank['@attributes'].value)
-    //   }
-    // } else {
-    //   if (stats.ranks.rank['@attributes'].value === 'Not Ranked') {
-    //     gameDataDetails.bggRank = 1000000
-    //   } else {
-    //     gameDataDetails.bggRank = parseInt(stats.ranks.rank['@attributes'].value)
-    //   }
-    // }
-
     // Names
     let altNames = []
 
@@ -144,19 +124,6 @@ const createBGGGameDataObjects = (items) => {
         altNames.push(name['@attributes'].value)
       }
     })
-
-    // if (Array.isArray(item.name)) {
-    //   item.name.forEach((name) => {
-    //     if (name['@attributes'].type === 'primary') {
-    //       gameDataDetails.name = name['@attributes'].value
-    //     }
-    //     if (name['@attributes'].type === 'alternate') {
-    //       altNames.push(name['@attributes'].value)
-    //     }
-    //   })
-    // } else {
-    //   gameDataDetails.name = item.name['@attributes'].value
-    // }
 
     gameDataDetails.altNames = altNames
     altNames = []

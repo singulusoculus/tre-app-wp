@@ -104,22 +104,7 @@
         </div>
         <div class="divider-sm"></div>
         <div class="row list-editor">
-          <ul class="collapsible popout col s12 m12 l6">
-            <li class="active">
-              <div class="collapsible-header"><i class="material-icons">playlist_add</i>Text Entry</div>
-              <div class="collapsible-body">
-                <form>
-                    <div class="center-align">
-                      <a id="textarea-add-btn" class="waves-effect waves-light btn disabled"><i
-                          class="material-icons right">add</i>Add</a>
-                    </div>
-                    <div class="input-field">
-                      <textarea id="textarea-input" class="materialize-textarea"></textarea>
-                      <label for="textarea-input">Enter items here (multiple lines allowed)</label>
-                    </div>
-                </form>
-              </div>
-            </li>
+          <ul class="collapsible popout col s12 m12 l6 add-options-sections">
             <li class="bgg-section hide">
               <div class="collapsible-header"><i class="material-icons">cloud_download</i>BGG Collection</div>
               <div class="collapsible-body">
@@ -239,6 +224,7 @@
             <li class="bgg-search hide">
               <div class="collapsible-header"><i class="material-icons">search</i>BGG Search</div>
               <div class="collapsible-body">
+                <p style="font-style: italic">Note: The Ranking Engine only returns 50 search results at a time. If you do not see what you are looking for please be more specific in your search.</p>
                 <form autocomplete="off" onsubmit="return false;" class="bgg-search-submit">
                     <div class="row">
                       <div class="col s12 input-field">
@@ -284,12 +270,26 @@
                         <label>Sort Results By:</label>
                       </div>
                     </div>
-                    <p>The Ranking Engine only returns 50 search results at a time. It tries to be smart about this but if you do not see what you are looking for please be more specific in your search.</p>
                     <div class="divider-sm"></div>
                     <div class="bgg-search__items"></div>
                   </div>
               </div>
 
+            </li>
+            <li class="text-entry active">
+              <div class="collapsible-header"><i class="material-icons">playlist_add</i>Text Entry</div>
+              <div class="collapsible-body">
+                <form>
+                    <div class="center-align">
+                      <a id="textarea-add-btn" class="waves-effect waves-light btn disabled"><i
+                          class="material-icons right">add</i>Add</a>
+                    </div>
+                    <div class="input-field">
+                      <textarea id="textarea-input" class="materialize-textarea"></textarea>
+                      <label for="textarea-input">Enter items here (multiple lines allowed)</label>
+                    </div>
+                </form>
+              </div>
             </li>
           </ul>
           <ul class="list-collapsible collapsible popout col s12 m12 l6">

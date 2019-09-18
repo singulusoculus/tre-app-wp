@@ -325,6 +325,7 @@ const showStartSection = (source) => {
   disableStepTab('list', 'rank', 'result')
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
+  document.querySelector('.bgg-search').classList.add('hide')
   setupSaveLogin()
 
   // Clears result database link
@@ -363,12 +364,15 @@ const showListSection = (source) => {
 
   renderTemplateDesc()
   // Show BGG section if category is Board Games, hide if not
+  const addOptionsEl = M.Collapsible.getInstance(document.querySelector('.add-options-sections'))
   if (categoryName === 'Board Games') {
+    addOptionsEl.open(0)
     document.querySelector('.bgg-section').classList.remove('hide')
     document.querySelector('.bgg-search').classList.remove('hide')
   } else {
     document.querySelector('.bgg-section').classList.add('hide')
     document.querySelector('.bgg-search').classList.add('hide')
+    addOptionsEl.open(2)
   }
 
   const list = getListData()
@@ -654,7 +658,7 @@ const createTableElement = (type, headers, rows, myListsInfo) => {
     const trEl = document.createElement('tr')
     const items = Object.values(row)
     const itemID = myListsInfo[type][index].id
-    const uuid = myListsInfo[type][index].uuid
+    // const uuid = myListsInfo[type][index].uuid
     const shared = myListsInfo[type][index].shared === 1 || false
     const ranked = myListsInfo[type][index].ranked === 1 || false
     trEl.classList.add(`${type}-${index}`, `${type}-list`, 'modal-close')
