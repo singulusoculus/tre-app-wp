@@ -498,11 +498,14 @@ const dbGetSharedList = (id, type) => {
 }
 
 const dbSetShareFlag = (id, value) => {
-  jQuery.post(getFilePath('/re-func/re-functions.php'), {
-    func: `setShareFlag`,
-    id: parseInt(id),
-    value: parseInt(value)
-  }, (data, status) => {
+  return new Promise((resolve, reject) => {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: `setShareFlag`,
+      id: parseInt(id),
+      value: parseInt(value)
+    }, (data, status) => {
+      resolve()
+    })
   })
 }
 

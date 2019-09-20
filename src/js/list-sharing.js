@@ -112,11 +112,11 @@ const copyURLText = () => {
   M.toast({ html: 'Copied Url' })
 }
 
-const handleShareSwitchChange = () => {
+const handleShareSwitchChange = async () => {
   const value = document.querySelector('#share-switch').checked ? 1 : 0
   // Send value to database --need the list id
   const listId = selectedList.id
-  dbSetShareFlag(listId, value)
+  await dbSetShareFlag(listId, value)
   setMyListsInfoShared(listId, value)
   renderShareOptions(value, selectedList)
   renderMyLists()
