@@ -37,48 +37,34 @@ const handleBGGSearch = async (searchText, type) => {
   }
 
   let bggSearchItems = []
+  results.forEach((i) => {
+    bggSearchItems.push(i)
+  })
 
-  if (!Array.isArray(results)) {
-    if (results) {
-      bggSearchItems.push(results)
+  // Filter out duplicate bggIds
+  bggSearchItems = bggSearchItems.filter((list, index, self) => self.findIndex(l => l['@attributes'].id === list['@attributes'].id) === index)
+
+  // Filter for games with primary names only
+  bggSearchItems = bggSearchItems.filter(item => item.name['@attributes'].type === 'primary')
+
+  // Cut list down to 50
+  bggSearchItems = bggSearchItems.slice(0, 50)
+
+  let bggIds = []
+  bggSearchItems.forEach((item) => {
+    if (item.name['@attributes'].type === 'primary') {
+      bggIds.push(item['@attributes'].id)
     }
-  } else {
-    results.forEach((i) => {
-      bggSearchItems.push(i)
-    })
-  }
+  })
 
-  if (results) {
-    // Filter out duplicate bggIds
-    bggSearchItems = bggSearchItems.filter((list, index, self) => self.findIndex(l => l['@attributes'].id === list['@attributes'].id) === index)
+  let gameDetails = await getBGGGameDetailData(bggIds)
+  gameDetails = sortListData(gameDetails, 'bgg-rank')
 
-    // Filter for games with primary names only
-    bggSearchItems = bggSearchItems.filter(item => item.name['@attributes'].type === 'primary')
+  bggSearchData = gameDetails
 
-    // Cut list down to 50
-    bggSearchItems = bggSearchItems.slice(0, 50)
-
-    let bggIds = []
-    bggSearchItems.forEach((item) => {
-      if (item.name['@attributes'].type === 'primary') {
-        bggIds.push(item['@attributes'].id)
-      }
-    })
-
-    let gameDetails = await getBGGGameDetailData(bggIds)
-    gameDetails = sortListData(gameDetails, 'bgg-rank')
-
-    bggSearchData = gameDetails
-
-    jQuery('.ball-loading.search-results').fadeOut(() => {
-      renderCollection('bgg-search')
-    })
-  } else {
-    bggSearchData = []
-    jQuery('.ball-loading.search-results').fadeOut(() => {
-      renderCollection('bgg-search')
-    })
-  }
+  jQuery('.ball-loading.search-results').fadeOut(() => {
+    renderCollection('bgg-search')
+  })
 }
 
 export { handleBGGSearch, getBGGSearchData }

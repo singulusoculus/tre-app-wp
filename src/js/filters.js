@@ -1,3 +1,8 @@
+
+// ////////////////////////////////////////
+// LIST FILTERS
+// ////////////////////////////////////////
+
 const listFilters = {
   searchText: '',
   sortBy: 'alphabetical'
@@ -15,6 +20,10 @@ const setListFilters = (updates) => {
   }
 }
 
+// ////////////////////////////////////////
+// BGG SEARCH FILTERS
+// ////////////////////////////////////////
+
 const bggSearchFilters = {
   sortBy: 'bgg-rating'
 }
@@ -26,6 +35,10 @@ const setBGGSearchFilters = (updates) => {
     bggSearchFilters.sortBy = updates.sortBy
   }
 }
+
+// ////////////////////////////////////////
+// BGG COLLECTION FILTERS
+// ////////////////////////////////////////
 
 const bggFilters = {
   own: true,

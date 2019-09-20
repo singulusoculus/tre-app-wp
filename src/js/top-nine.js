@@ -89,7 +89,6 @@ const renderSingleCanvas = (data, canvasElctx) => {
 }
 
 const urlToFile = (url, filename, mimeType, proxyURL = '') => {
-  // const proxyURL = 'https://mighty-waters-78900.herokuapp.com/' // my implementation of cors-anywhere
   mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1]
   return (fetch(proxyURL + url)
     .then(function (res) { return res.arrayBuffer() })

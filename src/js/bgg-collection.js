@@ -1,6 +1,6 @@
 import { custMessage, renderCollection, filterBGGCollection } from './views'
-import { addListItems, sortListData, getListData, createList } from './list'
-import { getBGGFilters, updateBGGFilters } from './filters'
+import { addListItems, getListData, createList } from './list'
+import { updateBGGFilters } from './filters'
 import { xmlToJson } from './bgg-functions'
 import uuidv4 from 'uuid'
 
@@ -31,7 +31,6 @@ const initPrevBGGCollection = () => {
       document.querySelector('#bgg-username').value = bggData.bggUsername
       showBGGCollectionSection()
       updateBGGFilters()
-      // renderBGGCollection()
       renderCollection('bgg-collection')
     }
   }
@@ -46,10 +45,8 @@ const handleBGGCollectionRequest = async () => {
     const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
     bggCollectionData = await getBGGCollection(user, expansions)
 
-    // fadeOutSpinner()
     jQuery('.ball-loading.collection').fadeOut(() => {
       showBGGCollectionSection()
-      // renderBGGCollection()
       renderCollection('bgg-collection')
     })
 
@@ -178,54 +175,19 @@ const handleCollectionChangeClick = () => {
 }
 
 const addBGGItemToList = (item, type) => {
-  // const itemID = bggCollectionData.findIndex((item) => item.id === id)
-  // const item = bggCollectionData[itemID]
   item.addedToList = true
 
   const list = createList([item])
   addListItems(list)
 
   if (type === 'bgg-collection') {
-    // renderBGGCollection()
     renderCollection('bgg-collection')
   } else if (type === 'bgg-search') {
     renderCollection('bgg-search')
   }
 }
 
-const filterBGGCollectionOLD = () => {
-  const filters = getBGGFilters()
-
-  let filteredList = []
-
-  // gets only true filters
-  const listTypeFilters = Object.keys(filters).filter((key) => filters[key] === true)
-
-  // filter the collection data for the filters marked as true
-  listTypeFilters.forEach((filter) => {
-    const list = bggCollectionData.filter((item) => item[filter])
-    list.forEach((item) => {
-      filteredList.push(item)
-    })
-  })
-
-  // Filter duplicates out
-  filteredList = filteredList.filter((list, index, self) => self.findIndex(l => l.id === list.id) === index)
-
-  // Filter for Personal Rating
-  filteredList = filteredList.filter((item) => item.rating >= filters.rating)
-
-  // Filter out already added games
-  filteredList = filteredList.filter((item) => item.addedToList === false)
-
-  // Sort alphabetical
-  filteredList = sortListData(filteredList, 'alphabetical')
-
-  return filteredList
-}
-
 const handleAddSelectedBGG = () => {
-  // const filteredList = filterBGGCollectionOLD()
   const filteredList = filterBGGCollection(bggCollectionData)
 
   filteredList.forEach((item) => {
@@ -235,7 +197,6 @@ const handleAddSelectedBGG = () => {
   const list = createList(filteredList)
   addListItems(list)
 
-  // renderBGGCollection()
   renderCollection('bgg-collection')
 }
 

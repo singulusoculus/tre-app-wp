@@ -5,7 +5,7 @@ import { setCurrentStep } from './step'
 import { getDBListInfo } from './database'
 import { checkforImages, renderTopNine } from './top-nine'
 
-let resultData
+let resultData = []
 
 const initPrevResult = (category, data) => {
   resultData = data
