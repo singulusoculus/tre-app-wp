@@ -98,6 +98,10 @@ const renderCollection = (type) => {
     const filteredCount = filteredItems.length
     listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount} `
     document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
+  } if (type === 'bgg-search') {
+    const searchResultsHeaderEl = document.querySelector('.bgg-search-results-header__title')
+    const searchLength = filteredItems.length
+    searchResultsHeaderEl.textContent = `Search Results: ${searchLength}`
   }
 
   // render items
@@ -122,14 +126,12 @@ const generateCollectionDOM = (item, type) => {
   itemEl.classList.add('collection-item', 'list-item')
   const imgDiv = document.createElement('div')
   imgDiv.classList.add('list-item__image-container')
-  // if (type === 'list') {
   const imgEl = document.createElement('img')
   imgEl.classList.add('list-item__image')
   if (item.image !== '') {
     imgEl.src = item.image
     imgDiv.appendChild(imgEl)
   }
-  // }
   itemEl.appendChild(imgDiv)
 
   const itemNameEl = document.createElement('span')
