@@ -65,32 +65,19 @@ const renderPreviousSessionToast = () => {
 // //////////////////////////////////////////////////////////////////////
 
 const renderCollection = (type) => {
-  // data
   let data
+  let filteredItems
+
+  // data, filtering, and header
   if (type === 'list') {
     data = getListData()
-  } else if (type === 'bgg-collection') {
-    data = getBGGCollectionData()
-  } else if (type === 'bgg-search') {
-    data = getBGGSearchData()
-  }
-
-  // filtering and sorting
-  let filteredItems
-  if (type === 'list') {
     filteredItems = filterListData(data)
-  } else if (type === 'bgg-collection') {
-    filteredItems = filterBGGCollection(data)
-  } else if (type === 'bgg-search') {
-    filteredItems = filterBGGSearch(data)
-  }
-
-  // render header
-  if (type === 'list') {
     const count = data.length
     const listInfoEl = document.querySelector('#list-info')
     listInfoEl.textContent = `Your List: ${count} items`
-  } if (type === 'bgg-collection') {
+  } else if (type === 'bgg-collection') {
+    data = getBGGCollectionData()
+    filteredItems = filterBGGCollection(data)
     const listInfoEl = document.querySelector('.bgg-collection-info')
     const totalCount = data.length
     const addedList = data.filter((item) => item.addedToList !== false)
@@ -98,7 +85,9 @@ const renderCollection = (type) => {
     const filteredCount = filteredItems.length
     listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount} `
     document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
-  } if (type === 'bgg-search') {
+  } else if (type === 'bgg-search') {
+    data = getBGGSearchData()
+    filteredItems = filterBGGSearch(data)
     const searchResultsHeaderEl = document.querySelector('.bgg-search-results-header__title')
     const searchLength = filteredItems.length
     searchResultsHeaderEl.textContent = `Search Results: ${searchLength}`
@@ -115,6 +104,7 @@ const renderCollection = (type) => {
     })
     collectionItemsEl.classList.add('collection')
   }
+
   if (type !== 'list') {
     const wrapperEl = document.querySelector(`.${type}__wrapper`)
     wrapperEl.classList.remove('hide')
