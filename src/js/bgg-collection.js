@@ -117,8 +117,12 @@ const createBGGList = (data) => {
   const parser = new DOMParser()
   const xml = parser.parseFromString(xmlDoc, 'text/xml')
   const dataJSON = xmlToJson(xml)
-  const items = dataJSON.items.item
+  let items = dataJSON.items.item
   let bggList = []
+
+  if (!Array.isArray(items)) {
+    items = [items]
+  }
 
   items.forEach((item) => {
     const statusAttributes = item.status['@attributes']

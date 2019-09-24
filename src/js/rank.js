@@ -39,7 +39,7 @@ const getRankData = () => rankData
 const getRankDataHistory = () => rankDataHistory
 
 const populateRankData = (data) => {
-  // Set up rankData Object
+  // Set up rankData Object - if data exists populate using that data; if not, populate with default data
   rankData = {
     masterList: data ? data.masterList : [],
     sortList: data ? data.sortList : [],
