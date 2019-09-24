@@ -17,7 +17,7 @@ const initPrevRanking = (category, data) => {
 
   data.masterList = createList(data.masterList)
 
-  populateRankData(true, data)
+  populateRankData(data)
   saveData(rankData)
   showComparison()
   updateProgressBar()
@@ -38,31 +38,31 @@ const getRankData = () => rankData
 
 const getRankDataHistory = () => rankDataHistory
 
-const populateRankData = (r, data) => {
+const populateRankData = (data) => {
   // Set up rankData Object
   rankData = {
-    masterList: r ? data.masterList : [],
-    sortList: r ? data.sortList : [],
-    parent: r ? data.parent : [-1],
-    rec: r ? data.rec : [],
-    deletedItems: r ? data.deletedItems : [],
-    cmp1: r ? data.cmp1 : 0,
-    cmp2: r ? data.cmp2 : 0,
-    head1: r ? data.head1 : 0,
-    head2: r ? data.head2 : 0,
-    nrec: r ? data.nrec : 0,
-    numQuestion: r ? data.numQuestion : 1,
-    totalSize: r ? data.totalSize : 0,
-    finishSize: r ? data.finishSize : 0,
-    finishFlag: r ? data.finishFlag : 0,
-    bggFlag: r ? data.bggFlag : 0,
-    finalListID: r ? data.finalListID : 0
+    masterList: data ? data.masterList : [],
+    sortList: data ? data.sortList : [],
+    parent: data ? data.parent : [-1],
+    rec: data ? data.rec : [],
+    deletedItems: data ? data.deletedItems : [],
+    cmp1: data ? data.cmp1 : 0,
+    cmp2: data ? data.cmp2 : 0,
+    head1: data ? data.head1 : 0,
+    head2: data ? data.head2 : 0,
+    nrec: data ? data.nrec : 0,
+    numQuestion: data ? data.numQuestion : 1,
+    totalSize: data ? data.totalSize : 0,
+    finishSize: data ? data.finishSize : 0,
+    finishFlag: data ? data.finishFlag : 0,
+    bggFlag: data ? data.bggFlag : 0,
+    finalListID: data ? data.finalListID : 0
   }
 }
 
 const initRanking = (itemsList, category) => {
   disableArrowKeyScroll()
-  populateRankData(false)
+  populateRankData()
 
   document.querySelector('#undo-btn').classList.add('disabled')
 
