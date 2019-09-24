@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderCollection } from './views'
+import { showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderCollectionEl } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
@@ -20,8 +20,7 @@ const initPrevList = (category, data) => {
   setCurrentStep('List')
 
   saveData(listData)
-  // renderListData()
-  renderCollection('list')
+  renderCollectionEl('list')
 
   initPrevBGGCollection()
 
@@ -34,8 +33,7 @@ const loadList = (list) => {
   setCurrentStep('List')
   if (listData.length > 0) {
     saveData(listData)
-    // renderListData()
-    renderCollection('list')
+    renderCollectionEl('list')
   }
 }
 
@@ -118,8 +116,7 @@ const addListItems = (list) => {
     instance.open(0)
 
     saveData(listData)
-    // renderListData()
-    renderCollection('list')
+    renderCollectionEl('list')
   }
 }
 
@@ -136,13 +133,13 @@ const removeListItem = (item) => {
     const bggId = item.bggId
     const bggItem = bggData.findIndex((item) => item.bggId === bggId)
     bggData[bggItem].addedToList = false
-    renderCollection('bgg-collection')
+    renderCollectionEl('bgg-collection')
   } else if (item.sourceType === 'search') {
     const searchData = getBGGSearchData()
     const bggId = item.bggId
     const bggItem = searchData.findIndex((item) => item.bggId === bggId)
     searchData[bggItem].addedToList = false
-    renderCollection('bgg-search')
+    renderCollectionEl('bgg-search')
   }
 
   listData.splice(itemID, 1)
@@ -173,22 +170,20 @@ const clearListData = () => {
 
     saveData(listData)
 
-    // renderListData()
-    renderCollection('list')
+    renderCollectionEl('list')
 
     const bggData = getBGGCollectionData()
     bggData.forEach((item) => {
       item.addedToList = false
     })
 
-    // renderBGGCollection()
-    renderCollection('bgg-collection')
+    renderCollectionEl('bgg-collection')
 
     const searchData = getBGGSearchData()
     searchData.forEach((item) => {
       item.addedToList = false
     })
-    renderCollection('bgg-search')
+    renderCollectionEl('bgg-search')
   } else {
     listData = []
   }

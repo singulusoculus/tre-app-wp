@@ -143,7 +143,6 @@
                   <h4 class="bgg-username-header center-align section-title"></h4>
                   <p class="center-align">
                     <a href="#!" class="change-bgg-username">(Change)</a>
-                    <!-- <a href="#!" class="update-bgg-collection">(Update)</a> -->
                   </p>
                 </div>
                 <div class="bgg-list hide">
@@ -316,10 +315,7 @@
                       <input id="search-text" type="text" placeholder="Search Items" />
                     </form>
                   </div>
-
-                  <div class="list__items">
-                    <!-- <ul id="list__items"></ul> -->
-                  </div>
+                  <div class="list__items"></div>
               </div>
             </li>
           </ul>
@@ -523,7 +519,6 @@
           <div class="ball-loading top-nine" style="display: none">
             <i class="ball"></i>
           </div>
-          <!-- <canvas width="1080" height="1080" class="top-nine-canvas"></canvas> -->
         </div>
       </div>
   </div>

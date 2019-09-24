@@ -1,5 +1,5 @@
-import { initPrevList, getListData, removeListItem, loadList, sortListData } from './list'
-import { getListFilters, getBGGFilters, getBGGSearchFilters } from './filters'
+import { initPrevList, getListData, removeListItem, loadList } from './list'
+import { filterListData, filterBGGCollection, filterBGGSearch } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
@@ -11,7 +11,7 @@ import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 import { getBGGSearchData } from './bgg-search'
 
 // //////////////////////////////////////////////////////////////////////
-// // PREVIOUS SESSION
+// // PREVIOUS SESSION NOTIFICATION
 // //////////////////////////////////////////////////////////////////////
 
 const renderPreviousSessionToast = () => {
@@ -64,7 +64,7 @@ const renderPreviousSessionToast = () => {
 // // RENDER LIST COLLECTIONS
 // //////////////////////////////////////////////////////////////////////
 
-const renderCollection = (type) => {
+const renderCollectionEl = (type) => {
   let data
   let filteredItems
 
@@ -137,21 +137,21 @@ const generateCollectionDOM = (item, type) => {
     iconEl.innerHTML = '<i class="material-icons">delete</i>'
     iconEl.addEventListener('click', (e) => {
       removeListItem(item)
-      renderCollection('list')
+      renderCollectionEl('list')
     })
   } else if (type === 'bgg-collection') {
     iconEl.innerHTML = '<i class="material-icons">add</i>'
     iconEl.addEventListener('click', (e) => {
       addBGGItemToList(item, type)
-      renderCollection('bgg-collection')
-      renderCollection('list')
+      renderCollectionEl('bgg-collection')
+      renderCollectionEl('list')
     })
     // I may be able to combine the two bgg items into one
   } else if (type === 'bgg-search') {
     iconEl.innerHTML = '<i class="material-icons">add</i>'
     iconEl.addEventListener('click', (e) => {
       addBGGItemToList(item, type)
-      renderCollection('list')
+      renderCollectionEl('list')
     })
   }
 
@@ -159,56 +159,6 @@ const generateCollectionDOM = (item, type) => {
   itemEl.appendChild(iconEl)
 
   return itemEl
-}
-
-const filterListData = (data) => {
-  const filters = getListFilters()
-  let filteredList
-
-  // filter based on text input
-  filteredList = data.filter((item) => item.name.toLowerCase().includes(filters.searchText.toLowerCase()))
-  // sort the list
-  filteredList = sortListData(filteredList, 'alphabetical')
-
-  return filteredList
-}
-
-const filterBGGCollection = (data) => {
-  const filters = getBGGFilters()
-
-  let filteredList = []
-
-  // gets only true filters
-  const listTypeFilters = Object.keys(filters).filter((key) => filters[key] === true)
-
-  // filter the collection data for the filters marked as true
-  listTypeFilters.forEach((filter) => {
-    const list = data.filter((item) => item[filter])
-    list.forEach((item) => {
-      filteredList.push(item)
-    })
-  })
-
-  // Filter duplicates out
-  filteredList = filteredList.filter((list, index, self) => self.findIndex(l => l.id === list.id) === index)
-
-  // Filter for Personal Rating
-  filteredList = filteredList.filter((item) => item.rating >= filters.rating)
-
-  // Filter out already added games
-  filteredList = filteredList.filter((item) => item.addedToList === false)
-
-  // Sort alphabetical
-  filteredList = sortListData(filteredList, 'alphabetical')
-
-  return filteredList
-}
-
-const filterBGGSearch = (data) => {
-  let filteredList = data.filter((item) => item.addedToList === false)
-  let sortBy = getBGGSearchFilters().sortBy
-  filteredList = sortListData(filteredList, sortBy)
-  return filteredList
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -236,7 +186,54 @@ const disableStepTab = (...steps) => {
 }
 
 // //////////////////////////////////////////////////////////////////////
-// // BUTTON CONTROLS / UI ELEMENTS
+// // STEP TAB CONTROLS
+// //////////////////////////////////////////////////////////////////////
+
+// Materialize's select function simulates a click on the tab, potentially firing any events attached to it
+// This gets around that by simply showing the tab without the click event
+const showTab = (tab) => {
+  // Tabs
+  const activeTab = document.querySelectorAll('.tab > .active')
+  activeTab[0].classList.remove('active')
+
+  const newActiveTab = document.querySelector(`#${tab}-tab-link`)
+  newActiveTab.classList.add('active')
+
+  // Section
+  const activeSection = document.querySelectorAll('.step-container.active')
+  activeSection[0].classList.remove('active')
+  activeSection[0].setAttribute('style', 'display: none')
+
+  const newActiveSection = document.querySelector(`#${tab}-container`)
+  newActiveSection.classList.add('active')
+  newActiveSection.removeAttribute('style', 'display: none')
+
+  const tabs = document.querySelector('#step-tabs')
+  M.Tabs.init(tabs)
+  updateTabIndicator()
+  sectionTransition(tab)
+}
+
+const updateTabIndicator = () => {
+  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
+  tabs.updateTabIndicator()
+}
+
+const sectionTransition = (step) => {
+  // Remove active class from all step-wrapper divs
+  const activeEls = document.getElementsByClassName('step-wrapper active')
+  while (activeEls[0]) {
+    activeEls[0].classList.remove('active')
+  }
+
+  // Add active class to current step
+  setTimeout(() => {
+    document.querySelector(`#${step}-wrapper`).classList.add('active')
+  }, 200)
+}
+
+// //////////////////////////////////////////////////////////////////////
+// // BUTTON CONTROLS
 // //////////////////////////////////////////////////////////////////////
 
 const enableNextButton = () => {
@@ -254,12 +251,10 @@ const disableListSave = () => {
   saveButton.classList.add('disabled')
 }
 
-const updateTabIndicator = () => {
-  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
-  tabs.updateTabIndicator()
-}
+// //////////////////////////////////////////////////////////////////////
+// // TOOLTIPS
+// //////////////////////////////////////////////////////////////////////
 
-// Tooltip Control
 const createTooltip = (step) => {
   const linkEl = document.querySelector(`#${step}-tab-link`)
   switch (step) {
@@ -288,23 +283,6 @@ const destroyTooltip = (step) => {
 }
 
 // //////////////////////////////////////////////////////////////////////
-// // SECTION CONTROLS
-// //////////////////////////////////////////////////////////////////////
-
-const sectionTransition = (step) => {
-  // Remove active class from all step-wrapper divs
-  const activeEls = document.getElementsByClassName('step-wrapper active')
-  while (activeEls[0]) {
-    activeEls[0].classList.remove('active')
-  }
-
-  // Add active class to current step
-  setTimeout(() => {
-    document.querySelector(`#${step}-wrapper`).classList.add('active')
-  }, 200)
-}
-
-// //////////////////////////////////////////////////////////////////////
 // // SHOW SECTIONS
 // //////////////////////////////////////////////////////////////////////
 
@@ -327,6 +305,7 @@ const showStartSection = (source) => {
 }
 
 const showListSection = (source) => {
+  // If coming from Rank or Result, load that list
   if (source === 'Rank') {
     const data = getRankData()
     let list
@@ -355,7 +334,8 @@ const showListSection = (source) => {
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
 
   renderTemplateDesc()
-  // Show BGG section if category is Board Games, hide if not
+
+  // Show BGG sections if category is Board Games, hide if not
   const addOptionsEl = M.Collapsible.getInstance(document.querySelector('.add-options-sections'))
   if (categoryName === 'Board Games') {
     addOptionsEl.open(0)
@@ -422,40 +402,6 @@ const showResultSection = (source) => {
 }
 
 // //////////////////////////////////////////////////////////////////////
-// // STEP TAB CONTROLS
-// //////////////////////////////////////////////////////////////////////
-
-const selectTab = (tab) => {
-  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
-  tabs.select(`${tab}-container`)
-}
-
-// Materialize's select function simulates a click on the tab, potentially firing any events attached to it
-// This gets around that by simply showing the tab without the click event
-const showTab = (tab) => {
-  // Tabs
-  const activeTab = document.querySelectorAll('.tab > .active')
-  activeTab[0].classList.remove('active')
-
-  const newActiveTab = document.querySelector(`#${tab}-tab-link`)
-  newActiveTab.classList.add('active')
-
-  // Section
-  const activeSection = document.querySelectorAll('.step-container.active')
-  activeSection[0].classList.remove('active')
-  activeSection[0].setAttribute('style', 'display: none')
-
-  const newActiveSection = document.querySelector(`#${tab}-container`)
-  newActiveSection.classList.add('active')
-  newActiveSection.removeAttribute('style', 'display: none')
-
-  const tabs = document.querySelector('#step-tabs')
-  M.Tabs.init(tabs)
-  updateTabIndicator()
-  sectionTransition(tab)
-}
-
-// //////////////////////////////////////////////////////////////////////
 // // MODALS / CUSTOM CONFIRMS
 // //////////////////////////////////////////////////////////////////////
 
@@ -489,6 +435,10 @@ const custMessage = (message) => {
   const instance = M.Modal.getInstance(document.querySelector('#message-modal'))
   instance.open()
 }
+
+// //////////////////////////////////////////////////////////////////////
+// // SETUP SAVE BUTTONS
+// //////////////////////////////////////////////////////////////////////
 
 const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
@@ -543,6 +493,18 @@ const setupSaveLogin = async () => {
   }
 }
 
+const setupSaveButtons = () => {
+  // Set Save button targets to Save Modal
+  const saveButtons = document.querySelectorAll('.save-btn')
+  saveButtons.forEach((el) => {
+    el.setAttribute('href', '#save-modal')
+  })
+}
+
+// //////////////////////////////////////////////////////////////////////
+// // MY LISTS
+// //////////////////////////////////////////////////////////////////////
+
 const showMyLists = () => {
   const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
   instance.open()
@@ -583,21 +545,21 @@ const renderMyLists = async () => {
   // Templates
   if (templateLists.length > 0) {
     const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '', '']
-    const templateTable = createTableElement('templates', templateHeaders, templateLists, myListsInfo)
+    const templateTable = createMyListsTableElement('templates', templateHeaders, templateLists, myListsInfo)
     myListsEl.appendChild(templateTable)
   }
 
   // Progress
   if (progressLists.length > 0) {
     const progressHeaders = ['Saved', 'Items', '% Comp', 'Desc', '']
-    const progressTable = createTableElement('progress', progressHeaders, progressLists, myListsInfo)
+    const progressTable = createMyListsTableElement('progress', progressHeaders, progressLists, myListsInfo)
     myListsEl.appendChild(progressTable)
   }
 
   // Results
   if (resultLists.length > 0) {
     const resultsHeaders = ['Completed', 'Items', 'Desc', '']
-    const resultsTable = createTableElement('results', resultsHeaders, resultLists, myListsInfo)
+    const resultsTable = createMyListsTableElement('results', resultsHeaders, resultLists, myListsInfo)
     myListsEl.appendChild(resultsTable)
   }
 
@@ -611,15 +573,7 @@ const renderMyLists = async () => {
   }
 }
 
-const setupSaveButtons = () => {
-  // Set Save button targets to Save Modal
-  const saveButtons = document.querySelectorAll('.save-btn')
-  saveButtons.forEach((el) => {
-    el.setAttribute('href', '#save-modal')
-  })
-}
-
-const createTableElement = (type, headers, rows, myListsInfo) => {
+const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
   // Main table div
   const divEl = document.createElement('div')
   divEl.classList.add(`my-lists__${type}`)
@@ -730,6 +684,10 @@ const createTableElement = (type, headers, rows, myListsInfo) => {
   return divEl
 }
 
+// //////////////////////////////////////////////////////////////////////
+// // RENDER DESCRIPTIONS
+// //////////////////////////////////////////////////////////////////////
+
 const renderTemplateDesc = () => {
   const dbListInfo = getDBListInfo()
 
@@ -740,22 +698,12 @@ const renderTemplateDesc = () => {
   }
 }
 
-const renderResultDesc = () => {
-  const dbListInfo = getDBListInfo()
-
-  // Set table title
-  const titleEl = document.querySelector('.result-desc')
-  titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
-}
-
 export {
   renderPreviousSessionToast,
   showListSection,
   showRankSection,
   showResultSection,
   showStartSection,
-  selectTab,
-  sectionTransition,
   enableStepTab,
   disableStepTab,
   enableNextButton,
@@ -769,7 +717,5 @@ export {
   showMyLists,
   custMessage,
   renderTemplateDesc,
-  renderResultDesc,
-  renderCollection,
-  filterBGGCollection
+  renderCollectionEl
 }

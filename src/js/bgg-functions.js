@@ -85,11 +85,11 @@ const createBGGGameDataObjects = (items) => {
     gameDataDetails.artists = artists
     gameDataDetails.designers = designers
     gameDataDetails.publishers = publishers
-    mechanisms = []
-    categories = []
-    artists = []
-    designers = []
-    publishers = []
+    // mechanisms = []
+    // categories = []
+    // artists = []
+    // designers = []
+    // publishers = []
 
     // Stats
     // .statistics.ratings.average["@attributes"].value
@@ -126,7 +126,7 @@ const createBGGGameDataObjects = (items) => {
     })
 
     gameDataDetails.altNames = altNames
-    altNames = []
+    // altNames = []
 
     gameDataDetails.addedToList = false
     gameDataDetails.source = 'bgg'

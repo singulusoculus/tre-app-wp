@@ -222,13 +222,14 @@ const handleClickStart = () => {
 
 const handleClickList = () => {
   const source = getCurrentStep()
+  let message = ''
+
   if (source === 'Rank') {
-    const message = 'This will terminate the ranking process and allow you to edit the list. Want to continue?'
-    custConfirm(message, showListSection, source)
+    message = 'This will terminate the ranking process and allow you to edit the list. Want to continue?'
   } else if (source === 'Result') {
-    const message = 'This will clear your results and allow you to edit the list. Want to continue?'
-    custConfirm(message, showListSection, source)
+    message = 'This will clear your results and allow you to edit the list. Want to continue?'
   }
+  custConfirm(message, showListSection, source)
 }
 
 const handleClickRank = () => {
@@ -455,7 +456,8 @@ const initDataTable = (table) => {
   searchEl.appendTo(newFilterEl)
 }
 
-export { disableArrowKeyScroll,
+export {
+  disableArrowKeyScroll,
   saveData,
   initMaterializeComponents,
   initRankingEngine,

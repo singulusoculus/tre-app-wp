@@ -1,4 +1,4 @@
-import { custMessage, renderCollection, filterBGGCollection } from './views'
+import { custMessage, renderCollectionEl, filterBGGCollection } from './views'
 import { addListItems, getListData, createList } from './list'
 import { updateBGGFilters } from './filters'
 import { xmlToJson } from './bgg-functions'
@@ -31,7 +31,7 @@ const initPrevBGGCollection = () => {
       document.querySelector('#bgg-username').value = bggData.bggUsername
       showBGGCollectionSection()
       updateBGGFilters()
-      renderCollection('bgg-collection')
+      renderCollectionEl('bgg-collection')
     }
   }
 }
@@ -47,7 +47,7 @@ const handleBGGCollectionRequest = async () => {
 
     jQuery('.ball-loading.collection').fadeOut(() => {
       showBGGCollectionSection()
-      renderCollection('bgg-collection')
+      renderCollectionEl('bgg-collection')
     })
 
     // Save new bgg games to database
@@ -181,9 +181,9 @@ const addBGGItemToList = (item, type) => {
   addListItems(list)
 
   if (type === 'bgg-collection') {
-    renderCollection('bgg-collection')
+    renderCollectionEl('bgg-collection')
   } else if (type === 'bgg-search') {
-    renderCollection('bgg-search')
+    renderCollectionEl('bgg-search')
   }
 }
 
@@ -197,7 +197,7 @@ const handleAddSelectedBGG = () => {
   const list = createList(filteredList)
   addListItems(list)
 
-  renderCollection('bgg-collection')
+  renderCollectionEl('bgg-collection')
 }
 
 export {

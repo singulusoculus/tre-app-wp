@@ -1,5 +1,5 @@
 import '../styles/main.scss'
-import { renderCollection } from './views'
+import { renderCollectionEl } from './views'
 import { handleClickClear, handleAddTextItems } from './list'
 import { setFilters, setBGGFilters, setBGGSearchFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
@@ -9,8 +9,8 @@ import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart
 import { copyURLText, handleShareSwitchChange } from './list-sharing'
 import { handleQuickHelpClick } from './quick-help'
 import { handleBGGSearch } from './bgg-search'
-// import LogRocket from 'logrocket'
-// LogRocket.init('r3us4o/ranking-engine-prod')
+import LogRocket from 'logrocket'
+LogRocket.init('r3us4o/ranking-engine-prod')
 
 // Check for mobile browser and fix category select to work better for mobile browsers
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
@@ -127,7 +127,7 @@ jQuery(document).ready(() => {
     setBGGSearchFilters({
       sortBy: e.target.value
     })
-    renderCollection('bgg-search')
+    renderCollectionEl('bgg-search')
   })
 
   // BGG Filters
@@ -138,7 +138,7 @@ jQuery(document).ready(() => {
         [element]: e.target.checked
       })
       // renderBGGCollection()
-      renderCollection('bgg-collection')
+      renderCollectionEl('bgg-collection')
     })
   })
 
@@ -147,7 +147,7 @@ jQuery(document).ready(() => {
       rating: parseInt(e.target.value)
     })
     // renderBGGCollection()
-    renderCollection('bgg-collection')
+    renderCollectionEl('bgg-collection')
   })
 
   document.querySelector('#bgg-add-selected').addEventListener('click', (e) => {
@@ -160,7 +160,7 @@ jQuery(document).ready(() => {
       searchText: e.target.value
     })
     // renderListData()
-    renderCollection('list')
+    renderCollectionEl('list')
   })
 
   document.querySelector('#clear-list').addEventListener('click', () => {

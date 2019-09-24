@@ -1,5 +1,5 @@
 import { getBGGData, getBGGGameDetailData } from './bgg-functions'
-import { renderCollection } from './views'
+import { renderCollectionEl } from './views'
 import { sortListData } from './list'
 
 // https://boardgamegeek.com/xmlapi2/search?type=boardgame,boardgameexpansion&query=xia
@@ -63,7 +63,7 @@ const handleBGGSearch = async (searchText, type) => {
   bggSearchData = gameDetails
 
   jQuery('.ball-loading.search-results').fadeOut(() => {
-    renderCollection('bgg-search')
+    renderCollectionEl('bgg-search')
   })
 }
 
