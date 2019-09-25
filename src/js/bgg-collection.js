@@ -1,6 +1,6 @@
-import { custMessage, renderCollectionEl, filterBGGCollection } from './views'
+import { custMessage, renderCollectionEl } from './views'
 import { addListItems, getListData, createList } from './list'
-import { updateBGGFilters } from './filters'
+import { updateBGGFilters, filterBGGCollection } from './filters'
 import { xmlToJson } from './bgg-functions'
 import uuidv4 from 'uuid'
 
@@ -72,7 +72,7 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
   }, (data, status) => {
     let newData = parseInt(data.replace(/[\n\r]+/g, ''))
 
-    // 1 = invalid username; 2 = timed out, try again later; Too Many Requests
+    // 1 = invalid username; 2 = timed out, try again later; Too Many Requests; failed to open steam
     if (newData === 1) {
       // fadeOutSpinner()
       jQuery('.ball-loading.collection').fadeOut()
@@ -88,6 +88,10 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
       jQuery('.ball-loading.collection').fadeOut()
       reject(new Error('Too Many Requests'))
       custMessage('BGG servers are busy at the moment. Please wait a minute and try again')
+    } else if (data.indexOf('failed to open stream') > 0) {
+      jQuery('.ball-loading.collection').fadeOut()
+      reject(new Error('Connection Problems'))
+      custMessage('The Ranking Engine is having problems connecting to BGG. Please try again later.')
     } else {
       let bggList = createBGGList(data)
 
