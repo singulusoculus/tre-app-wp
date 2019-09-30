@@ -6,80 +6,14 @@
       <nav class="nav-extended nav-re">
         <div class="nav-wrapper">
           <p class="brand-logo nav-re__title">Ranking Engine</p>
+          
           <div class="help right">
             <input type="checkbox" class="help__checkbox" id="help-toggle">
-
             <label for="help-toggle" class="help__button">
               <i class="material-icons help__icon">help</i>
             </label>
-
             <div class="help__background">&nbsp;</div>
-
-            <div class="help__text">
-              <h4 class="center-align">Quick Help</h4>
-              <div class="help__text-item help__text--start">
-                <p class="section-title">Start</p>
-                <ul class="help__list">
-                  <li>Select a category to get started creating a list.</li>
-                  <li>You can also see the current top 10 games from the current year here. Click the button below the list to see all of the top games as ranked by users of the Ranking Engine.</li>
-                  <li>If you have a previous session available you will be prompted to resume or discard it. Resuming picks up where you left off. Discarding completely deletes the previous session data.</li>
-                </ul>
-              </div>
-              <div class="help__text-item help__text--list hide">
-              <p class="section-title">List</p>
-                <ul class="help__list">
-                  <li>To add items to your list, type or paste them into the provided Text Entry area, each item on a separate line, then click Add.</li>
-                  <li>Keep adding and editing your list until you have the list you want to rank, then click the arrow button on the right or the Rank tab to start ranking.</li>
-                </ul>
-                <hr>
-                <p class="section-title">Board Game Geek</p>
-                <ul class="help__list">
-                  <li>If you selected Board Games as your category you will have the option to add games from a BGG collection</li>
-                  <li>Enter the BGG username for the list you would like to request, indicate if you would like expansions included or not, then click Submit.</li>
-                  <li>Give BGG some time to return your list to The Ranking Engine.</li>
-                  <li>You can then filter your list and either add games individually to your List or add a group of filtered games.</li>
-                </ul>
-                <hr>
-                <p class="section-title">Saving a Template</p>
-                <ul class="help__list">
-                  <li>If you create a list you would like access to at a later date you can save it as a template.</li>
-                  <li>Click the Save button in the Your List section, log in (if needed), give your list a description and click Save.</li>
-                  <li>If you are working with an already-saved template, you will have the option to edit it and then Update it.</li>
-                </ul>
-              </div>
-              <div class=" help__text-item help__text--rank hide">
-                <p class="section-title">Rank</p>
-                <ul class="help__list">
-                    <li>Two items will be presented at a time. Click on the one you prefer. Continue making selections until your results are presented</li>
-                    <li>Delete an item from your ranking by clicking the <i class="material-icons small help__icon-inline">delete</i> icon.</li>
-                    <li>Undo a selection by clicking the Undo button</li>
-                    <li>If you are using a keyboard, you can use your left and right arrows to make your selections. The up arrow will trigger undo.</li>
-                    <li>Save your progress by clicking the Save button, logging in (if needed), giving it a description, and clicking Save.</li>
-                  </ul>
-              </div>
-              <div class=" help__text-item help__text--result hide">
-                <p class="section-title">Result</p>
-                <ul class="help__list">
-                  <li>Your results will be calculated and presented for you to peruse.</li>
-                  <li>Easily copy your results to your clipboard by clicking the Copy button.</li>
-                  <li>Download a csv file with your results by clicking the CSV button</li>
-                  <li>Save your results by clicking the Save button, logging in (if needed), giving is a description, and clicking Save.</li>
-                  <li>Rerank your results by clicking the Rank tab. You can either rerank the complete list or the top X items from it.</li>
-                </ul>
-              </div>
-              <div class="help__my-lists">
-              <hr>
-              <p class="section-title">Navigation</p>
-              <ul class="help__list">
-                <li>You can navigate to any previous step in the process by clicking the tab.</li>
-              </ul>
-              <hr>
-              <p class="section-title">My Lists</p>
-              <ul class="help__list">
-                <li>If you are logged in, you have access to your saved lists at any time by clicking the <i class="material-icons small help__icon-inline">account_circle</i> in the menu. Just click on a list to load it.</li>
-              </ul>
-              </div>
-            </div>
+            <div class="help__text"></div>
           </div>
 
           <div class="account right">
@@ -139,7 +73,6 @@
         <div class="divider"></div>
 
         <div class="current-rankings-wrapper">
-          <!-- <h5 class="center-align">Current <?php echo date("Y"); ?> Top Games:</h5> -->
           <p class="center-align section-title">Current <?php echo date("Y"); ?> Top Games:</p>
           <div class="center-align">
             <a href="./rankings" class="waves-effect waves-light btn all-top-games-btn">See All Top Games<i class="material-icons right small white-text">chevron_right</i></a>
@@ -171,24 +104,9 @@
         </div>
         <div class="divider-sm"></div>
         <div class="row list-editor">
-          <ul class="collapsible popout col s12 m12 l6">
-            <li class="active">
-              <div class="collapsible-header"><i class="material-icons">playlist_add</i>Text Entry</div>
-              <div class="collapsible-body">
-                <form>
-                    <div class="center-align">
-                      <a id="textarea-add-btn" class="waves-effect waves-light btn disabled"><i
-                          class="material-icons right">add</i>Add</a>
-                    </div>
-                    <div class="input-field">
-                      <textarea id="textarea-input" class="materialize-textarea"></textarea>
-                      <label for="textarea-input">Enter items here (multiple lines allowed)</label>
-                    </div>
-                </form>
-              </div>
-            </li>
+          <ul class="collapsible popout col s12 m12 l6 add-options-sections">
             <li class="bgg-section hide">
-              <div class="collapsible-header"><i class="material-icons">cloud_download</i>Add from BGG</div>
+              <div class="collapsible-header"><i class="material-icons">cloud_download</i>BGG Collection</div>
               <div class="collapsible-body">
                 <form autocomplete="off" onsubmit="return false;" class="bgg-username-submit">
                   <div class="row">
@@ -213,16 +131,18 @@
                     </div>
                     <div class="col s6">
                       <button type="submit" id="bgg-submit" class="waves-effect waves-light btn"><i
-                          class="material-icons right">arrow_forward</i>Submit
+                          class="material-icons right">arrow_forward</i>Go
                       </button>
                     </div>
                   </div>
                 </form>
-                <div class="bgg-username-submitted hide">
+                <div class="ball-loading collection" style="display: none">
+                  <i class="ball"></i>
+                </div>
+                <div class="bgg-collection__wrapper hide">
                   <h4 class="bgg-username-header center-align section-title"></h4>
                   <p class="center-align">
                     <a href="#!" class="change-bgg-username">(Change)</a>
-                    <!-- <a href="#!" class="update-bgg-collection">(Update)</a> -->
                   </p>
                 </div>
                 <div class="bgg-list hide">
@@ -295,9 +215,79 @@
                     <div class="bgg-collection-info section-title"></div>
                   </div>
                   <div class="divider-sm"></div>
-                  <div class="bgg-collection">
+                  <div class="bgg-collection__items">
                   </div>
                 </div>
+              </div>
+            </li>
+            <li class="bgg-search hide">
+              <div class="collapsible-header"><i class="material-icons">search</i>BGG Search</div>
+              <div class="collapsible-body">
+                <p class="center-align" style="font-style: italic">Note: The Ranking Engine only returns up to 50 search results at a time. If you do not see what you are looking for please be more specific in your search.</p>
+                <form autocomplete="off" onsubmit="return false;" class="bgg-search-submit">
+                    <div class="row">
+                      <div class="col s12 input-field">
+                        <input id="bgg-search" type="text">
+                        <label for="bgg-search">Search Text</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col s8">
+                        <div class="">
+                          <span class="bgg-filter-heading">Search For:</span>
+                          <p class="type-radio">
+                            <label>
+                              <input class="with-gap" id="boardgames" name="bgg-search-type" type="radio" checked  />
+                              <span>Board Games</span>
+                            </label>
+                            <label>
+                              <input class="with-gap" id="expansions" name="bgg-search-type" type="radio"  />
+                              <span>Expansions</span>
+                            </label>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col s4">
+                        <button type="submit" id="bgg-search-submit" class="waves-effect waves-light btn"><i
+                            class="material-icons right">arrow_forward</i>Go
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="ball-loading search-results" style="display: none">
+                    <i class="ball"></i>
+                  </div>
+                  <div class="bgg-search__wrapper hide">
+                    <div class="divider-sm"></div>
+                    <div class="bgg-search-results-header">
+                      <h4 class="section-title bgg-search-results-header__title">Search Results:</h4>
+                      <div class="input-field bgg-search-results-header__select">
+                        <select id="bgg-search-sort-select">
+                          <option value="bgg-rating" selected>BGG Rating</option>
+                          <option value="alphabetical">Alphabetical</option>
+                        </select>
+                        <label>Sort Results By:</label>
+                      </div>
+                    </div>
+                    <div class="divider-sm"></div>
+                    <div class="bgg-search__items"></div>
+                  </div>
+              </div>
+
+            </li>
+            <li class="text-entry active">
+              <div class="collapsible-header"><i class="material-icons">playlist_add</i>Text Entry</div>
+              <div class="collapsible-body">
+                <form>
+                    <div class="center-align">
+                      <a id="textarea-add-btn" class="waves-effect waves-light btn disabled"><i
+                          class="material-icons right">add</i>Add</a>
+                    </div>
+                    <div class="input-field">
+                      <textarea id="textarea-input" class="materialize-textarea"></textarea>
+                      <label for="textarea-input">Enter items here (multiple lines allowed)</label>
+                    </div>
+                </form>
               </div>
             </li>
           </ul>
@@ -325,10 +315,7 @@
                       <input id="search-text" type="text" placeholder="Search Items" />
                     </form>
                   </div>
-
-                  <div class="">
-                    <ul id="list-items"></ul>
-                  </div>
+                  <div class="list__items"></div>
               </div>
             </li>
           </ul>
@@ -519,9 +506,26 @@
     </div>
   </div>
 
+    <!-- Top 9 Modal -->
+    <div id="top-nine-modal" class="modal">
+      <div class="modal-content">
+        <a href="#!" class="modal-close btn-flat modal-close-x">
+          <span aria-hidden="true">&times;</span>
+        </a>
+        <h4 class="center-align">Your Top Nine</h4>
+        <p class="center-align">To save the image, right click (on desktop) or long press (on mobile) and select Save Image. If there is an issue with the image, close this dialog and click the Top Nine button again to regenerate the image.</p>
+        <div class="image-wrapper">
+          <img src="" alt="" class="top-nine-image" style="display: none">
+          <div class="ball-loading top-nine" style="display: none">
+            <i class="ball"></i>
+          </div>
+        </div>
+      </div>
+  </div>
+
     <!-- Bottom Modal -->
   <div id="account-modal" class="modal bottom-sheet">
-    <div class="modal-content">
+    <div class="modal-content account-modal__content">
     <a href="#!" class="modal-close btn-flat modal-close-x">
         <span aria-hidden="true">&times;</span>
       </a>
@@ -529,7 +533,37 @@
       <h4>My Lists</h4>
         <div class="my-lists"></div>
       </div>
+    </div>
+  </div>
 
+  <!-- Share Modal -->
+  <div id="share-modal" class="modal">
+    <div class="modal-content">
+      <a href="#!" class="modal-close btn-flat modal-close-x">
+        <span aria-hidden="true">&times;</span>
+      </a>
+      <h4 class="center-align share-list__heading">Sharing Options</h4>
+      <div class="switch center-align">
+        <p class="bgg-filter-heading">Sharing: </p>
+        <label>
+          Off
+          <input id="share-switch" type="checkbox">
+          <span class="lever"></span>
+          On
+        </label>
+      </div>
+
+          <div class="input-field">
+            <input disabled value="URL" class="center-align" id="share-list__url" type="text">
+            <p class="share-list__important-text center-align">**Important: Sharing must be turned on for the link to work</p>
+          </div>
+
+        <div class="row">
+          <div class="col s12 center-align share-list__btns">
+            <a href="#" id="share-list__copy" class="waves-effect waves-light btn disabled">Copy URL</a>
+          </div>
+        </div>
+        <div class="read-only-template"></div>
     </div>
   </div>
 

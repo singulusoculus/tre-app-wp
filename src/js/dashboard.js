@@ -1,5 +1,5 @@
 
-import { fadeInSpinner, fadeOutSpinner } from './views'
+import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { numWithCommas, renderTableRows, initDataTable } from './functions'
 
 const initDashboard = () => {
@@ -56,20 +56,8 @@ jQuery(document).ready(() => {
   initDashboard()
 
   // ////////////////////////////////////////////////////////////////////
-  // Transfer Processes
+  // Combine Games
   // ////////////////////////////////////////////////////////////////////
-
-  document.querySelector('#progress-transfer').addEventListener('click', () => {
-    handleProgressTransferClick()
-  })
-
-  document.querySelector('#user-result-transfer').addEventListener('click', () => {
-    handleUserResultTransferClick()
-  })
-
-  document.querySelector('#result-transfer').addEventListener('click', () => {
-    handleRankingResultsTransferClick()
-  })
 
   document.querySelector('#combine-games-submit').addEventListener('click', () => {
     let oldItemID = document.querySelector('#old-game-id').value

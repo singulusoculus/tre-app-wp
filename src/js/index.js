@@ -1,11 +1,14 @@
 import '../styles/main.scss'
-import { renderListData, renderBGGCollection } from './views'
+import { renderCollectionEl } from './views'
 import { handleClickClear, handleAddTextItems } from './list'
-import { setFilters, setBGGFilters } from './filters'
+import { setFilters, setBGGFilters, setBGGSearchFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
 import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
+import { copyURLText, handleShareSwitchChange } from './list-sharing'
+import { handleQuickHelpClick } from './quick-help'
+import { handleBGGSearch } from './bgg-search'
 // import LogRocket from 'logrocket'
 // LogRocket.init('r3us4o/ranking-engine-prod')
 
@@ -17,6 +20,14 @@ if (isMobile) {
 
 jQuery(document).ready(() => {
   initRankingEngine()
+
+  // //////////////////////////////////////////////////////////////////////
+  // // QUICK HELP
+  // //////////////////////////////////////////////////////////////////////
+  document.querySelector('.help__button').addEventListener('click', (e) => {
+    e.preventDefault()
+    handleQuickHelpClick()
+  })
 
   // //////////////////////////////////////////////////////////////////////
   // // STEP TAB CONTROLS
@@ -99,9 +110,25 @@ jQuery(document).ready(() => {
     handleCollectionChangeClick()
   })
 
-  // document.querySelector('.update-bgg-collection').addEventListener('click', () => {
-  //   handleBGGCollectionRequest()
-  // })
+  document.querySelector('#bgg-search-submit').addEventListener('click', () => {
+    const searchText = document.querySelector('#bgg-search').value
+    const typeEls = document.getElementsByName('bgg-search-type')
+    let type
+    typeEls.forEach((i) => {
+      if (i.checked) {
+        type = i.id
+      }
+    })
+
+    handleBGGSearch(searchText, type)
+  })
+
+  document.querySelector('#bgg-search-sort-select').addEventListener('change', (e) => {
+    setBGGSearchFilters({
+      sortBy: e.target.value
+    })
+    renderCollectionEl('bgg-search')
+  })
 
   // BGG Filters
   document.querySelectorAll('.bgg-cb').forEach((el) => {
@@ -110,7 +137,8 @@ jQuery(document).ready(() => {
       setBGGFilters({
         [element]: e.target.checked
       })
-      renderBGGCollection()
+      // renderBGGCollection()
+      renderCollectionEl('bgg-collection')
     })
   })
 
@@ -118,7 +146,8 @@ jQuery(document).ready(() => {
     setBGGFilters({
       rating: parseInt(e.target.value)
     })
-    renderBGGCollection()
+    // renderBGGCollection()
+    renderCollectionEl('bgg-collection')
   })
 
   document.querySelector('#bgg-add-selected').addEventListener('click', (e) => {
@@ -130,7 +159,8 @@ jQuery(document).ready(() => {
     setFilters({
       searchText: e.target.value
     })
-    renderListData()
+    // renderListData()
+    renderCollectionEl('list')
   })
 
   document.querySelector('#clear-list').addEventListener('click', () => {
@@ -167,10 +197,6 @@ jQuery(document).ready(() => {
 
   // ***************** Result Section *****************
 
-  // document.querySelector('.support-us__dismiss').addEventListener('click', () => {
-  //   document.querySelector('.support-us').classList.add('hide')
-  // })
-
   // ***************** Modals *****************
   document.querySelector('#login-form-button').addEventListener('click', (e) => {
     const fromVal = e.target.attributes.from.value
@@ -200,6 +226,14 @@ jQuery(document).ready(() => {
       document.querySelector('#login-form-button').setAttribute('from', '')
       document.querySelector('#login-form-button').setAttribute('from', 'save')
     })
+  })
+
+  document.querySelector('#share-switch').addEventListener('change', () => {
+    handleShareSwitchChange()
+  })
+
+  document.querySelector('#share-list__copy').addEventListener('click', () => {
+    copyURLText()
   })
 
 // End of document.ready

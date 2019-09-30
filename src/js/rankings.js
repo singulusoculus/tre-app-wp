@@ -1,4 +1,4 @@
-import { fadeInSpinner, fadeOutSpinner } from './views'
+import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { numWithCommas, renderTableRows, initDataTable } from './functions'
 
 const initRankings = () => {

@@ -1,13 +1,18 @@
 import uuidv4 from 'uuid'
-import { renderListData, showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderBGGCollection } from './views'
+import { showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderCollectionEl } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { getBGGCollectionData, initPrevBGGCollection } from './bgg-collection'
+import { getBGGSearchData } from './bgg-search'
 
 let listData = []
 
 const getListData = () => listData
+
+const setListData = (data) => {
+  listData = createList(data)
+}
 
 const initPrevList = (category, data) => {
   listData = createList(data)
@@ -15,7 +20,7 @@ const initPrevList = (category, data) => {
   setCurrentStep('List')
 
   saveData(listData)
-  renderListData()
+  renderCollectionEl('list')
 
   initPrevBGGCollection()
 
@@ -28,7 +33,7 @@ const loadList = (list) => {
   setCurrentStep('List')
   if (listData.length > 0) {
     saveData(listData)
-    renderListData()
+    renderCollectionEl('list')
   }
 }
 
@@ -36,8 +41,10 @@ const createListObject = (data) => {
   const obj = {
     id: data.id || uuidv4(),
     name: data.name,
+    imageOriginal: data.imageOriginal || '',
     image: data.image || '',
     source: data.source,
+    sourceType: data.sourceType || '',
     rank: data.rank || 0,
     bggId: data.bggId || '',
     yearPublished: data.yearPublished || ''
@@ -68,7 +75,8 @@ const handleAddTextItems = (textList) => {
   textList.forEach((name) => {
     data.push({
       name,
-      source: 'text'
+      source: 'text',
+      sourceType: 'textarea'
     })
   })
 
@@ -108,30 +116,35 @@ const addListItems = (list) => {
     instance.open(0)
 
     saveData(listData)
-    renderListData()
+    renderCollectionEl('list')
   }
 }
 
 const filterDuplicates = () => {
-  listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name) === index)
+  listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name && l.bggId === list.bggId) === index)
 }
 
-const removeListItem = (id) => {
-  const itemID = listData.findIndex((item) => item.id === id)
+const removeListItem = (item) => {
+  const itemID = listData.findIndex((i) => i.id === item.id)
 
   // Show removed item back in Collection data
-  if (listData[itemID].source === 'bgg') {
+  if (item.sourceType === 'collection') {
     const bggData = getBGGCollectionData()
-    const bggId = listData[itemID].bggId
+    const bggId = item.bggId
     const bggItem = bggData.findIndex((item) => item.bggId === bggId)
     bggData[bggItem].addedToList = false
-    renderBGGCollection()
+    renderCollectionEl('bgg-collection')
+  } else if (item.sourceType === 'search') {
+    const searchData = getBGGSearchData()
+    const bggId = item.bggId
+    const bggItem = searchData.findIndex((item) => item.bggId === bggId)
+    searchData[bggItem].addedToList = false
+    renderCollectionEl('bgg-search')
   }
 
-  if (itemID > -1) {
-    listData.splice(itemID, 1)
-    saveData(listData)
-  }
+  listData.splice(itemID, 1)
+  saveData(listData)
+
   if (listData.length === 0) {
     disableStepTab('rank')
     disableListSave()
@@ -157,14 +170,20 @@ const clearListData = () => {
 
     saveData(listData)
 
-    renderListData()
+    renderCollectionEl('list')
 
     const bggData = getBGGCollectionData()
     bggData.forEach((item) => {
       item.addedToList = false
     })
 
-    renderBGGCollection()
+    renderCollectionEl('bgg-collection')
+
+    const searchData = getBGGSearchData()
+    searchData.forEach((item) => {
+      item.addedToList = false
+    })
+    renderCollectionEl('bgg-search')
   } else {
     listData = []
   }
@@ -223,6 +242,16 @@ const sortListData = (list, sortBy) => {
         return 0
       }
     })
+  } else if (sortBy === 'bgg-rank') {
+    return list.sort((a, b) => {
+      if (a.bggRank > b.bggRank) {
+        return 1
+      } else if (a.bggRank < b.bggRank) {
+        return -1
+      } else {
+        return 0
+      }
+    })
   } else {
     return list
   }
@@ -240,5 +269,6 @@ export {
   createListObject,
   handleClickClear,
   handleAddTextItems,
-  estimateTotalComparisons
+  estimateTotalComparisons,
+  setListData
 }

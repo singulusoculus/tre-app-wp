@@ -3,8 +3,9 @@ import { saveData, renderTable } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 import { getDBListInfo } from './database'
+import { checkforImages, renderTopNine } from './top-nine'
 
-let resultData
+let resultData = []
 
 const initPrevResult = (category, data) => {
   resultData = data
@@ -51,6 +52,7 @@ const renderResult = () => {
   document.querySelector('#results__header > tr > :first-child').setAttribute('style', 'width: 18%')
 
   const userResultID = getDBListInfo().userResult.id
+
   // Put save button in line with other buttons
   const saveButtonEl = document.createElement('a')
   saveButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'modal-trigger', 'save-btn')
@@ -72,6 +74,7 @@ const renderResult = () => {
   saveButtonEl.appendChild(saveIconEl)
   const dtButtonsEl = document.querySelector('.dt-buttons')
   dtButtonsEl.appendChild(saveButtonEl)
+
   saveButtonEl.addEventListener('click', () => {
     document.querySelector('#save-list-btn').textContent = 'Save'
     document.querySelector('#save-description').value = ''
@@ -97,6 +100,42 @@ const renderResult = () => {
       M.Toast.dismissAll()
     })
   })
+
+  // Check for top nine images
+  const images = checkforImages(resultData)
+  // Top Nine Button
+  if (images) {
+    const topNineButtonEl = document.createElement('a')
+    topNineButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'top-nine-btn')
+    topNineButtonEl.textContent = 'Top Nine'
+    topNineButtonEl.addEventListener('click', () => {
+      const topNineModal = M.Modal.getInstance(document.querySelector('#top-nine-modal'))
+      topNineModal.open()
+      try {
+        jQuery('.top-nine-image').fadeOut(1, renderTopNine(images))
+      } catch (e) {
+        jQuery('.ball-loading.top-nine').fadeOut()
+        const imageWrapper = document.querySelector('.image-wrapper')
+        const pEl = document.createElement('p')
+        pEl.textContent = 'Sorry, we were unable to generate your top nine image. You can try again by closing this dialog and clicking the Top Nine button again'
+        imageWrapper.appendChild(pEl)
+        console.log(e)
+        throw new Error('Unable to render top nine Image')
+      }
+    })
+
+    const topNineIconEl = document.createElement('i')
+    topNineIconEl.classList.add('material-icons', 'right')
+    topNineIconEl.textContent = 'grid_on'
+
+    topNineButtonEl.appendChild(topNineIconEl)
+    dtButtonsEl.appendChild(topNineButtonEl)
+  } else {
+    const topNineButtonEl = document.querySelector('.top-nine-button')
+    if (topNineButtonEl) {
+      topNineButtonEl.remove()
+    }
+  }
 }
 
 export { initPrevResult, renderResult, getResultData, setResultData }

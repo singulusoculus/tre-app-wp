@@ -4,7 +4,9 @@ import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData, renderTableRows } from './functions'
-import { renderMyLists, setupSaveButtons, fadeInSpinner, fadeOutSpinner, renderTemplateDesc } from './views'
+import { renderMyLists, setupSaveButtons, renderTemplateDesc } from './views'
+import { fadeInSpinner, fadeOutSpinner } from './spinner'
+import { getParentList, setParentList } from './list-sharing'
 
 let dbListInfo = {
   template: {
@@ -66,7 +68,7 @@ const clearDBListInfo = () => {
 
 const dbGetUserLists = () => new Promise((resolve, reject) => {
   const wpuid = getUserID()
-  fadeInSpinner()
+  // fadeInSpinner()
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'getUserLists',
     wpuid
@@ -74,7 +76,7 @@ const dbGetUserLists = () => new Promise((resolve, reject) => {
     if (status === 'success') {
       const parsedData = JSON.parse(data)
       parsedData ? resolve(parsedData) : reject(new Error('No data returned'))
-      fadeOutSpinner()
+      // fadeOutSpinner()
     }
   })
 })
@@ -114,9 +116,11 @@ const dbLoadUserList = (type, id) => {
         const rankData = JSON.parse(parsedData[0].progress_data)
         const category = parseInt(parsedData[0].list_category)
         const desc = parsedData[0].progress_desc
+        const parentList = parsedData[0].parent_list_id
         resetHistory()
         const intID = parseInt(id)
         setDBListInfoType('progress', { id: intID, desc })
+        setParentList(parentList)
         initPrevRanking(category, rankData)
       }
     })
@@ -283,9 +287,10 @@ const dbUpdateTemplateData = (saveDesc) => {
   })
 }
 
-const dbSaveProgressData = (saveDesc) => {
+const dbSaveProgressData = (saveDesc = dbListInfo.progress.desc) => {
   const wpuid = getUserID()
   const rankData = getRankData()
+
   // create a deep copy before stripping out id
   let newRankData = JSON.parse(JSON.stringify(rankData))
 
@@ -299,10 +304,12 @@ const dbSaveProgressData = (saveDesc) => {
   const rankDataJSON = JSON.stringify(newRankData)
   const category = getCategory()
 
-  fadeInSpinner()
+  const saveBtnEl = document.querySelector('#save-ranking')
+  saveBtnEl.classList.add('disabled')
 
   if (dbListInfo.progress.id === 0) {
     const uuid = uuidv4()
+    const parentList = getParentList()
 
     // INSERT
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
@@ -313,7 +320,8 @@ const dbSaveProgressData = (saveDesc) => {
       saveDesc,
       itemCount,
       percent,
-      category
+      category,
+      parentList
     }, (data, status) => {
       if (status === 'success') {
         let newData = parseInt(data.replace(/[\n\r]+/g, ''))
@@ -325,7 +333,8 @@ const dbSaveProgressData = (saveDesc) => {
         renderMyLists()
         setupSaveButtons()
 
-        fadeOutSpinner()
+        saveBtnEl.classList.remove('disabled')
+
         M.toast({ html: `Progress List Saved`, displayLength: 2000 })
       }
     })
@@ -347,8 +356,9 @@ const dbSaveProgressData = (saveDesc) => {
         renderMyLists()
         setupSaveButtons()
 
-        fadeOutSpinner()
-        M.toast({ html: `Progress List Updated`, displayLength: 2000 })
+        saveBtnEl.classList.remove('disabled')
+
+        M.toast({ html: `Progress List Saved`, displayLength: 2000 })
       }
     })
   }
@@ -378,6 +388,7 @@ const dbSaveResultData = (rankedItems) => {
   const bggFlag = rankData.bggFlag
   const templateID = dbListInfo.template.id
   const category = getCategory()
+  const parentList = getParentList()
 
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'insertResultRanking',
@@ -385,7 +396,8 @@ const dbSaveResultData = (rankedItems) => {
     itemCount,
     bggFlag,
     templateID,
-    category
+    category,
+    parentList
   }, (data, status) => {
     if (status === 'success') {
       let newData = parseInt(data.replace(/[\n\r]+/g, ''))
@@ -393,6 +405,17 @@ const dbSaveResultData = (rankedItems) => {
         id: newData
       })
       saveData(resultData)
+
+      // get str items from localStorage
+      const lsParentLists = JSON.parse(localStorage.getItem('str'))
+      // if null then set it / else push new ParentList into the array and set it
+      if (lsParentLists === null) {
+        const parentListArray = JSON.stringify([parentList])
+        localStorage.setItem('str', parentListArray)
+      } else {
+        lsParentLists.push(parentList)
+        localStorage.setItem('str', JSON.stringify(lsParentLists))
+      }
 
       if (category === 2) {
         dbUpdateRankings(dbListInfo.result.id)
@@ -460,6 +483,32 @@ const dbUpdateRankings = (listId) => {
   })
 }
 
+// type - Result, Template, Progress
+const dbGetSharedList = (id, type) => {
+  return new Promise((resolve, reject) => {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: `getSharedList`,
+      id: `"${id}"`,
+      type: type
+    }, (data, status) => {
+      const parsedData = JSON.parse(data)
+      resolve(parsedData)
+    })
+  })
+}
+
+const dbSetShareFlag = (id, value) => {
+  return new Promise((resolve, reject) => {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: `setShareFlag`,
+      id: parseInt(id),
+      value: parseInt(value)
+    }, (data, status) => {
+      resolve()
+    })
+  })
+}
+
 export { dbSaveTemplateData,
   dbSaveProgressData,
   dbSaveResultData,
@@ -473,5 +522,7 @@ export { dbSaveTemplateData,
   dbLoadUserList,
   dbDeleteUserList,
   clearDBListInfo,
-  dbGetTopTenYear
+  dbGetTopTenYear,
+  dbGetSharedList,
+  dbSetShareFlag
 }

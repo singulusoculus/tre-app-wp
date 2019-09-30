@@ -69,6 +69,12 @@ switch ($func) {
   case 'updateRankings':
     updateRankings();
     break;
+  case 'getSharedList':
+    getSharedList();
+    break;
+  case 'setShareFlag':
+    setShareFlag();
+    break;
   default:
     echo 'Could not find the specified function';
 }
@@ -222,9 +228,14 @@ function getUserLists() {
 
   $templateLists = $wpdb->get_results("SELECT template_id, created_date, updated_date, item_count, template_desc FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
 
+  $progressIds = $wpdb->get_results( "SELECT progress_id AS id, progress_uuid AS uuid, progress_desc AS descr FROM wp_re_rank_progress WHERE wpuid = $wpuid ORDER BY progress_id DESC", ARRAY_A );
+  $resultIds = $wpdb->get_results("SELECT result_id AS id, result_uuid AS uuid, result_desc AS descr FROM wp_re_results_user WHERE wpuid = $wpuid ORDER BY result_id DESC" , ARRAY_A );
+  $templateIds =  $wpdb->get_results("SELECT template_id AS id, template_uuid AS uuid, template_desc AS descr, shared, ranked, template_data AS templateData FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
+  
+
   // push list data in to array
   $userLists = array();
-  array_push($userLists, $templateLists, $progressLists, $resultLists );
+  array_push($userLists, $templateLists, $progressLists, $resultLists, $templateIds, $progressIds, $resultIds);
 
   // send it in json
   $lists_json = json_encode($userLists);
@@ -246,7 +257,7 @@ function getProgressList() {
   global $wpdb;
   $progressid = $_POST['progressid'];
     
-  $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_id = $progressid", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc, parent_list_id FROM wp_re_rank_progress WHERE progress_id = $progressid", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -331,13 +342,25 @@ function insertResultRanking() {
   $templateID = $_POST['templateID'];
   $currdate = date("Y-m-d");
   $listCategory = $_POST['category'];
+  $parentList = intval($_POST['parentList']);
   global $version;
+
+  // if parentList > 0 then set the update wp_re_list_tempaltes.ranked = 1
+  if ($parentList > 0) {
+    $wpdb->update('wp_re_list_templates', // Table to update
+    array('ranked' => 1), // Update field
+    array('template_id' => $parentList), // Where parameter
+    array( '%d' ), // Update field data type
+    array( '%d' ) // Where parameter data type
+    );
+  }
 
   //INSERT data into wp_re_final_h
   $wpdb->insert(
       'wp_re_results_h',
       array(
           'result_id' => null,
+          'parent_list_id' => $parentList === 0 ? NULL : $parentList,
           'finish_date' => $currdate,
           'item_count' => $itemCount,
           'bgg_flag' => $bggFlag,
@@ -345,6 +368,7 @@ function insertResultRanking() {
           're_version' => $version
       ),
       array(
+          '%d',
           '%d',
           '%s',
           '%d',
@@ -422,6 +446,7 @@ function insertProgressList() {
   $uuid = $_POST['uuid'];
   $currdate = date("Y-m-d");
   $category = $_POST['category'];
+  $parentList = $_POST['parentList'];
   global $version;
 
   $savedata = removeslashes($savedata);
@@ -436,6 +461,7 @@ function insertProgressList() {
           'progress_id' => null,
           'wpuid' => $wpuid,
           'progress_uuid' => $uuid,
+          'parent_list_id' => $parentList,
           'progress_desc' => $desc,
           'created_date' => $currdate,
           'save_date' => $currdate,
@@ -449,6 +475,7 @@ function insertProgressList() {
           '%d',
           '%d',
           '%s',
+          '%d',
           '%s',
           '%s',
           '%s',
@@ -480,7 +507,7 @@ function updateProgressList() {
   //sanitize description
   $desc = sanitize_text_field($desc);
 
-  $wpdb->update(
+ $wpdb->update(
     'wp_re_rank_progress',
     array(
       'progress_desc' => $desc,
@@ -602,6 +629,51 @@ function updateRankings() {
   $query = "CALL `update_re_boardgames_on_list_completion`(".$listid.");";
   $result = $wpdb->query($query);
   echo $query;
+}
+
+///////////////////////////////////////
+// SHARED LISTS
+///////////////////////////////////////
+
+function getSharedList() {
+  global $wpdb;
+  $id = $_POST['id'];
+  $type = $_POST['type'];
+
+  $str_id = removeslashes($id);
+
+  switch($type) {
+    case 'Template':
+    $results = $wpdb->get_results( "SELECT template_id, template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id AND shared = 1", ARRAY_A );
+    $results_json = json_encode($results);
+    echo $results_json;
+    break;
+
+    case 'Progress':
+    $results = $wpdb->get_results( "SELECT progress_id, progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_uuid = $str_id", ARRAY_A );
+    $results_json = json_encode($results);
+    echo $results_json;
+    break;
+
+    case 'Result':
+    $results = $wpdb->get_results( "SELECT result_id, result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
+    $results_json = json_encode($results);
+    echo $results_json;
+    break;
+  }
+}
+
+function setShareFlag() {
+  global $wpdb;
+  $templateId = $_POST['id'];
+  $value = $_POST['value'];
+
+  $wpdb->update('wp_re_list_templates', // Table to update
+    array('shared' => $value), // Update field
+    array('template_id' => $templateId), // Where parameter
+    array( '%d' ), // Update field data type
+    array( '%d' ) // Where parameter data type
+  );
 }
 
 

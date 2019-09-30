@@ -188,6 +188,57 @@
   flex-wrap: wrap;
 }
 
+.list-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 71px;
+
+  &__image-container {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__image {
+    max-width: 50px;
+    max-height: 50px;
+    border-radius: 2px;
+  }
+
+  &__no-image {
+    cursor: pointer;
+  }
+
+  &__title {
+    margin-left: 10px;
+    justify-self: start;
+    flex-grow: 1;
+  }
+
+  &__icon {
+    position: unset;
+    color: #527A45 !important;
+    transition: all .4s ease-in-out;
+
+    &.added {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+  }
+
+}
+
+.dragdrop {
+  border: dashed gray !important;
+  border-width: 2px !important;
+  background-color: rgba(155, 155, 155, .1) !important;
+}
+
+.collection-item__image {
+  width: 50px;
+}
+
 .bgg-personal-rating {
   width: 100%;
   display: flex;
@@ -234,6 +285,22 @@
   flex-wrap: wrap;
 }
 
+.bgg-search-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: 1;
+
+  &__title {
+    align-self: left;
+    flex-grow: 1;
+  }
+
+  &__select {
+    flex-grow:1;
+  }
+}
+
 //////////////////////////////////////////////////////////////////
 ///////////  RANK SECTION
 //////////////////////////////////////////////////////////////////
@@ -255,15 +322,17 @@
   display: flex;
   align-items: center;
   position: relative;
-  min-height:200px;
+  min-height: 200px;
 
   &__img {
     max-width: 15rem;
     margin-right: 1.5rem;
+    border-radius: 3px;
   }
 
   &__text {
     text-transform: uppercase;
+    flex-grow: 1;
   }
 
   &__delete {
@@ -276,6 +345,7 @@
   @media only screen and (max-width: 600px) {
     & {
       padding: 1rem !important;
+      min-height: 160px;
     }
 
     &__img {
@@ -534,6 +604,8 @@
     & > div > ul > li {
       padding-bottom: .5rem;
       list-style-type: square; 
+      float: none;
+      margin-left: 8px;
     }
   }
 
@@ -638,4 +710,34 @@
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
+}
+
+.account-modal__content {
+  @media only screen and (max-width: 600px) {
+    padding: 8px !important;
+  }
+}
+
+// Shared Result Page
+.shared-result-options {
+  display: flex;
+  justify-content: space-around;
+}
+
+.top-nine-image {
+  width: 300px;
+  height: 300px;
+  padding: 0;
+  margin-top: 10px;
+  margin: auto;
+  display: block;
+
+  @media only screen and (max-width: 600px) {
+    width: 200px;
+    height: 200px;
+  }  
+}
+
+.top-nine-btn {
+  margin-left: 4px;
 }

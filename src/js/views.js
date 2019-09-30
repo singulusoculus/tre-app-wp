@@ -1,15 +1,17 @@
-import { initPrevList, getListData, removeListItem, loadList, sortListData, estimateTotalComparisons } from './list'
-import { getFilters } from './filters'
+import { initPrevList, getListData, removeListItem, loadList } from './list'
+import { filterListData, filterBGGCollection, filterBGGSearch } from './filters'
 import { initPrevRanking, getRankData, initRanking } from './rank'
 import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
-import { addBGGItemToList, filterBGGCollection, getBGGCollectionData, saveBGGCollection } from './bgg-collection'
+import { addBGGItemToList, getBGGCollectionData } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem } from './functions'
+import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
+import { getBGGSearchData } from './bgg-search'
 
 // //////////////////////////////////////////////////////////////////////
-// // PREVIOUS SESSION
+// // PREVIOUS SESSION NOTIFICATION
 // //////////////////////////////////////////////////////////////////////
 
 const renderPreviousSessionToast = () => {
@@ -18,6 +20,7 @@ const renderPreviousSessionToast = () => {
   if (prevData !== null) {
     const step = prevData.step
     const data = prevData.data
+    const parentList = prevData.parentList
 
     if (Object.keys(data).length > 0 && step !== 'Start') {
       const toastHTML = `<span>You have a previous ${step} session available. Want to resume?</span><div class="prev-toast-btns"><button class="btn-flat toast-action resume-prev-btn">Resume</button><button class="btn-flat toast-action discard-prev-btn">Discard</button></div>`
@@ -39,6 +42,7 @@ const renderPreviousSessionToast = () => {
         if (step === 'List') {
           initPrevList(category, data)
         } else if (step === 'Rank') {
+          setParentList(parentList)
           initPrevRanking(category, data)
         } else if (step === 'Result') {
           initPrevResult(category, data)
@@ -57,104 +61,99 @@ const renderPreviousSessionToast = () => {
 }
 
 // //////////////////////////////////////////////////////////////////////
-// // RENDER LIST DATA
+// // RENDER LIST COLLECTIONS
 // //////////////////////////////////////////////////////////////////////
 
-const renderListData = () => {
-  const data = getListData()
-  const filters = getFilters()
-  const count = data.length
+const renderCollectionEl = (type) => {
+  let data
+  let filteredItems
 
-  const listInfoEl = document.querySelector('#list-info')
-  listInfoEl.textContent = `Your List: ${count} items`
+  // data, filtering, and header
+  if (type === 'list') {
+    data = getListData()
+    filteredItems = filterListData(data)
+    const count = data.length
+    const listInfoEl = document.querySelector('#list-info')
+    listInfoEl.textContent = `Your List: ${count} items`
+  } else if (type === 'bgg-collection') {
+    data = getBGGCollectionData()
+    filteredItems = filterBGGCollection(data)
+    const listInfoEl = document.querySelector('.bgg-collection-info')
+    const totalCount = data.length
+    const addedList = data.filter((item) => item.addedToList !== false)
+    const addedCount = addedList.length
+    const filteredCount = filteredItems.length
+    listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount} `
+    document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
+  } else if (type === 'bgg-search') {
+    data = getBGGSearchData()
+    filteredItems = filterBGGSearch(data)
+    const searchResultsHeaderEl = document.querySelector('.bgg-search-results-header__title')
+    const searchLength = filteredItems.length
+    searchResultsHeaderEl.textContent = `Search Results: ${searchLength}`
+  }
 
-  const listEl = document.querySelector('#list-items')
+  // render items
+  const collectionItemsEl = document.querySelector(`.${type}__items`)
+  collectionItemsEl.innerHTML = ''
 
-  // filter based on text input
-  let filteredList = data.filter((item) => item.name.toLowerCase().includes(filters.searchText.toLowerCase()))
-  // sort the list
-  filteredList = sortListData(filteredList, 'alphabetical')
-
-  listEl.innerHTML = ''
-
-  if (filteredList.length > 0) {
-    filteredList.forEach((item) => {
-      const itemEl = generateListDataDOM(item)
-      listEl.appendChild(itemEl)
+  if (filteredItems.length > 0) {
+    filteredItems.forEach((item) => {
+      const itemEl = generateCollectionDOM(item, type)
+      collectionItemsEl.appendChild(itemEl)
     })
-    listEl.classList.add('collection')
+    collectionItemsEl.classList.add('collection')
+  }
+
+  if (type !== 'list') {
+    const wrapperEl = document.querySelector(`.${type}__wrapper`)
+    wrapperEl.classList.remove('hide')
   }
 }
 
-// Generate DOM for each item in createList
-const generateListDataDOM = (item) => {
+const generateCollectionDOM = (item, type) => {
   const itemEl = document.createElement('li')
-  itemEl.classList.add('collection-item')
+  itemEl.classList.add('collection-item', 'list-item')
+  const imgDiv = document.createElement('div')
+  imgDiv.classList.add('list-item__image-container')
+  const imgEl = document.createElement('img')
+  imgEl.classList.add('list-item__image')
+  if (item.image !== '') {
+    imgEl.src = item.image
+    imgDiv.appendChild(imgEl)
+  }
+  itemEl.appendChild(imgDiv)
 
   const itemNameEl = document.createElement('span')
+  itemNameEl.classList.add('list-item__title')
   itemNameEl.textContent = item.name
 
   const iconEl = document.createElement('a')
-  iconEl.classList.add('secondary-content')
+  iconEl.classList.add('list-item__icon')
   iconEl.href = '#!'
-  iconEl.innerHTML = '<i class="material-icons">delete</i>'
-  iconEl.addEventListener('click', (e) => {
-    removeListItem(item.id)
-    renderListData()
-  })
 
-  itemEl.appendChild(itemNameEl)
-  itemEl.appendChild(iconEl)
-
-  return itemEl
-}
-
-// //////////////////////////////////////////////////////////////////////
-// // RENDER BGG DATA
-// //////////////////////////////////////////////////////////////////////
-
-const renderBGGCollection = () => {
-  const listInfoEl = document.querySelector('.bgg-collection-info')
-  const listEl = document.querySelector('.bgg-collection')
-  const bggData = getBGGCollectionData()
-  const totalCount = bggData.length
-
-  const addedList = bggData.filter((item) => item.addedToList !== false)
-  const addedCount = addedList.length
-
-  const filteredList = filterBGGCollection()
-
-  const filteredCount = filteredList.length
-  listInfoEl.textContent = `Filtered: ${filteredCount} | Added: ${addedCount} | Total: ${totalCount} `
-
-  document.querySelector('#bgg-add-selected').innerHTML = `<i class="material-icons right">add</i>Add ${filteredCount} Games`
-
-  listEl.innerHTML = ''
-
-  filteredList.forEach((item) => {
-    const itemEl = generateBGGCollectionDOM(item)
-    listEl.appendChild(itemEl)
-  })
-  listEl.classList.add('collection')
-  saveBGGCollection()
-}
-
-const generateBGGCollectionDOM = (item) => {
-  const itemEl = document.createElement('li')
-  itemEl.classList.add('collection-item')
-
-  const itemNameEl = document.createElement('span')
-  itemNameEl.textContent = item.name
-
-  const iconEl = document.createElement('a')
-  iconEl.classList.add('secondary-content')
-  iconEl.href = '#!'
-  iconEl.innerHTML = '<i class="material-icons">add</i>'
-  iconEl.addEventListener('click', (e) => {
-    addBGGItemToList(item.id)
-    renderBGGCollection()
-    renderListData()
-  })
+  // Add icons and click events
+  if (type === 'list') {
+    iconEl.innerHTML = '<i class="material-icons">delete</i>'
+    iconEl.addEventListener('click', (e) => {
+      removeListItem(item)
+      renderCollectionEl('list')
+    })
+  } else if (type === 'bgg-collection') {
+    iconEl.innerHTML = '<i class="material-icons">add</i>'
+    iconEl.addEventListener('click', (e) => {
+      addBGGItemToList(item, type)
+      renderCollectionEl('bgg-collection')
+      renderCollectionEl('list')
+    })
+    // I may be able to combine the two bgg items into one
+  } else if (type === 'bgg-search') {
+    iconEl.innerHTML = '<i class="material-icons">add</i>'
+    iconEl.addEventListener('click', (e) => {
+      addBGGItemToList(item, type)
+      renderCollectionEl('list')
+    })
+  }
 
   itemEl.appendChild(itemNameEl)
   itemEl.appendChild(iconEl)
@@ -187,7 +186,54 @@ const disableStepTab = (...steps) => {
 }
 
 // //////////////////////////////////////////////////////////////////////
-// // BUTTON CONTROLS / UI ELEMENTS
+// // STEP TAB CONTROLS
+// //////////////////////////////////////////////////////////////////////
+
+// Materialize's select function simulates a click on the tab, potentially firing any events attached to it
+// This gets around that by simply showing the tab without the click event
+const showTab = (tab) => {
+  // Tabs
+  const activeTab = document.querySelectorAll('.tab > .active')
+  activeTab[0].classList.remove('active')
+
+  const newActiveTab = document.querySelector(`#${tab}-tab-link`)
+  newActiveTab.classList.add('active')
+
+  // Section
+  const activeSection = document.querySelectorAll('.step-container.active')
+  activeSection[0].classList.remove('active')
+  activeSection[0].setAttribute('style', 'display: none')
+
+  const newActiveSection = document.querySelector(`#${tab}-container`)
+  newActiveSection.classList.add('active')
+  newActiveSection.removeAttribute('style', 'display: none')
+
+  const tabs = document.querySelector('#step-tabs')
+  M.Tabs.init(tabs)
+  updateTabIndicator()
+  sectionTransition(tab)
+}
+
+const updateTabIndicator = () => {
+  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
+  tabs.updateTabIndicator()
+}
+
+const sectionTransition = (step) => {
+  // Remove active class from all step-wrapper divs
+  const activeEls = document.getElementsByClassName('step-wrapper active')
+  while (activeEls[0]) {
+    activeEls[0].classList.remove('active')
+  }
+
+  // Add active class to current step
+  setTimeout(() => {
+    document.querySelector(`#${step}-wrapper`).classList.add('active')
+  }, 200)
+}
+
+// //////////////////////////////////////////////////////////////////////
+// // BUTTON CONTROLS
 // //////////////////////////////////////////////////////////////////////
 
 const enableNextButton = () => {
@@ -205,23 +251,10 @@ const disableListSave = () => {
   saveButton.classList.add('disabled')
 }
 
-// Help Text
-const showHelpText = (step) => {
-  const textEls = document.querySelectorAll('.help__text-item')
-  textEls.forEach((el) => {
-    el.classList.add('hide')
-  })
+// //////////////////////////////////////////////////////////////////////
+// // TOOLTIPS
+// //////////////////////////////////////////////////////////////////////
 
-  const activeTextEl = document.querySelector(`.help__text--${step}`)
-  activeTextEl.classList.remove('hide')
-}
-
-const updateTabIndicator = () => {
-  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
-  tabs.updateTabIndicator()
-}
-
-// Tooltip Control
 const createTooltip = (step) => {
   const linkEl = document.querySelector(`#${step}-tab-link`)
   switch (step) {
@@ -249,31 +282,6 @@ const destroyTooltip = (step) => {
   }
 }
 
-const fadeInSpinner = () => {
-  jQuery('.loading-squares').fadeIn()
-}
-
-const fadeOutSpinner = () => {
-  jQuery('.loading-squares').fadeOut()
-}
-
-// //////////////////////////////////////////////////////////////////////
-// // SECTION CONTROLS
-// //////////////////////////////////////////////////////////////////////
-
-const sectionTransition = (step) => {
-  // Remove active class from all step-wrapper divs
-  const activeEls = document.getElementsByClassName('step-wrapper active')
-  while (activeEls[0]) {
-    activeEls[0].classList.remove('active')
-  }
-
-  // Add active class to current step
-  setTimeout(() => {
-    document.querySelector(`#${step}-wrapper`).classList.add('active')
-  }, 200)
-}
-
 // //////////////////////////////////////////////////////////////////////
 // // SHOW SECTIONS
 // //////////////////////////////////////////////////////////////////////
@@ -287,15 +295,17 @@ const showStartSection = (source) => {
   disableStepTab('list', 'rank', 'result')
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
-  showHelpText('start')
+  document.querySelector('.bgg-search').classList.add('hide')
   setupSaveLogin()
 
   // Clears result database link
+  setParentList(0)
   setDBListInfoType('result', { id: 0 })
   setDBListInfoType('userResult', { id: 0, desc: '' })
 }
 
 const showListSection = (source) => {
+  // If coming from Rank or Result, load that list
   if (source === 'Rank') {
     const data = getRankData()
     let list
@@ -305,9 +315,11 @@ const showListSection = (source) => {
     } else {
       list = data.masterList
     }
+    setParentList(0)
     loadList(list)
   } else if (source === 'Result') {
     const data = getResultData()
+    setParentList(0)
     loadList(data)
   }
 
@@ -322,9 +334,17 @@ const showListSection = (source) => {
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
 
   renderTemplateDesc()
-  // Show BGG section if category is Board Games
+
+  // Show BGG sections if category is Board Games, hide if not
+  const addOptionsEl = M.Collapsible.getInstance(document.querySelector('.add-options-sections'))
   if (categoryName === 'Board Games') {
+    addOptionsEl.open(0)
     document.querySelector('.bgg-section').classList.remove('hide')
+    document.querySelector('.bgg-search').classList.remove('hide')
+  } else {
+    document.querySelector('.bgg-section').classList.add('hide')
+    document.querySelector('.bgg-search').classList.add('hide')
+    addOptionsEl.open(2)
   }
 
   const list = getListData()
@@ -337,7 +357,6 @@ const showListSection = (source) => {
   }
 
   showTab('list')
-  showHelpText('list')
 }
 
 const showRankSection = (source) => {
@@ -370,7 +389,6 @@ const showRankSection = (source) => {
 
   if (source !== 'Rank') {
     showTab('rank')
-    showHelpText('rank')
   }
   document.querySelector('.next-rank').classList.remove('next--visible')
 }
@@ -380,42 +398,7 @@ const showResultSection = (source) => {
   renderResult()
 
   showTab('result')
-  showHelpText('result')
   document.querySelector('.next-rank').classList.remove('next--visible')
-}
-
-// //////////////////////////////////////////////////////////////////////
-// // STEP TAB CONTROLS
-// //////////////////////////////////////////////////////////////////////
-
-const selectTab = (tab) => {
-  const tabs = M.Tabs.getInstance(document.querySelector('#step-tabs'))
-  tabs.select(`${tab}-container`)
-}
-
-// Materialize's select function simulates a click on the tab, potentially firing any events attached to it
-// This gets around that by simply showing the tab without the click event
-const showTab = (tab) => {
-  // Tabs
-  const activeTab = document.querySelectorAll('.tab > .active')
-  activeTab[0].classList.remove('active')
-
-  const newActiveTab = document.querySelector(`#${tab}-tab-link`)
-  newActiveTab.classList.add('active')
-
-  // Section
-  const activeSection = document.querySelectorAll('.step-container.active')
-  activeSection[0].classList.remove('active')
-  activeSection[0].setAttribute('style', 'display: none')
-
-  const newActiveSection = document.querySelector(`#${tab}-container`)
-  newActiveSection.classList.add('active')
-  newActiveSection.removeAttribute('style', 'display: none')
-
-  const tabs = document.querySelector('#step-tabs')
-  M.Tabs.init(tabs)
-  updateTabIndicator()
-  sectionTransition(tab)
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -452,6 +435,10 @@ const custMessage = (message) => {
   const instance = M.Modal.getInstance(document.querySelector('#message-modal'))
   instance.open()
 }
+
+// //////////////////////////////////////////////////////////////////////
+// // SETUP SAVE BUTTONS
+// //////////////////////////////////////////////////////////////////////
 
 const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
@@ -506,6 +493,18 @@ const setupSaveLogin = async () => {
   }
 }
 
+const setupSaveButtons = () => {
+  // Set Save button targets to Save Modal
+  const saveButtons = document.querySelectorAll('.save-btn')
+  saveButtons.forEach((el) => {
+    el.setAttribute('href', '#save-modal')
+  })
+}
+
+// //////////////////////////////////////////////////////////////////////
+// // MY LISTS
+// //////////////////////////////////////////////////////////////////////
+
 const showMyLists = () => {
   const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
   instance.open()
@@ -522,6 +521,14 @@ const renderMyLists = async () => {
   const progressLists = data[1]
   const resultLists = data[2]
 
+  let myListsInfo = {
+    templates: data[3],
+    progress: data[4],
+    results: data[5]
+  }
+
+  setMyListsInfo(myListsInfo)
+
   // Create Logout button
   const btnEl = document.createElement('a')
   const iEl = document.createElement('i')
@@ -537,22 +544,22 @@ const renderMyLists = async () => {
 
   // Templates
   if (templateLists.length > 0) {
-    const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '']
-    const templateTable = createTableElement('templates', templateHeaders, templateLists)
+    const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '', '']
+    const templateTable = createMyListsTableElement('templates', templateHeaders, templateLists, myListsInfo)
     myListsEl.appendChild(templateTable)
   }
 
   // Progress
   if (progressLists.length > 0) {
     const progressHeaders = ['Saved', 'Items', '% Comp', 'Desc', '']
-    const progressTable = createTableElement('progress', progressHeaders, progressLists)
+    const progressTable = createMyListsTableElement('progress', progressHeaders, progressLists, myListsInfo)
     myListsEl.appendChild(progressTable)
   }
 
   // Results
   if (resultLists.length > 0) {
     const resultsHeaders = ['Completed', 'Items', 'Desc', '']
-    const resultsTable = createTableElement('results', resultsHeaders, resultLists)
+    const resultsTable = createMyListsTableElement('results', resultsHeaders, resultLists, myListsInfo)
     myListsEl.appendChild(resultsTable)
   }
 
@@ -566,15 +573,7 @@ const renderMyLists = async () => {
   }
 }
 
-const setupSaveButtons = () => {
-  // Set Save button targets to Save Modal
-  const saveButtons = document.querySelectorAll('.save-btn')
-  saveButtons.forEach((el) => {
-    el.setAttribute('href', '#save-modal')
-  })
-}
-
-const createTableElement = (type, headers, rows) => {
+const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
   // Main table div
   const divEl = document.createElement('div')
   divEl.classList.add(`my-lists__${type}`)
@@ -601,21 +600,61 @@ const createTableElement = (type, headers, rows) => {
   const tbodyEl = document.createElement('tbody')
 
   // Rows
-  rows.forEach((row) => {
+  rows.forEach((row, index) => {
     const trEl = document.createElement('tr')
     const items = Object.values(row)
-    const itemID = items[0]
-    trEl.classList.add(`${type}-${itemID}`, `${type}-list`, 'modal-close')
+    const itemID = myListsInfo[type][index].id
+    // const uuid = myListsInfo[type][index].uuid
+    const shared = myListsInfo[type][index].shared === 1 || false
+    const ranked = myListsInfo[type][index].ranked === 1 || false
+    trEl.classList.add(`${type}-${index}`, `${type}-list`, 'modal-close')
     items.slice(1).forEach((item) => {
       const tdEl = document.createElement('td')
       tdEl.textContent = item
       trEl.appendChild(tdEl)
     })
-    trEl.addEventListener('click', () => {
+
+    if (!ranked) {
+      trEl.addEventListener('click', () => {
       // Go get the clicked list from the database and init the right step
-      dbLoadUserList(type, itemID)
-      M.Toast.dismissAll()
-    })
+        dbLoadUserList(type, itemID)
+        M.Toast.dismissAll()
+      })
+    } else {
+      trEl.classList.add('tooltipped')
+      trEl.setAttribute('data-tooltip', 'This template is locked for editing since it has been shared and ranked')
+      M.Tooltip.init(trEl)
+      // open the share modal
+      trEl.addEventListener('click', (e) => {
+        openShareModal(myListsInfo[type][index])
+        e.stopPropagation()
+      })
+    }
+
+    // Share
+    if (type === 'templates') {
+      const tdShareEl = document.createElement('td')
+      const aShareEl = document.createElement('a')
+      aShareEl.classList.add('secondary-content', 'modal-trigger', 'unshared-template')
+      if (shared) {
+        // aShareEl.classList.add('shared-template')
+        aShareEl.classList.remove('unshared-template')
+      }
+      aShareEl.setAttribute('href', '#share-modal')
+      const iShareEl = document.createElement('i')
+      iShareEl.classList.add('material-icons')
+      iShareEl.textContent = 'share'
+
+      aShareEl.addEventListener('click', (e) => {
+        openShareModal(myListsInfo[type][index])
+        e.stopPropagation()
+      })
+
+      aShareEl.appendChild(iShareEl)
+      tdShareEl.appendChild(aShareEl)
+      trEl.appendChild(tdShareEl)
+    }
+
     // Delete
     const tdDeleteEl = document.createElement('td')
     const aEl = document.createElement('a')
@@ -645,6 +684,10 @@ const createTableElement = (type, headers, rows) => {
   return divEl
 }
 
+// //////////////////////////////////////////////////////////////////////
+// // RENDER DESCRIPTIONS
+// //////////////////////////////////////////////////////////////////////
+
 const renderTemplateDesc = () => {
   const dbListInfo = getDBListInfo()
 
@@ -655,23 +698,12 @@ const renderTemplateDesc = () => {
   }
 }
 
-const renderResultDesc = () => {
-  const dbListInfo = getDBListInfo()
-
-  // Set table title
-  const titleEl = document.querySelector('.result-desc')
-  titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
-}
-
 export {
   renderPreviousSessionToast,
   showListSection,
   showRankSection,
   showResultSection,
-  renderListData,
   showStartSection,
-  selectTab,
-  sectionTransition,
   enableStepTab,
   disableStepTab,
   enableNextButton,
@@ -679,14 +711,11 @@ export {
   disableListSave,
   setupSaveLogin,
   custConfirm,
-  renderBGGCollection,
   showTab,
   renderMyLists,
   setupSaveButtons,
-  fadeInSpinner,
-  fadeOutSpinner,
   showMyLists,
   custMessage,
   renderTemplateDesc,
-  renderResultDesc
+  renderCollectionEl
 }

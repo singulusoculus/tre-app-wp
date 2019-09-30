@@ -1,12 +1,13 @@
-import { getCategory } from './category'
+import { getCategory, setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { showTab, renderPreviousSessionToast, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage } from './views'
-import { initPrevList, getListData, estimateTotalComparisons } from './list'
+import { initPrevList, getListData, estimateTotalComparisons, setListData } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList } from './database'
+import { getParentList, setParentList } from './list-sharing'
 
-const initRankingEngine = () => {
+const initRankingEngine = async () => {
   initMaterializeComponents()
   showTab('start')
   setCurrentStep('Start')
@@ -15,43 +16,133 @@ const initRankingEngine = () => {
   // Check for a previous session on reload from a login/logout
   // If it does, load the correct step and data.
   // If it was generated from a save modal, show the save modal. If it was from My Lists then show My Lists
-  let reload = sessionStorage.getItem('reload')
-  if (reload !== null) {
-    reload = JSON.parse(reload)
-    const step = reload.step
-    const type = reload.type
-
-    const prevData = JSON.parse(localStorage.getItem('saveData'))
-    if (prevData) {
-      const data = prevData.data
-      const category = prevData.category
-      const loginStep = prevData.step
-      const dbListInfo = prevData.dbListInfo
-
-      if (step !== 'Start') {
-        if (loginStep === 'List') {
-          initPrevList(category, data)
-        } else if (loginStep === 'Rank') {
-          initPrevRanking(category, data)
-        } else if (loginStep === 'Result') {
-          initPrevResult(category, data)
-        }
-        if (type === 'login-save') {
-          const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
-          modal.open()
-          setDBListInfo(dbListInfo)
-        }
-      }
+  let reload = checkForReload()
+  if (reload) {
+    initRankingEngineReload(reload)
+  } else { // If it is not a reload, check for a url parameter or a previous session
+    // If a URL parameter exists, process it and load the list
+    const param = checkForURLParam()
+    if (param) {
+      initRankingEngineUrlParam(param)
+    } else {
+      // If a previous session exists then render a notification toast
+      renderPreviousSessionToast()
     }
-    if (type === 'login-my-lists') {
-      showMyLists()
-    }
-  } else {
-    renderPreviousSessionToast()
   }
 
   setupSaveLogin()
   sessionStorage.removeItem('reload')
+}
+
+const checkForReload = () => {
+  const reload = sessionStorage.getItem('reload')
+  if (reload === null) {
+    return false
+  } else {
+    return reload
+  }
+}
+
+const checkForURLParam = () => {
+  const url = new URL(window.location.href)
+  if (url.search === '') {
+    return false
+  } else {
+    return {
+      url,
+      search: url.search,
+      type: url.search.substring(1, 2),
+      id: url.search.substring(3)
+    }
+  }
+}
+
+const initRankingEngineReload = (reload) => {
+  reload = JSON.parse(reload)
+  const step = reload.step
+  const type = reload.type
+
+  const prevData = JSON.parse(localStorage.getItem('saveData'))
+  if (prevData) {
+    const data = prevData.data
+    const category = prevData.category
+    const loginStep = prevData.step
+    const dbListInfo = prevData.dbListInfo
+    const parentList = prevData.parentList
+
+    if (step !== 'Start') {
+      if (loginStep === 'List') {
+        initPrevList(category, data)
+      } else if (loginStep === 'Rank') {
+        setParentList(parentList)
+        initPrevRanking(category, data)
+      } else if (loginStep === 'Result') {
+        initPrevResult(category, data)
+      }
+      if (type === 'login-save') {
+        const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
+        modal.open()
+        setDBListInfo(dbListInfo)
+      }
+    }
+  }
+  if (type === 'login-my-lists') {
+    showMyLists()
+  }
+}
+
+const initRankingEngineUrlParam = async (param) => {
+  try {
+    if (param.type === 'r') {
+      // console.log(`loading result: ${param.id}`)
+      const result = await dbGetSharedList(param.id, 'Result')
+      const category = parseInt(result[0].list_category)
+      const data = JSON.parse(result[0].result_data)
+      initPrevResult(category, data)
+      document.querySelector('#save-results').classList.add('disabled')
+      removeURLParam()
+    } else if (param.type === 't') {
+      // console.log(`loading template to rank: ${param.id}`)
+      const template = await dbGetSharedList(param.id, 'Template')
+      const category = parseInt(template[0].list_category)
+      const data = JSON.parse(template[0].template_data)
+      const templateId = parseInt(template[0].template_id)
+
+      // check localStorage for templateId
+      const lsParentLists = JSON.parse(localStorage.getItem('str'))
+
+      let listIndex = -1
+
+      if (lsParentLists !== null) {
+        listIndex = lsParentLists.indexOf(templateId)
+      }
+
+      if (listIndex > -1) {
+        custMessage(`You've already ranked this list`)
+        removeURLParam()
+      } else if (listIndex === -1) {
+        setListData(data)
+        setCategory(category)
+        setParentList(templateId)
+        showRankSection('List')
+        removeURLParam()
+      }
+    } else if (param.type === 'p') {
+      // console.log(`loading progress list: ${param.id}`)
+      const progress = await dbGetSharedList(param.id, 'Progress')
+      const category = parseInt(progress[0].list_category)
+      const data = JSON.parse(progress[0].progress_data)
+      initPrevRanking(category, data)
+      removeURLParam()
+    }
+  } catch (error) {
+    custMessage('The specified list does not exist or is not shared. Please check the id and try again')
+    throw new Error('The specified list does not exist or is not shared')
+  }
+}
+
+const removeURLParam = () => {
+  window.history.pushState('object or string', 'Title', window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1))
 }
 
 const handleClickSave = (e) => {
@@ -131,13 +222,14 @@ const handleClickStart = () => {
 
 const handleClickList = () => {
   const source = getCurrentStep()
+  let message = ''
+
   if (source === 'Rank') {
-    const message = 'This will terminate the ranking process and allow you to edit the list. Want to continue?'
-    custConfirm(message, showListSection, source)
+    message = 'This will terminate the ranking process and allow you to edit the list. Want to continue?'
   } else if (source === 'Result') {
-    const message = 'This will clear your results and allow you to edit the list. Want to continue?'
-    custConfirm(message, showListSection, source)
+    message = 'This will clear your results and allow you to edit the list. Want to continue?'
   }
+  custConfirm(message, showListSection, source)
 }
 
 const handleClickRank = () => {
@@ -198,21 +290,14 @@ const saveData = (data) => {
   const category = getCategory()
   const step = getCurrentStep()
   const dbListInfo = getDBListInfo()
-  // const rankDataHistory = getRankDataHistory()
-
-  // if (step === 'List') {
-  //   data = getListData()
-  // } else if (step === 'Rank') {
-  //   data = getRankData()
-  // } else if (step === 'Result') {
-  //   data = getResultData()
-  // }
+  const parentList = getParentList()
 
   const obj = {
     category,
     step,
     dbListInfo,
-    data
+    data,
+    parentList
   }
   localStorage.setItem('saveData', JSON.stringify(obj))
 }
@@ -243,44 +328,6 @@ const updateLocalStorageSaveDataItem = (type, update) => {
   }
 
   localStorage.setItem('saveData', JSON.stringify(obj))
-}
-
-// Changes XML to JSON
-const xmlToJson = (xml) => {
-  // Create the return object
-  let obj = {}
-
-  if (xml.nodeType === 1) { // element
-    // attributes
-    if (xml.attributes.length > 0) {
-      obj['@attributes'] = {}
-      for (let j = 0; j < xml.attributes.length; j++) {
-        let attribute = xml.attributes.item(j)
-        obj['@attributes'][attribute.nodeName] = attribute.nodeValue
-      }
-    }
-  } else if (xml.nodeType === 3) { // text
-    obj = xml.nodeValue
-  }
-
-  // children
-  if (xml.hasChildNodes()) {
-    for (let i = 0; i < xml.childNodes.length; i++) {
-      let item = xml.childNodes.item(i)
-      let nodeName = item.nodeName
-      if (typeof (obj[nodeName]) === 'undefined') {
-        obj[nodeName] = xmlToJson(item)
-      } else {
-        if (typeof (obj[nodeName].push) === 'undefined') {
-          let old = obj[nodeName]
-          obj[nodeName] = []
-          obj[nodeName].push(old)
-        }
-        obj[nodeName].push(xmlToJson(item))
-      }
-    }
-  }
-  return obj
 }
 
 const setReloadInfo = (type) => {
@@ -409,9 +456,9 @@ const initDataTable = (table) => {
   searchEl.appendTo(newFilterEl)
 }
 
-export { disableArrowKeyScroll,
+export {
+  disableArrowKeyScroll,
   saveData,
-  xmlToJson,
   initMaterializeComponents,
   initRankingEngine,
   handleClickSave,
