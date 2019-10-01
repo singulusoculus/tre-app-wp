@@ -444,8 +444,7 @@ const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
   myListsEl.textContent = ''
   const userID = await getUserID()
-  console.log(userID)
-
+  
   if (userID === 0) {
     // Create My Lists Login
     const loginMessageEl = document.createElement('div')

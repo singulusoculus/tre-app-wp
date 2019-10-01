@@ -99,6 +99,11 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
       document.querySelector('#bgg-submit').classList.remove('disabled')
       reject(new Error('Connection Problems'))
       custMessage('The Ranking Engine is having problems connecting to BGG. Please try again later.')
+    } else if (data.indexOf('totalitems="0"') > 0) {
+      jQuery('.ball-loading.collection').fadeOut()
+      document.querySelector('#bgg-submit').classList.remove('disabled')
+      reject(new Error('No items in collection'))
+      custMessage('There are not items in your collection. Please navigate to BGG and add some before importing.')
     } else {
       let bggList = createBGGList(data)
 
