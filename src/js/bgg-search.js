@@ -11,6 +11,7 @@ const getBGGSearchData = () => bggSearchData
 const handleBGGSearch = async (searchText, type) => {
   document.querySelector('.bgg-search__wrapper').classList.add('hide')
   jQuery('.ball-loading.search-results').fadeIn()
+  document.querySelector('#bgg-search-submit').classList.add('disabled')
   bggSearchData = []
   searchText = searchText.trim().replace(/ /g, '+')
 
@@ -64,6 +65,7 @@ const handleBGGSearch = async (searchText, type) => {
 
   jQuery('.ball-loading.search-results').fadeOut(() => {
     renderCollectionEl('bgg-search')
+    document.querySelector('#bgg-search-submit').classList.remove('disabled')
   })
 }
 

@@ -443,8 +443,10 @@ const custMessage = (message) => {
 const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
   myListsEl.textContent = ''
+  const userID = await getUserID()
+  console.log(userID)
 
-  if (getUserID() === 0) {
+  if (userID === 0) {
     // Create My Lists Login
     const loginMessageEl = document.createElement('div')
     loginMessageEl.classList.add('center-align')
@@ -512,8 +514,11 @@ const showMyLists = () => {
 
 const renderMyLists = async () => {
   const myListsEl = document.querySelector('.my-lists')
+  jQuery('.ball-loading.my-lists').fadeIn()
   // get My Lists data and populate My Lists section
   const data = await dbGetUserLists()
+
+  jQuery('.ball-loading.my-lists').fadeOut()
 
   myListsEl.textContent = ''
 

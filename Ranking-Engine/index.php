@@ -532,6 +532,9 @@
       <div class="container center-align">
       <h4>My Lists</h4>
         <div class="my-lists"></div>
+        <div class="ball-loading my-lists" style="display: none">
+            <i class="ball"></i>
+        </div>
       </div>
     </div>
   </div>

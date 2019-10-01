@@ -44,8 +44,10 @@ const handleBGGCollectionRequest = async () => {
   } else {
     const expansions = document.querySelector('#bgg-expansions').checked ? 1 : 0
     bggCollectionData = await getBGGCollection(user, expansions)
+    // saveBGGCollection()
 
     jQuery('.ball-loading.collection').fadeOut(() => {
+      document.querySelector('#bgg-submit').classList.remove('disabled')
       showBGGCollectionSection()
       renderCollectionEl('bgg-collection')
     })
@@ -64,6 +66,7 @@ const handleBGGCollectionRequest = async () => {
 const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => {
   // fadeInSpinner()
   jQuery('.ball-loading.collection').fadeIn()
+  document.querySelector('#bgg-submit').classList.add('disabled')
   // Get collection - this excludes played-only games
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'getBGGCollection',
@@ -76,20 +79,24 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
     if (newData === 1) {
       // fadeOutSpinner()
       jQuery('.ball-loading.collection').fadeOut()
+      document.querySelector('#bgg-submit').classList.remove('disabled')
       reject(new Error('Invalid username'))
       custMessage('Invalid username. Please try again.')
     } else if (newData === 2) {
       // fadeOutSpinner()
       jQuery('.ball-loading.collection').fadeOut()
+      document.querySelector('#bgg-submit').classList.remove('disabled')
       reject(new Error('Timed Out. Try again later.'))
       custMessage('The request for you collection timed out. BGG servers may be busy. Please try again in a little bit.')
     } else if (data.indexOf('Too Many Requests') > 0) {
       // fadeOutSpinner()
       jQuery('.ball-loading.collection').fadeOut()
+      document.querySelector('#bgg-submit').classList.remove('disabled')
       reject(new Error('Too Many Requests'))
       custMessage('BGG servers are busy at the moment. Please wait a minute and try again')
     } else if (data.indexOf('failed to open stream') > 0) {
       jQuery('.ball-loading.collection').fadeOut()
+      document.querySelector('#bgg-submit').classList.remove('disabled')
       reject(new Error('Connection Problems'))
       custMessage('The Ranking Engine is having problems connecting to BGG. Please try again later.')
     } else {
@@ -108,7 +115,6 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
           })
         }
         bggList = bggList.filter((list, index, self) => self.findIndex(l => l.bggId === list.bggId) === index)
-
         resolve(bggList)
       })
     }

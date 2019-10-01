@@ -3,7 +3,7 @@ import { showListSection, enableStepTab, disableStepTab, enableNextButton, disab
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { getBGGCollectionData, initPrevBGGCollection } from './bgg-collection'
+import { getBGGCollectionData } from './bgg-collection'
 import { getBGGSearchData } from './bgg-search'
 
 let listData = []
@@ -22,7 +22,7 @@ const initPrevList = (category, data) => {
   saveData(listData)
   renderCollectionEl('list')
 
-  initPrevBGGCollection()
+  // initPrevBGGCollection()
 
   showListSection()
 }

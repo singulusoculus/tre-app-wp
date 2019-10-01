@@ -116,9 +116,9 @@ const handleShareSwitchChange = async () => {
   const value = document.querySelector('#share-switch').checked ? 1 : 0
   // Send value to database --need the list id
   const listId = selectedList.id
+  renderShareOptions(value, selectedList)
   await dbSetShareFlag(listId, value)
   setMyListsInfoShared(listId, value)
-  renderShareOptions(value, selectedList)
   renderMyLists()
 }
 

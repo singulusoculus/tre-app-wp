@@ -66,20 +66,22 @@ const clearDBListInfo = () => {
   renderTemplateDesc()
 }
 
-const dbGetUserLists = () => new Promise((resolve, reject) => {
-  const wpuid = getUserID()
-  // fadeInSpinner()
-  jQuery.post(getFilePath('/re-func/re-functions.php'), {
-    func: 'getUserLists',
-    wpuid
-  }, (data, status) => {
-    if (status === 'success') {
-      const parsedData = JSON.parse(data)
-      parsedData ? resolve(parsedData) : reject(new Error('No data returned'))
-      // fadeOutSpinner()
-    }
+const dbGetUserLists = async () => {
+  const wpuid = await getUserID()
+  return new Promise((resolve, reject) => {
+    // fadeInSpinner()
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: 'getUserLists',
+      wpuid
+    }, (data, status) => {
+      if (status === 'success') {
+        const parsedData = JSON.parse(data)
+        parsedData ? resolve(parsedData) : reject(new Error('No data returned'))
+        // fadeOutSpinner()
+      }
+    })
   })
-})
+}
 
 const dbGetTopTenYear = () => {
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
@@ -204,8 +206,8 @@ const dbDeleteUserList = (type, id) => {
   }
 }
 
-const dbSaveTemplateData = (saveDesc) => {
-  const wpuid = getUserID()
+const dbSaveTemplateData = async (saveDesc) => {
+  const wpuid = await getUserID()
   let listData = getListData()
 
   let newListData = JSON.parse(JSON.stringify(listData))
@@ -287,8 +289,8 @@ const dbUpdateTemplateData = (saveDesc) => {
   })
 }
 
-const dbSaveProgressData = (saveDesc = dbListInfo.progress.desc) => {
-  const wpuid = getUserID()
+const dbSaveProgressData = async (saveDesc = dbListInfo.progress.desc) => {
+  const wpuid = await getUserID()
   const rankData = getRankData()
 
   // create a deep copy before stripping out id
@@ -424,8 +426,8 @@ const dbSaveResultData = (rankedItems) => {
   })
 }
 
-const dbSaveUserResultData = (saveDesc) => {
-  const wpuid = getUserID()
+const dbSaveUserResultData = async (saveDesc) => {
+  const wpuid = await getUserID()
   let resultData = getResultData()
   const itemCount = resultData.length
 

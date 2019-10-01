@@ -226,10 +226,11 @@ const handleClickList = () => {
 
   if (source === 'Rank') {
     message = 'This will terminate the ranking process and allow you to edit the list. Want to continue?'
+    custConfirm(message, showListSection, source)
   } else if (source === 'Result') {
     message = 'This will clear your results and allow you to edit the list. Want to continue?'
+    custConfirm(message, showListSection, source)
   }
-  custConfirm(message, showListSection, source)
 }
 
 const handleClickRank = () => {

@@ -14,7 +14,15 @@
 
   <script type="text/javascript">
     const getUserID = () => {
-      return <?php echo get_current_user_id(); ?>;
+      return new Promise((resolve, reject) => {
+        jQuery.post(getFilePath('/re-func/re-functions.php'), {
+          func: 'getWPUserID'
+        }, (data, status) => {
+          if (status === 'success') {
+            resolve(parseInt(data))
+          }
+        })
+      })
     }
 
     const getThemePath = () => {

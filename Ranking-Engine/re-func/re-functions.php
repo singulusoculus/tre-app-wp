@@ -75,8 +75,15 @@ switch ($func) {
   case 'setShareFlag':
     setShareFlag();
     break;
+  case 'getWPUserID':
+    getWPUserID();
+    break;
   default:
     echo 'Could not find the specified function';
+}
+
+function getWPUserID() {
+  echo get_current_user_id();
 }
 
 ///////////////////////////////////////

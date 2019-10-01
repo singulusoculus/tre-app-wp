@@ -44,7 +44,7 @@ const initSharedRankingURLParam = async (urlParam) => {
   const resultsPublic = templateListData.results_public === 1 ? true : false
 
   // if the shared_results_public flag is false then get the current user id
-  const currentUser = getUserID()
+  const currentUser = await getUserID()
   if (currentUser === wpuid) {
     renderOptions()
     document.querySelector('#results-public-switch').addEventListener('change', () => {
