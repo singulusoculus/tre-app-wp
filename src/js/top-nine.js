@@ -1,3 +1,4 @@
+import { getListData } from './list'
 
 const checkforImages = (data) => {
   const topNine = data.slice(0, 9)
@@ -43,10 +44,10 @@ const renderLogo = (ctx) => {
   return new Promise((resolve, reject) => {
     const logoImage = new Image()
     logoImage.onload = () => {
-      ctx.drawImage(logoImage, 995, 995)
+      ctx.drawImage(logoImage, 665, 995)
       resolve()
     }
-    logoImage.src = getFilePath(`/images/pm-logo-md.png`)
+    logoImage.src = getFilePath(`/images/pm-banner-top9.png`)
   })
 }
 
@@ -68,13 +69,45 @@ const renderImages = (images, ctx) => {
   })
 }
 
-const renderFinalImage = (canvas, ctx) => {
-  jQuery('.ball-loading.top-nine').fadeOut('veryslow', () => {
-    const finalImage = canvas.toDataURL('image/png')
-    document.querySelector('.top-nine-image').src = finalImage
-    jQuery('.top-nine-image').fadeIn('slow')
-  })
+const getFileSize = (base64String) => {
+  const stringLength = base64String.length - 'data:image/png;base64,'.length
+  const sizeInBytes = 4 * Math.ceil((stringLength / 3)) * 0.5624896334383812
+  var sizeInKb = sizeInBytes / 1000
+  return sizeInKb
 }
+
+const renderFinalImage = async (canvas, ctx) => {
+  const finalImage = await canvas.toDataURL('image/png')
+  const fileSize = getFileSize(finalImage)
+
+  if (fileSize < 100) {
+    // Try again
+    const listData = getListData()
+    const images = checkforImages(listData)
+    renderTopNine(images)
+  } else {
+    jQuery('.ball-loading.top-nine').delay(100).fadeOut(async () => {
+      // create blob for download button
+      const blob = await (await fetch(finalImage)).blob()
+      const url = (window.webkitURL || window.URL).createObjectURL(blob)
+      const downloadBtnEl = document.querySelector('#download-btn')
+      downloadBtnEl.href = url
+      downloadBtnEl.classList.remove('disabled')
+
+      document.querySelector('.top-nine-image').src = url
+
+      jQuery('.top-nine-image').delay(100).fadeIn()
+    })
+  }
+}
+
+// const renderFinalImage = (canvas, ctx) => {
+//   jQuery('.ball-loading.top-nine').fadeOut('veryslow', () => {
+//     const finalImage = canvas.toDataURL('image/png')
+//     document.querySelector('.top-nine-image').src = finalImage
+//     jQuery('.top-nine-image').fadeIn('slow')
+//   })
+// }
 
 const renderSingleCanvas = (data, canvasElctx) => {
   return new Promise((resolve, reject) => {

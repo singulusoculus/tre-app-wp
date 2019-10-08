@@ -36,26 +36,34 @@
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand-logo"><img class="nav-pm__logo" src="<?php echo get_theme_file_uri('/images/pm-banner.png'); ?>" alt=""></a>
       <a href="#" data-target="mobile-nav-pm" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down nav-pm__links">
-        <li><a href="https://www.pubmeeple.com/category/articles">Articles</a></li>
+        <li><a href="https://www.pubmeeple.com">Pub Meeple Home</a></li>
+        <li><a href="https://topnine.pubmeeple.com">Top 9 Generator</a></li>
+        <li><a href="https://www.pubmeeple.com/podcast">Podcast</a></li>
+        <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
+        <!-- <li><a href="https://www.pubmeeple.com/category/articles">Articles</a></li>
         <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
         <li><a href="https://www.pubmeeple.com/pub-meeple-podcast">Podcast</a></li>
         <li><a href="https://www.pubmeeple.com/category/resources">Resources</a></li>
         <li><a href="https://www.pubmeeple.com/category/reviews">Reviews</a></li>
         <li><a href="https://www.pubmeeple.com/support-us">Support Us</a></li>
-        <li><a href="https://www.pubmeeple.com/category/videos">Videos</a></li>
+        <li><a href="https://www.pubmeeple.com/category/videos">Videos</a></li> -->
       </ul>
     </div>
   </nav>
 
   <ul class="sidenav" id="mobile-nav-pm">
-    <li><a href="./">Ranking Engine Home</a></li>
-    <div class="divider"></div>
-    <li><a href="https://www.pubmeeple.com/category/articles">Articles</a></li>
+    <li><a href="rankingeninge.pubmeeple.com">Ranking Engine Home</a></li>
     <li><a href="./rankings">Current Rankings</a></li>
+    <div class="divider"></div>
+    <li><a href="https://www.pubmeeple.com">Pub Meeple Home</a></li>
+    <li><a href="https://topnine.pubmeeple.com">Top 9 Generator</a></li>
+    <li><a href="https://www.pubmeeple.com/podcast">Podcast</a></li>
+    <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
+    <!-- <li><a href="https://www.pubmeeple.com/category/articles">Articles</a></li>
     <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
     <li><a href="https://www.pubmeeple.com/pub-meeple-podcast">Podcast</a></li>
     <li><a href="https://www.pubmeeple.com/category/resources">Resources</a></li>
     <li><a href="https://www.pubmeeple.com/category/reviews">Reviews</a></li>
     <li><a href="ttps://www.pubmeeple.com/support-us">Support Us</a></li>
-    <li><a href="https://www.pubmeeple.com/category/videos">Videos</a></li>
+    <li><a href="https://www.pubmeeple.com/category/videos">Videos</a></li> -->
   </ul>

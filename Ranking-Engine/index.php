@@ -513,7 +513,10 @@
           <span aria-hidden="true">&times;</span>
         </a>
         <h4 class="center-align">Your Top Nine</h4>
-        <p class="center-align">To save the image, right click (on desktop) or long press (on mobile) and select Save Image. If there is an issue with the image, close this dialog and click the Top Nine button again to regenerate the image.</p>
+        <p class="center-align">If there is an issue with the image, close this dialog and click the Top Nine button again to regenerate the image.</p>
+        <div class="center-align">
+          <a href="" download="topnine.png" id="download-btn" target="_blank" class="waves-effect waves-light btn disabled center-align">Save</a>
+        </div>
         <div class="image-wrapper">
           <img src="" alt="" class="top-nine-image" style="display: none">
           <div class="ball-loading top-nine" style="display: none">
