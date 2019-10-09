@@ -40,13 +40,6 @@
         <li><a href="https://topnine.pubmeeple.com">Top 9 Generator</a></li>
         <li><a href="https://www.pubmeeple.com/podcast">Podcast</a></li>
         <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
-        <!-- <li><a href="https://www.pubmeeple.com/category/articles">Articles</a></li>
-        <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
-        <li><a href="https://www.pubmeeple.com/pub-meeple-podcast">Podcast</a></li>
-        <li><a href="https://www.pubmeeple.com/category/resources">Resources</a></li>
-        <li><a href="https://www.pubmeeple.com/category/reviews">Reviews</a></li>
-        <li><a href="https://www.pubmeeple.com/support-us">Support Us</a></li>
-        <li><a href="https://www.pubmeeple.com/category/videos">Videos</a></li> -->
       </ul>
     </div>
   </nav>
@@ -59,11 +52,4 @@
     <li><a href="https://topnine.pubmeeple.com">Top 9 Generator</a></li>
     <li><a href="https://www.pubmeeple.com/podcast">Podcast</a></li>
     <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
-    <!-- <li><a href="https://www.pubmeeple.com/category/articles">Articles</a></li>
-    <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
-    <li><a href="https://www.pubmeeple.com/pub-meeple-podcast">Podcast</a></li>
-    <li><a href="https://www.pubmeeple.com/category/resources">Resources</a></li>
-    <li><a href="https://www.pubmeeple.com/category/reviews">Reviews</a></li>
-    <li><a href="ttps://www.pubmeeple.com/support-us">Support Us</a></li>
-    <li><a href="https://www.pubmeeple.com/category/videos">Videos</a></li> -->
   </ul>

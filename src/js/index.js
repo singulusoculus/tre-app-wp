@@ -1,7 +1,7 @@
 import '../styles/main.scss'
 import { renderCollectionEl } from './views'
 import { handleClickClear, handleAddTextItems } from './list'
-import { setFilters, setBGGFilters, setBGGSearchFilters } from './filters'
+import { setListFilters, setBGGFilters, setBGGSearchFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
@@ -156,7 +156,7 @@ jQuery(document).ready(() => {
 
   // List Filters
   document.querySelector('#search-text').addEventListener('input', (e) => {
-    setFilters({
+    setListFilters({
       searchText: e.target.value
     })
     // renderListData()
