@@ -405,6 +405,7 @@ function insertResultRanking() {
               '%d',
               '%s',
               '%d',
+              '%d',
               '%d'
           )
       );
