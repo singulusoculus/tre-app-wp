@@ -43,6 +43,7 @@ const createBGGGameDataObjects = (items) => {
   items.forEach((item) => {
     let gameDataDetails = {}
     gameDataDetails.bggId = item['@attributes'].id
+    gameDataDetails.yearPublished = item.yearpublished ? item.yearpublished['@attributes'].value : 0
     gameDataDetails.type = item['@attributes'].type
     gameDataDetails.minPlayers = item.minplayers['@attributes'].value
     gameDataDetails.maxPlayers = item.maxplayers['@attributes'].value
