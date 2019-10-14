@@ -56,8 +56,29 @@ const populateRankData = (data) => {
     finishSize: data ? data.finishSize : 0,
     finishFlag: data ? data.finishFlag : 0,
     bggFlag: data ? data.bggFlag : 0,
+    listSource: data ? data.listSource : '',
     finalListID: data ? data.finalListID : 0
   }
+}
+
+const calcListSource = () => {
+  // text, mixed, or bgg
+  let ids = rankData.masterList.map(a => a.bggId)
+
+  let bgg = ids.every((id) => id.length > 0)
+  let text = ids.every((id) => id.length === 0)
+
+  let source
+
+  if (bgg) {
+    source = 'bgg'
+  } else if (text) {
+    source = 'text'
+  } else {
+    source = 'mixed'
+  }
+
+  return source
 }
 
 const initRanking = (itemsList, category) => {
@@ -69,6 +90,10 @@ const initRanking = (itemsList, category) => {
   itemsList = createList(itemsList)
 
   rankData.masterList = itemsList
+
+  // calc list source
+  rankData.listSource = calcListSource()
+
   setCategory(category)
 
   // Initialize sorting lists
