@@ -223,7 +223,7 @@
             <li class="bgg-search hide">
               <div class="collapsible-header"><i class="material-icons">search</i>BGG Search</div>
               <div class="collapsible-body">
-                <p class="center-align" style="font-style: italic">Note: The Ranking Engine only returns up to 50 search results at a time. If you do not see what you are looking for please be more specific in your search.</p>
+                <p class="center-align" style="font-style: italic">Note: Each search returns at most 50 results at a time. If you do not see what you are looking for be more specific or try an exact search by wrapping your search text in double quotes. Ex: "Risk". Please keep special characters in mind.</p>
                 <form autocomplete="off" onsubmit="return false;" class="bgg-search-submit">
                     <div class="row">
                       <div class="col s12 input-field">
