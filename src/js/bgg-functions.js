@@ -52,6 +52,7 @@ const createBGGGameDataObjects = (items) => {
     gameDataDetails.playingtime = item.playingtime['@attributes'].value
     gameDataDetails.image = item.thumbnail ? item.thumbnail['#text'] : ''
     gameDataDetails.imageOriginal = item.image ? item.image['#text'] : ''
+    gameDataDetails.minAge = item.minage ? item.minage['@attributes'].value : ''
 
     // Links
     let mechanisms = []
@@ -59,6 +60,7 @@ const createBGGGameDataObjects = (items) => {
     let artists = []
     let designers = []
     let publishers = []
+    let family = []
 
     if (!Array.isArray(item.link)) {
       item.link = [item.link]
@@ -80,17 +82,16 @@ const createBGGGameDataObjects = (items) => {
       if (link['@attributes'].type === 'boardgamepublisher') {
         publishers.push(link['@attributes'].value)
       }
+      if (link['@attributes'].type === 'boardgamefamily') {
+        family.push(link['@attributes'].value)
+      }
     })
     gameDataDetails.mechanisms = mechanisms
     gameDataDetails.categories = categories
     gameDataDetails.artists = artists
     gameDataDetails.designers = designers
     gameDataDetails.publishers = publishers
-    // mechanisms = []
-    // categories = []
-    // artists = []
-    // designers = []
-    // publishers = []
+    gameDataDetails.family = family
 
     // Stats
     // .statistics.ratings.average["@attributes"].value
@@ -127,7 +128,6 @@ const createBGGGameDataObjects = (items) => {
     })
 
     gameDataDetails.altNames = altNames
-    // altNames = []
 
     gameDataDetails.addedToList = false
     gameDataDetails.source = 'bgg'
@@ -135,6 +135,7 @@ const createBGGGameDataObjects = (items) => {
 
     bggGameData.push(gameDataDetails)
   })
+  console.log(bggGameData)
   return bggGameData
 }
 

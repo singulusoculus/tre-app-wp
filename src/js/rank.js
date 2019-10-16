@@ -61,24 +61,20 @@ const populateRankData = (data) => {
   }
 }
 
-const calcListSource = () => {
+const calcListSource = (data) => {
   // text, mixed, or bgg
   let ids = rankData.masterList.map(a => a.bggId)
 
   let bgg = ids.every((id) => id.length > 0)
   let text = ids.every((id) => id.length === 0)
 
-  let source
-
   if (bgg) {
-    source = 'bgg'
+    return 'bgg'
   } else if (text) {
-    source = 'text'
+    return 'text'
   } else {
-    source = 'mixed'
+    return 'mixed'
   }
-
-  return source
 }
 
 const initRanking = (itemsList, category) => {
@@ -92,7 +88,7 @@ const initRanking = (itemsList, category) => {
   rankData.masterList = itemsList
 
   // calc list source
-  rankData.listSource = calcListSource()
+  rankData.listSource = calcListSource(rankData.masterList)
 
   setCategory(category)
 
