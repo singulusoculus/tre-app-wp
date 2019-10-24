@@ -192,9 +192,6 @@ function getYearTopTen() {
 function captureBGGData() {
   global $wpdb;
 
-  // $jsondata = $_POST['data'];
-
-  // $data = json_decode($jsondata, true);
   $data = $_POST['data'];
 
   foreach ($data as $key => $value) {
@@ -423,13 +420,11 @@ function insertResultRanking() {
               'result_id' => $savelistid,
               'item_name' => $itemname,
               'item_rank' => $key+1,
-              'bgg_id' => $value['bggid'],
-              'bgg_year_published' => $value['yearPublished']
+              'bgg_id' => $value['bggid']
           ),
           array(
               '%d',
               '%s',
-              '%d',
               '%d',
               '%d'
           )
@@ -449,15 +444,14 @@ function updateResultRanking() {
     $wpdb->update(
       'wp_re_results_d',
       array('item_name' => $value['name'],
-            'bgg_id' => $value['bggid'],
-            'bgg_year_published' => $value['yearPublished']),
+            'bgg_id' => $value['bggid']
+          ),
       array(
         'result_id' => $resultId,
         'item_rank' => $key+1
       ),
       array(
         '%s',
-        '%d',
         '%d'
         ),
       array(
@@ -659,7 +653,7 @@ function updateRankings() {
   global $wpdb;
   $listid = $_POST['listId'];
 
-  $query = "CALL `update_re_boardgames_on_list_completion`(".$listid.");";
+  $query = "CALL `calc_bg_scores_on_list_completion`(".$listid.");";
   $result = $wpdb->query($query);
   echo $query;
 }
