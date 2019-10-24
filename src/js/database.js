@@ -511,6 +511,15 @@ const dbSetShareFlag = (id, value) => {
   })
 }
 
+const dbCaptureBGGData = (data) => {
+  console.log(JSON.stringify(data))
+  jQuery.post(getFilePath('/re-func/re-functions.php'), {
+    func: 'captureBGGData',
+    data: data
+  }, (data, status) => {
+  })
+}
+
 export { dbSaveTemplateData,
   dbSaveProgressData,
   dbSaveResultData,
@@ -526,5 +535,6 @@ export { dbSaveTemplateData,
   clearDBListInfo,
   dbGetTopTenYear,
   dbGetSharedList,
-  dbSetShareFlag
+  dbSetShareFlag,
+  dbCaptureBGGData
 }

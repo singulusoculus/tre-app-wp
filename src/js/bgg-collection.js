@@ -2,6 +2,7 @@ import { custMessage, renderCollectionEl } from './views'
 import { addListItems, getListData, createList } from './list'
 import { updateBGGFilters, filterBGGCollection } from './filters'
 import { xmlToJson } from './bgg-functions'
+import { dbCaptureBGGData } from './database'
 import uuidv4 from 'uuid'
 
 let bggCollectionData = []
@@ -51,6 +52,19 @@ const handleBGGCollectionRequest = async () => {
       showBGGCollectionSection()
       renderCollectionEl('bgg-collection')
     })
+
+    const bggGameData = []
+    bggCollectionData.forEach((i) => {
+      bggGameData.push({
+        bggId: i.bggId,
+        name: i.name,
+        yearPublished: i.yearPublished
+      })
+    })
+
+    console.log(bggGameData)
+
+    dbCaptureBGGData(bggGameData)
 
     // Save new bgg games to database
     // let bggIds = []

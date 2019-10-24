@@ -78,6 +78,9 @@ switch ($func) {
   case 'getWPUserID':
     getWPUserID();
     break;
+  case 'captureBGGData':
+    captureBGGData();
+    break;
   default:
     echo 'Could not find the specified function';
 }
@@ -183,6 +186,28 @@ function getYearTopTen() {
   $results_json = json_encode($results);
 
   echo $results_json;
+
+}
+
+function captureBGGData() {
+  global $wpdb;
+
+  // $jsondata = $_POST['data'];
+
+  // $data = json_decode($jsondata, true);
+  $data = $_POST['data'];
+
+  foreach ($data as $key => $value) {
+    $bggId = $value['bggId'];
+    $name = stripslashes($value['name']);
+    $yearPublished = $value['yearPublished'];
+    $now = date("Y-m-d H:i:s");
+
+    //$sql = "INSERT INTO wp_re_boardgames (bgg_id, bg_name, bgg_year_published, crtd_datetime) VALUES ($bggId, '$name', $yearPublished, now()) ON DUPLICATE KEY UPDATE bg_name = '$name', bgg_year_published = $yearPublished, lupd_datetime = now()";
+    $sql = "INSERT INTO wp_re_boardgames (bgg_id, bg_name, bgg_year_published, crtd_datetime) VALUES (%d, %s, %d, %s) ON DUPLICATE KEY UPDATE bg_name = %s, bgg_year_published = %d, lupd_datetime = %s";
+    $prepedsql = $wpdb->prepare($sql, $bggId, $name, $yearPublished, $now, $name, $yearPublished, $now);
+    $wpdb->query($prepedsql);
+  }
 
 }
 
