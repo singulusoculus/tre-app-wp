@@ -62,11 +62,10 @@ const handleBGGCollectionRequest = async () => {
       })
     })
 
-    console.log(bggGameData)
-
+    // Save new bgg games to database
     dbCaptureBGGData(bggGameData)
 
-    // Save new bgg games to database
+    // // Get additional info about games
     // let bggIds = []
     // bggCollectionData.forEach((item) => {
     //   bggIds.push(item.bggId)

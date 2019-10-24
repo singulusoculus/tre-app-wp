@@ -512,7 +512,6 @@ const dbSetShareFlag = (id, value) => {
 }
 
 const dbCaptureBGGData = (data) => {
-  console.log(JSON.stringify(data))
   jQuery.post(getFilePath('/re-func/re-functions.php'), {
     func: 'captureBGGData',
     data: data
