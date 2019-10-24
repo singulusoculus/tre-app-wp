@@ -7,9 +7,6 @@ switch ($func) {
   case 'getAllGamesApproved':
     getAllGamesApproved();
     break;
-  case 'combineGames':
-    combineGames();
-    break;
   case 'getTopGamesAll':
     getTopGamesAll();
     break;
@@ -37,18 +34,6 @@ function getAllGamesApproved() {
 $results_json = json_encode($results);
 
 echo $results_json;
-}
-
-function combineGames() {
-  global $wpdb;
-
-  $oldid = $_POST['olditemid'];
-  $newid = $_POST['newitemid'];
-
-  $query = "CALL `combine_games_by_id`(".$oldid.",".$newid.");";
-  $result = $wpdb->query($query);
-  echo $result;
-
 }
 
 function getTopGamesAll() {

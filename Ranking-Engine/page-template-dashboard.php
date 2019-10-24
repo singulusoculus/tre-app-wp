@@ -127,7 +127,7 @@ Template Name: Dashboard
   </div>
 
 
-  <div class="row">
+  <!-- <div class="row">
         <div class="input-field col s4">
           <input placeholder="Old ID" id="old-game-id" type="text" class="validate">
           <label for="old-game-id">Combine Games</label>
@@ -139,7 +139,7 @@ Template Name: Dashboard
         <div class="col s4">
       <a id="combine-games-submit" class="waves-effect waves-light btn">Go!</a>
     </div>
-  </div>
+  </div> -->
 
   <p class="section-title">All Games</p>
   <div class="divider-sm"></div>

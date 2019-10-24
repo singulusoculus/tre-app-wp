@@ -55,42 +55,6 @@ const initDashboard = () => {
 jQuery(document).ready(() => {
   initDashboard()
 
-  // ////////////////////////////////////////////////////////////////////
-  // Combine Games
-  // ////////////////////////////////////////////////////////////////////
-
-  document.querySelector('#combine-games-submit').addEventListener('click', () => {
-    let oldItemID = document.querySelector('#old-game-id').value
-    let newItemID = document.querySelector('#new-game-id').value
-
-    fadeInSpinner()
-    console.log('start combine')
-
-    jQuery.post(getFilePath('/re-func/re-dashboard-functions.php'), {
-      func: 'combineGames',
-      olditemid: oldItemID,
-      newitemid: newItemID
-    }, (data, status) => {
-      console.log('combine finish')
-      jQuery('#all-games__table').DataTable().destroy()
-
-      document.querySelector('#all-games__rows').innerHTML = ''
-
-      console.log('start query')
-
-      jQuery.post(getFilePath('/re-func/re-dashboard-functions.php'), {
-        func: 'getAllGamesApproved'
-      }, (data, status) => {
-        console.log('finish query')
-        const parsedData = JSON.parse(data)
-        renderTableRows(parsedData, 'all-games')
-
-        oldItemID = ''
-        newItemID = ''
-        fadeOutSpinner()
-      })
-    })
-  })
 })
 
 jQuery(document).ajaxStop(() => {
