@@ -128,14 +128,14 @@ const removeListItem = (item) => {
   const itemID = listData.findIndex((i) => i.id === item.id)
 
   // Show removed item back in Collection data
-  if (item.sourceType === 'collection') {
-    const bggData = getBGGCollectionData()
+  const bggData = getBGGCollectionData()
+  const searchData = getBGGSearchData()
+  if (item.sourceType === 'collection' && bggData.length > 0) {
     const bggId = item.bggId
     const bggItem = bggData.findIndex((item) => item.bggId === bggId)
     bggData[bggItem].addedToList = false
     renderCollectionEl('bgg-collection')
-  } else if (item.sourceType === 'search') {
-    const searchData = getBGGSearchData()
+  } else if (item.sourceType === 'search' && searchData.length > 0) {
     const bggId = item.bggId
     const bggItem = searchData.findIndex((item) => item.bggId === bggId)
     searchData[bggItem].addedToList = false
