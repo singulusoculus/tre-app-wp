@@ -1,12 +1,21 @@
+import { custMessage } from './views'
 
 const getBGGData = (url) => {
   return new Promise((resolve, reject) => {
     fetch(url)
+      .then(response => handleErrors(response))
       .then(response => response.text())
       .then(str => (new window.DOMParser()).parseFromString(str, 'text/xml'))
       .then(data => {
         const dataJSON = xmlToJson(data)
-        let bggJSONData = dataJSON.items.item
+        let bggJSONData
+
+        if (dataJSON.items) {
+          bggJSONData = dataJSON.items.item
+        } else {
+          bggJSONData = []
+        }
+
         if (!Array.isArray(bggJSONData)) {
           if (bggJSONData) {
             bggJSONData = [bggJSONData]
@@ -16,11 +25,23 @@ const getBGGData = (url) => {
         }
         // Always resolves an array
         resolve(bggJSONData)
+      }).catch((error) => {
+        console.log(error)
+        custMessage(`There was an error fetching your collection. Check the username you entered. BGG servers may also be busy or you have made too many requests. Please try again in a minute.`)
+        jQuery('.ball-loading.collection').fadeOut()
+        document.querySelector('#bgg-submit').classList.remove('disabled')
       })
   })
 }
 
-const getBGGGameDetailData = (bggIds) => {
+const handleErrors = (response) => {
+  if (!response.ok) {
+    throw Error(response.statusText)
+  }
+  return response
+}
+
+const getBGGGameDetailData = (bggIds, mode = 'search') => {
   return new Promise(async (resolve, reject) => {
     let dataURL = 'https://boardgamegeek.com/xmlapi2/thing?stats=1&id='
     bggIds.forEach((id) => {
@@ -34,17 +55,17 @@ const getBGGGameDetailData = (bggIds) => {
       items.push(i)
     })
 
-    resolve(createBGGGameDataObjects(items))
+    resolve(createBGGGameDataObjects(items, mode))
   })
 }
 
-const createBGGGameDataObjects = (items) => {
+const createBGGGameDataObjects = (items, mode) => {
   let bggGameData = []
   items.forEach((item) => {
     let gameDataDetails = {}
     gameDataDetails.bggId = item['@attributes'].id
     gameDataDetails.yearPublished = item.yearpublished ? item.yearpublished['@attributes'].value : 0
-    gameDataDetails.type = item['@attributes'].type
+    gameDataDetails.type = item['@attributes'].type === 'boardgame' ? 'Base' : 'Expansion'
     gameDataDetails.minPlayers = item.minplayers['@attributes'].value
     gameDataDetails.maxPlayers = item.maxplayers['@attributes'].value
     gameDataDetails.minPlaytime = item.minplaytime['@attributes'].value
@@ -129,13 +150,14 @@ const createBGGGameDataObjects = (items) => {
 
     gameDataDetails.altNames = altNames
 
-    gameDataDetails.addedToList = false
-    gameDataDetails.source = 'bgg'
-    gameDataDetails.sourceType = 'search'
+    if (mode === 'search') {
+      gameDataDetails.addedToList = false
+      gameDataDetails.source = 'bgg'
+      gameDataDetails.sourceType = 'search'
+    }
 
     bggGameData.push(gameDataDetails)
   })
-  console.log(bggGameData)
   return bggGameData
 }
 

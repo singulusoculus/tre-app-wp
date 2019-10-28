@@ -1,7 +1,7 @@
 import { custMessage, renderCollectionEl } from './views'
 import { addListItems, getListData, createList } from './list'
 import { updateBGGFilters, filterBGGCollection } from './filters'
-import { xmlToJson } from './bgg-functions'
+import { xmlToJson, getBGGGameDetailData } from './bgg-functions'
 import { dbCaptureBGGData } from './database'
 import uuidv4 from 'uuid'
 
@@ -53,26 +53,63 @@ const handleBGGCollectionRequest = async () => {
       renderCollectionEl('bgg-collection')
     })
 
-    const bggGameData = []
-    bggCollectionData.forEach((i) => {
-      bggGameData.push({
-        bggId: i.bggId,
-        name: i.name,
-        yearPublished: i.yearPublished
-      })
-    })
+    // const bggGameData = []
+    // bggCollectionData.forEach((i) => {
+    //   bggGameData.push({
+    //     bggId: i.bggId,
+    //     name: i.name,
+    //     yearPublished: i.yearPublished
+    //   })
+    // })
 
-    // Save new bgg games to database
-    dbCaptureBGGData(bggGameData)
+    // // Save new bgg games to database
+    // dbCaptureBGGData(bggGameData)
 
     // // Get additional info about games
-    // let bggIds = []
-    // bggCollectionData.forEach((item) => {
-    //   bggIds.push(item.bggId)
+    let bggIds = []
+    bggCollectionData.forEach((item) => {
+      bggIds.push(item.bggId)
+    })
+
+    // break allIds into chunks for smaller queries to bgg
+    const perChunk = 50
+
+    let idArrays = bggIds.reduce((resultArray, item, index) => {
+      const chunkIndex = Math.floor(index / perChunk)
+
+      if (!resultArray[chunkIndex]) {
+        resultArray[chunkIndex] = [] // start a new chunk
+      }
+
+      resultArray[chunkIndex].push(item)
+
+      return resultArray
+    }, [])
+
+    console.log(idArrays)
+
+    let bggGameData = []
+
+    for (let i = 0; i < idArrays.length; i++) {
+      let data = await getBGGGameDetailData(idArrays[i], 'db')
+      bggGameData = bggGameData.concat(data)
+    }
+
+    console.log(bggGameData)
+
+    // const bggGameDataSlim = []
+    // bggGameData.forEach((i) => {
+    //   bggGameDataSlim.push({
+    //     bggId: i.bggId,
+    //     name: i.name,
+    //     yearPublished: i.yearPublished
+    //   })
     // })
-    // const bggGameData = getBGGGameData(bggIds)
-    // console.log(bggGameData)
-    // dbCaptureNewBGGGames(bggGameData)
+    // const bggGameDataJSON = JSON.stringify(bggGameDataSlim)
+
+    const bggGameDataJSON = JSON.stringify(bggGameData)
+
+    dbCaptureBGGData(bggGameDataJSON)
   }
 }
 
