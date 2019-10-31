@@ -1,4 +1,5 @@
 import { custMessage } from './views'
+import { dbCaptureBGGData } from './database'
 
 const getBGGData = (url) => {
   return new Promise((resolve, reject) => {
@@ -161,6 +162,38 @@ const createBGGGameDataObjects = (items, mode) => {
   return bggGameData
 }
 
+const captureBGGData = async (bggIds) => {
+  // break bggIds into chunks for smaller queries to bgg
+  const perChunk = 50
+
+  let idArrays = bggIds.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / perChunk)
+
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = [] // start a new chunk
+    }
+
+    resultArray[chunkIndex].push(item)
+
+    return resultArray
+  }, [])
+
+  console.log(idArrays)
+
+  let bggGameData = []
+
+  for (let i = 0; i < idArrays.length; i++) {
+    let data = await getBGGGameDetailData(idArrays[i], 'db')
+    bggGameData = bggGameData.concat(data)
+  }
+
+  console.log(bggGameData)
+
+  const bggGameDataJSON = JSON.stringify(bggGameData)
+
+  dbCaptureBGGData(bggGameDataJSON)
+}
+
 // Changes XML to JSON
 const xmlToJson = (xml) => {
   // Create the return object
@@ -199,4 +232,4 @@ const xmlToJson = (xml) => {
   return obj
 }
 
-export { getBGGData, getBGGGameDetailData, xmlToJson }
+export { getBGGData, getBGGGameDetailData, xmlToJson, captureBGGData }

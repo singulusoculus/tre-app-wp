@@ -204,17 +204,21 @@ function captureBGGData() {
     $yearPublished = $value['yearPublished'];
     $now = date("Y-m-d H:i:s");
     $type = $value['type'];
+    $image = $value['image'];
+    $imageOriginal = $value['imageOriginal'];
 
     $sql = 
-    "INSERT INTO wp_re_boardgames (bgg_id, bg_name, bgg_year_published, crtd_datetime, bg_type) 
-    VALUES (%d, %s, %d, %s, %s, %d) 
+    "INSERT INTO wp_re_boardgames (bgg_id, bg_name, bgg_year_published, crtd_datetime, lupd_datetime, bg_type, image_url, image_original_url) 
+    VALUES (%d, %s, %d, %s, %s, %s, %s, %s) 
     ON DUPLICATE KEY UPDATE 
     bg_name = %s,
     bgg_year_published = %d,
     lupd_datetime = %s,
-    bg_type = %s";
+    bg_type = %s,
+    image_url = %s,
+    image_original_url = %s";
 
-    $prepedsql = $wpdb->prepare($sql, $bggId, $name, $yearPublished, $now, $type, $name, $yearPublished, $now, $type);
+    $prepedsql = $wpdb->prepare($sql, $bggId, $name, $yearPublished, $now, $now, $type, $image, $imageOriginal, $name, $yearPublished, $now, $type, $image, $imageOriginal);
     $wpdb->query($prepedsql);
   }
 

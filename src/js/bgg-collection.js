@@ -1,8 +1,7 @@
 import { custMessage, renderCollectionEl } from './views'
 import { addListItems, getListData, createList } from './list'
 import { updateBGGFilters, filterBGGCollection } from './filters'
-import { xmlToJson, getBGGGameDetailData } from './bgg-functions'
-import { dbCaptureBGGData } from './database'
+import { xmlToJson, captureBGGData } from './bgg-functions'
 import uuidv4 from 'uuid'
 
 let bggCollectionData = []
@@ -53,68 +52,17 @@ const handleBGGCollectionRequest = async () => {
       renderCollectionEl('bgg-collection')
     })
 
-    // const bggGameData = []
-    // bggCollectionData.forEach((i) => {
-    //   bggGameData.push({
-    //     bggId: i.bggId,
-    //     name: i.name,
-    //     yearPublished: i.yearPublished
-    //   })
-    // })
-
-    // // Save new bgg games to database
-    // dbCaptureBGGData(bggGameData)
-
-    // // Get additional info about games
+    // Get additional info about games
     let bggIds = []
     bggCollectionData.forEach((item) => {
       bggIds.push(item.bggId)
     })
 
-    // break allIds into chunks for smaller queries to bgg
-    const perChunk = 50
-
-    let idArrays = bggIds.reduce((resultArray, item, index) => {
-      const chunkIndex = Math.floor(index / perChunk)
-
-      if (!resultArray[chunkIndex]) {
-        resultArray[chunkIndex] = [] // start a new chunk
-      }
-
-      resultArray[chunkIndex].push(item)
-
-      return resultArray
-    }, [])
-
-    console.log(idArrays)
-
-    let bggGameData = []
-
-    for (let i = 0; i < idArrays.length; i++) {
-      let data = await getBGGGameDetailData(idArrays[i], 'db')
-      bggGameData = bggGameData.concat(data)
-    }
-
-    console.log(bggGameData)
-
-    // const bggGameDataSlim = []
-    // bggGameData.forEach((i) => {
-    //   bggGameDataSlim.push({
-    //     bggId: i.bggId,
-    //     name: i.name,
-    //     yearPublished: i.yearPublished
-    //   })
-    // })
-    // const bggGameDataJSON = JSON.stringify(bggGameDataSlim)
-
-    const bggGameDataJSON = JSON.stringify(bggGameData)
-
-    dbCaptureBGGData(bggGameDataJSON)
+    captureBGGData(bggIds)
   }
 }
 
 const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => {
-  // fadeInSpinner()
   jQuery('.ball-loading.collection').fadeIn()
   document.querySelector('#bgg-submit').classList.add('disabled')
   // Get collection - this excludes played-only games
@@ -127,19 +75,16 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
 
     // 1 = invalid username; 2 = timed out, try again later; Too Many Requests; failed to open steam
     if (newData === 1) {
-      // fadeOutSpinner()
       jQuery('.ball-loading.collection').fadeOut()
       document.querySelector('#bgg-submit').classList.remove('disabled')
       reject(new Error('Invalid username'))
       custMessage('Invalid username. Please try again.')
     } else if (newData === 2) {
-      // fadeOutSpinner()
       jQuery('.ball-loading.collection').fadeOut()
       document.querySelector('#bgg-submit').classList.remove('disabled')
       reject(new Error('Timed Out. Try again later.'))
       custMessage('The request for you collection timed out. BGG servers may be busy. Please try again in a little bit.')
     } else if (data.indexOf('Too Many Requests') > 0) {
-      // fadeOutSpinner()
       jQuery('.ball-loading.collection').fadeOut()
       document.querySelector('#bgg-submit').classList.remove('disabled')
       reject(new Error('Too Many Requests'))
