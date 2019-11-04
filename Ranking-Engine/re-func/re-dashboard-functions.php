@@ -102,14 +102,13 @@ function getTotals() {
   $usersprev = $wpdb->get_row( "SELECT count(wp_usermeta.user_id) AS TotalUsers FROM wp_usermeta join wp_users on wp_usermeta.user_id = wp_users.id WHERE meta_key = 'wp_user_level'  AND meta_value = 0 AND DATE(user_registered) = curdate()
   ", ARRAY_A );
 
-  $lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h", ARRAY_A );
+  $lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
 
-  $listsprev = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE finish_date = curdate()", ARRAY_A );
+  $listsprev = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE finish_date = curdate() AND list_category = 2 AND item_count > 10", ARRAY_A );
 
-  $items = $wpdb->get_row( "SELECT count(id) AS TotalItems FROM wp_re_results_d", ARRAY_A );
+  $items = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
 
-  $itemsprev = $wpdb->get_row( "SELECT count(wp_re_results_d.id) AS TotalItems  FROM wp_re_results_d  JOIN wp_re_results_h on wp_re_results_d.result_id = wp_re_results_h.result_id WHERE finish_date = curdate()
-  ", ARRAY_A );
+  $itemsprev = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND finish_date = curdate()", ARRAY_A );
 
   $data = array();
   array_push($data, $users, $usersprev, $lists, $listsprev, $items, $itemsprev);

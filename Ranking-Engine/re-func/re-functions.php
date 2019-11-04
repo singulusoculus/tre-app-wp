@@ -206,19 +206,41 @@ function captureBGGData() {
     $type = $value['type'];
     $image = $value['image'];
     $imageOriginal = $value['imageOriginal'];
+    $minPlayers = $value['minPlayers'];
+    $maxPlayers = $value['maxPlayers'];
+    $playingTime = $value['playingtime'];
+    $minAge = $value['minAge'];
 
     $sql = 
-    "INSERT INTO wp_re_boardgames (bgg_id, bg_name, bgg_year_published, crtd_datetime, lupd_datetime, bg_type, image_url, image_original_url) 
-    VALUES (%d, %s, %d, %s, %s, %s, %s, %s) 
+    "INSERT INTO wp_re_boardgames 
+    (bgg_id
+    , bg_name
+    , bgg_year_published
+    , crtd_datetime
+    , lupd_datetime
+    , bg_type
+    , image_url
+    , image_original_url
+    , min_players
+    , max_players
+    , playing_time
+    , min_age
+    ) 
+    VALUES (%d, %s, %d, %s, %s, %s, %s, %s, %d, %d, %d, %d) 
     ON DUPLICATE KEY UPDATE 
     bg_name = %s,
     bgg_year_published = %d,
     lupd_datetime = %s,
     bg_type = %s,
     image_url = %s,
-    image_original_url = %s";
+    image_original_url = %s,
+    min_players = %d,
+    max_players = %d,
+    playing_time = %d,
+    min_age = %d";
 
-    $prepedsql = $wpdb->prepare($sql, $bggId, $name, $yearPublished, $now, $now, $type, $image, $imageOriginal, $name, $yearPublished, $now, $type, $image, $imageOriginal);
+    $prepedsql = $wpdb->prepare($sql, $bggId, $name, $yearPublished, $now, $now, $type, $image, $imageOriginal, $minPlayers, $maxPlayers, $playingTime, $minAge, 
+    $name, $yearPublished, $now, $type, $image, $imageOriginal, $minPlayers, $maxPlayers, $playingTime, $minAge);
     $wpdb->query($prepedsql);
   }
 
