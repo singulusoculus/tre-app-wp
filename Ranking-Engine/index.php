@@ -203,7 +203,7 @@
                       <span class="bgg-filter-heading">Min Personal Rating</span>
                     </div>
                       <p class="range-field">
-                        <input type="range" id="personal-rating" value="0" min="0" max="10" />
+                        <input type="range" id="personal-rating" value="0" min="0" max="10" step="0.5" />
                       </p>
                     </form>
                   </div>

@@ -143,8 +143,10 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#personal-rating').addEventListener('change', (e) => {
+    console.log(e.target.value)
+    console.log(parseFloat(e.target.value))
     setBGGFilters({
-      rating: parseInt(e.target.value)
+      rating: parseFloat(e.target.value)
     })
     // renderBGGCollection()
     renderCollectionEl('bgg-collection')

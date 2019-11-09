@@ -135,7 +135,7 @@ const updateBGGFilters = () => {
   const pRating = document.querySelector('#personal-rating').value
   // Update rating filter
   setBGGFilters({
-    rating: parseInt(pRating)
+    rating: parseFloat(pRating)
   })
 }
 

@@ -156,7 +156,7 @@ const createBGGList = (data) => {
       played: item.numplays['#text'] > 0,
       plays: item.numplays['#text'],
       rated: item.stats['rating']['@attributes'].value !== 'N/A',
-      rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseInt(item.stats['rating']['@attributes'].value),
+      rating: item.stats['rating']['@attributes'].value === 'N/A' ? 0 : parseFloat(item.stats['rating']['@attributes'].value),
       addedToList: false
     }
 
