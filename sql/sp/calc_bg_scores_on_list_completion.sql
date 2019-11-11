@@ -17,8 +17,9 @@ BEGIN
   , `d30_list_score` FLOAT NULL 
   , `d30_times_ranked` INT NULL
   , `bg_id` INT(11) NULL
-  , PRIMARY KEY (`id`)
-  , UNIQUE KEY (bgg_id))
+  , `result_id` INT(11) NULL
+  , `crtd_datetime` datetime NULL
+  , PRIMARY KEY (`id`))
   ENGINE = MyISAM CHARSET=utf8mb4 
   COLLATE utf8mb4_unicode_ci;');
 
@@ -28,10 +29,12 @@ BEGIN
 
   -- Insert final list into temp table
   SET @s = CONCAT(
-  'INSERT INTO ', @t, ' (id, bg_name, bgg_id)
+  'INSERT INTO ', @t, ' (id, bg_name, bgg_id, result_id, crtd_datetime)
   SELECT id
   , item_name
   , wp_re_results_d.bgg_id
+  , @FinalListID
+  , now()
   FROM wp_re_results_d
   WHERE wp_re_results_d.result_id = @FinalListID;'
   );
@@ -50,7 +53,7 @@ BEGIN
   EXECUTE stmt1;
   DEALLOCATE PREPARE stmt1;
 
-  -- apply bg_id
+  -- apply bg_id and bgg_id
   SET @s = CONCAT(
   'UPDATE ', @t, '
   JOIN wp_re_boardgames ON ', @t, '.bgg_id = wp_re_boardgames.bgg_id
@@ -63,7 +66,8 @@ BEGIN
   SET @s = CONCAT(
   'UPDATE wp_re_results_d
   JOIN ', @t, ' ON wp_re_results_d.id = ', @t, '.id
-  SET wp_re_results_d.bg_id = ', @t, '.bg_id;'
+  SET wp_re_results_d.bg_id = ', @t, '.bg_id
+  , wp_re_results_d.bgg_id = ', @t, '.bgg_id;'
   );
   PREPARE stmt1 FROM @s;
   EXECUTE stmt1;
@@ -107,16 +111,14 @@ BEGIN
   EXECUTE stmt1;
   DEALLOCATE PREPARE stmt1;
 
-    -- Write back bgg_id to wp_re_results_d
+  -- make bgg_id unique
   SET @s = CONCAT(
-  'UPDATE wp_re_results_d
-  JOIN ', @t, ' ON wp_re_results_d.id = ', @t, '.id
-  SET wp_re_results_d.bgg_id = ', @t, '.bgg_id
-  WHERE wp_re_results_d.bgg_id IS NULL;'
+    'ALTER TABLE ', @t, ' ADD UNIQUE(`bgg_id`);'
   );
   PREPARE stmt1 FROM @s;
   EXECUTE stmt1;
   DEALLOCATE PREPARE stmt1;
+
 
   -- All time - list score and times ranked
   SET @s = CONCAT(

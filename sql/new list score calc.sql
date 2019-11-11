@@ -4,14 +4,18 @@
   ( `id` INT(11) NOT NULL
   , `bgg_id` INT(11) NULL
   , `bg_name` VARCHAR(200) NOT NULL
-  , `at_list_score` FLOAT NULL 
-  , `at_times_ranked` INT NULL
-  , `at_pop_score` FLOAT NULL
-  , `at_rank` INT NULL
-  , `cy_list_score` FLOAT NULL 
-  , `cy_times_ranked` INT NULL
-  , `d30_list_score` FLOAT NULL 
-  , `d30_times_ranked` INT NULL
+  , `v1_list_score` FLOAT NULL 
+  , `v1_times_ranked` INT NULL
+  , `v1_pop_score` FLOAT NULL
+  , `v1_rank` INT NULL
+  , `v2_list_score` FLOAT NULL 
+  , `v2_times_ranked` INT NULL
+  , `v2_pop_score` FLOAT NULL
+  , `v2_rank` INT NULL
+  , `v3_list_score` FLOAT NULL 
+  , `v3_times_ranked` INT NULL
+  , `v3_pop_score` FLOAT NULL
+  , `v3_rank` INT NULL
   , `bg_id` INT(11) NULL
   , PRIMARY KEY (`id`)
   , UNIQUE KEY (bgg_id))
@@ -23,10 +27,11 @@
   SELECT bg_id, bg_name, bgg_id
   FROM wp_re_boardgames;
 
-    -- All time - list score and times ranked
+    -- V1 - list score and times ranked
   INSERT INTO wp_re_boardgames_update_temp (bgg_id, at_list_score, at_times_ranked)
   SELECT wp_re_results_d.bgg_id
-  , round(avg(CASE WHEN item_rank <= 100 THEN (100 - item_rank + 1) ELSE 0 END), 3) AS list_score
+  -- , round(avg(CASE WHEN item_rank <= 100 THEN (100 - item_rank + 1) ELSE 0 END), 3) AS list_score
+  , CASE WHEN item_rank <= 100 THEN round(avg((100 - item_rank + 1)), 3) END AS list_score
   , count(wp_re_results_d.bgg_id) as times_ranked
   FROM wp_re_results_d
   JOIN wp_re_results_h on wp_re_results_d.result_id = wp_re_results_h.result_id
