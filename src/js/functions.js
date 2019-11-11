@@ -175,35 +175,51 @@ const handleClickUpdate = (e) => {
   }
 }
 
-const handleClickSaveList = () => {
-  const listInfo = getDBListInfo()
-  if (listInfo.template.id > 0) {
-    document.querySelector('#update-list-btn').classList.remove('hide')
-    document.querySelector('#save-list-btn').textContent = 'Save New'
-    document.querySelector('#save-description').value = listInfo.template.desc
-    document.querySelector('#save-description-label').classList.add('active')
+const handleClickSaveList = async () => {
+  const userID = await getUserID()
+  if (userID === 0) {
+    setupSaveLogin()
+    const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
+    instance.open()
   } else {
-    document.querySelector('#update-list-btn').classList.add('hide')
-    document.querySelector('#save-list-btn').textContent = 'Save'
-    document.querySelector('#save-description').value = ''
-    document.querySelector('#save-description-label').classList.remove('active')
+    const listInfo = getDBListInfo()
+    if (listInfo.template.id > 0) {
+      document.querySelector('#update-list-btn').classList.remove('hide')
+      document.querySelector('#save-list-btn').textContent = 'Save New'
+      document.querySelector('#save-description').value = listInfo.template.desc
+      document.querySelector('#save-description-label').classList.add('active')
+    } else {
+      document.querySelector('#update-list-btn').classList.add('hide')
+      document.querySelector('#save-list-btn').textContent = 'Save'
+      document.querySelector('#save-description').value = ''
+      document.querySelector('#save-description-label').classList.remove('active')
+    }
+    const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
+    instance.open()
   }
 }
 
-const handleClickSaveRank = () => {
-  const progressID = getDBListInfo().progress.id
-  const listInfo = getDBListInfo()
-
-  document.querySelector('#update-list-btn').classList.add('hide')
-
-  if (progressID > 0) {
-    document.querySelector('#save-list-btn').textContent = 'Update'
-    document.querySelector('#save-description').value = listInfo.progress.desc
-    document.querySelector('#save-description-label').classList.add('active')
+const handleClickSaveRank = async () => {
+  const userID = await getUserID()
+  if (userID === 0) {
+    setupSaveLogin()
+    const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
+    instance.open()
   } else {
-    document.querySelector('#save-list-btn').textContent = 'Save'
-    document.querySelector('#save-description').value = ''
-    document.querySelector('#save-description-label').classList.remove('active')
+    const progressID = getDBListInfo().progress.id
+    const listInfo = getDBListInfo()
+    document.querySelector('#update-list-btn').classList.add('hide')
+    if (progressID > 0) {
+      document.querySelector('#save-list-btn').textContent = 'Update'
+      document.querySelector('#save-description').value = listInfo.progress.desc
+      document.querySelector('#save-description-label').classList.add('active')
+    } else {
+      document.querySelector('#save-list-btn').textContent = 'Save'
+      document.querySelector('#save-description').value = ''
+      document.querySelector('#save-description-label').classList.remove('active')
+    }
+    const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
+    instance.open()
   }
 }
 
@@ -259,6 +275,19 @@ const handleClickRank = () => {
 // //////////////////////////////////////////////////////////////////////
 // // MISC
 // //////////////////////////////////////////////////////////////////////
+
+const getUserID = () => {
+  return new Promise((resolve, reject) => {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: 'getWPUserID'
+    }, (data, status) => {
+      if (status === 'success') {
+        resolve(parseInt(data))
+        // resolve(0)
+      }
+    })
+  })
+}
 
 const disableArrowKeyScroll = () => {
   // Disable arrow keys from scrolling
@@ -475,5 +504,6 @@ export {
   renderTableRows,
   initDataTable,
   renderTable,
-  renderTableHeader
+  renderTableHeader,
+  getUserID
 }

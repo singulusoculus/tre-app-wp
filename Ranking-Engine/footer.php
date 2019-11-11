@@ -13,17 +13,6 @@
     <?php wp_footer(); ?>
 
   <script type="text/javascript">
-    const getUserID = () => {
-      return new Promise((resolve, reject) => {
-        jQuery.post(getFilePath('/re-func/re-functions.php'), {
-          func: 'getWPUserID'
-        }, (data, status) => {
-          if (status === 'success') {
-            resolve(parseInt(data))
-          }
-        })
-      })
-    }
 
     const getThemePath = () => {
       return '<?php echo get_theme_file_uri(); ?>'

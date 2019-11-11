@@ -1,5 +1,5 @@
 import { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag, dbClearSharedRankingResults } from './group-results-db'
-import { renderTableRows, initDataTable } from './functions'
+import { renderTableRows, initDataTable, getUserID } from './functions'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 
 let templateListData = {}

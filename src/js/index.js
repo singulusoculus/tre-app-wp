@@ -215,11 +215,15 @@ jQuery(document).ready(() => {
     handleClickUpdate(e)
   })
 
-  document.querySelector('#save-list').addEventListener('click', () => {
+  document.querySelector('#save-list').addEventListener('click', (e) => {
+    e.preventDefault()
+    e.stopPropagation()
     handleClickSaveList()
   })
 
-  document.querySelector('#save-ranking').addEventListener('click', () => {
+  document.querySelector('#save-ranking').addEventListener('click', (e) => {
+    e.preventDefault()
+    e.stopPropagation()
     handleClickSaveRank()
   })
 

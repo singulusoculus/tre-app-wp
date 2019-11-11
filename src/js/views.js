@@ -6,7 +6,7 @@ import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, getBGGCollectionData } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
-import { updateLocalStorageSaveDataItem } from './functions'
+import { updateLocalStorageSaveDataItem, getUserID } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 import { getBGGSearchData } from './bgg-search'
 
@@ -444,7 +444,8 @@ const setupSaveLogin = async () => {
   const myListsEl = document.querySelector('.my-lists')
   myListsEl.textContent = ''
   const userID = await getUserID()
-  
+  console.log(userID)
+
   if (userID === 0) {
     // Create My Lists Login
     const loginMessageEl = document.createElement('div')
