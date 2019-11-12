@@ -185,6 +185,8 @@ const handleClickSaveList = async () => {
   const userID = await getUserID()
   if (userID === 0) {
     setupSaveLogin()
+    document.querySelector('#login-form-button').setAttribute('from', '')
+    document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
     instance.open()
   } else {
@@ -208,6 +210,8 @@ const handleClickSaveList = async () => {
 const handleClickSaveResult = async () => {
   const userID = await getUserID()
   if (userID === 0) {
+    document.querySelector('#login-form-button').setAttribute('from', '')
+    document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
     instance.open()
   } else {
@@ -220,6 +224,8 @@ const handleClickSaveRank = async () => {
   const userID = await getUserID()
   if (userID === 0) {
     setupSaveLogin()
+    document.querySelector('#login-form-button').setAttribute('from', '')
+    document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
     instance.open()
   } else {

@@ -441,7 +441,7 @@
           </div>
         <div class="modal-footer">
           <!-- <a href="#!" id="login-btn" class="modal-close waves-effect waves-green btn-flat">Login</a> -->
-          <input id="login-form-button" class="waves-effect waves-green btn-flat" type="submit" value="Login" name="submit">
+          <input id="login-form-button" class="waves-effect waves-green btn-flat" type="submit" value="Login" name="submit" from="my-lists">
             <?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
         </div>
       </form>
