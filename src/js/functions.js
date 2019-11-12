@@ -80,7 +80,7 @@ const initRankingEngineReload = async (reload) => {
         initPrevResult(category, data)
       }
       if (type === 'login-save') {
-        const userID = getUserID()
+        const userID = await getUserID()
         if (userID > 0) {
           const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
           modal.open()
