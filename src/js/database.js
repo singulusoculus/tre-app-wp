@@ -376,7 +376,7 @@ const dbUpdateResultData = (rankedItems, resultId) => {
     if (status === 'success') {
       const resultData = getResultData()
       saveData(resultData)
-      if (category === 2) {
+      if (category === 2 && resultId > 0) {
         dbUpdateRankings(resultId)
       }
     }
@@ -419,7 +419,7 @@ const dbSaveResultData = (rankedItems) => {
         localStorage.setItem('str', JSON.stringify(lsParentLists))
       }
 
-      if (category === 2) {
+      if (category === 2 && newData > 0) {
         dbUpdateRankings(dbListInfo.result.id)
       }
     }
