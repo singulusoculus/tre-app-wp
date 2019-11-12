@@ -1,5 +1,5 @@
 import { showResultSection, setupSaveLogin } from './views'
-import { saveData, renderTable } from './functions'
+import { saveData, renderTable, handleClickSaveResult } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 import { getDBListInfo } from './database'
@@ -61,10 +61,7 @@ const renderResult = () => {
   } else {
     saveButtonEl.classList.add('disabled')
   }
-  saveButtonEl.addEventListener('click', () => {
-    document.querySelector('#login-form-button').setAttribute('from', '')
-    document.querySelector('#login-form-button').setAttribute('from', 'save')
-  })
+
   saveButtonEl.setAttribute('id', 'save-results')
   saveButtonEl.setAttribute('href', '#login-modal')
   saveButtonEl.textContent = 'Save'
@@ -75,9 +72,16 @@ const renderResult = () => {
   const dtButtonsEl = document.querySelector('.dt-buttons')
   dtButtonsEl.appendChild(saveButtonEl)
 
-  saveButtonEl.addEventListener('click', () => {
+  saveButtonEl.addEventListener('click', (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    document.querySelector('#login-form-button').setAttribute('from', '')
+    document.querySelector('#login-form-button').setAttribute('from', 'save')
+
     document.querySelector('#save-list-btn').textContent = 'Save'
     document.querySelector('#save-description').value = ''
+
+    handleClickSaveResult()
   })
 
   // Add title to table

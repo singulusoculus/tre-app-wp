@@ -21,7 +21,7 @@ function wpse_44020_logout_redirect( $logouturl, $redir )
 add_filter( 'logout_url', 'wpse_44020_logout_redirect', 10, 2 );
 
 function getRankingEngineVersion () {
-  return '2.1.4';
+  return '2.1.5';
 }
 
 //For The Ranking Engine - starting in 1.4
@@ -70,6 +70,13 @@ function ajax_login(){
 
   die();
 }
+
+function my_custom_login_logo() {
+  echo '<style type="text/css">
+  h1 a {background-image:url(https://rankingengine.pubmeeple.com/wp-content/themes/Ranking-Engine/images/pm-logo-md.png) !important; margin:0 auto;}
+  </style>';
+}
+add_filter( 'login_head', 'my_custom_login_logo' );
 
 
 

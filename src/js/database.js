@@ -309,7 +309,7 @@ const dbSaveProgressData = async (saveDesc = dbListInfo.progress.desc) => {
   const saveBtnEl = document.querySelector('#save-ranking')
   saveBtnEl.classList.add('disabled')
 
-  if (dbListInfo.progress.id === 0) {
+  if (dbListInfo.progress.id === 0 && wpuid > 0) {
     const uuid = uuidv4()
     const parentList = getParentList()
 
@@ -340,7 +340,7 @@ const dbSaveProgressData = async (saveDesc = dbListInfo.progress.desc) => {
         M.toast({ html: `Progress List Saved`, displayLength: 2000 })
       }
     })
-  } else {
+  } else if (dbListInfo.progress.id > 0) {
     // UPDATE
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'updateProgressList',

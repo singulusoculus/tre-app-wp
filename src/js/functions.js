@@ -57,7 +57,7 @@ const checkForURLParam = () => {
   }
 }
 
-const initRankingEngineReload = (reload) => {
+const initRankingEngineReload = async (reload) => {
   reload = JSON.parse(reload)
   const step = reload.step
   const type = reload.type
@@ -80,9 +80,15 @@ const initRankingEngineReload = (reload) => {
         initPrevResult(category, data)
       }
       if (type === 'login-save') {
-        const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
-        modal.open()
-        setDBListInfo(dbListInfo)
+        const userID = getUserID()
+        if (userID > 0) {
+          const modal = M.Modal.getInstance(document.querySelector('#save-modal'))
+          modal.open()
+          setDBListInfo(dbListInfo)
+        } else {
+          const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
+          instance.open()
+        }
       }
     }
   }
@@ -194,6 +200,17 @@ const handleClickSaveList = async () => {
       document.querySelector('#save-description').value = ''
       document.querySelector('#save-description-label').classList.remove('active')
     }
+    const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
+    instance.open()
+  }
+}
+
+const handleClickSaveResult = async () => {
+  const userID = await getUserID()
+  if (userID === 0) {
+    const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
+    instance.open()
+  } else {
     const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
     instance.open()
   }
@@ -505,5 +522,6 @@ export {
   initDataTable,
   renderTable,
   renderTableHeader,
-  getUserID
+  getUserID,
+  handleClickSaveResult
 }

@@ -178,16 +178,12 @@ const captureBGGData = async (bggIds) => {
     return resultArray
   }, [])
 
-  console.log(idArrays)
-
   let bggGameData = []
 
   for (let i = 0; i < idArrays.length; i++) {
     let data = await getBGGGameDetailData(idArrays[i], 'db')
     bggGameData = bggGameData.concat(data)
   }
-
-  console.log(bggGameData)
 
   const bggGameDataJSON = JSON.stringify(bggGameData)
 
