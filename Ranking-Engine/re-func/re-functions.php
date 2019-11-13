@@ -81,12 +81,21 @@ switch ($func) {
   case 'captureBGGData':
     captureBGGData();
     break;
+  case 'addAjaxLoginInit':
+    addAjaxLoginInit();
+    break;
   default:
     echo 'Could not find the specified function';
 }
 
 function getWPUserID() {
   echo get_current_user_id();
+}
+
+function addAjaxLoginInit() {
+  if (!is_user_logged_in()) {
+    add_action('init', 'ajax_login_init');
+  }
 }
 
 ///////////////////////////////////////
