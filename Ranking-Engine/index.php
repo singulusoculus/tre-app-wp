@@ -343,7 +343,7 @@
                   class="material-icons right">save</i>Save</a>
             </div>
           </div>
-          <div class="divider"></div>
+          <div class="divider-sm"></div>
           <div class="row">
             <div class="col s12 m8 offset-m2 l6">
               <div id="item-1-card" class="card rank-card z-depth-3">
@@ -379,6 +379,10 @@
 
     <section id="result-wrapper" class="step-wrapper">
       <div id="result-container" class="step-container">
+      <div class="result-options">
+        <a href="#login-modal" id="save-results" class="waves-effect waves-light btn modal-trigger save-btn"><i class="material-icons right">save</i>Save</a>
+      </div>
+          <div class="divider-sm"></div>
         <div id="results-table"></div>
         <div id="results-table-wrapper"></div>
       </div>

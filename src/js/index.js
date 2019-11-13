@@ -5,7 +5,7 @@ import { setListFilters, setBGGFilters, setBGGSearchFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank } from './functions'
+import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank, handleClickSaveResult } from './functions'
 import { copyURLText, handleShareSwitchChange } from './list-sharing'
 import { handleQuickHelpClick } from './quick-help'
 import { handleBGGSearch } from './bgg-search'
@@ -225,6 +225,12 @@ jQuery(document).ready(() => {
     e.preventDefault()
     e.stopPropagation()
     handleClickSaveRank()
+  })
+
+  document.querySelector('#save-results').addEventListener('click', (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    handleClickSaveResult()
   })
 
   document.querySelectorAll('.save-btn').forEach((el) => {

@@ -1,5 +1,5 @@
-import { showResultSection, setupSaveLogin } from './views'
-import { saveData, renderTable, handleClickSaveResult } from './functions'
+import { showResultSection } from './views'
+import { saveData, renderTable } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 import { getDBListInfo } from './database'
@@ -51,38 +51,14 @@ const renderResult = () => {
   // Fix Rank column width
   document.querySelector('#results__header > tr > :first-child').setAttribute('style', 'width: 18%')
 
+  // Setup Save Button
   const userResultID = getDBListInfo().userResult.id
-
-  // Put save button in line with other buttons
-  const saveButtonEl = document.createElement('a')
-  saveButtonEl.classList.add('waves-effect', 'waves-light', 'btn', 'modal-trigger', 'save-btn')
+  const saveButtonEl = document.querySelector('#save-results')
   if (userResultID === 0) {
     saveButtonEl.classList.remove('disabled')
   } else {
     saveButtonEl.classList.add('disabled')
   }
-
-  saveButtonEl.setAttribute('id', 'save-results')
-  saveButtonEl.setAttribute('href', '#login-modal')
-  saveButtonEl.textContent = 'Save'
-  const saveIconEl = document.createElement('i')
-  saveIconEl.classList.add('material-icons', 'right')
-  saveIconEl.textContent = 'save'
-  saveButtonEl.appendChild(saveIconEl)
-  const dtButtonsEl = document.querySelector('.dt-buttons')
-  dtButtonsEl.appendChild(saveButtonEl)
-
-  saveButtonEl.addEventListener('click', (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    document.querySelector('#login-form-button').setAttribute('from', '')
-    document.querySelector('#login-form-button').setAttribute('from', 'save')
-
-    document.querySelector('#save-list-btn').textContent = 'Save'
-    document.querySelector('#save-description').value = ''
-
-    handleClickSaveResult()
-  })
 
   // Add title to table
   const resultDesc = getDBListInfo().userResult.desc
@@ -91,8 +67,6 @@ const renderResult = () => {
   spanEl.classList.add('section-title', 'result-desc')
   spanEl.textContent = resultDesc !== '' ? `${resultDesc}` : 'Your Results:'
   tableEl.prepend(spanEl)
-
-  setupSaveLogin()
 
   // Support Us Toast
   const toastHTML = `<span class="center-align">Hey, nice list!</span><span class="center-align">If you found this tool useful please consider putting something in our tip jar.</span><div class="prev-toast-btns"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pubmeeple@gmail.com&item_name=Friends+of+the+Pub&item_number=For+RE&currency_code=USD" target="_blank"><button class="btn-flat toast-action support-paypal">Paypal</button></a><button class="btn-flat toast-action support-dismiss">Dismiss</button></div>`
@@ -104,6 +78,12 @@ const renderResult = () => {
       M.Toast.dismissAll()
     })
   })
+
+  // Remove top nine button if it exists
+  const currentTopNineButtonEl = document.querySelector('.top-nine-btn')
+  if (currentTopNineButtonEl) {
+    currentTopNineButtonEl.remove()
+  }
 
   // Check for top nine images
   const images = checkforImages(resultData)
@@ -133,12 +113,8 @@ const renderResult = () => {
     topNineIconEl.textContent = 'grid_on'
 
     topNineButtonEl.appendChild(topNineIconEl)
-    dtButtonsEl.appendChild(topNineButtonEl)
-  } else {
-    const topNineButtonEl = document.querySelector('.top-nine-button')
-    if (topNineButtonEl) {
-      topNineButtonEl.remove()
-    }
+    const rankingOptionsEl = document.querySelector('.result-options')
+    rankingOptionsEl.prepend(topNineButtonEl)
   }
 }
 

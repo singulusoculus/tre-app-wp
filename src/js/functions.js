@@ -209,6 +209,9 @@ const handleClickSaveList = async () => {
 
 const handleClickSaveResult = async () => {
   const userID = await getUserID()
+
+  document.querySelector('#save-list-btn').textContent = 'Save'
+  document.querySelector('#save-description').value = ''
   if (userID === 0) {
     document.querySelector('#login-form-button').setAttribute('from', '')
     document.querySelector('#login-form-button').setAttribute('from', 'save')
