@@ -1,6 +1,6 @@
 import { showRankSection, showResultSection, custConfirm, custMessage } from './views'
 import { setResultData, getResultData } from './result'
-import { disableArrowKeyScroll, saveData, getUserID } from './functions'
+import { disableArrowKeyScroll, saveData } from './functions'
 import { setCategory, getCategoryInfo } from './category'
 import { setCurrentStep, getCurrentStep } from './step'
 import { dbSaveResultData, setDBListInfoType, getDBListInfo, dbUpdateResultData, dbSaveProgressData } from './database'

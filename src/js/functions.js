@@ -207,22 +207,6 @@ const handleClickSaveList = async () => {
   }
 }
 
-const handleClickSaveResult = async () => {
-  const userID = await getUserID()
-
-  document.querySelector('#save-list-btn').textContent = 'Save'
-  document.querySelector('#save-description').value = ''
-  if (userID === 0) {
-    document.querySelector('#login-form-button').setAttribute('from', '')
-    document.querySelector('#login-form-button').setAttribute('from', 'save')
-    const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
-    instance.open()
-  } else {
-    const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
-    instance.open()
-  }
-}
-
 const handleClickSaveRank = async () => {
   const userID = await getUserID()
   if (userID === 0) {
@@ -244,6 +228,22 @@ const handleClickSaveRank = async () => {
       document.querySelector('#save-description').value = ''
       document.querySelector('#save-description-label').classList.remove('active')
     }
+    const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
+    instance.open()
+  }
+}
+
+const handleClickSaveResult = async () => {
+  const userID = await getUserID()
+
+  document.querySelector('#save-list-btn').textContent = 'Save'
+  document.querySelector('#save-description').value = ''
+  if (userID === 0) {
+    document.querySelector('#login-form-button').setAttribute('from', '')
+    document.querySelector('#login-form-button').setAttribute('from', 'save')
+    const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
+    instance.open()
+  } else {
     const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
     instance.open()
   }
