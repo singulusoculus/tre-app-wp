@@ -27,8 +27,9 @@
   SELECT bg_id, bg_name, bgg_id
   FROM wp_re_boardgames;
 
-    -- V1 - list score and times ranked
-  INSERT INTO wp_re_boardgames_update_temp (bgg_id, at_list_score, at_times_ranked)
+    -- V1 - top 100 get scores, the rest do not
+    -- list score and times ranked
+  INSERT INTO wp_re_boardgames_update_temp (bgg_id, v1_list_score, v1_times_ranked)
   SELECT wp_re_results_d.bgg_id
   -- , round(avg(CASE WHEN item_rank <= 100 THEN (100 - item_rank + 1) ELSE 0 END), 3) AS list_score
   , CASE WHEN item_rank <= 100 THEN round(avg((100 - item_rank + 1)), 3) END AS list_score
@@ -38,37 +39,84 @@
   JOIN wp_re_boardgames_update_temp ON wp_re_results_d.bgg_id = wp_re_boardgames_update_temp.bgg_id
   WHERE item_count > 10
   GROUP BY wp_re_results_d.bgg_id
-  ON DUPLICATE KEY UPDATE
-  at_list_score = VALUES(at_list_score)
-  , at_times_ranked = VALUES(at_times_ranked);
+    ON DUPLICATE KEY UPDATE
+  v1_list_score = VALUES(v1_list_score)
+  , v1_times_ranked = VALUES(v1_times_ranked);
 
     -- Update popularity
   UPDATE wp_re_boardgames_update_temp
   CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'A') AS MaxList 
-  SET at_pop_score = round((at_times_ranked)*20/MaxList.max_list_count, 3);
+  SET v1_pop_score = round((v1_times_ranked)*20/MaxList.max_list_count, 3);
 
 
-    DROP TABLE IF EXISTS `wp_re_boardgames_rank_temp`;
-    CREATE TABLE `wp_re_boardgames_rank_temp` 
-    ( `bgg_id` VARCHAR(11) NOT NULL 
-    , `bg_rank` FLOAT NOT NULL ) 
-    ENGINE = MyISAM CHARSET=utf8mb4 
-    COLLATE utf8mb4_unicode_ci;
+  DROP TABLE IF EXISTS `wp_re_boardgames_rank_temp`;
+  CREATE TABLE `wp_re_boardgames_rank_temp` 
+  ( `bgg_id` VARCHAR(11) NOT NULL 
+  , `bg_rank` FLOAT NOT NULL ) 
+  ENGINE = MyISAM CHARSET=utf8mb4 
+  COLLATE utf8mb4_unicode_ci;
 
-    -- Calc Ranks
-    -- Calc AT ranks
-    SET @rownum = 0;
+  -- Calc Ranks
+  -- Calc AT ranks
+  SET @rownum = 0;
 
-    INSERT INTO wp_re_boardgames_rank_temp
-    SELECT bgg_id, @rownum := @rownum +1 AS bg_rank
-    FROM wp_re_boardgames_update_temp
-    WHERE at_times_ranked > 150 -- a game must be ranked 250 time for it to be in the at rankings
-    ORDER BY at_list_score + at_pop_score DESC;
+  INSERT INTO wp_re_boardgames_rank_temp
+  SELECT bgg_id, @rownum := @rownum +1 AS bg_rank
+  FROM wp_re_boardgames_update_temp
+  WHERE v1_times_ranked > 150 -- a game must be ranked 250 time for it to be in the at rankings
+  ORDER BY v1_list_score + v1_pop_score DESC;
 
-    UPDATE wp_re_boardgames_update_temp
-    JOIN wp_re_boardgames_rank_temp ON wp_re_boardgames_update_temp.bgg_id = wp_re_boardgames_rank_temp.bgg_id
-    SET at_rank = wp_re_boardgames_rank_temp.bg_rank;
+  UPDATE wp_re_boardgames_update_temp
+  JOIN wp_re_boardgames_rank_temp ON wp_re_boardgames_update_temp.bgg_id = wp_re_boardgames_rank_temp.bgg_id
+  SET v1_rank = wp_re_boardgames_rank_temp.bg_rank;
 
+
+  -- V2 - Top 100 get scored and the rest get 0s
+    INSERT INTO wp_re_boardgames_update_temp (bgg_id, v2_list_score, v2_times_ranked)
+  SELECT wp_re_results_d.bgg_id
+  , round(avg(CASE WHEN item_rank <= 100 THEN (100 - item_rank + 1) ELSE 0 END), 3) AS list_score
+  -- , CASE WHEN item_rank <= 100 THEN round(avg((100 - item_rank + 1)), 3) END AS list_score
+  , count(wp_re_results_d.bgg_id) as times_ranked
+  FROM wp_re_results_d
+  JOIN wp_re_results_h on wp_re_results_d.result_id = wp_re_results_h.result_id
+  JOIN wp_re_boardgames_update_temp ON wp_re_results_d.bgg_id = wp_re_boardgames_update_temp.bgg_id
+  WHERE item_count > 10
+  GROUP BY wp_re_results_d.bgg_id
+    ON DUPLICATE KEY UPDATE
+  v2_list_score = VALUES(v2_list_score)
+  , v2_times_ranked = VALUES(v2_times_ranked);
+
+
+    -- Update popularity
+  UPDATE wp_re_boardgames_update_temp
+  CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'A') AS MaxList 
+  SET v2_pop_score = round((v2_times_ranked)*20/MaxList.max_list_count, 3);
+
+
+  DROP TABLE IF EXISTS `wp_re_boardgames_rank_temp`;
+  CREATE TABLE `wp_re_boardgames_rank_temp` 
+  ( `bgg_id` VARCHAR(11) NOT NULL 
+  , `bg_rank` FLOAT NOT NULL ) 
+  ENGINE = MyISAM CHARSET=utf8mb4 
+  COLLATE utf8mb4_unicode_ci;
+
+  -- Calc Ranks
+  -- Calc AT ranks
+  SET @rownum = 0;
+
+  INSERT INTO wp_re_boardgames_rank_temp
+  SELECT bgg_id, @rownum := @rownum +1 AS bg_rank
+  FROM wp_re_boardgames_update_temp
+  WHERE v2_times_ranked > 150 -- a game must be ranked 250 time for it to be in the at rankings
+  ORDER BY v2_list_score + v2_pop_score DESC;
+
+  UPDATE wp_re_boardgames_update_temp
+  JOIN wp_re_boardgames_rank_temp ON wp_re_boardgames_update_temp.bgg_id = wp_re_boardgames_rank_temp.bgg_id
+  SET v2_rank = wp_re_boardgames_rank_temp.bg_rank;
+
+
+
+  -- ---------------------------------------------------------------------------------------------
 
 
 -- Compare

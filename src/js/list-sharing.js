@@ -11,7 +11,7 @@ const getMyListsInfo = () => myListsInfo
 const setMyListsInfo = (data) => {
   myListsInfo = data
 
-  myListsInfo.templates.forEach((item) => {
+  myListsInfo.template.forEach((item) => {
     item.id = parseInt(item.id)
     item.shared = parseInt(item.shared)
     item.ranked = parseInt(item.ranked)
@@ -21,7 +21,7 @@ const setMyListsInfo = (data) => {
     i.id = parseInt(i.id)
   })
 
-  myListsInfo.results.forEach((i) => {
+  myListsInfo.result.forEach((i) => {
     i.id = parseInt(i.id)
   })
 }
@@ -33,8 +33,8 @@ const setParentList = (id) => {
 }
 
 const setMyListsInfoShared = (id, value) => {
-  const index = myListsInfo.templates.findIndex((item) => item.id === id)
-  myListsInfo.templates[index].shared = value
+  const index = myListsInfo.template.findIndex((item) => item.id === id)
+  myListsInfo.template[index].shared = value
 }
 
 const openShareModal = (data) => {
@@ -92,7 +92,7 @@ const createStatsBtn = (listData) => {
   aEl.href = `./group-results/?l=${listData.uuid}`
   aEl.target = '_blank'
   aEl.textContent = 'Results'
-  aEl.classList.add('waves-effect', 'waves-light', 'btn', 'share-list__results')
+  aEl.classList.add('waves-effect', 'waves-light', 'btn', 'share-list__result')
 
   iEl.textContent = 'show_chart'
   iEl.classList.add('material-icons', 'right', 'small', 'white-text')
@@ -136,7 +136,7 @@ const renderShareOptions = (switchValue, data) => {
 
   // remove previous stats button
   const btnsEl = document.querySelector('.share-list__btns')
-  const button = document.querySelector('.share-list__results')
+  const button = document.querySelector('.share-list__result')
   if (button !== null) {
     button.remove()
   }

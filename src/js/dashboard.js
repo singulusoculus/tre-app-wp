@@ -54,7 +54,6 @@ const initDashboard = () => {
 
 jQuery(document).ready(() => {
   initDashboard()
-
 })
 
 jQuery(document).ajaxStop(() => {

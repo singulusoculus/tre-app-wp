@@ -526,9 +526,9 @@ const renderMyLists = async () => {
   const resultLists = data[2]
 
   let myListsInfo = {
-    templates: data[3],
+    template: data[3],
     progress: data[4],
-    results: data[5]
+    result: data[5]
   }
 
   setMyListsInfo(myListsInfo)
@@ -549,7 +549,7 @@ const renderMyLists = async () => {
   // Templates
   if (templateLists.length > 0) {
     const templateHeaders = ['Created', 'Last Save', 'Items', 'Desc', '', '']
-    const templateTable = createMyListsTableElement('templates', templateHeaders, templateLists, myListsInfo)
+    const templateTable = createMyListsTableElement('template', templateHeaders, templateLists, myListsInfo)
     myListsEl.appendChild(templateTable)
   }
 
@@ -563,7 +563,7 @@ const renderMyLists = async () => {
   // Results
   if (resultLists.length > 0) {
     const resultsHeaders = ['Completed', 'Items', 'Desc', '']
-    const resultsTable = createMyListsTableElement('results', resultsHeaders, resultLists, myListsInfo)
+    const resultsTable = createMyListsTableElement('result', resultsHeaders, resultLists, myListsInfo)
     myListsEl.appendChild(resultsTable)
   }
 
@@ -584,7 +584,7 @@ const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
   const h4El = document.createElement('h4')
   h4El.classList.add('center-align')
   const upperType = type.toUpperCase()
-  h4El.textContent = `${upperType}`
+  h4El.textContent = type === 'progress' ? `${upperType}` : `${upperType}S`
   const tableEl = document.createElement('table')
   tableEl.classList.add('highlight')
 
@@ -636,7 +636,7 @@ const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
     }
 
     // Share
-    if (type === 'templates') {
+    if (type === 'template') {
       const tdShareEl = document.createElement('td')
       const aShareEl = document.createElement('a')
       aShareEl.classList.add('secondary-content', 'modal-trigger', 'unshared-template')
@@ -668,8 +668,17 @@ const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
     iEl.textContent = 'delete'
 
     aEl.addEventListener('click', (e) => {
-      // Delete the list
-      dbDeleteUserList(type, itemID)
+      const r = confirm('Are you sure you want to delete this list?')
+      if (r === true) {
+        // Clear dbListInfo for that type if it is the list they are currently on.
+        const dbListInfo = getDBListInfo()
+        if (itemID === dbListInfo[type].id) {
+          setDBListInfoType(type, { id: 0, desc: '' })
+        }
+
+        // Delete the list
+        dbDeleteUserList(type, itemID)
+      }
       e.stopPropagation()
     })
 

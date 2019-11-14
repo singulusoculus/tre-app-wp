@@ -93,7 +93,7 @@ const dbGetTopTenYear = () => {
 }
 
 const dbLoadUserList = (type, id) => {
-  if (type === 'templates') {
+  if (type === 'template') {
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'getTemplateList',
       templateid: id
@@ -126,7 +126,7 @@ const dbLoadUserList = (type, id) => {
         initPrevRanking(category, rankData)
       }
     })
-  } else if (type === 'results') {
+  } else if (type === 'result') {
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'getUserResultList',
       resultid: id
@@ -146,64 +146,62 @@ const dbLoadUserList = (type, id) => {
 }
 
 const dbDeleteUserList = (type, id) => {
-  const r = confirm('Are you sure you want to delete this list?')
-  if (r === true) {
-    if (type === 'templates') {
-      jQuery.post(getFilePath('/re-func/re-functions.php'), {
-        func: 'deleteTemplateList',
-        templateid: id
-      }, (data, status) => {
-        if (status === 'success') {
-          renderMyLists()
-          setupSaveButtons()
+  if (type === 'template') {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: 'deleteTemplateList',
+      templateid: id
+    }, (data, status) => {
+      if (status === 'success') {
+        renderMyLists()
+        setupSaveButtons()
 
-          if (parseInt(id) === dbListInfo.template.id) {
-            setDBListInfoType('template', { id: 0, desc: '' })
-          }
-
-          M.toast({ html: `Template Deleted`, displayLength: 2000 })
+        if (parseInt(id) === dbListInfo.template.id) {
+          setDBListInfoType('template', { id: 0, desc: '' })
         }
-      })
-    } else if (type === 'progress') {
-      jQuery.post(getFilePath('/re-func/re-functions.php'), {
-        func: 'deleteProgressList',
-        progressid: id
-      }, (data, status) => {
-        if (status === 'success') {
-          renderMyLists()
-          setupSaveButtons()
 
-          if (parseInt(id) === dbListInfo.progress.id) {
-            setDBListInfoType('progress', { id: 0, desc: '' })
-          }
+        M.toast({ html: `Template Deleted`, displayLength: 2000 })
+      }
+    })
+  } else if (type === 'progress') {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: 'deleteProgressList',
+      progressid: id
+    }, (data, status) => {
+      if (status === 'success') {
+        renderMyLists()
+        setupSaveButtons()
 
-          M.toast({ html: `Progress List Deleted`, displayLength: 2000 })
+        if (parseInt(id) === dbListInfo.progress.id) {
+          setDBListInfoType('progress', { id: 0, desc: '' })
         }
-      })
-    } else if (type === 'results') {
-      jQuery.post(getFilePath('/re-func/re-functions.php'), {
-        func: 'deleteUserResultList',
-        resultid: id
-      }, (data, status) => {
-        if (status === 'success') {
-          renderMyLists()
 
-          if (parseInt(id) === dbListInfo.userResult.id) {
-            setDBListInfoType('userResult', { id: 0, desc: '' })
-            document.querySelector('#save-results').classList.remove('disabled')
-          }
+        M.toast({ html: `Progress List Deleted`, displayLength: 2000 })
+      }
+    })
+  } else if (type === 'result') {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: 'deleteUserResultList',
+      resultid: id
+    }, (data, status) => {
+      if (status === 'success') {
+        renderMyLists()
 
-          setupSaveButtons()
-
-          // Set table title
-          const titleEl = document.querySelector('.result-desc')
-          titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
-
-          M.toast({ html: `Result List Deleted`, displayLength: 2000 })
+        if (parseInt(id) === dbListInfo.userResult.id) {
+          setDBListInfoType('userResult', { id: 0, desc: '' })
+          document.querySelector('#save-results').classList.remove('disabled')
         }
-      })
-    }
+
+        setupSaveButtons()
+
+        // Set table title
+        const titleEl = document.querySelector('.result-desc')
+        titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
+
+        M.toast({ html: `Result List Deleted`, displayLength: 2000 })
+      }
+    })
   }
+
 }
 
 const dbSaveTemplateData = async (saveDesc) => {
