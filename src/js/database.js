@@ -3,7 +3,7 @@ import { getListData, initPrevList } from './list'
 import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
-import { saveData, renderTableRows, getUserID } from './functions'
+import { saveData, renderTableRows, getUserID, updateLocalStorageSaveDataItem } from './functions'
 import { renderMyLists, setupSaveButtons, renderTemplateDesc } from './views'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { getParentList, setParentList } from './list-sharing'
@@ -201,7 +201,6 @@ const dbDeleteUserList = (type, id) => {
       }
     })
   }
-
 }
 
 const dbSaveTemplateData = async (saveDesc) => {

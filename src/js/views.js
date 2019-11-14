@@ -674,6 +674,8 @@ const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
         const dbListInfo = getDBListInfo()
         if (itemID === dbListInfo[type].id) {
           setDBListInfoType(type, { id: 0, desc: '' })
+          const newDBListInfo = getDBListInfo()
+          updateLocalStorageSaveDataItem('dbListInfo', newDBListInfo)
         }
 
         // Delete the list

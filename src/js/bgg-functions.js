@@ -28,9 +28,11 @@ const getBGGData = (url) => {
         resolve(bggJSONData)
       }).catch((error) => {
         console.log(error)
-        custMessage(`There was an error fetching your collection. Check the username you entered. BGG servers may also be busy or you have made too many requests. Please try again in a minute.`)
         jQuery('.ball-loading.collection').fadeOut()
+        jQuery('.ball-loading.search-results').fadeOut()
         document.querySelector('#bgg-submit').classList.remove('disabled')
+        document.querySelector('#bgg-search-submit').classList.remove('disabled')
+        custMessage(`There was an error fetching data from BGG. Check the information you entered. BGG servers may also be busy or you have made too many requests. Please try again in a minute.`)
       })
   })
 }
