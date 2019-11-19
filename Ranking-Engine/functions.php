@@ -21,7 +21,7 @@ function wpse_44020_logout_redirect( $logouturl, $redir )
 add_filter( 'logout_url', 'wpse_44020_logout_redirect', 10, 2 );
 
 function getRankingEngineVersion () {
-  return '2.1.5';
+  return '2.1.6';
 }
 
 //For The Ranking Engine - starting in 1.4
