@@ -126,6 +126,11 @@
   padding-top: 2rem;
 }
 
+.my-lists__buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
 // Previous Session Toast
 .toast .toast-action {
   margin-left: 0 !important;

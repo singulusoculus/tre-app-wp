@@ -38,7 +38,7 @@
       <ul id="nav-mobile" class="right hide-on-med-and-down nav-pm__links">
         <li><a href="https://www.pubmeeple.com">Pub Meeple Home</a></li>
         <li><a href="https://topnine.pubmeeple.com">Top 9 Generator</a></li>
-        <li><a href="https://www.pubmeeple.com/podcast">Podcast</a></li>
+        <li><a href="https://www.pubmeeple.com/pub-meeple-podcast/">Podcast</a></li>
         <li><a href="https://www.pubmeeple.com/contact">Contact</a></li>
       </ul>
     </div>

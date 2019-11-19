@@ -521,17 +521,25 @@ const renderMyLists = async () => {
 
   myListsEl.textContent = ''
 
+  const collectionLists = []
   const templateLists = data[0]
   const progressLists = data[1]
   const resultLists = data[2]
 
   let myListsInfo = {
+    collection: [],
     template: data[3],
     progress: data[4],
     result: data[5]
   }
 
+  console.log(myListsInfo)
+
   setMyListsInfo(myListsInfo)
+
+  // Buttons
+  const btnWrapperEl = document.createElement('div')
+  btnWrapperEl.classList.add('my-lists__buttons')
 
   // Create Logout button
   const btnEl = document.createElement('a')
@@ -542,9 +550,26 @@ const renderMyLists = async () => {
   btnEl.textContent = 'Log Off'
   iEl.classList.add('material-icons', 'right')
   iEl.textContent = 'account_circle'
-
   btnEl.appendChild(iEl)
-  myListsEl.appendChild(btnEl)
+
+  // Create Collections button
+  const createBtnEl = document.createElement('a')
+  createBtnEl.classList.add('waves-effect', 'waves-light', 'btn', 'center-align', 'modal-trigger')
+  createBtnEl.setAttribute('id', 'create-collection-btn')
+  createBtnEl.setAttribute('href', `#create-collection-modal`)
+  createBtnEl.textContent = 'Create Collection'
+
+  btnWrapperEl.appendChild(btnEl)
+  btnWrapperEl.appendChild(createBtnEl)
+  myListsEl.appendChild(btnWrapperEl)
+
+  // Render Table Contents
+  // Collections
+  if (collectionLists.length > 0) {
+    const collectionHeaders = ['Name', 'Active', 'Category', 'Lists', '']
+    const collectionTable = createMyListsTableElement('collection', collectionHeaders, collectionLists, myListsInfo)
+    myListsEl.appendChild(collectionTable)
+  }
 
   // Templates
   if (templateLists.length > 0) {

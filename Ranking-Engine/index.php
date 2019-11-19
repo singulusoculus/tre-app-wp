@@ -577,6 +577,36 @@
     </div>
   </div>
 
+    <!-- Create Collection Modal -->
+    <div id="create-collection-modal" class="modal">
+    <div class="modal-content">
+      <a href="#!" class="modal-close btn-flat modal-close-x">
+        <span aria-hidden="true">&times;</span>
+      </a>
+      <h4 class="center-align create-collection__heading">Create Collection</h4>
+      <div class="switch center-align">
+        <p class="bgg-filter-heading">Active: </p>
+        <label>
+          No
+          <input id="collection-active-switch" type="checkbox">
+          <span class="lever"></span>
+          Yes
+        </label>
+      </div>
+
+      <div class="input-field">
+        <input disabled value="Collection Code" class="center-align" id="create-collection__code" type="text">
+        <p class="create-collection__important-text center-align">**Important: The Collection must be active for results to be added.</p>
+      </div>
+
+      <div class="row">
+        <div class="col s12 center-align create-collection__btns">
+          <a href="#" id="create-collection__copy" class="waves-effect waves-light btn disabled">Copy URL</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="<?php echo get_theme_file_uri('/dist/index-bundle.js'); ?>"></script>
 
   <?php get_footer();
