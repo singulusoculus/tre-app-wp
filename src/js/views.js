@@ -296,7 +296,8 @@ const showStartSection = (source) => {
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
   document.querySelector('.bgg-search').classList.add('hide')
-  setupSaveLogin()
+  const userID = getUserID()
+  setupSaveLogin(userID)
 
   // Clears result database link
   setParentList(0)
@@ -440,12 +441,10 @@ const custMessage = (message) => {
 // // SETUP SAVE BUTTONS
 // //////////////////////////////////////////////////////////////////////
 
-const setupSaveLogin = async () => {
-  const myListsEl = document.querySelector('.my-lists')
-  myListsEl.textContent = ''
-  const userID = await getUserID()
-
+const setupSaveLogin = async (userID) => {
   if (userID === 0) {
+    const myListsEl = document.querySelector('.my-lists')
+    myListsEl.textContent = ''
     // Create My Lists Login
     const loginMessageEl = document.createElement('div')
     loginMessageEl.classList.add('center-align')
@@ -472,12 +471,6 @@ const setupSaveLogin = async () => {
     loginMessageEl.appendChild(btnEl)
     myListsEl.appendChild(loginMessageEl)
 
-    // Set Save button targets to Login Modal
-    const saveButtons = document.querySelectorAll('.save-btn')
-    saveButtons.forEach((el) => {
-      el.setAttribute('href', '#login-modal')
-    })
-
     // Clear user saved list ids if they aren't logged in
     setDBListInfoType('template', { id: 0, desc: '' })
     setDBListInfoType('progress', { id: 0, desc: '' })
@@ -490,16 +483,8 @@ const setupSaveLogin = async () => {
     }
   } else {
     renderMyLists()
-    setupSaveButtons()
   }
-}
-
-const setupSaveButtons = () => {
-  // Set Save button targets to Save Modal
-  const saveButtons = document.querySelectorAll('.save-btn')
-  saveButtons.forEach((el) => {
-    el.setAttribute('href', '#save-modal')
-  })
+  return userID
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -562,6 +547,10 @@ const renderMyLists = async () => {
   btnWrapperEl.appendChild(btnEl)
   btnWrapperEl.appendChild(createBtnEl)
   myListsEl.appendChild(btnWrapperEl)
+
+  const dividerEl = document.createElement('div')
+  dividerEl.classList.add('divider-sm')
+  myListsEl.appendChild(dividerEl)
 
   // Render Table Contents
   // Collections
@@ -753,7 +742,6 @@ export {
   custConfirm,
   showTab,
   renderMyLists,
-  setupSaveButtons,
   showMyLists,
   custMessage,
   renderTemplateDesc,

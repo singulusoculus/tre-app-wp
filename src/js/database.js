@@ -4,7 +4,7 @@ import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
 import { saveData, renderTableRows, getUserID } from './functions'
-import { renderMyLists, setupSaveButtons, renderTemplateDesc } from './views'
+import { renderMyLists, renderTemplateDesc } from './views'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { getParentList, setParentList } from './list-sharing'
 
@@ -153,7 +153,6 @@ const dbDeleteUserList = (type, id) => {
     }, (data, status) => {
       if (status === 'success') {
         renderMyLists()
-        setupSaveButtons()
 
         if (parseInt(id) === dbListInfo.template.id) {
           setDBListInfoType('template', { id: 0, desc: '' })
@@ -169,7 +168,6 @@ const dbDeleteUserList = (type, id) => {
     }, (data, status) => {
       if (status === 'success') {
         renderMyLists()
-        setupSaveButtons()
 
         if (parseInt(id) === dbListInfo.progress.id) {
           setDBListInfoType('progress', { id: 0, desc: '' })
@@ -191,11 +189,11 @@ const dbDeleteUserList = (type, id) => {
           document.querySelector('#save-results').classList.remove('disabled')
         }
 
-        setupSaveButtons()
-
         // Set table title
         const titleEl = document.querySelector('.result-desc')
-        titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
+        if (titleEl) {
+          titleEl.textContent = dbListInfo.userResult.desc !== '' ? `${dbListInfo.userResult.desc}:` : 'Your Results:'
+        }
 
         M.toast({ html: `Result List Deleted`, displayLength: 2000 })
       }
@@ -241,7 +239,6 @@ const dbSaveTemplateData = async (saveDesc) => {
         })
         saveData(listData)
         renderMyLists()
-        setupSaveButtons()
 
         fadeOutSpinner()
         M.toast({ html: `Template Saved`, displayLength: 2000 })
@@ -278,7 +275,6 @@ const dbUpdateTemplateData = (saveDesc) => {
 
       saveData(listData)
       renderMyLists()
-      setupSaveButtons()
 
       fadeOutSpinner()
       M.toast({ html: `Template Updated`, displayLength: 2000 })
@@ -330,7 +326,6 @@ const dbSaveProgressData = async (saveDesc = dbListInfo.progress.desc) => {
         })
         saveData(rankData)
         renderMyLists()
-        setupSaveButtons()
 
         saveBtnEl.classList.remove('disabled')
 
@@ -353,7 +348,6 @@ const dbSaveProgressData = async (saveDesc = dbListInfo.progress.desc) => {
         })
         saveData(rankData)
         renderMyLists()
-        setupSaveButtons()
 
         saveBtnEl.classList.remove('disabled')
 
@@ -462,7 +456,6 @@ const dbSaveUserResultData = async (saveDesc) => {
       setDBListInfoType('progress', { id: 0, desc: '' })
       saveData(resultData)
       renderMyLists()
-      setupSaveButtons()
 
       // Set table title
       const titleEl = document.querySelector('.result-desc')

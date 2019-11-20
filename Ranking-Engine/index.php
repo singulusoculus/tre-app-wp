@@ -17,7 +17,7 @@
           </div>
 
           <div class="account right">
-            <a id="nav-re__account" class="modal-trigger" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
+            <a id="nav-re__account" class="" href="#!" data-target="account-modal"><i class="material-icons">account_circle</i></a>
           </div>
 
           <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -303,9 +303,9 @@
                         class="material-icons right">clear</i>Clear</a>
                   </div>
                   <div class="col s6 center-align">
-                    <a href="#login-modal" id="save-list"
-                      class="waves-effect waves-light btn modal-trigger disabled save-btn"><i
-                        class="material-icons right">save</i>Save</a>
+                    <a href="#" id="save-list" class="waves-effect waves-light btn disabled save-btn">
+                      <i class="material-icons right">save</i>Save
+                    </a>
                   </div>
                 </div>
 
@@ -339,7 +339,7 @@
               <a id="undo-btn" class="waves-effect waves-light btn"><i class="material-icons right">undo</i>Undo</a>
             </div>
             <div class="col s6 center-align">
-              <a href="#login-modal" id="save-ranking" class="waves-effect waves-light btn modal-trigger save-btn"><i
+              <a href="#" id="save-ranking" class="waves-effect waves-light btn save-btn"><i
                   class="material-icons right">save</i>Save</a>
             </div>
           </div>
@@ -380,7 +380,7 @@
     <section id="result-wrapper" class="step-wrapper">
       <div id="result-container" class="step-container">
       <div class="result-options">
-        <a href="#login-modal" id="save-results" class="waves-effect waves-light btn modal-trigger save-btn"><i class="material-icons right">save</i>Save</a>
+        <a href="#" id="save-results" class="waves-effect waves-light btn save-btn"><i class="material-icons right">save</i>Save</a>
       </div>
           <div class="divider-sm"></div>
         <div id="results-table"></div>

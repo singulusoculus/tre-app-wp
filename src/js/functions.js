@@ -29,8 +29,8 @@ const initRankingEngine = async () => {
       renderPreviousSessionToast()
     }
   }
-
-  setupSaveLogin()
+  const userID = getUserID()
+  setupSaveLogin(userID)
   sessionStorage.removeItem('reload')
 }
 
@@ -184,7 +184,7 @@ const handleClickUpdate = (e) => {
 const handleClickSaveList = async () => {
   const userID = await getUserID()
   if (userID === 0) {
-    setupSaveLogin()
+    setupSaveLogin(userID)
     document.querySelector('#login-form-button').setAttribute('from', '')
     document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
@@ -210,7 +210,7 @@ const handleClickSaveList = async () => {
 const handleClickSaveRank = async () => {
   const userID = await getUserID()
   if (userID === 0) {
-    setupSaveLogin()
+    setupSaveLogin(userID)
     document.querySelector('#login-form-button').setAttribute('from', '')
     document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
@@ -247,6 +247,13 @@ const handleClickSaveResult = async () => {
     const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
     instance.open()
   }
+}
+
+const handleClickAccount = async () => {
+  const userID = await getUserID()
+  setupSaveLogin(userID)
+  const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
+  instance.open()
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -532,5 +539,6 @@ export {
   renderTable,
   renderTableHeader,
   getUserID,
-  handleClickSaveResult
+  handleClickSaveResult,
+  handleClickAccount
 }

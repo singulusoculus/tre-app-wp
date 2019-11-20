@@ -5,7 +5,7 @@ import { setListFilters, setBGGFilters, setBGGSearchFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank, handleClickSaveResult } from './functions'
+import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank, handleClickSaveResult, handleClickAccount } from './functions'
 import { copyURLText, handleShareSwitchChange } from './list-sharing'
 import { handleQuickHelpClick } from './quick-help'
 import { handleBGGSearch } from './bgg-search'
@@ -200,6 +200,11 @@ jQuery(document).ready(() => {
   // ***************** Result Section *****************
 
   // ***************** Modals *****************
+  document.querySelector('#nav-re__account').addEventListener('click', (e) => {
+    handleClickAccount()
+  })
+
+
   document.querySelector('#login-form-button').addEventListener('click', (e) => {
     const fromVal = e.target.attributes.from.value
     setReloadInfo(`login-${fromVal}`)
@@ -216,20 +221,14 @@ jQuery(document).ready(() => {
   })
 
   document.querySelector('#save-list').addEventListener('click', (e) => {
-    e.preventDefault()
-    e.stopPropagation()
     handleClickSaveList()
   })
 
   document.querySelector('#save-ranking').addEventListener('click', (e) => {
-    e.preventDefault()
-    e.stopPropagation()
     handleClickSaveRank()
   })
 
   document.querySelector('#save-results').addEventListener('click', (e) => {
-    e.preventDefault()
-    e.stopPropagation()
     handleClickSaveResult()
   })
 
