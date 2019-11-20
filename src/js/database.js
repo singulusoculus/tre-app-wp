@@ -66,8 +66,8 @@ const clearDBListInfo = () => {
   renderTemplateDesc()
 }
 
-const dbGetUserLists = async () => {
-  const wpuid = await getUserID()
+const dbGetUserLists = async (wpuid) => {
+  // const wpuid = await getUserID()
   return new Promise((resolve, reject) => {
     // fadeInSpinner()
     jQuery.post(getFilePath('/re-func/re-functions.php'), {

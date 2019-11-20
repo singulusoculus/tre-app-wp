@@ -1,6 +1,6 @@
 import { getCategory, setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { showTab, renderPreviousSessionToast, setupSaveLogin, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage } from './views'
+import { showTab, renderPreviousSessionToast, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage, renderMyLists } from './views'
 import { initPrevList, getListData, estimateTotalComparisons, setListData } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
@@ -29,8 +29,8 @@ const initRankingEngine = async () => {
       renderPreviousSessionToast()
     }
   }
-  const userID = getUserID()
-  setupSaveLogin(userID)
+
+  renderMyLists()
   sessionStorage.removeItem('reload')
 }
 
@@ -184,7 +184,6 @@ const handleClickUpdate = (e) => {
 const handleClickSaveList = async () => {
   const userID = await getUserID()
   if (userID === 0) {
-    setupSaveLogin(userID)
     document.querySelector('#login-form-button').setAttribute('from', '')
     document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
@@ -210,7 +209,6 @@ const handleClickSaveList = async () => {
 const handleClickSaveRank = async () => {
   const userID = await getUserID()
   if (userID === 0) {
-    setupSaveLogin(userID)
     document.querySelector('#login-form-button').setAttribute('from', '')
     document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
@@ -249,9 +247,8 @@ const handleClickSaveResult = async () => {
   }
 }
 
-const handleClickAccount = async () => {
-  const userID = await getUserID()
-  setupSaveLogin(userID)
+const handleClickAccount = () => {
+  renderMyLists()
   const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
   instance.open()
 }

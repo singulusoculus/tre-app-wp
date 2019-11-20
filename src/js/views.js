@@ -296,8 +296,6 @@ const showStartSection = (source) => {
   showTab('start')
   document.querySelector('.bgg-section').classList.add('hide')
   document.querySelector('.bgg-search').classList.add('hide')
-  const userID = getUserID()
-  setupSaveLogin(userID)
 
   // Clears result database link
   setParentList(0)
@@ -438,69 +436,68 @@ const custMessage = (message) => {
 }
 
 // //////////////////////////////////////////////////////////////////////
-// // SETUP SAVE BUTTONS
-// //////////////////////////////////////////////////////////////////////
-
-const setupSaveLogin = async (userID) => {
-  if (userID === 0) {
-    const myListsEl = document.querySelector('.my-lists')
-    myListsEl.textContent = ''
-    // Create My Lists Login
-    const loginMessageEl = document.createElement('div')
-    loginMessageEl.classList.add('center-align')
-
-    const textEl = document.createElement('p')
-    textEl.setAttribute('style', 'margin-bottom: 1rem')
-    textEl.textContent = `You must be logged in to view your lists`
-
-    const btnEl = document.createElement('a')
-    const iEl = document.createElement('i')
-    btnEl.classList.add('waves-effect', 'waves-light', 'btn', 'modal-trigger')
-    btnEl.setAttribute('id', 'my-lists-login-btn')
-    btnEl.setAttribute('href', '#login-modal')
-    btnEl.textContent = 'Login'
-    btnEl.addEventListener('click', () => {
-      document.querySelector('#login-form-button').setAttribute('from', '')
-      document.querySelector('#login-form-button').setAttribute('from', 'my-lists')
-    })
-    iEl.classList.add('material-icons', 'right')
-    iEl.textContent = 'account_circle'
-
-    btnEl.appendChild(iEl)
-    loginMessageEl.appendChild(textEl)
-    loginMessageEl.appendChild(btnEl)
-    myListsEl.appendChild(loginMessageEl)
-
-    // Clear user saved list ids if they aren't logged in
-    setDBListInfoType('template', { id: 0, desc: '' })
-    setDBListInfoType('progress', { id: 0, desc: '' })
-    setDBListInfoType('userResult', { id: 0, desc: '' })
-
-    const update = getDBListInfo()
-    const prevData = JSON.parse(localStorage.getItem('saveData'))
-    if (prevData) {
-      updateLocalStorageSaveDataItem('dbListInfo', update)
-    }
-  } else {
-    renderMyLists()
-  }
-  return userID
-}
-
-// //////////////////////////////////////////////////////////////////////
 // // MY LISTS
 // //////////////////////////////////////////////////////////////////////
-
 const showMyLists = () => {
   const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
   instance.open()
 }
 
 const renderMyLists = async () => {
+  const userID = await getUserID()
+  if (userID === 0) {
+    renderMyListsLoggedOut()
+  } else if (userID > 0) {
+    renderMyListsLoggedIn(userID)
+  }
+}
+
+const renderMyListsLoggedOut = () => {
+  const myListsEl = document.querySelector('.my-lists')
+  myListsEl.textContent = ''
+  // Create My Lists Login
+  const loginMessageEl = document.createElement('div')
+  loginMessageEl.classList.add('center-align')
+
+  const textEl = document.createElement('p')
+  textEl.setAttribute('style', 'margin-bottom: 1rem')
+  textEl.textContent = `You must be logged in to view your lists`
+
+  const btnEl = document.createElement('a')
+  const iEl = document.createElement('i')
+  btnEl.classList.add('waves-effect', 'waves-light', 'btn', 'modal-trigger')
+  btnEl.setAttribute('id', 'my-lists-login-btn')
+  btnEl.setAttribute('href', '#login-modal')
+  btnEl.textContent = 'Login'
+  btnEl.addEventListener('click', () => {
+    document.querySelector('#login-form-button').setAttribute('from', '')
+    document.querySelector('#login-form-button').setAttribute('from', 'my-lists')
+  })
+  iEl.classList.add('material-icons', 'right')
+  iEl.textContent = 'account_circle'
+
+  btnEl.appendChild(iEl)
+  loginMessageEl.appendChild(textEl)
+  loginMessageEl.appendChild(btnEl)
+  myListsEl.appendChild(loginMessageEl)
+
+  // Clear user saved list ids if they aren't logged in
+  setDBListInfoType('template', { id: 0, desc: '' })
+  setDBListInfoType('progress', { id: 0, desc: '' })
+  setDBListInfoType('userResult', { id: 0, desc: '' })
+
+  const update = getDBListInfo()
+  const prevData = JSON.parse(localStorage.getItem('saveData'))
+  if (prevData) {
+    updateLocalStorageSaveDataItem('dbListInfo', update)
+  }
+}
+
+const renderMyListsLoggedIn = async (userID) => {
   const myListsEl = document.querySelector('.my-lists')
   jQuery('.ball-loading.my-lists').fadeIn()
   // get My Lists data and populate My Lists section
-  const data = await dbGetUserLists()
+  const data = await dbGetUserLists(userID)
 
   jQuery('.ball-loading.my-lists').fadeOut()
 
@@ -738,7 +735,6 @@ export {
   enableNextButton,
   enableListSave,
   disableListSave,
-  setupSaveLogin,
   custConfirm,
   showTab,
   renderMyLists,
