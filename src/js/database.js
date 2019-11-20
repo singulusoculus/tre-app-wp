@@ -3,7 +3,7 @@ import { getListData, initPrevList } from './list'
 import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
-import { saveData, renderTableRows, getUserID } from './functions'
+import { saveData, renderTableRows, getUserID, updateLocalStorageSaveDataItem } from './functions'
 import { renderMyLists, renderTemplateDesc } from './views'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { getParentList, setParentList } from './list-sharing'
@@ -64,6 +64,19 @@ const clearDBListInfo = () => {
     }
   }
   renderTemplateDesc()
+}
+
+const clearUserDBListInfo = () => {
+  // Clear user saved list ids if they aren't logged in
+  setDBListInfoType('template', { id: 0, desc: '' })
+  setDBListInfoType('progress', { id: 0, desc: '' })
+  setDBListInfoType('userResult', { id: 0, desc: '' })
+
+  const update = getDBListInfo()
+  const prevData = JSON.parse(localStorage.getItem('saveData'))
+  if (prevData) {
+    updateLocalStorageSaveDataItem('dbListInfo', update)
+  }
 }
 
 const dbGetUserLists = async (wpuid) => {
@@ -525,5 +538,6 @@ export { dbSaveTemplateData,
   dbGetTopTenYear,
   dbGetSharedList,
   dbSetShareFlag,
-  dbCaptureBGGData
+  dbCaptureBGGData,
+  clearUserDBListInfo
 }

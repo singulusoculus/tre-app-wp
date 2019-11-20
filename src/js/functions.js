@@ -4,7 +4,7 @@ import { showTab, renderPreviousSessionToast, custConfirm, showStartSection, sho
 import { initPrevList, getListData, estimateTotalComparisons, setListData } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList, clearUserDBListInfo } from './database'
 import { getParentList, setParentList } from './list-sharing'
 
 const initRankingEngine = async () => {
@@ -184,6 +184,7 @@ const handleClickUpdate = (e) => {
 const handleClickSaveList = async () => {
   const userID = await getUserID()
   if (userID === 0) {
+    clearUserDBListInfo()
     document.querySelector('#login-form-button').setAttribute('from', '')
     document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
@@ -209,6 +210,7 @@ const handleClickSaveList = async () => {
 const handleClickSaveRank = async () => {
   const userID = await getUserID()
   if (userID === 0) {
+    clearUserDBListInfo()
     document.querySelector('#login-form-button').setAttribute('from', '')
     document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
@@ -237,6 +239,7 @@ const handleClickSaveResult = async () => {
   document.querySelector('#save-list-btn').textContent = 'Save'
   document.querySelector('#save-description').value = ''
   if (userID === 0) {
+    clearUserDBListInfo()
     document.querySelector('#login-form-button').setAttribute('from', '')
     document.querySelector('#login-form-button').setAttribute('from', 'save')
     const instance = M.Modal.getInstance(document.querySelector('#login-modal'))

@@ -5,7 +5,7 @@ import { initPrevResult, renderResult, getResultData } from './result'
 import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, getBGGCollectionData } from './bgg-collection'
-import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo } from './database'
+import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo, clearUserDBListInfo } from './database'
 import { updateLocalStorageSaveDataItem, getUserID } from './functions'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 import { getBGGSearchData } from './bgg-search'
@@ -447,6 +447,7 @@ const renderMyLists = async () => {
   const userID = await getUserID()
   if (userID === 0) {
     renderMyListsLoggedOut()
+    clearUserDBListInfo()
   } else if (userID > 0) {
     renderMyListsLoggedIn(userID)
   }
@@ -480,17 +481,6 @@ const renderMyListsLoggedOut = () => {
   loginMessageEl.appendChild(textEl)
   loginMessageEl.appendChild(btnEl)
   myListsEl.appendChild(loginMessageEl)
-
-  // Clear user saved list ids if they aren't logged in
-  setDBListInfoType('template', { id: 0, desc: '' })
-  setDBListInfoType('progress', { id: 0, desc: '' })
-  setDBListInfoType('userResult', { id: 0, desc: '' })
-
-  const update = getDBListInfo()
-  const prevData = JSON.parse(localStorage.getItem('saveData'))
-  if (prevData) {
-    updateLocalStorageSaveDataItem('dbListInfo', update)
-  }
 }
 
 const renderMyListsLoggedIn = async (userID) => {
