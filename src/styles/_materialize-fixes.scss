@@ -71,10 +71,6 @@ input[type=range]::-ms-thumb {
   border: 2px solid $color-primary;
 }
 
-// .type-radio label input[type=radio]:checked+span:before {
-//   border: 2px solid rgba($color-primary, .6);
-// }
-
 // CHECKBOX
 [type="checkbox"]:checked+span:not(.lever):before {
   border-right: 2px solid $color-primary;
@@ -95,4 +91,26 @@ input[type=range]::-ms-thumb {
     margin-top: .3rem;
     margin-bottom: .3rem;
   }
+}
+
+// TOOLTIP ARROW
+.material-tooltip {
+  overflow: visible !important;
+
+  &::before {
+    width: 1rem;
+    height: 1rem;
+    background-color: #323232;
+    content: "";
+    position: absolute;
+    left: 47%;
+    top: -.4rem;
+    transform: rotate(45deg);
+    border-radius: 2px;
+  }
+}
+
+// DISABLED TAB
+.tab.disabled > a {
+  color: rgba(255,255,255,0.2) !important;
 }

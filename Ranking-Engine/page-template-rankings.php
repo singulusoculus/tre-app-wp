@@ -13,8 +13,6 @@ Template Name: Rankings
 
 <main class="container">
 
-  <div class="loading">Loading&#8230;</div>
-
   <h4 class="center-align">BGRE Rankings - <?php echo date("m/d/Y"); ?></h4>
 
   <div class="row">

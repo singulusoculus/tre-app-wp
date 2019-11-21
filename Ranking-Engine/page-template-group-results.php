@@ -13,8 +13,6 @@ Template Name: Group Results
 
 <main class="container">
 
-  <div class="loading">Loading&#8230;</div>
-
   <h4 id="page-header" class="center-align">Results for:</h4>
 
   <div class="row">

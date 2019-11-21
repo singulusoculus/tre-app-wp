@@ -15,8 +15,6 @@ Template Name: Dashboard
 
 <?php if ( ! post_password_required( $post ) ) { ?>
 
-  <div class="loading">Loading&#8230;</div>
-
   <h4 class="center-align">Ranking Engine Dashboard</h4>
 
   <div class="row">

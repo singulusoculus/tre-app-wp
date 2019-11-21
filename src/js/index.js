@@ -204,7 +204,6 @@ jQuery(document).ready(() => {
     handleClickAccount()
   })
 
-
   document.querySelector('#login-form-button').addEventListener('click', (e) => {
     const fromVal = e.target.attributes.from.value
     setReloadInfo(`login-${fromVal}`)

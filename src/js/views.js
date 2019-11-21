@@ -583,7 +583,7 @@ const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
   const divEl = document.createElement('div')
   divEl.classList.add(`my-lists__${type}`)
   const h4El = document.createElement('h4')
-  h4El.classList.add('center-align')
+  h4El.classList.add('center-align', 'my-lists__header')
   const upperType = type.toUpperCase()
   h4El.textContent = type === 'progress' ? `${upperType}` : `${upperType}S`
   const tableEl = document.createElement('table')

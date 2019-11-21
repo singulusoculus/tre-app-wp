@@ -65,32 +65,6 @@
   }
 }
 
-.tab.disabled > a {
-  color: rgba(255,255,255,0.2) !important;
-}
-
-
-.step-tab--available {
-  display: inline-block !important;
-}
-
-// Tool tip arrow
-.material-tooltip {
-  overflow: visible !important;
-
-  &::before {
-    width: 1rem;
-    height: 1rem;
-    background-color: #323232;
-    content: "";
-    position: absolute;
-    left: 47%;
-    top: -.4rem;
-    transform: rotate(45deg);
-    border-radius: 2px;
-  }
-}
-
 //////////////////////////////////////////////////////////////////
 ///////////  SECTION WRAPPER
 //////////////////////////////////////////////////////////////////
@@ -110,25 +84,29 @@
 }
 
 //////////////////////////////////////////////////////////////////
-///////////  START SECTION
+///////////  MY LISTS
 //////////////////////////////////////////////////////////////////
-
-// My Lists
 .template-list, .progress-list, .result-list {
   cursor: pointer;
 }
 
+.my-lists {
+
+  &__header {
+    padding-top: 2rem;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+//////////////////////////////////////////////////////////////////
+///////////  START SECTION
+//////////////////////////////////////////////////////////////////
 .list-category-wrapper {
   margin-top: 2rem;
-}
-
-.my-lists > div > h4 {
-  padding-top: 2rem;
-}
-
-.my-lists__buttons {
-  display: flex;
-  justify-content: space-around;
 }
 
 // Previous Session Toast
@@ -154,20 +132,6 @@
 //////////////////////////////////////////////////////////////////
 ///////////  LIST SECTION
 //////////////////////////////////////////////////////////////////
-
-#list-items-wrapper {
-  margin: 0 2rem;
-  padding: 1rem;
-  background-color: $color-grey-light-1;
-
-  @media only screen and (max-width: 600px) {
-    & {
-      margin: 0 .2rem;
-      padding: .2rem;
-    }
-  }
-}
-
 .list-editor {
 
   @media only screen and (min-width: 993px) {
@@ -231,13 +195,6 @@
       opacity: 0;
     }
   }
-
-}
-
-.dragdrop {
-  border: dashed gray !important;
-  border-width: 2px !important;
-  background-color: rgba(155, 155, 155, .1) !important;
 }
 
 .collection-item__image {
@@ -370,7 +327,6 @@
 .next {
   width: 10rem;
   height: 10rem;
-  // background-color: $color-grey-light-2;
   background-color: $color-primary;
   position: fixed;
   top:40%;
@@ -401,7 +357,7 @@
 
   &--visible {
     opacity: 1;
-    transform: translateX(-15rem) rotate(45deg); // on mobile - translateX(-13rem)
+    transform: translateX(-15rem) rotate(45deg);
   }
 
   @media only screen and (max-width: 600px) {
@@ -443,15 +399,29 @@
   width: 10%;
 }
 
-#results__header > tr:first-child {
-  width: 10%;
-}
-
 .result-options {
   display: flex;
   justify-content: space-around;
   margin-top: 12px;
   margin-bottom: 20px;
+}
+
+.top-nine-image {
+  width: 300px;
+  height: 300px;
+  padding: 0;
+  margin-top: 10px;
+  margin: auto;
+  display: block;
+
+  @media only screen and (max-width: 600px) {
+    width: 200px;
+    height: 200px;
+  }  
+}
+
+.top-nine-btn {
+  margin-left: 4px;
 }
 
 
@@ -565,9 +535,6 @@
   }
 
   &__button {
-    // position: absolute;
-    // top: 5rem;
-    // right: 3rem;
     display: inline-block;
     position: relative;
     z-index: 899;
@@ -641,10 +608,6 @@
 
   // ICON
   &__icon {
-    // position: relative;
-    // margin-top: 3.4rem;
-
-    //&,
     &::before,
     &::after {
       width: 2rem;
@@ -692,7 +655,9 @@
   
 }
 
-// Modals
+//////////////////////////////////////////////////////////////////
+///////////  MODALS
+//////////////////////////////////////////////////////////////////
 
 .modal-content {
   position: relative;
@@ -733,22 +698,4 @@
 .shared-result-options {
   display: flex;
   justify-content: space-around;
-}
-
-.top-nine-image {
-  width: 300px;
-  height: 300px;
-  padding: 0;
-  margin-top: 10px;
-  margin: auto;
-  display: block;
-
-  @media only screen and (max-width: 600px) {
-    width: 200px;
-    height: 200px;
-  }  
-}
-
-.top-nine-btn {
-  margin-left: 4px;
 }
