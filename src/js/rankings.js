@@ -1,5 +1,5 @@
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
-import { numWithCommas, renderTableRows, initDataTable } from './functions'
+import { numWithCommas, initDataTable, renderTable } from './tables'
 
 const initRankings = () => {
   fadeInSpinner()
@@ -18,7 +18,8 @@ const initRankings = () => {
     func: 'getTopGamesAll'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTableRows(parsedData, 'rankings-at')
+
+    renderTable('rankings-at', ['Rank', 'Game', 'Score'], parsedData)
     initDataTable('rankings-at')
   })
 
@@ -27,7 +28,7 @@ const initRankings = () => {
     func: 'getTopGamesYear'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTableRows(parsedData, 'rankings-y')
+    renderTable('rankings-y', ['Rank', 'Game', 'Score'], parsedData)
     initDataTable('rankings-y')
   })
 
@@ -36,7 +37,7 @@ const initRankings = () => {
     func: 'getTopGamesD30'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTableRows(parsedData, 'rankings-d30')
+    renderTable('rankings-d30', ['Rank', 'Game', 'Score'], parsedData)
     initDataTable('rankings-d30')
   })
 }

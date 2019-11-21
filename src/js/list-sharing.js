@@ -1,6 +1,6 @@
 import { dbSetShareFlag } from './database'
 import { renderMyLists } from './views'
-import { renderTableRows } from './functions'
+import { renderTable } from './tables'
 
 let myListsInfo = {}
 let selectedList = {}
@@ -63,26 +63,9 @@ const openShareModal = (data) => {
 
 const renderReadOnlyTemplate = (items) => {
   // clear list data
-  const readOnlyTemplateEl = document.querySelector('.read-only-template')
+  const readOnlyTemplateEl = document.querySelector('#read-only-template-table-wrapper')
   readOnlyTemplateEl.innerHTML = ''
-
-  // create DOM Elements
-  const tableEl = document.createElement('table')
-  tableEl.classList.add('striped')
-  const theadEl = document.createElement('thead')
-  const trEl = document.createElement('tr')
-  const thEl = document.createElement('th')
-  thEl.setAttribute('scope', 'col')
-  thEl.textContent = 'Item Name'
-  trEl.appendChild(thEl)
-  theadEl.appendChild(trEl)
-  tableEl.appendChild(theadEl)
-  const tbodyEl = document.createElement('tbody')
-  tbodyEl.setAttribute('id', 'read-only-template__rows')
-  tableEl.appendChild(tbodyEl)
-  readOnlyTemplateEl.appendChild(tableEl)
-
-  renderTableRows(items, 'read-only-template')
+  renderTable('read-only-template', ['Item Name'], items)
 }
 
 const createStatsBtn = (listData) => {

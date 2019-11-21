@@ -1,6 +1,6 @@
 
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
-import { numWithCommas, renderTableRows, initDataTable } from './functions'
+import { numWithCommas, initDataTable, renderTable } from './tables'
 
 const initDashboard = () => {
   fadeInSpinner()
@@ -11,6 +11,7 @@ const initDashboard = () => {
     func: 'getTotals'
   }, (data, status) => {
     const dataParsed = JSON.parse(data)
+    console.log(dataParsed)
     renderTotals(dataParsed)
   })
 
@@ -20,7 +21,7 @@ const initDashboard = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     console.log(parsedData)
-    renderTableRows(parsedData, 'rankings-at')
+    renderTable('rankings-at', ['Rank', 'Game', 'Pct Score', 'Pop Score', 'Total Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-at')
   })
 
@@ -29,7 +30,7 @@ const initDashboard = () => {
     func: 'getTopGamesYear'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTableRows(parsedData, 'rankings-y')
+    renderTable('rankings-y', ['Rank', 'Game', 'Pct Score', 'Pop Score', 'Total Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-y')
   })
 
@@ -38,7 +39,7 @@ const initDashboard = () => {
     func: 'getTopGamesD30'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTableRows(parsedData, 'rankings-d30')
+    renderTable('rankings-d30', ['Rank', 'Game', 'Pct Score', 'Pop Score', 'Total Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-d30')
   })
 
@@ -47,7 +48,7 @@ const initDashboard = () => {
     func: 'getAllGamesApproved'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTableRows(parsedData, 'all-games')
+    renderTable('all-games', ['BGID', 'Game', 'Times Ranked', 'AT Rank'], parsedData)
     initDataTable('all-games')
   })
 }
@@ -73,7 +74,7 @@ const renderTotals = (data) => {
   const totalLists = numWithCommas(data[2].TotalLists)
   const totalListsD = numWithCommas(data[3].TotalLists)
   const totalItems = numWithCommas(data[4].TotalItems)
-  const totalItemsD = numWithCommas(data[5].TotalItems)
+  const totalItemsD = numWithCommas(data[5].TotalItems || 0)
 
   document.querySelector('#count-users').textContent = totalUsers
   document.querySelector('#count-users-prev').textContent = totalUsersD

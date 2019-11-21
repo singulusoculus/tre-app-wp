@@ -38,50 +38,18 @@ Template Name: Rankings
   <div class="row">
     <div class="col s12">
       <ul class="tabs tabs-fixed-width">
-        <li class="tab col s3"><a href="#rankings-at" class="active">All-time</a></li>
-        <li class="tab col s3"><a href="#rankings-y"><?php echo date("Y"); ?></a></li>
-        <li class="tab col s3"><a href="#rankings-d30">30 Days</a></li>
+        <li class="tab col s3"><a href="#rankings-at__table_wrapper" class="active">All-time</a></li>
+        <li class="tab col s3"><a href="#rankings-y__table_wrapper"><?php echo date("Y"); ?></a></li>
+        <li class="tab col s3"><a href="#rankings-d30__table_wrapper">30 Days</a></li>
       </ul>
     <div class="divider-sm"></div>
     </div>
-    <div id="rankings-at" class="col s12">
-      <table id="rankings-at__table" class="striped">
-        <thead>
-            <tr>
-              <th scope="col">Rank</th>
-              <th scope="col">Game</th>
-              <th scope="col">Score</th>
-            </tr>
-        </thead>
-        <tbody id="rankings-at__rows"></tbody>
-      </table>
-    </div>
 
-    <div id="rankings-y" class="col s12">
-      <table id="rankings-y__table" class="striped">
-        <thead>
-            <tr>
-              <th scope="col">Rank</th>
-              <th scope="col">Game</th>
-              <th scope="col">Score</th>
-            </tr>
-        </thead>
-        <tbody id="rankings-y__rows"></tbody>
-      </table>
-    </div>
+    <div id="rankings-at-table-wrapper"></div>
 
-    <div id="rankings-d30" class="col s12">
-      <table id="rankings-d30__table" class="striped">
-        <thead>
-            <tr>
-              <th scope="col">Rank</th>
-              <th scope="col">Game</th>
-              <th scope="col">Score</th>
-            </tr>
-        </thead>
-        <tbody id="rankings-d30__rows"></tbody>
-      </table>
-    </div>
+    <div id="rankings-y-table-wrapper"></div>
+
+    <div id="rankings-d30-table-wrapper"></div>
 
   </div>
 

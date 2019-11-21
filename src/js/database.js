@@ -3,10 +3,12 @@ import { getListData, initPrevList } from './list'
 import { getRankData, initPrevRanking, resetHistory } from './rank'
 import { getResultData, initPrevResult } from './result'
 import { getCategory } from './category'
-import { saveData, renderTableRows, getUserID, updateLocalStorageSaveDataItem } from './functions'
+import { saveData, updateLocalStorageSaveDataItem } from './functions'
 import { renderMyLists, renderTemplateDesc } from './views'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { getParentList, setParentList } from './list-sharing'
+import { getUserID } from './common'
+import { renderTable } from './tables'
 
 let dbListInfo = {
   template: {
@@ -80,7 +82,6 @@ const clearUserDBListInfo = () => {
 }
 
 const dbGetUserLists = async (wpuid) => {
-  // const wpuid = await getUserID()
   return new Promise((resolve, reject) => {
     // fadeInSpinner()
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
@@ -101,7 +102,7 @@ const dbGetTopTenYear = () => {
     func: 'getYearTopTen'
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTableRows(parsedData, 'top-ten-year')
+    renderTable('top-ten-year', ['Rank', 'Game'], parsedData)
   })
 }
 

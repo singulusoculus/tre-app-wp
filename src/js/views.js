@@ -6,7 +6,8 @@ import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, getBGGCollectionData } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo, clearUserDBListInfo } from './database'
-import { updateLocalStorageSaveDataItem, getUserID } from './functions'
+import { updateLocalStorageSaveDataItem } from './functions'
+import { getUserID } from './common'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 import { getBGGSearchData } from './bgg-search'
 
@@ -583,7 +584,7 @@ const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
   const divEl = document.createElement('div')
   divEl.classList.add(`my-lists__${type}`)
   const h4El = document.createElement('h4')
-  h4El.classList.add('center-align', 'my-lists__header')
+  h4El.classList.add('my-lists__header')
   const upperType = type.toUpperCase()
   h4El.textContent = type === 'progress' ? `${upperType}` : `${upperType}S`
   const tableEl = document.createElement('table')

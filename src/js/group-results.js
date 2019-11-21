@@ -1,5 +1,6 @@
 import { dbGetTemplateListData, dbGetSharedResults, dbGetTimesRanked, dbSetShareResultsFlag, dbClearSharedRankingResults } from './group-results-db'
-import { renderTableRows, initDataTable, getUserID } from './functions'
+import { getUserID } from './common'
+import { initDataTable, renderTable } from './tables'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 
 let templateListData = {}
@@ -75,8 +76,8 @@ const renderResults = async () => {
     newResults.push({ rank: index + 1, ...item })
   })
   // render results
-  renderTableRows(newResults, 'rankings-at')
-  initDataTable('rankings-at')
+  renderTable('rankings', ['Rank', 'Item', 'Pct Score', 'Pop Score', 'Total Score', 'Times Ranked'], newResults)
+  initDataTable('rankings')
   document.querySelector('#page-header').textContent = `Results for: ${templateListData.template_desc}`
 }
 

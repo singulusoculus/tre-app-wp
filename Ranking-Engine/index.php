@@ -79,15 +79,7 @@
           </div>
           <div class="row">
             <div class="col s12 m8 offset-m2">
-              <table id="top-ten-year__table" class="striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Rank</th>
-                    <th scope="col">Game</th>
-                  </tr>
-                </thead>
-                <tbody id="top-ten-year__rows"></tbody>
-              </table>
+              <div id="top-ten-year-table-wrapper"></div>
             </div>
           </div>
         </div>
@@ -536,8 +528,10 @@
     <a href="#!" class="modal-close btn-flat modal-close-x">
         <span aria-hidden="true">&times;</span>
       </a>
-      <div class="container center-align">
-      <h4>My Lists</h4>
+      <div class="container">
+        <div class="center-align">
+          <h3>MY LISTS</h3>
+        </div>
         <div class="my-lists"></div>
         <div class="ball-loading my-lists" style="display: none">
             <i class="ball"></i>
@@ -573,7 +567,8 @@
             <a href="#" id="share-list__copy" class="waves-effect waves-light btn disabled">Copy URL</a>
           </div>
         </div>
-        <div class="read-only-template"></div>
+        <!-- <div class="read-only-template"></div> -->
+        <div id="read-only-template-table-wrapper"></div>
     </div>
   </div>
 

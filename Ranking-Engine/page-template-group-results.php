@@ -28,21 +28,7 @@ Template Name: Group Results
   <div class="divider-sm"></div>
   <div class="options-section"></div>
 
-  <div id="rankings-at" class="col s12">
-      <table id="rankings-at__table" class="striped">
-        <thead>
-            <tr>
-            <th scope="col">Rank</th>
-            <th scope="col">Item</th>
-            <th scope="col">Pct Score</th>
-            <th scope="col">Pop Score</th>
-            <th scope="col">Total Score</th>
-            <th scope="col">Times Ranked</th>
-            </tr>
-        </thead>
-        <tbody id="rankings-at__rows"></tbody>
-      </table>
-    </div>
+  <div id="rankings-table-wrapper"></div>
 
 </main>
 
