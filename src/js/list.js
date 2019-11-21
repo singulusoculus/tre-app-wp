@@ -1,10 +1,11 @@
 import uuidv4 from 'uuid'
-import { showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, custConfirm, renderCollectionEl } from './views'
+import { showListSection, enableStepTab, disableStepTab, enableNextButton, disableListSave, enableListSave, renderCollectionEl } from './views'
 import { saveData } from './functions'
 import { setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
 import { getBGGCollectionData } from './bgg-collection'
 import { getBGGSearchData } from './bgg-search'
+import { custConfirm } from './common'
 
 let listData = []
 

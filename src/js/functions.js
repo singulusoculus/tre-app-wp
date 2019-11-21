@@ -1,12 +1,12 @@
 import { getCategory, setCategory } from './category'
 import { getCurrentStep, setCurrentStep } from './step'
-import { showTab, renderPreviousSessionToast, custConfirm, showStartSection, showListSection, showRankSection, showMyLists, custMessage, renderMyLists } from './views'
+import { showTab, renderPreviousSessionToast, showStartSection, showListSection, showRankSection, showMyLists, renderMyLists } from './views'
 import { initPrevList, getListData, estimateTotalComparisons, setListData } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
 import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList, clearUserDBListInfo } from './database'
 import { getParentList, setParentList } from './list-sharing'
-import { getUserID } from './common'
+import { getUserID, custConfirm, custMessage } from './common'
 
 const initRankingEngine = async () => {
   initMaterializeComponents()

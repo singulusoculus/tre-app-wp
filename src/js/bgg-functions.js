@@ -1,4 +1,4 @@
-import { custMessage } from './views'
+import { custMessage } from './common'
 import { dbCaptureBGGData } from './database'
 
 const getBGGData = (url) => {

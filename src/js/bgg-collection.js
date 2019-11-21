@@ -1,7 +1,8 @@
-import { custMessage, renderCollectionEl } from './views'
+import { renderCollectionEl } from './views'
 import { addListItems, getListData, createList } from './list'
 import { updateBGGFilters, filterBGGCollection } from './filters'
 import { xmlToJson, captureBGGData } from './bgg-functions'
+import { custMessage } from './common'
 import uuidv4 from 'uuid'
 
 let bggCollectionData = []
@@ -119,6 +120,11 @@ const getBGGCollection = (user, expansions) => new Promise((resolve, reject) => 
       })
     }
   })
+    .fail(() => {
+      jQuery('.ball-loading.collection').fadeOut()
+      document.querySelector('#bgg-submit').classList.remove('disabled')
+      custMessage('You appear to be offline. Check your network connection and try again.')
+    })
 })
 
 const createBGGList = (data) => {

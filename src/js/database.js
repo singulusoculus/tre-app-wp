@@ -7,7 +7,7 @@ import { saveData, updateLocalStorageSaveDataItem } from './functions'
 import { renderMyLists, renderTemplateDesc } from './views'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { getParentList, setParentList } from './list-sharing'
-import { getUserID } from './common'
+import { getUserID, custMessage } from './common'
 import { renderTable } from './tables'
 
 let dbListInfo = {
@@ -83,7 +83,6 @@ const clearUserDBListInfo = () => {
 
 const dbGetUserLists = async (wpuid) => {
   return new Promise((resolve, reject) => {
-    // fadeInSpinner()
     jQuery.post(getFilePath('/re-func/re-functions.php'), {
       func: 'getUserLists',
       wpuid
@@ -91,7 +90,6 @@ const dbGetUserLists = async (wpuid) => {
       if (status === 'success') {
         const parsedData = JSON.parse(data)
         parsedData ? resolve(parsedData) : reject(new Error('No data returned'))
-        // fadeOutSpinner()
       }
     })
   })

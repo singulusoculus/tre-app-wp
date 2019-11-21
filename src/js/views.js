@@ -323,17 +323,8 @@ const showListSection = (source) => {
     loadList(data)
   }
 
-  // Clears result database link
-  setDBListInfoType('result', { id: 0 })
-  setDBListInfoType('userResult', { id: 0, desc: '' })
-
-  enableStepTab('list')
-  disableStepTab('rank', 'result')
-
   const categoryName = getCategoryInfo().niceName
   document.querySelector('.current-list-category').innerHTML = `Category: ${categoryName}`
-
-  renderTemplateDesc()
 
   // Show BGG sections if category is Board Games, hide if not
   const addOptionsEl = M.Collapsible.getInstance(document.querySelector('.add-options-sections'))
@@ -346,6 +337,15 @@ const showListSection = (source) => {
     document.querySelector('.bgg-search').classList.add('hide')
     addOptionsEl.open(2)
   }
+
+  // Clears result database link
+  setDBListInfoType('result', { id: 0 })
+  setDBListInfoType('userResult', { id: 0, desc: '' })
+
+  enableStepTab('list')
+  disableStepTab('rank', 'result')
+
+  renderTemplateDesc()
 
   const list = getListData()
   if (list.length > 0) {
@@ -399,41 +399,6 @@ const showResultSection = (source) => {
 
   showTab('result')
   document.querySelector('.next-rank').classList.remove('next--visible')
-}
-
-// //////////////////////////////////////////////////////////////////////
-// // MODALS / CUSTOM CONFIRMS
-// //////////////////////////////////////////////////////////////////////
-
-const custConfirm = (message, resultCallback, source) => {
-  const alertText = document.querySelector('.alert-text')
-  alertText.innerText = message
-
-  const instance = M.Modal.getInstance(document.querySelector('#alert-modal'))
-  instance.open()
-
-  const eventFunc = () => {
-    resultCallback(source)
-    clearAlertEventListeners()
-  }
-
-  const clearAlertEventListeners = () => {
-    document.querySelector('#alert-ok-btn').removeEventListener('click', eventFunc)
-  }
-
-  document.querySelector('#alert-ok-btn').addEventListener('click', eventFunc)
-
-  document.querySelector('#alert-cancel-btn').addEventListener('click', () => {
-    clearAlertEventListeners()
-    instance.close()
-  })
-}
-
-const custMessage = (message) => {
-  document.querySelector('.message-text').textContent = message
-
-  const instance = M.Modal.getInstance(document.querySelector('#message-modal'))
-  instance.open()
 }
 
 // //////////////////////////////////////////////////////////////////////
@@ -726,11 +691,9 @@ export {
   enableNextButton,
   enableListSave,
   disableListSave,
-  custConfirm,
   showTab,
   renderMyLists,
   showMyLists,
-  custMessage,
   renderTemplateDesc,
   renderCollectionEl
 }
