@@ -530,7 +530,7 @@
       </a>
       <div class="container">
         <div class="center-align">
-          <h3 class="my-lists-title">MY LISTS</h3>
+          <h4 class="my-lists-title">MY LISTS</h4>
         </div>
         <div class="my-lists"></div>
         <div class="ball-loading my-lists" style="display: none">

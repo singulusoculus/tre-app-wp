@@ -365,22 +365,24 @@ const showRankSection = (source) => {
     setDBListInfoType('progress', { id: 0, desc: '' })
   }
 
+  let listData
+  let category
+
   if (source === 'List') {
-    const listData = getListData()
-    const category = getCategory()
+    listData = getListData()
+    category = getCategory()
     listData.sort((a, b) => 0.5 - Math.random())
-    initRanking(listData, category)
   } else if (source === 'Rank') {
     const data = getRankData()
-    const listData = data.masterList
+    listData = data.masterList
     listData.sort((a, b) => 0.5 - Math.random())
-    const category = getCategory()
-    initRanking(listData, category)
+    category = getCategory()
   } else if (source === 'Result') {
-    const listData = getResultData()
-    const category = getCategory()
-    initRanking(listData, category)
+    listData = getResultData()
+    category = getCategory()
   }
+
+  initRanking(listData, category)
 
   setDBListInfoType('userResult', { id: 0, desc: '' })
 
@@ -555,7 +557,7 @@ const createMyListsTableElement = (type, headers, rows, myListsInfo) => {
   // Main table div
   const divEl = document.createElement('div')
   divEl.classList.add(`my-lists__${type}`)
-  const h4El = document.createElement('h4')
+  const h4El = document.createElement('h5')
   h4El.classList.add('my-lists__header')
   const upperType = type.toUpperCase()
   h4El.textContent = type === 'progress' ? `${upperType}` : `${upperType}S`
