@@ -7,7 +7,7 @@ import { saveData, updateLocalStorageSaveDataItem } from './functions'
 import { renderMyLists, renderTemplateDesc } from './views'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 import { getParentList, setParentList } from './list-sharing'
-import { getUserID, custMessage } from './common'
+import { getUserID } from './common'
 import { renderTable } from './tables'
 
 let dbListInfo = {
@@ -295,6 +295,8 @@ const dbUpdateTemplateData = (saveDesc) => {
 }
 
 const dbSaveProgressData = async (saveDesc = dbListInfo.progress.desc) => {
+  const saveBtnEl = document.querySelector('#save-ranking')
+  saveBtnEl.classList.add('disabled')
   const wpuid = await getUserID()
   const rankData = getRankData()
 
@@ -310,9 +312,6 @@ const dbSaveProgressData = async (saveDesc = dbListInfo.progress.desc) => {
   const percent = Math.floor(newRankData.finishSize * 100 / newRankData.totalSize)
   const rankDataJSON = JSON.stringify(newRankData)
   const category = getCategory()
-
-  const saveBtnEl = document.querySelector('#save-ranking')
-  saveBtnEl.classList.add('disabled')
 
   if (dbListInfo.progress.id === 0 && wpuid > 0) {
     const uuid = uuidv4()

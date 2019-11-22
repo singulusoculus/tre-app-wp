@@ -270,7 +270,11 @@ const cmpCheck = () => {
     // auto save
     const dbListInfo = getDBListInfo()
     if (dbListInfo.progress.id > 0 && rankData.numQuestion % 5 === 0) {
-      dbSaveProgressData()
+      if (navigator.onLine) {
+        dbSaveProgressData()
+      } else {
+        M.toast({ html: `Could not autosave. You are offline.`, displayLength: 2000 })
+      }
     }
 
     setTimeout(() => {

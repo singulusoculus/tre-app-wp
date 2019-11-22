@@ -410,6 +410,10 @@ const showMyLists = () => {
 }
 
 const renderMyLists = async () => {
+  const myListsEl = document.querySelector('.my-lists')
+  myListsEl.textContent = ''
+  jQuery('.ball-loading.my-lists').fadeIn()
+
   const userID = await getUserID()
   if (userID === 0) {
     renderMyListsLoggedOut()
@@ -420,8 +424,10 @@ const renderMyLists = async () => {
 }
 
 const renderMyListsLoggedOut = () => {
+  const myListsTitleEl = document.querySelector('.my-lists-title')
+  myListsTitleEl.textContent = `MY LISTS`
+
   const myListsEl = document.querySelector('.my-lists')
-  myListsEl.textContent = ''
   // Create My Lists Login
   const loginMessageEl = document.createElement('div')
   loginMessageEl.classList.add('center-align')
@@ -447,17 +453,14 @@ const renderMyListsLoggedOut = () => {
   loginMessageEl.appendChild(textEl)
   loginMessageEl.appendChild(btnEl)
   myListsEl.appendChild(loginMessageEl)
+
+  jQuery('.ball-loading.my-lists').fadeOut()
 }
 
 const renderMyListsLoggedIn = async (userID) => {
   const myListsEl = document.querySelector('.my-lists')
-  jQuery('.ball-loading.my-lists').fadeIn()
   // get My Lists data and populate My Lists section
   const data = await dbGetUserLists(userID)
-
-  jQuery('.ball-loading.my-lists').fadeOut()
-
-  myListsEl.textContent = ''
 
   const collectionLists = []
   const templateLists = data[0]
@@ -471,7 +474,10 @@ const renderMyListsLoggedIn = async (userID) => {
     result: data[5]
   }
 
-  console.log(myListsInfo)
+  // Add username to My Lists
+  let userName = data[6][0].userName
+  const myListsTitleEl = document.querySelector('.my-lists-title')
+  myListsTitleEl.textContent = `MY LISTS: ${userName}`
 
   setMyListsInfo(myListsInfo)
 
@@ -489,16 +495,16 @@ const renderMyListsLoggedIn = async (userID) => {
   iEl.classList.add('material-icons', 'right')
   iEl.textContent = 'account_circle'
   btnEl.appendChild(iEl)
-
-  // Create Collections button
-  const createBtnEl = document.createElement('a')
-  createBtnEl.classList.add('waves-effect', 'waves-light', 'btn', 'center-align', 'modal-trigger')
-  createBtnEl.setAttribute('id', 'create-collection-btn')
-  createBtnEl.setAttribute('href', `#create-collection-modal`)
-  createBtnEl.textContent = 'Create Collection'
-
   btnWrapperEl.appendChild(btnEl)
-  btnWrapperEl.appendChild(createBtnEl)
+
+  // // Create Collections button
+  // const createBtnEl = document.createElement('a')
+  // createBtnEl.classList.add('waves-effect', 'waves-light', 'btn', 'center-align', 'modal-trigger')
+  // createBtnEl.setAttribute('id', 'create-collection-btn')
+  // createBtnEl.setAttribute('href', `#create-collection-modal`)
+  // createBtnEl.textContent = 'Create Collection'
+  // btnWrapperEl.appendChild(createBtnEl)
+
   myListsEl.appendChild(btnWrapperEl)
 
   const dividerEl = document.createElement('div')
@@ -542,6 +548,7 @@ const renderMyListsLoggedIn = async (userID) => {
     noListsEl.setAttribute('style', 'margin-bottom: 1rem')
     myListsEl.prepend(noListsEl)
   }
+  jQuery('.ball-loading.my-lists').fadeOut()
 }
 
 const createMyListsTableElement = (type, headers, rows, myListsInfo) => {

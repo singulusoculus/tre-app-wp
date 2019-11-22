@@ -7,6 +7,7 @@ import { initPrevResult, getResultData } from './result'
 import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList, clearUserDBListInfo } from './database'
 import { getParentList, setParentList } from './list-sharing'
 import { getUserID, custConfirm, custMessage } from './common'
+import { fadeInSpinner, fadeOutSpinner } from './spinner'
 
 const initRankingEngine = async () => {
   initMaterializeComponents()
@@ -180,78 +181,101 @@ const handleClickUpdate = (e) => {
 }
 
 const handleClickSaveList = async () => {
-  const userID = await getUserID()
-  if (userID === 0) {
-    clearUserDBListInfo()
-    document.querySelector('#login-form-button').setAttribute('from', '')
-    document.querySelector('#login-form-button').setAttribute('from', 'save')
-    const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
-    instance.open()
-  } else {
-    const listInfo = getDBListInfo()
-    if (listInfo.template.id > 0) {
-      document.querySelector('#update-list-btn').classList.remove('hide')
-      document.querySelector('#save-list-btn').textContent = 'Save New'
-      document.querySelector('#save-description').value = listInfo.template.desc
-      document.querySelector('#save-description-label').classList.add('active')
-    } else {
-      document.querySelector('#update-list-btn').classList.add('hide')
-      document.querySelector('#save-list-btn').textContent = 'Save'
-      document.querySelector('#save-description').value = ''
-      document.querySelector('#save-description-label').classList.remove('active')
+  if (navigator.onLine) {
+    fadeInSpinner()
+    const userID = await getUserID()
+
+    if (userID === 0) {
+      clearUserDBListInfo()
+      document.querySelector('#login-form-button').setAttribute('from', '')
+      document.querySelector('#login-form-button').setAttribute('from', 'save')
+      const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
+      instance.open()
+    } else if (userID > 0) {
+      const listInfo = getDBListInfo()
+      if (listInfo.template.id > 0) {
+        document.querySelector('#update-list-btn').classList.remove('hide')
+        document.querySelector('#save-list-btn').textContent = 'Save New'
+        document.querySelector('#save-description').value = listInfo.template.desc
+        document.querySelector('#save-description-label').classList.add('active')
+      } else {
+        document.querySelector('#update-list-btn').classList.add('hide')
+        document.querySelector('#save-list-btn').textContent = 'Save'
+        document.querySelector('#save-description').value = ''
+        document.querySelector('#save-description-label').classList.remove('active')
+      }
+      const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
+      instance.open()
     }
-    const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
-    instance.open()
+    fadeOutSpinner()
+  } else {
+    custMessage('You seem to be offline. Please check your connection and try again.')
   }
 }
 
 const handleClickSaveRank = async () => {
-  const userID = await getUserID()
-  if (userID === 0) {
-    clearUserDBListInfo()
-    document.querySelector('#login-form-button').setAttribute('from', '')
-    document.querySelector('#login-form-button').setAttribute('from', 'save')
-    const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
-    instance.open()
-  } else {
-    const progressID = getDBListInfo().progress.id
-    const listInfo = getDBListInfo()
-    document.querySelector('#update-list-btn').classList.add('hide')
-    if (progressID > 0) {
-      document.querySelector('#save-list-btn').textContent = 'Update'
-      document.querySelector('#save-description').value = listInfo.progress.desc
-      document.querySelector('#save-description-label').classList.add('active')
-    } else {
-      document.querySelector('#save-list-btn').textContent = 'Save'
-      document.querySelector('#save-description').value = ''
-      document.querySelector('#save-description-label').classList.remove('active')
+  if (navigator.onLine) {
+    fadeInSpinner()
+    const userID = await getUserID()
+    if (userID === 0) {
+      clearUserDBListInfo()
+      document.querySelector('#login-form-button').setAttribute('from', '')
+      document.querySelector('#login-form-button').setAttribute('from', 'save')
+      const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
+      instance.open()
+    } else if (userID > 0) {
+      const progressID = getDBListInfo().progress.id
+      const listInfo = getDBListInfo()
+      document.querySelector('#update-list-btn').classList.add('hide')
+      if (progressID > 0) {
+        document.querySelector('#save-list-btn').textContent = 'Update'
+        document.querySelector('#save-description').value = listInfo.progress.desc
+        document.querySelector('#save-description-label').classList.add('active')
+      } else {
+        document.querySelector('#save-list-btn').textContent = 'Save'
+        document.querySelector('#save-description').value = ''
+        document.querySelector('#save-description-label').classList.remove('active')
+      }
+      const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
+      instance.open()
     }
-    const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
-    instance.open()
+    fadeOutSpinner()
+  } else {
+    custMessage('You seem to be offline. Please check your connection and try again.')
   }
 }
 
 const handleClickSaveResult = async () => {
-  const userID = await getUserID()
+  if (navigator.onLine) {
+    fadeInSpinner()
+    const userID = await getUserID()
 
-  document.querySelector('#save-list-btn').textContent = 'Save'
-  document.querySelector('#save-description').value = ''
-  if (userID === 0) {
-    clearUserDBListInfo()
-    document.querySelector('#login-form-button').setAttribute('from', '')
-    document.querySelector('#login-form-button').setAttribute('from', 'save')
-    const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
-    instance.open()
+    document.querySelector('#save-list-btn').textContent = 'Save'
+    document.querySelector('#save-description').value = ''
+    if (userID === 0) {
+      clearUserDBListInfo()
+      document.querySelector('#login-form-button').setAttribute('from', '')
+      document.querySelector('#login-form-button').setAttribute('from', 'save')
+      const instance = M.Modal.getInstance(document.querySelector('#login-modal'))
+      instance.open()
+    } else if (userID > 0) {
+      const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
+      instance.open()
+    }
+    fadeOutSpinner()
   } else {
-    const instance = M.Modal.getInstance(document.querySelector('#save-modal'))
-    instance.open()
+    custMessage('You seem to be offline. Please check your connection and try again.')
   }
 }
 
 const handleClickAccount = () => {
-  renderMyLists()
-  const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
-  instance.open()
+  if (navigator.onLine) {
+    renderMyLists()
+    const instance = M.Modal.getInstance(document.querySelector('#account-modal'))
+    instance.open()
+  } else {
+    custMessage('You seem to be offline. Please check your connection and try again.')
+  }
 }
 
 // //////////////////////////////////////////////////////////////////////

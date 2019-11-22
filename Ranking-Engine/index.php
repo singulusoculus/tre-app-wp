@@ -530,7 +530,7 @@
       </a>
       <div class="container">
         <div class="center-align">
-          <h3>MY LISTS</h3>
+          <h3 class="my-lists-title">MY LISTS</h3>
         </div>
         <div class="my-lists"></div>
         <div class="ball-loading my-lists" style="display: none">
@@ -573,7 +573,7 @@
   </div>
 
     <!-- Create Collection Modal -->
-    <div id="create-collection-modal" class="modal">
+    <!-- <div id="create-collection-modal" class="modal">
     <div class="modal-content">
       <a href="#!" class="modal-close btn-flat modal-close-x">
         <span aria-hidden="true">&times;</span>
@@ -600,7 +600,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <script src="<?php echo get_theme_file_uri('/dist/index-bundle.js'); ?>"></script>
 

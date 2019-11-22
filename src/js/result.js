@@ -1,9 +1,10 @@
 import { showResultSection } from './views'
-import { saveData, renderTable } from './functions'
+import { saveData } from './functions'
 import { setCategory } from './category'
 import { setCurrentStep } from './step'
 import { getDBListInfo } from './database'
 import { checkforImages, renderTopNine } from './top-nine'
+import { renderTable } from './tables'
 
 let resultData = []
 
