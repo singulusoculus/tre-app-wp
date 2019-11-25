@@ -6,7 +6,7 @@ import { setCategory, getCategory, getCategoryInfo } from './category'
 import { setCurrentStep } from './step'
 import { addBGGItemToList, getBGGCollectionData } from './bgg-collection'
 import { setDBListInfo, setDBListInfoType, dbGetUserLists, dbLoadUserList, dbDeleteUserList, getDBListInfo, clearUserDBListInfo } from './database'
-import { updateLocalStorageSaveDataItem } from './functions'
+import { updateLocalStorageSaveDataItem, setReloadInfo } from './functions'
 import { getUserID } from './common'
 import { openShareModal, setMyListsInfo, setParentList } from './list-sharing'
 import { getBGGSearchData } from './bgg-search'
@@ -23,7 +23,7 @@ const renderPreviousSessionToast = () => {
     const data = prevData.data
     const parentList = prevData.parentList
 
-    if (Object.keys(data).length > 0 && step !== 'Start') {
+    if (Object.keys(data).length > 0 && step !== 'start') {
       const toastHTML = `<span>You have a previous ${step} session available. Want to resume?</span><div class="prev-toast-btns"><button class="btn-flat toast-action resume-prev-btn">Resume</button><button class="btn-flat toast-action discard-prev-btn">Discard</button></div>`
       M.toast({ html: toastHTML, displayLength: 'stay', classes: 'actionable-toast', inDuration: 600 })
 
@@ -32,7 +32,7 @@ const renderPreviousSessionToast = () => {
 
       resumeBtnEL.addEventListener('click', () => {
         const prevData = JSON.parse(localStorage.getItem('saveData'))
-        const step = prevData.step
+        const step = prevData.step.toLowerCase()
         const data = prevData.data
         const category = prevData.category
         const dbListInfo = prevData.dbListInfo
@@ -40,12 +40,12 @@ const renderPreviousSessionToast = () => {
         M.Toast.dismissAll()
 
         setDBListInfo(dbListInfo)
-        if (step === 'List') {
+        if (step === 'list') {
           initPrevList(category, data)
-        } else if (step === 'Rank') {
+        } else if (step === 'rank') {
           setParentList(parentList)
           initPrevRanking(category, data)
-        } else if (step === 'Result') {
+        } else if (step === 'result') {
           initPrevResult(category, data)
         }
       })
@@ -291,7 +291,7 @@ const showStartSection = (source) => {
   document.querySelector('#list-category-select').value = 0
   M.FormSelect.init(document.querySelector('#list-category-select'))
   setCategory(0)
-  setCurrentStep('Start')
+  setCurrentStep('start')
   renderPreviousSessionToast()
   disableStepTab('list', 'rank', 'result')
   showTab('start')
@@ -306,7 +306,7 @@ const showStartSection = (source) => {
 
 const showListSection = (source) => {
   // If coming from Rank or Result, load that list
-  if (source === 'Rank') {
+  if (source === 'rank') {
     const data = getRankData()
     let list
     // filter out potential deleted items
@@ -317,7 +317,7 @@ const showListSection = (source) => {
     }
     setParentList(0)
     loadList(list)
-  } else if (source === 'Result') {
+  } else if (source === 'result') {
     const data = getResultData()
     setParentList(0)
     loadList(data)
@@ -365,31 +365,35 @@ const showRankSection = (source) => {
     setDBListInfoType('progress', { id: 0, desc: '' })
   }
 
-  let listData
-  let category
+  if (source) {
+    setDBListInfoType('progress', { id: 0, desc: '' })
 
-  if (source === 'List') {
-    listData = getListData()
-    category = getCategory()
-    listData.sort((a, b) => 0.5 - Math.random())
-  } else if (source === 'Rank') {
-    const data = getRankData()
-    listData = data.masterList
-    listData.sort((a, b) => 0.5 - Math.random())
-    category = getCategory()
-  } else if (source === 'Result') {
-    listData = getResultData()
-    category = getCategory()
+    let listData
+    let category
+
+    if (source === 'list') {
+      listData = getListData()
+      category = getCategory()
+      listData.sort((a, b) => 0.5 - Math.random())
+    } else if (source === 'rank') {
+      const data = getRankData()
+      listData = data.masterList
+      listData.sort((a, b) => 0.5 - Math.random())
+      category = getCategory()
+    } else if (source === 'result') {
+      listData = getResultData()
+      category = getCategory()
+    }
+
+    initRanking(listData, category)
   }
-
-  initRanking(listData, category)
 
   setDBListInfoType('userResult', { id: 0, desc: '' })
 
   enableStepTab('list', 'rank')
   disableStepTab('result')
 
-  if (source !== 'Rank') {
+  if (source !== 'rank') {
     showTab('rank')
   }
   document.querySelector('.next-rank').classList.remove('next--visible')
@@ -497,6 +501,12 @@ const renderMyListsLoggedIn = async (userID) => {
   iEl.classList.add('material-icons', 'right')
   iEl.textContent = 'account_circle'
   btnEl.appendChild(iEl)
+
+  btnEl.addEventListener('click', (e) => {
+    const fromVal = 'my-lists'
+    setReloadInfo(`login-${fromVal}`)
+  })
+
   btnWrapperEl.appendChild(btnEl)
 
   // // Create Collections button

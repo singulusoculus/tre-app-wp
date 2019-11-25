@@ -3,7 +3,7 @@ import { getCurrentStep } from './step'
 const getStartHelpText = () => {
   return [
     {
-      title: 'Start',
+      title: 'start',
       listItems: [
         'Select a category to get started creating a list.',
         'You can also see the current top 10 games from the current year here. Click the button below the list to see all of the top games as ranked by users of the Ranking Engine.',
@@ -127,13 +127,13 @@ const handleQuickHelpClick = () => {
     let helpText = ''
 
     // step check
-    if (step === 'Start') {
+    if (step === 'start') {
       helpText = renderHelpTextDOM(getStartHelpText())
-    } else if (step === 'List') {
+    } else if (step === 'list') {
       helpText = renderHelpTextDOM(getListHelpText())
-    } else if (step === 'Rank') {
+    } else if (step === 'rank') {
       helpText = renderHelpTextDOM(getRankHelpText())
-    } else if (step === 'Result') {
+    } else if (step === 'result') {
       helpText = renderHelpTextDOM(getResultHelpText())
     }
 

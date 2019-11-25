@@ -26,7 +26,7 @@ const saveBGGCollection = () => {
 const initPrevBGGCollection = () => {
   // Load previous BGG data if exists
   const bggData = JSON.parse(localStorage.getItem('bggCollection'))
-  if (bggData !== null) {
+  if (bggData) {
     if (bggData.bggCollectionData.length > 0) {
       setBGGCollectionData(bggData.bggCollectionData)
       document.querySelector('#bgg-username').value = bggData.bggUsername
@@ -202,6 +202,7 @@ const addBGGItemToList = (item, type) => {
 
   if (type === 'bgg-collection') {
     renderCollectionEl('bgg-collection')
+    // saveBGGCollection()
   } else if (type === 'bgg-search') {
     renderCollectionEl('bgg-search')
   }
@@ -218,6 +219,7 @@ const handleAddSelectedBGG = () => {
   addListItems(list)
 
   renderCollectionEl('bgg-collection')
+  // saveBGGCollection()
 }
 
 export {

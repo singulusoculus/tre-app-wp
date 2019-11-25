@@ -18,7 +18,7 @@ const setListData = (data) => {
 const initPrevList = (category, data) => {
   listData = createList(data)
   setCategory(category)
-  setCurrentStep('List')
+  setCurrentStep('list')
 
   saveData(listData)
   renderCollectionEl('list')
@@ -31,7 +31,7 @@ const initPrevList = (category, data) => {
 // Loads a list from rank or result back into List
 const loadList = (list) => {
   listData = list
-  setCurrentStep('List')
+  setCurrentStep('list')
   if (listData.length > 0) {
     saveData(listData)
     renderCollectionEl('list')
@@ -100,7 +100,7 @@ const addListItems = (list) => {
   })
 
   if (listData.length > 0) {
-    setCurrentStep('List')
+    setCurrentStep('list')
     enableStepTab('rank')
     enableNextButton()
     enableListSave()
@@ -155,7 +155,7 @@ const removeListItem = (item) => {
 const handleClickClear = () => {
   const source = getCurrentStep()
 
-  if (source === 'List' && listData.length > 0) {
+  if (source === 'list' && listData.length > 0) {
     const message = 'Are you sure you want to clear your list?'
     custConfirm(message, clearListData, source)
   }
@@ -164,7 +164,7 @@ const handleClickClear = () => {
 const clearListData = () => {
   const step = getCurrentStep()
 
-  if (step === 'List' && listData.length > 0) {
+  if (step === 'list' && listData.length > 0) {
     listData = []
     disableStepTab('rank')
     disableListSave()

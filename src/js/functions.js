@@ -12,7 +12,7 @@ import { fadeInSpinner, fadeOutSpinner } from './spinner'
 const initRankingEngine = async () => {
   initMaterializeComponents()
   showTab('start')
-  setCurrentStep('Start')
+  setCurrentStep('start')
   dbGetTopTenYear()
 
   // Check for a previous session on reload from a login/logout
@@ -72,13 +72,13 @@ const initRankingEngineReload = async (reload) => {
     const dbListInfo = prevData.dbListInfo
     const parentList = prevData.parentList
 
-    if (step !== 'Start') {
-      if (loginStep === 'List') {
+    if (step !== 'start') {
+      if (loginStep === 'list') {
         initPrevList(category, data)
-      } else if (loginStep === 'Rank') {
+      } else if (loginStep === 'rank') {
         setParentList(parentList)
         initPrevRanking(category, data)
-      } else if (loginStep === 'Result') {
+      } else if (loginStep === 'result') {
         initPrevResult(category, data)
       }
       if (type === 'login-save') {
@@ -102,14 +102,14 @@ const initRankingEngineReload = async (reload) => {
 const initRankingEngineUrlParam = async (param) => {
   try {
     if (param.type === 'r') {
-      const result = await dbGetSharedList(param.id, 'Result')
+      const result = await dbGetSharedList(param.id, 'result')
       const category = parseInt(result[0].list_category)
       const data = JSON.parse(result[0].result_data)
       initPrevResult(category, data)
       document.querySelector('#save-results').classList.add('disabled')
       removeURLParam()
     } else if (param.type === 't') {
-      const template = await dbGetSharedList(param.id, 'Template')
+      const template = await dbGetSharedList(param.id, 'template')
       const category = parseInt(template[0].list_category)
       const data = JSON.parse(template[0].template_data)
       const templateId = parseInt(template[0].template_id)
@@ -130,11 +130,11 @@ const initRankingEngineUrlParam = async (param) => {
         setListData(data)
         setCategory(category)
         setParentList(templateId)
-        showRankSection('List')
+        showRankSection('list')
         removeURLParam()
       }
     } else if (param.type === 'p') {
-      const progress = await dbGetSharedList(param.id, 'Progress')
+      const progress = await dbGetSharedList(param.id, 'progress')
       const category = parseInt(progress[0].list_category)
       const data = JSON.parse(progress[0].progress_data)
       initPrevRanking(category, data)
@@ -158,12 +158,12 @@ const handleClickSave = (e) => {
     custMessage('Please add a description for your list')
     e.stopPropagation()
   } else {
-    if (currentStep === 'List') {
+    if (currentStep === 'list') {
       dbSaveTemplateData(saveDesc)
-    } else if (currentStep === 'Rank') {
+    } else if (currentStep === 'rank') {
       // This handles both insert and update db opeations depending on if they have a current list.
       dbSaveProgressData(saveDesc)
-    } else if (currentStep === 'Result') {
+    } else if (currentStep === 'result') {
       dbSaveUserResultData(saveDesc)
     }
   }
@@ -285,7 +285,7 @@ const handleClickAccount = () => {
 const handleClickStart = () => {
   const source = getCurrentStep()
   const category = document.querySelector('#list-category-select').value
-  if (source !== 'Start' || category !== '0') {
+  if (source !== 'start' || category !== '0') {
     const message = 'This will clear any progress and start the process from the beginning. Want to continue?'
     custConfirm(message, showStartSection, source)
   }
@@ -295,10 +295,10 @@ const handleClickList = () => {
   const source = getCurrentStep()
   let message = ''
 
-  if (source === 'Rank') {
+  if (source === 'rank') {
     message = 'This will terminate the ranking process and allow you to edit the list. Want to continue?'
     custConfirm(message, showListSection, source)
-  } else if (source === 'Result') {
+  } else if (source === 'result') {
     message = 'This will clear your results and allow you to edit the list. Want to continue?'
     custConfirm(message, showListSection, source)
   }
@@ -306,7 +306,7 @@ const handleClickList = () => {
 
 const handleClickRank = () => {
   const source = getCurrentStep()
-  if (source === 'List') {
+  if (source === 'list') {
     const listData = getListData()
     const listLength = listData.length
     if (listLength > 0) {
@@ -315,10 +315,10 @@ const handleClickRank = () => {
       // const message = 'Are you ready to start ranking this list?'
       custConfirm(message, showRankSection, source)
     }
-  } else if (source === 'Rank') {
+  } else if (source === 'rank') {
     const message = 'Do you really want to restart ranking this list?'
     custConfirm(message, showRankSection, source)
-  } else if (source === 'Result') {
+  } else if (source === 'result') {
     const instance = M.Modal.getInstance(document.querySelector('#restart-modal'))
     instance.open()
     const data = getResultData()

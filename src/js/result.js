@@ -11,7 +11,7 @@ let resultData = []
 const initPrevResult = (category, data) => {
   resultData = data
   setCategory(category)
-  setCurrentStep('Result')
+  setCurrentStep('result')
   saveData(resultData)
   showResultSection()
 }

@@ -13,7 +13,7 @@ let localStorageHistoryEnabled = true
 
 const initPrevRanking = (category, data) => {
   disableArrowKeyScroll()
-  setCurrentStep('Rank')
+  setCurrentStep('rank')
   setCategory(category)
 
   data.masterList = createList(data.masterList)
@@ -132,7 +132,7 @@ const initRanking = (itemsList, category) => {
   rankData.cmp1 = rankData.sortList.length - 2
   rankData.cmp2 = rankData.sortList.length - 1
 
-  setCurrentStep('Rank')
+  setCurrentStep('rank')
   saveData(rankData)
 
   resetHistory()
@@ -437,7 +437,7 @@ const calcRankedList = () => {
   setDBListInfoType('userResult', { id: 0, desc: '' })
 
   setResultData(rankedList)
-  setCurrentStep('Result')
+  setCurrentStep('result')
 
   rankDataHistory = []
   saveRankDataHistory()
@@ -477,7 +477,7 @@ const handleRestart = (e) => {
 
   if (checkedOption === 'restart-complete') {
     setDBListInfoType('result', { id: 0 })
-    showRankSection('Result')
+    showRankSection('result')
   } else if (checkedOption === 'restart-partial') {
     // Destroy template connection to database
     setDBListInfoType('template', { id: 0, desc: '' })
@@ -492,7 +492,7 @@ const handleRestart = (e) => {
       const fullData = getResultData()
       const newData = fullData.slice(0, numOfItems)
       setResultData(newData)
-      showRankSection('Result')
+      showRankSection('result')
     }
   }
   // Clears database link when starting a new ranking
@@ -522,7 +522,7 @@ const cardFadeIn = () => {
 // Enable use of left, right, and down keys to make selections
 document.onkeydown = function (e) {
   // If a modal is open arrow keys will not work
-  if (!document.querySelector('.modal.open') && getCurrentStep() === 'Rank') {
+  if (!document.querySelector('.modal.open') && getCurrentStep() === 'rank') {
     switch (e.keyCode) {
       case 37:
         // Left

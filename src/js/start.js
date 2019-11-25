@@ -16,7 +16,7 @@ const handleCategoryChange = () => {
 
   clearListData()
   handleCollectionChangeClick()
-  setCurrentStep('List')
+  setCurrentStep('list')
   renderCollectionEl('list')
   showListSection()
   M.Toast.dismissAll()
