@@ -6,6 +6,7 @@
   <title>Ranking Engine</title>
   <?php wp_head(); ?>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="<?php echo get_theme_file_uri('/dist/noslider.css'); ?>" rel="stylesheet">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
   <!-- Global site tag (gtag.js) - Google Analytics -->

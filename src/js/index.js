@@ -1,7 +1,7 @@
 import '../styles/main.scss'
 import { renderCollectionEl } from './views'
 import { handleClickClear, handleAddTextItems } from './list'
-import { setListFilters, setBGGFilters, setBGGSearchFilters } from './filters'
+import { setListFilters, setBGGFilters, setBGGSearchFilters, getBGGFilters, updateBGGFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
@@ -142,13 +142,17 @@ jQuery(document).ready(() => {
     })
   })
 
-  document.querySelector('#personal-rating').addEventListener('change', (e) => {
-    console.log(e.target.value)
-    console.log(parseFloat(e.target.value))
+  const slider = document.querySelector('#min-max-rating-slider')
+  slider.noUiSlider.on('change', () => {
+    const values = slider.noUiSlider.get()
+    const min = parseFloat(values[0])
+    const max = parseFloat(values[1])
+
     setBGGFilters({
-      rating: parseFloat(e.target.value)
+      minRating: min,
+      maxRating: max
     })
-    // renderBGGCollection()
+
     renderCollectionEl('bgg-collection')
   })
 

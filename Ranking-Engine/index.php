@@ -191,12 +191,10 @@
                   </div>
                   <div class="bgg-personal-rating">
                     <form class="bgg-personal-rating__form" action="#">
-                    <div class="center-align">
-                      <span class="bgg-filter-heading">Min Personal Rating</span>
-                    </div>
-                      <p class="range-field">
-                        <input type="range" id="personal-rating" value="0" min="0" max="10" step="0.5" />
-                      </p>
+                      <div class="center-align">
+                        <span class="bgg-filter-heading">Min/Max Personal Rating</span>
+                      </div>
+                      <div id="min-max-rating-slider"></div>
                     </form>
                   </div>
                   <div class="center-align">
@@ -602,6 +600,7 @@
     </div>
   </div> -->
 
+  <script src="<?php echo get_theme_file_uri('/dist/nouislider.min.js'); ?>"></script>
   <script src="<?php echo get_theme_file_uri('/dist/index-bundle.js'); ?>"></script>
 
   <?php get_footer();

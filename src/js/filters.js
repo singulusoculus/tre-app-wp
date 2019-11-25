@@ -70,7 +70,8 @@ const bggFilters = {
   wishlist: false,
   played: true,
   rated: false,
-  rating: 0
+  minRating: 0,
+  maxRating: 10
 }
 
 const getBGGFilters = () => bggFilters
@@ -112,8 +113,12 @@ const setBGGFilters = (updates) => {
     bggFilters.rated = updates.rated
   }
 
-  if (typeof updates.rating === 'number') {
-    bggFilters.rating = updates.rating
+  if (typeof updates.minRating === 'number') {
+    bggFilters.minRating = updates.minRating
+  }
+
+  if (typeof updates.maxRating === 'number') {
+    bggFilters.maxRating = updates.maxRating
   }
 }
 
@@ -131,11 +136,14 @@ const updateBGGFilters = () => {
     setBGGFilters({ [f]: true })
   })
 
-  // Get rating slider value
-  const pRating = document.querySelector('#personal-rating').value
-  // Update rating filter
+  // Double slider values
+  const slider = document.querySelector('#min-max-rating-slider')
+  const values = slider.noUiSlider.get()
+  const min = parseFloat(values[0])
+  const max = parseFloat(values[1])
   setBGGFilters({
-    rating: parseFloat(pRating)
+    minRating: min,
+    maxRating: max
   })
 }
 
@@ -159,7 +167,7 @@ const filterBGGCollection = (data) => {
   filteredList = filteredList.filter((list, index, self) => self.findIndex(l => l.id === list.id) === index)
 
   // Filter for Personal Rating
-  filteredList = filteredList.filter((item) => item.rating >= filters.rating)
+  filteredList = filteredList.filter((item) => item.rating >= filters.minRating && item.rating <= filters.maxRating)
 
   // Filter out already added games
   filteredList = filteredList.filter((item) => item.addedToList === false)

@@ -347,6 +347,23 @@ const initMaterializeComponents = () => {
   const elems = document.querySelectorAll('input[type=range]')
   M.Range.init(elems)
 
+  const slider = document.getElementById('min-max-rating-slider')
+  noUiSlider.create(slider, {
+    start: [0, 10],
+    margin: 0.5,
+    behaviour: 'drag',
+    connect: true,
+    step: 0.5,
+    orientation: 'horizontal',
+    range: {
+      'min': 0,
+      'max': 10
+    },
+    format: wNumb({
+      decimals: 1
+    })
+  })
+
   const modalOptions = { dismissible: false }
   const alertModal = document.querySelector('#alert-modal')
   const restartModal = document.querySelector('#restart-modal')
