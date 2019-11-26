@@ -70,7 +70,7 @@ const bggFilters = {
   wishlist: false,
   played: true,
   rated: true,
-  minRating: 0,
+  minRating: 2,
   maxRating: 10
 }
 
@@ -163,9 +163,6 @@ const filterBGGCollection = (data) => {
     })
   })
 
-  // Filter duplicates out
-  filteredList = filteredList.filter((list, index, self) => self.findIndex(l => l.id === list.id) === index)
-
   // Filter for Personal Rating
   const ratedCB = document.querySelector('.bgg-cb .rated').checked
   if (ratedCB) {
@@ -174,6 +171,9 @@ const filterBGGCollection = (data) => {
 
   // Filter out already added games
   filteredList = filteredList.filter((item) => item.addedToList === false)
+
+  // Filter duplicates out
+  filteredList = filteredList.filter((list, index, self) => self.findIndex(l => l.id === list.id) === index)
 
   // Sort alphabetical
   filteredList = sortListData(filteredList, 'alphabetical')

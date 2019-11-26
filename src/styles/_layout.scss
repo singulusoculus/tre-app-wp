@@ -210,8 +210,14 @@
 
 #min-max-rating-slider {
   margin-top: 1rem;
-  margin-bottom: 1rem;
-  width: 75%;
+  margin-bottom: 3rem;
+  width: 85%;
+
+  @media only screen and (max-width: 600px) {
+    & {
+      width: 95%;
+    }
+  }
 }
 
 .list-types-wrapper {

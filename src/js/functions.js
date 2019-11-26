@@ -362,7 +362,7 @@ const initMaterializeComponents = () => {
 
   const slider = document.getElementById('min-max-rating-slider')
   noUiSlider.create(slider, {
-    start: [0, 10],
+    start: [2, 10],
     margin: 0.5,
     behaviour: 'drag',
     connect: true,
@@ -375,6 +375,13 @@ const initMaterializeComponents = () => {
     format: wNumb({
       decimals: 1
     })
+    // pips: {
+    //   mode: 'steps',
+    //   density: 4,
+    //   format: wNumb({
+    //     decimals: 1
+    //   })
+    // }
   })
 
   handleClickRatedCb()
