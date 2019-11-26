@@ -18,6 +18,12 @@ if (isMobile) {
   document.querySelector('#list-category-select').classList.add('browser-default')
 }
 
+// addEventListener('touchmove', onTouchMove, { passive: false })
+
+// function onTouchMove (e) {
+//   e.preventDefault()
+// }
+
 jQuery(document).ready(() => {
   initRankingEngine()
 

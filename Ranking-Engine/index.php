@@ -596,6 +596,8 @@
     </div>
   </div> -->
 
+  
+  <script src="<?php echo get_theme_file_uri('/dist/wNumb.min.js'); ?>"></script>
   <script src="<?php echo get_theme_file_uri('/dist/nouislider.min.js'); ?>"></script>
   <script src="<?php echo get_theme_file_uri('/dist/index-bundle.js'); ?>"></script>
 

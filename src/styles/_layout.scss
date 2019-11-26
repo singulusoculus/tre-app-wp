@@ -187,7 +187,7 @@
 
   &__icon {
     position: unset;
-    color: #527A45 !important;
+    color: $color-primary !important;
     transition: all .4s ease-in-out;
 
     &.added {
@@ -209,8 +209,8 @@
 }
 
 #min-max-rating-slider {
-  margin-top: 1rem;
-  margin-bottom: 3rem;
+  margin-top: 2.1rem;
+  margin-bottom: 1rem;
   width: 85%;
 
   @media only screen and (max-width: 600px) {
@@ -218,6 +218,24 @@
       width: 95%;
     }
   }
+}
+
+.noUi-connect {
+  background-color: $color-primary !important;
+}
+
+.noUi-horizontal {
+  height: 10px !important;
+}
+
+.noUi-horizontal .noUi-handle {
+  height: 18px !important;
+}
+
+.noUi-handle:after,
+.noUi-handle:before {
+  height: 8px !important;
+  top: 3px !important;
 }
 
 .list-types-wrapper {

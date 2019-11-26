@@ -364,7 +364,7 @@ const initMaterializeComponents = () => {
   noUiSlider.create(slider, {
     start: [2, 10],
     margin: 0.5,
-    behaviour: 'drag',
+    // behaviour: 'none',
     connect: true,
     step: 0.5,
     orientation: 'horizontal',
@@ -372,6 +372,7 @@ const initMaterializeComponents = () => {
       'min': 0,
       'max': 10
     },
+    tooltips: true,
     format: wNumb({
       decimals: 1
     })
