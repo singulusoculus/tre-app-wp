@@ -341,6 +341,19 @@ const disableArrowKeyScroll = () => {
   }, false)
 }
 
+const handleClickRatedCb = () => {
+  const slider = document.getElementById('min-max-rating-slider')
+  const ratedCBChecked = document.querySelector('.bgg-cb .rated').checked
+  const personalRatingEl = document.querySelector('.bgg-personal-rating')
+  if (ratedCBChecked) {
+    slider.removeAttribute('disabled')
+    personalRatingEl.classList.remove('hide')
+  } else {
+    slider.setAttribute('disabled', true)
+    personalRatingEl.classList.add('hide')
+  }
+}
+
 const initMaterializeComponents = () => {
   M.AutoInit()
 
@@ -363,6 +376,8 @@ const initMaterializeComponents = () => {
       decimals: 1
     })
   })
+
+  handleClickRatedCb()
 
   const modalOptions = { dismissible: false }
   const alertModal = document.querySelector('#alert-modal')
@@ -443,5 +458,6 @@ export {
   handleClickSaveList,
   handleClickSaveRank,
   handleClickSaveResult,
-  handleClickAccount
+  handleClickAccount,
+  handleClickRatedCb
 }

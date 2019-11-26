@@ -1,11 +1,11 @@
 import '../styles/main.scss'
 import { renderCollectionEl } from './views'
 import { handleClickClear, handleAddTextItems } from './list'
-import { setListFilters, setBGGFilters, setBGGSearchFilters, getBGGFilters, updateBGGFilters } from './filters'
+import { setListFilters, setBGGFilters, setBGGSearchFilters } from './filters'
 import { handlePick, handleUndo, handleDeleteItem, handleRestart } from './rank'
 import { handleCategoryChange } from './start'
 import { handleBGGCollectionRequest, handleAddSelectedBGG, handleCollectionChangeClick } from './bgg-collection'
-import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank, handleClickSaveResult, handleClickAccount } from './functions'
+import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart, handleClickList, handleClickRank, setReloadInfo, handleClickSaveList, handleClickSaveRank, handleClickSaveResult, handleClickAccount, handleClickRatedCb } from './functions'
 import { copyURLText, handleShareSwitchChange } from './list-sharing'
 import { handleQuickHelpClick } from './quick-help'
 import { handleBGGSearch } from './bgg-search'
@@ -137,11 +137,11 @@ jQuery(document).ready(() => {
       setBGGFilters({
         [element]: e.target.checked
       })
-      // renderBGGCollection()
       renderCollectionEl('bgg-collection')
     })
   })
 
+  // Personal Min/Max Slider
   const slider = document.querySelector('#min-max-rating-slider')
   slider.noUiSlider.on('change', () => {
     const values = slider.noUiSlider.get()
@@ -156,6 +156,10 @@ jQuery(document).ready(() => {
     renderCollectionEl('bgg-collection')
   })
 
+  document.querySelector('.bgg-cb .rated').addEventListener('click', () => {
+    handleClickRatedCb()
+  })
+
   document.querySelector('#bgg-add-selected').addEventListener('click', (e) => {
     handleAddSelectedBGG()
   })
@@ -165,7 +169,6 @@ jQuery(document).ready(() => {
     setListFilters({
       searchText: e.target.value
     })
-    // renderListData()
     renderCollectionEl('list')
   })
 

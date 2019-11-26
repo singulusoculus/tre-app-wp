@@ -204,16 +204,14 @@
 .bgg-personal-rating {
   width: 100%;
   display: flex;
-  justify-content: center;
-
-  &__form {
-    width: 75%
-  }
+  align-items: center;
+  flex-direction: column;
 }
 
 #min-max-rating-slider {
   margin-top: 1rem;
   margin-bottom: 1rem;
+  width: 75%;
 }
 
 .list-types-wrapper {

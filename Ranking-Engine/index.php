@@ -155,7 +155,7 @@
                         <span>Played</span>
                       </label>
                       <label class="bgg-cb">
-                        <input class="rated" type="checkbox" />
+                        <input class="rated" type="checkbox" checked />
                         <span>Rated</span>
                       </label>
                     </div>
@@ -190,12 +190,8 @@
                     </form>
                   </div>
                   <div class="bgg-personal-rating">
-                    <form class="bgg-personal-rating__form" action="#">
-                      <div class="center-align">
-                        <span class="bgg-filter-heading">Min/Max Personal Rating</span>
-                      </div>
+                        <div class="bgg-filter-heading">Min/Max Personal Rating</div>
                       <div id="min-max-rating-slider"></div>
-                    </form>
                   </div>
                   <div class="center-align">
                     <a id="bgg-add-selected" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Add Filtered</a>

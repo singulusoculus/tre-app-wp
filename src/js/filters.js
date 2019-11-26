@@ -69,7 +69,7 @@ const bggFilters = {
   wanttoplay: false,
   wishlist: false,
   played: true,
-  rated: false,
+  rated: true,
   minRating: 0,
   maxRating: 10
 }
@@ -167,7 +167,10 @@ const filterBGGCollection = (data) => {
   filteredList = filteredList.filter((list, index, self) => self.findIndex(l => l.id === list.id) === index)
 
   // Filter for Personal Rating
-  filteredList = filteredList.filter((item) => item.rating >= filters.minRating && item.rating <= filters.maxRating)
+  const ratedCB = document.querySelector('.bgg-cb .rated').checked
+  if (ratedCB) {
+    filteredList = filteredList.filter((item) => item.rating >= filters.minRating && item.rating <= filters.maxRating)
+  }
 
   // Filter out already added games
   filteredList = filteredList.filter((item) => item.addedToList === false)
