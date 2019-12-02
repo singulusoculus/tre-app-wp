@@ -364,7 +364,6 @@ const initMaterializeComponents = () => {
   noUiSlider.create(slider, {
     start: [2, 10],
     margin: 0.5,
-    // behaviour: 'none',
     connect: true,
     step: 0.5,
     orientation: 'horizontal',
@@ -376,13 +375,6 @@ const initMaterializeComponents = () => {
     format: wNumb({
       decimals: 1
     })
-    // pips: {
-    //   mode: 'steps',
-    //   density: 4,
-    //   format: wNumb({
-    //     decimals: 1
-    //   })
-    // }
   })
 
   handleClickRatedCb()

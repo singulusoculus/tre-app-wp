@@ -201,6 +201,7 @@
   width: 50px;
 }
 
+// Personal Rating Slider
 .bgg-personal-rating {
   width: 100%;
   display: flex;
@@ -211,13 +212,7 @@
 #min-max-rating-slider {
   margin-top: 2.1rem;
   margin-bottom: 1rem;
-  width: 85%;
-
-  @media only screen and (max-width: 600px) {
-    & {
-      width: 95%;
-    }
-  }
+  width: 100%;
 }
 
 .noUi-connect {
@@ -230,6 +225,7 @@
 
 .noUi-horizontal .noUi-handle {
   height: 18px !important;
+  width: 25px !important;
 }
 
 .noUi-handle:after,
@@ -238,6 +234,15 @@
   top: 3px !important;
 }
 
+.noUi-handle:after {
+  left: 13px !important;
+}
+
+.noUi-handle:before {
+  left: 9px !important;
+}
+
+// List types check boxes
 .list-types-wrapper {
   display: flex;
   justify-content: space-around;
