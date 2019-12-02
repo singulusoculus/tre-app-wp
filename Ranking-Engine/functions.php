@@ -4,13 +4,15 @@ show_admin_bar( false );
 
 add_action( 'wp_enqueue_scripts', 'blankslate_load_scripts' );
 
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
+
 function blankslate_load_scripts() {
   wp_enqueue_style( 'blankslate-style', get_stylesheet_uri() );
   wp_enqueue_script( 'jquery' );
   wp_enqueue_style( 're-materialze-style', get_theme_file_uri( '/dist/materialize.min.css') );
   wp_enqueue_style( 're-main-style', get_theme_file_uri( '/dist/index.css') );
   wp_enqueue_script( 're-materialize-js', get_theme_file_uri( '/dist/materialize.min.js' ) );
-  // wp_enqueue_script( 're-bundle-js', get_theme_file_uri( '/dist/bundle.js') );
   wp_enqueue_script( 're-datatables-js', get_theme_file_uri('/dist/datatables.min.js') );
 }
 
@@ -21,7 +23,7 @@ function wpse_44020_logout_redirect( $logouturl, $redir )
 add_filter( 'logout_url', 'wpse_44020_logout_redirect', 10, 2 );
 
 function getRankingEngineVersion () {
-  return '2.1.6';
+  return '2.1.7';
 }
 
 //For The Ranking Engine - starting in 1.4
