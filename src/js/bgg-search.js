@@ -3,8 +3,6 @@ import { renderCollectionEl } from './views'
 import { sortListData } from './list'
 import { dbCaptureBGGData } from './database'
 
-// https://boardgamegeek.com/xmlapi2/search?type=boardgame,boardgameexpansion&query=xia
-
 let bggSearchData = []
 
 const getBGGSearchData = () => bggSearchData
@@ -31,7 +29,6 @@ const handleBGGSearch = async (searchText, type) => {
     searchUrl += `&exact=1`
   }
 
-  // let searchUrl = ''
   let results
   if (type === 'boardgames') {
     // when asking for type boardgame, bgg returns both boardgame and boardgameexpansion types but does not label the expansions properly.
