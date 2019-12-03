@@ -9,8 +9,8 @@ import { initRankingEngine, handleClickSave, handleClickUpdate, handleClickStart
 import { copyURLText, handleShareSwitchChange } from './list-sharing'
 import { handleQuickHelpClick } from './quick-help'
 import { handleBGGSearch } from './bgg-search'
-// import LogRocket from 'logrocket'
-// LogRocket.init('r3us4o/ranking-engine-prod')
+import LogRocket from 'logrocket'
+LogRocket.init('r3us4o/ranking-engine-prod')
 
 // Check for mobile browser and fix category select to work better for mobile browsers
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
