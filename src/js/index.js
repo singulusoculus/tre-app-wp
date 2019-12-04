@@ -131,7 +131,7 @@ jQuery(document).ready(() => {
   })
 
   // BGG Filters
-  document.querySelectorAll('.bgg-cb').forEach((el) => {
+  Array.from(document.querySelectorAll('.bgg-cb')).forEach((el) => {
     el.addEventListener('change', (e) => {
       const element = e.target.className
       setBGGFilters({
@@ -193,7 +193,7 @@ jQuery(document).ready(() => {
   })
 
   // Handle item delete
-  document.querySelectorAll('.rank-card-content__delete').forEach((el) => {
+  Array.from(document.querySelectorAll('.rank-card-content__delete')).forEach((el) => {
     el.addEventListener('click', (e) => {
       e.stopPropagation()
       if (e.target.id === 'rank-delete-1') {
@@ -238,7 +238,7 @@ jQuery(document).ready(() => {
     handleClickSaveResult()
   })
 
-  document.querySelectorAll('.save-btn').forEach((el) => {
+  Array.from(document.querySelectorAll('.save-btn')).forEach((el) => {
     el.addEventListener('click', () => {
       document.querySelector('#login-form-button').setAttribute('from', '')
       document.querySelector('#login-form-button').setAttribute('from', 'save')

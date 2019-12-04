@@ -14,16 +14,16 @@
 
   <script type="text/javascript">
 
-    const getThemePath = () => {
+    function getThemePath() {
       return '<?php echo get_theme_file_uri(); ?>'
     }
 
-    const getFilePath = (file) => {
+    function getFilePath(file) {
       const themePath = '<?php echo get_theme_file_uri(); ?>'
       return `${themePath}${file}`
     }
 
-    const getSiteURL = () => {
+    function getSiteURL() {
       return '<?php echo get_site_url() ?>/'
     }
   </script>
