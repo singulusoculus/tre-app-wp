@@ -20,7 +20,7 @@
 
     function getFilePath(file) {
       const themePath = '<?php echo get_theme_file_uri(); ?>'
-      return `${themePath}${file}`
+      return themePath.concat(file)
     }
 
     function getSiteURL() {
