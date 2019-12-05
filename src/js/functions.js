@@ -362,7 +362,7 @@ const initMaterializeComponents = () => {
 
   const slider = document.getElementById('min-max-rating-slider')
   noUiSlider.create(slider, {
-    start: [2, 10],
+    start: [0, 10],
     margin: 0.5,
     connect: true,
     step: 0.5,

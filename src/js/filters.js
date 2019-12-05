@@ -70,7 +70,7 @@ const bggFilters = {
   wishlist: false,
   played: true,
   rated: true,
-  minRating: 2,
+  minRating: 0,
   maxRating: 10
 }
 
