@@ -8,14 +8,17 @@
   , `v1_times_ranked` INT NULL
   , `v1_pop_score` FLOAT NULL
   , `v1_rank` INT NULL
+  , `v1_total_score` FLOAT NULL
   , `v2_list_score` FLOAT NULL 
   , `v2_times_ranked` INT NULL
   , `v2_pop_score` FLOAT NULL
   , `v2_rank` INT NULL
+  , `v2_total_score` FLOAT NULL
   , `v3_list_score` FLOAT NULL 
   , `v3_times_ranked` INT NULL
   , `v3_pop_score` FLOAT NULL
   , `v3_rank` INT NULL
+  , `v3_total_score` FLOAT NULL
   , `bg_id` INT(11) NULL
   , PRIMARY KEY (`id`)
   , UNIQUE KEY (bgg_id))
@@ -43,11 +46,14 @@
   v1_list_score = VALUES(v1_list_score)
   , v1_times_ranked = VALUES(v1_times_ranked);
 
+  -- Calculate total score
+  UPDATE wp_re_boardgames_update_temp
+  SET v1_total_score = v1_list_score + v1_pop_score;
+
     -- Update popularity
   UPDATE wp_re_boardgames_update_temp
   CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'A') AS MaxList 
-  SET v1_pop_score = round((v1_times_ranked)*20/MaxList.max_list_count, 3);
-
+  SET v1_pop_score = round((v1_times_ranked)*16/MaxList.max_list_count, 3);
 
   DROP TABLE IF EXISTS `wp_re_boardgames_rank_temp`;
   CREATE TABLE `wp_re_boardgames_rank_temp` 
@@ -86,11 +92,14 @@
   v2_list_score = VALUES(v2_list_score)
   , v2_times_ranked = VALUES(v2_times_ranked);
 
+    -- Calculate total score
+  UPDATE wp_re_boardgames_update_temp
+  SET v2_total_score = v2_list_score + v2_pop_score;
 
     -- Update popularity
   UPDATE wp_re_boardgames_update_temp
   CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'A') AS MaxList 
-  SET v2_pop_score = round((v2_times_ranked)*20/MaxList.max_list_count, 3);
+  SET v2_pop_score = round((v2_times_ranked)*16/MaxList.max_list_count, 3);
 
 
   DROP TABLE IF EXISTS `wp_re_boardgames_rank_temp`;
@@ -121,13 +130,21 @@
 
 -- Compare
     SELECT t.bgg_id, t.bg_name
-    , t.at_rank as trank, t.at_list_score as tlscore, t.at_pop_score as tpscore, round(t.at_list_score + t.at_pop_score, 3) as ttotal
+    , t.v1_list_score, t.v1_pop_score, t.v1_total_score, t.v1_times_ranked, t.v1_rank
     , b.at_rank, b.at_list_score, b.at_pop_score, round(b.at_list_score + b.at_pop_score, 3) as btotal
-    , b.at_rank - t.at_rank as rank_change
+    , b.at_rank - t.v1_rank as rank_change
     FROM `wp_re_boardgames_update_temp` as t
-    JOIN wp_re_boardgames as b ON t.bgg_id = b.bgg_id
-    WHERE t.at_rank IS NOT NULL
-    ORDER BY trank ASC
+    JOIN `wp_re_boardgames` as b ON t.bgg_id = b.bgg_id
+    WHERE t.v1_rank IS NOT NULL
+    ORDER BY t.v1_rank ASC
+
+    SELECT t.bgg_id, t.bg_name, b.at_rank - t.v2_rank as rank_change
+    , t.v2_list_score, t.v2_pop_score, t.v2_total_score, t.v2_times_ranked, t.v2_rank
+    , b.at_rank, b.at_list_score, b.at_pop_score, round(b.at_list_score + b.at_pop_score, 3) as btotal
+    FROM `wp_re_boardgames_update_temp` as t
+    JOIN `wp_re_boardgames` as b ON t.bgg_id = b.bgg_id
+    WHERE t.v2_rank IS NOT NULL
+    ORDER BY t.v2_rank ASC
 
 
     -- Using 150 - how many lists/items would be left out:
