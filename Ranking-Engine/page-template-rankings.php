@@ -18,9 +18,9 @@ Template Name: Rankings
   <div class="row">
     <div class="col s12">
       <ul class="tabs tabs-fixed-width">
-        <li class="tab col s3"><a href="#rankings-at-wrapper" class="active">All-time</a></li>
-        <li class="tab col s3"><a href="#rankings-y-wrapper" id="tab-title-year">Year - <?php echo date("Y"); ?></a></li>
+        <li class="tab col s3"><a href="#rankings-y-wrapper" id="tab-title-year" class="active">Year - <?php echo date("Y"); ?></a></li>
         <li class="tab col s3"><a href="#rankings-d30-wrapper">30 Days</a></li>
+        <li class="tab col s3"><a href="#rankings-at-wrapper">All-time</a></li>
       </ul>
     <div class="divider-sm"></div>
     </div>

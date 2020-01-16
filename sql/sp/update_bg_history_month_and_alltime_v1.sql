@@ -98,7 +98,8 @@ IF @existscheck IS NULL THEN
         INSERT INTO wp_re_boardgames_hist_at (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked)
         SELECT bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked
         FROM wp_re_boardgames_hist_month
-        WHERE period = 201805;
+        WHERE period = 201805
+        AND pop_score > 1;
 
     ELSE
 
