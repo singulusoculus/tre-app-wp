@@ -90,6 +90,7 @@ jQuery(document).ajaxStop(() => {
     e.classList.add('complete')
   })
 
+  jQuery('#rankings-wrapper').fadeIn()
   fadeOutSpinner()
 })
 
@@ -147,6 +148,10 @@ const handleYearSelectChange = () => {
 
     renderTable('rankings-y', ['Rank', 'Game', 'Score'], parsedData)
     initDataTable('rankings-y')
+
+    const yearTab = document.querySelector('#tab-title-year')
+    yearTab.textContent = `Year - ${year}`
+
     fadeOutSpinner()
   })
 }
