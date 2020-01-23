@@ -38,9 +38,52 @@ const initRankings = () => {
     selectWrapper.classList.add('complete')
   })
 
+  // Get Periods for AT and Month history
+  jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
+    func: 'getPeriods'
+  }, (data, status) => {
+    const dataParsed = JSON.parse(data)
+    console.log(dataParsed)
+
+    // All Time
+    const atSelectEl = document.querySelector('#at-period-select')
+    dataParsed.forEach((e) => {
+      const optionEl = document.createElement('option')
+      optionEl.value = e.period
+      optionEl.textContent = e.nice_period
+      atSelectEl.appendChild(optionEl)
+    })
+    M.FormSelect.init(document.querySelector('#at-period-select'))
+    const atSelectInstance = M.FormSelect.getInstance(document.querySelector('#at-period-select'))
+    const atSelectWrapper = atSelectInstance.wrapper
+    atSelectWrapper.classList.add('complete')
+
+    // Month
+    const monthSelectEl = document.querySelector('#month-period-select')
+    dataParsed.forEach((e) => {
+      const optionEl = document.createElement('option')
+      optionEl.value = e.period
+      optionEl.textContent = e.nice_period
+      monthSelectEl.appendChild(optionEl)
+    })
+    M.FormSelect.init(document.querySelector('#month-period-select'))
+    const monthSelectInstance = M.FormSelect.getInstance(document.querySelector('#month-period-select'))
+    const monthSelectWrapper = monthSelectInstance.wrapper
+    monthSelectWrapper.classList.add('complete')
+  })
+
+  const currentYear = new Date().getFullYear()
+  let currentMonth = new Date().getMonth() + 1
+  if (currentMonth < 10) {
+    currentMonth = `0${currentMonth}`
+  }
+  const currentPeriod = `${currentYear}${currentMonth}`
+  console.log(currentPeriod)
+
   // Get Top Games Lists
   jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
-    func: 'getTopGamesAll'
+    func: 'getTopGamesAll',
+    period: currentPeriod
   }, (data, status) => {
     const parsedData = JSON.parse(data)
 
@@ -61,7 +104,8 @@ const initRankings = () => {
 
   // getTopGamesD30
   jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
-    func: 'getTopGamesD30'
+    func: 'getTopGamesD30',
+    period: currentPeriod
   }, (data, status) => {
     const parsedData = JSON.parse(data)
     renderTable('rankings-d30', ['Rank', 'Game', 'Score'], parsedData)
@@ -75,6 +119,14 @@ jQuery(document).ready(() => {
   // handleYearSelectChange
   document.querySelector('#year-select').addEventListener('change', () => {
     handleYearSelectChange()
+  })
+
+  document.querySelector('#at-period-select').addEventListener('change', () => {
+    handleAtSelectChange()
+  })
+
+  document.querySelector('#month-period-select').addEventListener('change', () => {
+    handleMonthSelectChange()
   })
 })
 
@@ -151,6 +203,84 @@ const handleYearSelectChange = () => {
 
     const yearTab = document.querySelector('#tab-title-year')
     yearTab.textContent = `Year - ${year}`
+
+    fadeOutSpinner()
+  })
+}
+
+const handleAtSelectChange = () => {
+  const period = document.querySelector('#at-period-select').value
+  const atTableWrapper = document.querySelector('#rankings-at-table-wrapper')
+  atTableWrapper.innerHTML = ''
+  const atListCount = document.querySelector('#at-count-lists')
+  const atItemsCount = document.querySelector('#at-count-items')
+  atListCount.textContent = '...'
+  atItemsCount.textContent = '...'
+  fadeInSpinner()
+
+  jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
+    func: 'getAtTotals',
+    period
+  }, (data, status) => {
+    const dataParsed = JSON.parse(data)
+    const lists = numWithCommas(dataParsed[0].TotalLists)
+    const items = numWithCommas(dataParsed[1].TotalItems)
+
+    document.querySelector('#at-count-lists').textContent = lists
+    document.querySelector('#at-count-items').textContent = items
+  })
+
+  jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
+    func: 'getTopGamesAll',
+    period
+  }, (data, status) => {
+    const parsedData = JSON.parse(data)
+
+    const selectInstance = M.FormSelect.getInstance(document.querySelector('#at-period-select'))
+    const selectWrapper = selectInstance.wrapper
+    selectWrapper.classList.add('complete')
+
+    renderTable('rankings-at', ['Rank', 'Game', 'Score'], parsedData)
+    initDataTable('rankings-at')
+
+    fadeOutSpinner()
+  })
+}
+
+const handleMonthSelectChange = () => {
+  const period = document.querySelector('#month-period-select').value
+  const atTableWrapper = document.querySelector('#rankings-d30-table-wrapper')
+  atTableWrapper.innerHTML = ''
+  const atListCount = document.querySelector('#d30-count-lists')
+  const atItemsCount = document.querySelector('#d30-count-items')
+  atListCount.textContent = '...'
+  atItemsCount.textContent = '...'
+  fadeInSpinner()
+
+  jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
+    func: 'getMonthTotals',
+    period
+  }, (data, status) => {
+    const dataParsed = JSON.parse(data)
+    const lists = numWithCommas(dataParsed[0].TotalLists)
+    const items = numWithCommas(dataParsed[1].TotalItems)
+
+    document.querySelector('#d30-count-lists').textContent = lists
+    document.querySelector('#d30-count-items').textContent = items
+  })
+
+  jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
+    func: 'getTopGamesD30',
+    period
+  }, (data, status) => {
+    const parsedData = JSON.parse(data)
+
+    const selectInstance = M.FormSelect.getInstance(document.querySelector('#month-period-select'))
+    const selectWrapper = selectInstance.wrapper
+    selectWrapper.classList.add('complete')
+
+    renderTable('rankings-d30', ['Rank', 'Game', 'Score'], parsedData)
+    initDataTable('rankings-d30')
 
     fadeOutSpinner()
   })

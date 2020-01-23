@@ -18,9 +18,9 @@ Template Name: Rankings
   <div class="row">
     <div class="col s12">
       <ul class="tabs tabs-fixed-width">
-        <li class="tab col s3"><a href="#rankings-y-wrapper" id="tab-title-year" class="active">Year - <?php echo date("Y"); ?></a></li>
-        <li class="tab col s3"><a href="#rankings-d30-wrapper">30 Days</a></li>
-        <li class="tab col s3"><a href="#rankings-at-wrapper">All-time</a></li>
+        <li class="tab col s3"><a href="#rankings-y-wrapper" id="tab-title-year" class="active tooltipped" data-position="bottom" data-tooltip="Game ranks based on all rankings in the selected year">Year - <?php echo date("Y"); ?></a></li>
+        <li class="tab col s3"><a href="#rankings-d30-wrapper" id="tab-title-d30" class="tooltipped" data-position="bottom" data-tooltip="Game ranks based on all rankings in the last 30 days">30 Days</a></li>
+        <li class="tab col s3"><a href="#rankings-at-wrapper" id="tab-title-at" class="tooltipped" data-position="bottom" data-tooltip="Game ranks based on all rankings since May of 2018">All-time</a></li>
       </ul>
     <div class="divider-sm"></div>
     </div>
@@ -45,6 +45,14 @@ Template Name: Rankings
                 <div id="at-count-items" class="count">...</div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12 m4 offset-m4 l2 offset-l5">
+            <select id="at-period-select" class="complete">
+            </select>
+            <label>All-time Rankings As Of:</label>
           </div>
         </div>
 
@@ -104,6 +112,15 @@ Template Name: Rankings
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="input-field col s12 m4 offset-m4 l2 offset-l5">
+            <select id="month-period-select" class="complete">
+            </select>
+            <label>Select a Month</label>
+          </div>
+        </div>
+
         <div id="rankings-d30-table-wrapper"></div>
       </div>
     </div>

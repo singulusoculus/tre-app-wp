@@ -22,18 +22,41 @@ switch ($func) {
   case 'getYearTotals':
     getYearTotals();
     break;
+  case 'getPeriods':
+    getPeriods();
+    break;
+  case 'getAtTotals':
+    getAtTotals();
+    break;
+  case 'getMonthTotals':
+    getMonthTotals();
+    break;
+  
 }
 
 function getTopGamesAll() {
     global $wpdb;
+    $period = $_POST['period'];
+    $currentYear = date('Y');
+    $currentMonth = date('m');
+
+    $currentPeriod = "$currentYear$currentMonth";
   
-    $results = $wpdb->get_results ("SELECT at_rank AS rank
-    , bg_name
-    , round(at_list_score + at_pop_score, 3) as total_score
-    FROM wp_re_boardgames 
-    WHERE at_rank <> 0
-    ORDER BY at_rank ASC
-    LIMIT 300", ARRAY_A );
+    if ($period === $currentPeriod) {
+      $results = $wpdb->get_results ("SELECT at_rank AS rank
+      , bg_name
+      , round(at_list_score + at_pop_score, 3) as total_score
+      FROM wp_re_boardgames 
+      WHERE at_rank <> 0
+      ORDER BY at_rank ASC
+      LIMIT 300", ARRAY_A );
+    } else {
+      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, total_score 
+      FROM `wp_re_boardgames_hist_at` 
+      WHERE period = $period 
+      ORDER BY `bg_rank` ASC
+      LIMIT 300", ARRAY_A);
+    }
   
     $results_json = json_encode($results);
   
@@ -43,14 +66,27 @@ function getTopGamesAll() {
   
   function getTopGamesD30() {
     global $wpdb;
-  
-    $results = $wpdb->get_results ("SELECT d30_rank AS rank
-    , bg_name
-    , round(d30_list_score + d30_pop_score, 3) as total_score
-    FROM wp_re_boardgames 
-    WHERE d30_rank <> 0
-    ORDER BY d30_rank ASC
-    LIMIT 300", ARRAY_A );
+    $period = $_POST['period'];
+    $currentYear = date('Y');
+    $currentMonth = date('m');
+
+    $currentPeriod = "$currentYear$currentMonth";
+
+    if ($period === $currentPeriod) {
+      $results = $wpdb->get_results ("SELECT d30_rank AS rank
+      , bg_name
+      , round(d30_list_score + d30_pop_score, 3) as total_score
+      FROM wp_re_boardgames 
+      WHERE d30_rank <> 0
+      ORDER BY d30_rank ASC
+      LIMIT 300", ARRAY_A );
+    } else {
+      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, total_score 
+      FROM `wp_re_boardgames_hist_month` 
+      WHERE period = $period 
+      ORDER BY `bg_rank` ASC
+      LIMIT 300", ARRAY_A);
+    }
   
     $results_json = json_encode($results);
   
@@ -88,27 +124,27 @@ function getTopGamesAll() {
   }
 
 function getTotals() {
-    global $wpdb;
-  
-    $atLists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
-  
-    $atItems = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
+  global $wpdb;
 
-    $cyLists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND year(finish_date) = year(current_date())", ARRAY_A );
+  $atLists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
 
-    $cyItems = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND year(finish_date) = year(current_date())", ARRAY_A );
+  $atItems = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
 
-    $d30Lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND (wp_re_results_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)", ARRAY_A );
+  $cyLists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND year(finish_date) = year(current_date())", ARRAY_A );
 
-    $d30Items = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND (wp_re_results_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)", ARRAY_A );
+  $cyItems = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND year(finish_date) = year(current_date())", ARRAY_A );
+
+  $d30Lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND (wp_re_results_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)", ARRAY_A );
+
+  $d30Items = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND (wp_re_results_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)", ARRAY_A );
+
+  $data = array();
+  array_push($data, $atLists, $atItems, $cyLists, $cyItems, $d30Lists, $d30Items);
+
+  $dataJSON = json_encode($data);
+  print_r($dataJSON);
   
-    $data = array();
-    array_push($data, $atLists, $atItems, $cyLists, $cyItems, $d30Lists, $d30Items);
-  
-    $dataJSON = json_encode($data);
-    print_r($dataJSON);
-  
-  }
+}
 
 function getYearTotals() {
   global $wpdb;
@@ -140,4 +176,56 @@ function getYears() {
   
     echo $results_json;
 
+}
+
+function getPeriods() {
+  global $wpdb;
+
+  $periods = $wpdb->get_results(
+    "SELECT period, concat(substring(period, 5, 2), '-', substring(period, 1, 4)) as nice_period
+    FROM `wp_re_boardgames_hist_maxcounts` as a
+    WHERE period_type = 'A'
+    UNION
+    SELECT concat(year(CURRENT_DATE()), CASE WHEN month(CURRENT_DATE()) < 10 THEN concat('0', month(CURRENT_DATE())) ELSE month(CURRENT_DATE()) END) as period, 'Current' as nice_period
+    FROM `wp_re_boardgames_hist_maxcounts` as b
+    WHERE period_type = 'A'
+    ORDER BY `period` DESC"
+    , ARRAY_A
+  );
+
+  $results_json = json_encode($periods);
+  
+  echo $results_json;
+
+}
+
+function getAtTotals() {
+  global $wpdb;
+  $period = $_POST['period'];
+
+  $atLists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND concat(year(finish_date), (case when month(finish_date) < 10 then concat('0', month(finish_date)) else month(finish_date) end)) <= $period", ARRAY_A );
+
+  $atItems = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND concat(year(finish_date), (case when month(finish_date) < 10 then concat('0', month(finish_date)) else month(finish_date) end)) <= $period", ARRAY_A );
+
+  $data = array();
+  array_push($data, $atLists, $atItems);
+
+  $dataJSON = json_encode($data);
+  print_r($dataJSON);
+
+}
+
+function getMonthTotals() {
+  global $wpdb;
+  $period = $_POST['period'];
+
+  $atLists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND concat(year(finish_date), (case when month(finish_date) < 10 then concat('0', month(finish_date)) else month(finish_date) end)) = $period", ARRAY_A );
+
+  $atItems = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND concat(year(finish_date), (case when month(finish_date) < 10 then concat('0', month(finish_date)) else month(finish_date) end)) = $period", ARRAY_A );
+
+  $data = array();
+  array_push($data, $atLists, $atItems);
+
+  $dataJSON = json_encode($data);
+  print_r($dataJSON);
 }
