@@ -43,9 +43,9 @@ IF @existscheck IS NULL THEN
     ORDER BY counted DESC
     LIMIT 1;
 
-    --  Insert history into wp_re_boardgames_hist_year
-    INSERT INTO wp_re_boardgames_hist_year (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked)
-    SELECT bg_id, bgg_id, NULL AS bg_name, period, @rownum := @rownum+1, list_score, pop_score, total_score, times_ranked
+    --  Insert history into wp_re_boardgames_hist
+    INSERT INTO wp_re_boardgames_hist (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked, hist_type)
+    SELECT bg_id, bgg_id, NULL AS bg_name, period, @rownum := @rownum+1, list_score, pop_score, total_score, times_ranked, 'Y' as hist_type
     FROM
     (SELECT bg_id
     , bgg_id
@@ -64,10 +64,11 @@ IF @existscheck IS NULL THEN
     DROP TABLE `temp_hist_results`;
 
     -- Update history table with names
-    UPDATE wp_re_boardgames_hist_year
-    JOIN wp_re_boardgames ON wp_re_boardgames_hist_year.bgg_id = wp_re_boardgames.bgg_id
-    SET wp_re_boardgames_hist_year.bg_name = wp_re_boardgames.bg_name
-    WHERE wp_re_boardgames_hist_year.bg_name IS NULL;
+    UPDATE wp_re_boardgames_hist
+    JOIN wp_re_boardgames ON wp_re_boardgames_hist.bgg_id = wp_re_boardgames.bgg_id
+    SET wp_re_boardgames_hist.bg_name = wp_re_boardgames.bg_name
+    WHERE wp_re_boardgames_hist.bg_name IS NULL
+    AND wp_re_boardgames_hist.hist_type = 'Y';
 
 END IF;
 

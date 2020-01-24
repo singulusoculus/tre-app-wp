@@ -52,8 +52,9 @@ function getTopGamesAll() {
       LIMIT 300", ARRAY_A );
     } else {
       $results = $wpdb->get_results ("SELECT bg_rank, bg_name, total_score 
-      FROM `wp_re_boardgames_hist_at` 
+      FROM `wp_re_boardgames_hist` 
       WHERE period = $period 
+      AND hist_type = 'A'
       ORDER BY `bg_rank` ASC
       LIMIT 300", ARRAY_A);
     }
@@ -82,8 +83,9 @@ function getTopGamesAll() {
       LIMIT 300", ARRAY_A );
     } else {
       $results = $wpdb->get_results ("SELECT bg_rank, bg_name, total_score 
-      FROM `wp_re_boardgames_hist_month` 
+      FROM `wp_re_boardgames_hist` 
       WHERE period = $period 
+      AND hist_type = 'M'
       ORDER BY `bg_rank` ASC
       LIMIT 300", ARRAY_A);
     }
@@ -111,8 +113,9 @@ function getTopGamesAll() {
       $results = $wpdb->get_results ("SELECT bg_rank AS rank
       , bg_name
       , total_score
-      FROM wp_re_boardgames_hist_year
+      FROM wp_re_boardgames_hist
       WHERE period = $year
+      AND hist_type = 'Y'
       ORDER BY bg_rank ASC
       LIMIT 300", ARRAY_A);
     }

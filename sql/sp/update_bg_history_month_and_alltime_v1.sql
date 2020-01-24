@@ -62,8 +62,8 @@ IF @existscheck IS NULL THEN
     LIMIT 1;
 
     --  Capture current month history
-    INSERT INTO wp_re_boardgames_hist_month (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked)
-    SELECT bg_id, bgg_id, NULL as bg_name, period, @rownum := @rownum+1, list_score, pop_score, total_score, times_ranked
+    INSERT INTO wp_re_boardgames_hist (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked, hist_type)
+    SELECT bg_id, bgg_id, NULL as bg_name, period, @rownum := @rownum+1, list_score, pop_score, total_score, times_ranked, 'M' as hist_type
     FROM
     (SELECT bg_id
     , bgg_id
@@ -83,10 +83,11 @@ IF @existscheck IS NULL THEN
     DROP TABLE `temp_hist_results`;
 
     -- Update history table with names
-    UPDATE wp_re_boardgames_hist_month
-    JOIN wp_re_boardgames ON wp_re_boardgames_hist_month.bgg_id = wp_re_boardgames.bgg_id
-    SET wp_re_boardgames_hist_month.bg_name = wp_re_boardgames.bg_name
-    WHERE wp_re_boardgames_hist_month.bg_name IS NULL;
+    UPDATE wp_re_boardgames_hist
+    JOIN wp_re_boardgames ON wp_re_boardgames_hist.bgg_id = wp_re_boardgames.bgg_id
+    SET wp_re_boardgames_hist.bg_name = wp_re_boardgames.bg_name
+    WHERE wp_re_boardgames_hist.bg_name IS NULL
+    AND hist_type = 'M';
 
     IF @mperiod = 201805 THEN
 
@@ -95,11 +96,12 @@ IF @existscheck IS NULL THEN
         FROM wp_re_boardgames_hist_maxcounts
         WHERE period_type = 'M' AND period = 201805;
 
-        INSERT INTO wp_re_boardgames_hist_at (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked)
-        SELECT bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked
-        FROM wp_re_boardgames_hist_month
+        INSERT INTO wp_re_boardgames_hist (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked, hist_type)
+        SELECT bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked, 'A' as hist_type
+        FROM wp_re_boardgames_hist
         WHERE period = 201805
-        AND pop_score > 1;
+        AND pop_score > 1
+        AND hist_type = 'M';
 
     ELSE
 
@@ -113,14 +115,14 @@ IF @existscheck IS NULL THEN
         `bg_name` text COLLATE utf8mb4_unicode_ci NULL,
         `period` varchar(6) COLLATE utf8mb4_unicode_ci NULL, 
         `bg_rank` int(11) NULL,
-        `c_list_score` float,
-        `l_list_score` float,
-        `c_times_ranked` int(11),
-        `l_times_ranked` int(11),
-        `list_score` float,
-        `pop_score` float,
-        `total_score` float,
-        `times_ranked` int(11),
+        `c_list_score` float DEFAULT 0,
+        `l_list_score` float DEFAULT 0,
+        `c_times_ranked` int(11) DEFAULT 0,
+        `l_times_ranked` int(11) DEFAULT 0,
+        `list_score` float DEFAULT 0,
+        `pop_score` float DEFAULT 0,
+        `total_score` float DEFAULT 0,
+        `times_ranked` int(11) DEFAULT 0,
         `max_list_count` int(11),
         `keep` varchar(1),
         PRIMARY KEY (`bgg_id`)
@@ -136,39 +138,24 @@ IF @existscheck IS NULL THEN
         -- Insert current month data
         INSERT INTO temp_hist_results_at (bgg_id, c_list_score, c_times_ranked)
         SELECT c.bgg_id, c.list_score, c.times_ranked
-        FROM wp_re_boardgames_hist_month AS c 
+        FROM wp_re_boardgames_hist AS c 
         JOIN temp_hist_results_at AS t ON c.bgg_id = t.bgg_id
         WHERE c.period = @mperiod
+        AND c.hist_type = 'M'
         ON DUPLICATE KEY UPDATE c_list_score = VALUES(c_list_score), c_times_ranked = VALUES(c_times_ranked);
 
         -- Insert last months at data
         INSERT INTO temp_hist_results_at (bgg_id, l_list_score, l_times_ranked)
         SELECT l.bgg_id, l.list_score, l.times_ranked
-        FROM wp_re_boardgames_hist_at AS l
+        FROM wp_re_boardgames_hist AS l
         JOIN temp_hist_results_at AS t ON l.bgg_id = t.bgg_id
         WHERE l.period = @last_period
+        AND l.hist_type = 'A'
         ON DUPLICATE KEY UPDATE l_list_score = VALUES(l_list_score), l_times_ranked = VALUES(l_times_ranked);
 
         -- Remove NULL rows
         DELETE FROM temp_hist_results_at
-        WHERE l_times_ranked is null AND c_times_ranked is null;
-
-        -- Set remaining nulls to 0
-        UPDATE temp_hist_results_at
-        SET c_list_score = 0
-        WHERE c_list_score IS NULL;
-
-        UPDATE temp_hist_results_at
-        SET l_list_score = 0
-        WHERE l_list_score IS NULL;
-
-        UPDATE temp_hist_results_at
-        SET c_times_ranked = 0
-        WHERE c_times_ranked IS NULL;
-
-        UPDATE temp_hist_results_at
-        SET l_times_ranked = 0
-        WHERE l_times_ranked IS NULL;
+        WHERE l_times_ranked = 0 AND c_times_ranked = 0;
 
         -- Calculate Scores
         UPDATE temp_hist_results_at
@@ -186,9 +173,9 @@ IF @existscheck IS NULL THEN
         UPDATE temp_hist_results_at
         SET total_score = list_score + pop_score;
 
-        -- Insert results into wp_re_boardgames_hist_at
-        INSERT INTO wp_re_boardgames_hist_at (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked)
-        SELECT bg_id, bgg_id, bg_name, period, @rownum := @rownum+1 as bg_rank, list_score, pop_score, total_score, times_ranked
+        -- Insert results into wp_re_boardgames_hist
+        INSERT INTO wp_re_boardgames_hist (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_score, times_ranked, hist_type)
+        SELECT bg_id, bgg_id, bg_name, period, @rownum := @rownum+1 as bg_rank, list_score, pop_score, total_score, times_ranked, 'A' as hist_type
         FROM temp_hist_results_at
         ORDER BY total_score DESC;
 
