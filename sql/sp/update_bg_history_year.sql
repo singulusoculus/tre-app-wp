@@ -45,7 +45,7 @@ BEGIN
     AND bgg_id <> 0;
 
     -- INSERT new period history or UPDATE max_list_count if the period already exists
-    INSERT INTO wp_re_boardgames_hist_maxcounts (period_type, period, max_list_count, period_key, scoring_version)
+    INSERT INTO wp_re_boardgames_hist_periods (period_type, period, max_list_count, period_key, scoring_version)
     SELECT "Y" AS period_type
     , @yperiod AS period
     , count(`temp_hist_results`.bgg_id) AS counted
@@ -72,7 +72,7 @@ BEGIN
     ,', @list_score_calc ,' + round(count(bgg_id) * @maxpop / MaxList.max_list_count, 3) AS total_score
     , count(bgg_id) as times_ranked
     FROM temp_hist_results
-    CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_hist_maxcounts WHERE period = @yperiod AND period_type = "Y") AS MaxList
+    CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_hist_periods WHERE period = @yperiod AND period_type = "Y") AS MaxList
     GROUP BY bgg_id
     HAVING pop_score > 1
     ORDER BY total_score DESC) as bghist;'

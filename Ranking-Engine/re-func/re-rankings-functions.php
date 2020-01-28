@@ -169,9 +169,9 @@ function getYears() {
   global $wpdb;
 
   $years = $wpdb->get_results( 
-    "SELECT period FROM `wp_re_boardgames_hist_maxcounts` as a WHERE period_type = 'Y'
+    "SELECT period FROM `wp_re_boardgames_hist_periods` as a WHERE period_type = 'Y'
     UNION
-    SELECT year(CURRENT_DATE()) as period FROM `wp_re_boardgames_hist_maxcounts` as b WHERE period_type = 'Y'
+    SELECT year(CURRENT_DATE()) as period FROM `wp_re_boardgames_hist_periods` as b WHERE period_type = 'Y'
     ORDER BY `period` DESC"
     , ARRAY_A );
 
@@ -186,11 +186,11 @@ function getPeriods() {
 
   $periods = $wpdb->get_results(
     "SELECT period, concat(substring(period, 5, 2), '-', substring(period, 1, 4)) as nice_period
-    FROM `wp_re_boardgames_hist_maxcounts` as a
+    FROM `wp_re_boardgames_hist_periods` as a
     WHERE period_type = 'A'
     UNION
     SELECT concat(year(CURRENT_DATE()), CASE WHEN month(CURRENT_DATE()) < 10 THEN concat('0', month(CURRENT_DATE())) ELSE month(CURRENT_DATE()) END) as period, 'Current' as nice_period
-    FROM `wp_re_boardgames_hist_maxcounts` as b
+    FROM `wp_re_boardgames_hist_periods` as b
     WHERE period_type = 'A'
     ORDER BY `period` DESC"
     , ARRAY_A

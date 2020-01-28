@@ -46,8 +46,8 @@ BEGIN
     AND list_category = 2
     AND wp_re_results_d.bgg_id <> 0;
 
-    -- Update wp_re_boardgames_hist_maxcounts - month
-    INSERT INTO wp_re_boardgames_hist_maxcounts (period_type, period, max_list_count, period_key, scoring_version)
+    -- Update wp_re_boardgames_hist_periods - month
+    INSERT INTO wp_re_boardgames_hist_periods (period_type, period, max_list_count, period_key, scoring_version)
     SELECT "M" AS period_type
     , @mperiod AS period
     , count(`temp_hist_results`.bgg_id) AS counted
@@ -62,15 +62,15 @@ BEGIN
 
     SELECT count(`temp_hist_results`.bgg_id) INTO @temp_count FROM temp_hist_results GROUP BY bgg_id ORDER BY count(`temp_hist_results`.bgg_id) DESC LIMIT 1;
 
-        -- Update wp_re_boardgames_hist_maxcounts - all time
-    INSERT INTO wp_re_boardgames_hist_maxcounts (period_type, period, max_list_count, period_key, scoring_version)
+        -- Update wp_re_boardgames_hist_periods - all time
+    INSERT INTO wp_re_boardgames_hist_periods (period_type, period, max_list_count, period_key, scoring_version)
     SELECT "A" AS period_type
     , @mperiod AS period
     , (@temp_count + l.max_list_count) AS count
     , CONCAT("A", @mperiod) AS period_key
     , @scoring_version AS scoring_version
     FROM `temp_hist_results`
-    CROSS JOIN (SELECT max_list_count from wp_re_boardgames_hist_maxcounts where period = @last_period and period_type = 'A') AS l
+    CROSS JOIN (SELECT max_list_count from wp_re_boardgames_hist_periods where period = @last_period and period_type = 'A') AS l
     GROUP BY bgg_id
     ORDER BY count DESC
     LIMIT 1
@@ -91,7 +91,7 @@ BEGIN
     , ', @list_score_calc ,' + round(count(bgg_id) * @maxpop / MaxList.max_list_count, 3) AS total_score
     , count(bgg_id) as times_ranked
     FROM temp_hist_results
-    CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_hist_maxcounts WHERE period = @mperiod AND period_type = "M") AS MaxList
+    CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_hist_periods WHERE period = @mperiod AND period_type = "M") AS MaxList
     WHERE concat(year(finish_date), case when month(finish_date) < 10 THEN concat(0, month(finish_date)) ELSE month(finish_date) END) = @mperiod
     GROUP BY bgg_id
     HAVING pop_score > .7
@@ -118,9 +118,9 @@ BEGIN
 
     IF @mperiod = 201805 THEN
 
-        INSERT INTO wp_re_boardgames_hist_maxcounts (period_type, period, max_list_count)
+        INSERT INTO wp_re_boardgames_hist_periods (period_type, period, max_list_count)
         SELECT 'A' as period_type, period, max_list_count
-        FROM wp_re_boardgames_hist_maxcounts
+        FROM wp_re_boardgames_hist_periods
         WHERE period_type = 'M' AND period = 201805;
 
         INSERT INTO wp_re_boardgames_hist (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_raw, total_adjust, times_ranked, hist_type)
@@ -161,7 +161,7 @@ BEGIN
         INSERT INTO temp_hist_results_at (bg_id, bgg_id, bg_name, period, max_list_count)
         SELECT bg_id, bgg_id, bg_name, @mperiod, max_list_count
         FROM wp_re_boardgames
-        CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_hist_maxcounts WHERE period = @mperiod AND period_type = "A") AS MaxList;
+        CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_hist_periods WHERE period = @mperiod AND period_type = "A") AS MaxList;
 
         -- Insert current month data
         INSERT INTO temp_hist_results_at (bgg_id, c_list_score, c_times_ranked)
