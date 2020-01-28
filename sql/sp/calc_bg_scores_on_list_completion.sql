@@ -1,8 +1,13 @@
-BEGIN
+BEGIN 
 
   -- Take in final list id
   SET @FinalListID = listid;
   SET @t = concat("temp_",replace(uuid(), '-', ''));
+
+    SELECT score_basis, max_pop, list_score_calc
+    INTO @sb, @maxpop, @list_score_calc
+    FROM wp_re_boardgames_scoring
+    WHERE status = 'A';
 
   -- Create a temp table
   SET @s = CONCAT('CREATE TABLE ', @t, ' 
@@ -124,7 +129,7 @@ BEGIN
   SET @s = CONCAT(
   'INSERT INTO ', @t, ' (bgg_id, at_list_score, at_times_ranked)
   SELECT wp_re_results_d.bgg_id
-  , round(avg(((item_count-item_rank+1)/item_count)*100), 3) AS list_score
+  ,', @list_score_calc ,' as list_score
   , count(wp_re_results_d.bgg_id) as times_ranked
   FROM wp_re_results_d
   JOIN wp_re_results_h on wp_re_results_d.result_id = wp_re_results_h.result_id
@@ -143,7 +148,7 @@ BEGIN
   SET @s = CONCAT(
   'INSERT INTO ', @t, ' (bgg_id, cy_list_score, cy_times_ranked)
   SELECT wp_re_results_d.bgg_id
-  , round(avg(((item_count-item_rank+1)/item_count)*100), 3) AS list_score
+  ,', @list_score_calc ,' as list_score
   , count(wp_re_results_d.bgg_id) as times_ranked
   FROM wp_re_results_d
   JOIN wp_re_results_h on wp_re_results_d.result_id = wp_re_results_h.result_id
@@ -163,7 +168,7 @@ BEGIN
   SET @s = CONCAT(
   'INSERT INTO ', @t, ' (bgg_id, d30_list_score, d30_times_ranked)
   SELECT wp_re_results_d.bgg_id
-  , round(avg(((item_count-item_rank+1)/item_count)*100), 3) AS list_score
+  ,', @list_score_calc ,' as list_score
   , count(wp_re_results_d.bgg_id) as times_ranked
   FROM wp_re_results_d
   JOIN wp_re_results_h on wp_re_results_d.result_id = wp_re_results_h.result_id
@@ -195,20 +200,20 @@ BEGIN
   EXECUTE stmt1;
   DEALLOCATE PREPARE stmt1;
 
-  CALL update_maxcounts;
+  CALL calc_bg_maxcounts;
 
   -- Update popularity
   UPDATE wp_re_boardgames
   CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'A') AS MaxList 
-  SET at_pop_score = round((at_times_ranked)*20/MaxList.max_list_count, 3);
+  SET at_pop_score = round((at_times_ranked)*@maxpop/MaxList.max_list_count, 3);
 
   UPDATE wp_re_boardgames
   CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'Y') AS MaxList 
-  SET cy_pop_score = round((cy_times_ranked)*20/MaxList.max_list_count, 3);
+  SET cy_pop_score = round((cy_times_ranked)*@maxpop/MaxList.max_list_count, 3);
 
   UPDATE wp_re_boardgames
   CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'D') AS MaxList 
-  SET d30_pop_score = round((d30_times_ranked)*20/MaxList.max_list_count, 3);
+  SET d30_pop_score = round((d30_times_ranked)*@maxpop/MaxList.max_list_count, 3);
   
   -- Drop temp table
   SET @s = CONCAT(
@@ -217,6 +222,15 @@ BEGIN
   PREPARE stmt1 FROM @s;
   EXECUTE stmt1;
   DEALLOCATE PREPARE stmt1;
+
+  -- Update raw and adjust columns
+    UPDATE wp_re_boardgames
+    SET at_total_raw = round(at_list_score + at_pop_score, 3),
+    at_total_adjust = round((at_list_score + at_pop_score)/@sb, 3),
+    cy_total_raw = round(cy_list_score + cy_pop_score, 3),
+    cy_total_adjust = round((cy_list_score + cy_pop_score)/@sb, 3),
+    d30_total_raw = round(d30_list_score + d30_pop_score, 3),
+    d30_total_adjust = round((d30_list_score + d30_pop_score)/@sb, 3);
 
   CALL calc_bg_ranks;
 

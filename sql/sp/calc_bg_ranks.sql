@@ -25,7 +25,7 @@ BEGIN
   SET @s = CONCAT('INSERT INTO ', @t, '
   SELECT bgg_id, @rownum := @rownum +1 AS bg_rank
   FROM wp_re_boardgames
-  WHERE at_times_ranked > 150 -- a game must be ranked 250 time for it to be in the at rankings
+  WHERE at_times_ranked > 150 -- a game must be ranked 150 time for it to be in the at rankings
   ORDER BY at_list_score + at_pop_score DESC;');
   PREPARE stmt1 FROM @s;
   EXECUTE stmt1;
@@ -49,7 +49,7 @@ BEGIN
   SET @s = CONCAT('INSERT INTO ', @t, '
   SELECT bgg_id, @rownum := @rownum +1 AS bg_rank
   FROM wp_re_boardgames
-  WHERE cy_pop_score > 1 OR cy_times_ranked > 100 -- a game must have a pop score of  > 1 OR be ranked at least 150 time to be in the rankings
+  WHERE cy_pop_score > 1 OR cy_times_ranked > 100 -- a game must have a pop score of  > 1 OR be ranked at least 100 time to be in the rankings
   ORDER BY cy_list_score + cy_pop_score DESC;');
   PREPARE stmt1 FROM @s;
   EXECUTE stmt1;

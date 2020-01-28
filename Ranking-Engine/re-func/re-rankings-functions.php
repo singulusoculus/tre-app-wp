@@ -45,20 +45,20 @@ function getTopGamesAll() {
     if ($period === $currentPeriod) {
       $results = $wpdb->get_results ("SELECT at_rank AS rank
       , bg_name
-      , round(at_list_score + at_pop_score, 3) as total_score
+      , round(at_total_adjust, 3) as total_score
       FROM wp_re_boardgames 
       WHERE at_rank <> 0
       ORDER BY at_rank ASC
       LIMIT 300", ARRAY_A );
     } else {
-      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, total_score 
-      FROM `wp_re_boardgames_hist` 
-      WHERE period = $period 
+      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, round(total_adjust, 3) as total_score
+      FROM `wp_re_boardgames_hist` as h
+      WHERE h.period = $period
       AND hist_type = 'A'
       ORDER BY `bg_rank` ASC
       LIMIT 300", ARRAY_A);
     }
-  
+
     $results_json = json_encode($results);
   
     echo $results_json;
@@ -76,13 +76,13 @@ function getTopGamesAll() {
     if ($period === $currentPeriod) {
       $results = $wpdb->get_results ("SELECT d30_rank AS rank
       , bg_name
-      , round(d30_list_score + d30_pop_score, 3) as total_score
+      , round(d30_total_adjust, 3) as total_score
       FROM wp_re_boardgames 
       WHERE d30_rank <> 0
       ORDER BY d30_rank ASC
       LIMIT 300", ARRAY_A );
     } else {
-      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, total_score 
+      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, total_adjust 
       FROM `wp_re_boardgames_hist` 
       WHERE period = $period 
       AND hist_type = 'M'
@@ -104,7 +104,7 @@ function getTopGamesAll() {
     if ($year === $currentYear) {
       $results = $wpdb->get_results ("SELECT cy_rank AS rank
       , bg_name
-      , round(cy_list_score + cy_pop_score, 3) as total_score
+      , round(cy_total_adjust, 3) as total_score
       FROM wp_re_boardgames 
       WHERE cy_rank <> 0
       ORDER BY cy_rank ASC
@@ -112,7 +112,7 @@ function getTopGamesAll() {
     } else {
       $results = $wpdb->get_results ("SELECT bg_rank AS rank
       , bg_name
-      , total_score
+      , total_adjust
       FROM wp_re_boardgames_hist
       WHERE period = $year
       AND hist_type = 'Y'
