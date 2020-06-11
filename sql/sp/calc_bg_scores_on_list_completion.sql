@@ -47,6 +47,23 @@ BEGIN
   EXECUTE stmt1;
   DEALLOCATE PREPARE stmt1;
 
+  -- Delete items that have the same bg_name where one has a bggid and the other does not
+  SET @s = CONCAT('DELETE ', @t ,'
+  FROM ', @t ,'
+  JOIN (
+    SELECT id
+    FROM ', @t ,'
+    WHERE bg_name IN (
+      SELECT bg_name
+      FROM ', @t ,'
+      GROUP BY bg_name
+      HAVING count(bg_name) > 1)
+      AND bgg_id is null) as dup ON dup.id = ', @t ,'.id'
+  );
+  PREPARE stmt1 FROM @s;
+  EXECUTE stmt1;
+  DEALLOCATE PREPARE stmt1;
+
   -- Try to add bgg_id to items where the name matches
   SET @s = CONCAT(
   'UPDATE ', @t, '

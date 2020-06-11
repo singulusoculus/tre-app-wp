@@ -118,11 +118,14 @@ const addListItems = (list) => {
 
     saveData(listData)
     renderCollectionEl('list')
+    // console.log(listData)
   }
 }
 
 const filterDuplicates = () => {
   listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name && l.bggId === list.bggId) === index)
+  // listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name && l.source === 'bgg') === index)
+  // listData = listData.filter((list, index, self) => self.findIndex(l => l.name === list.name && l.bggId === '') === index)
 }
 
 const removeListItem = (item) => {

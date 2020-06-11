@@ -1,6 +1,6 @@
 <footer class="footer page-footer">
     <div class="footer-copyright">
-      Designed by Brian Casey | v<?php echo getRankingEngineVersion() ?> | © 2019 Pub Meeple
+      Designed by Brian Casey | v<?php echo getRankingEngineVersion() ?> | © 2020 Pub Meeple
     </div>
     <div class="footer-links">
       <a class="grey-text text-lighten-4 right" href="https://www.pubmeeple.com/about">About</a>
