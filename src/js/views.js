@@ -521,7 +521,7 @@ const renderMyListsLoggedIn = async (userID) => {
   textEl.setAttribute('style', 'margin-bottom: 1rem')
   textEl.setAttribute('style', 'font-style: italic')
   textEl.classList.add('center-align')
-  textEl.textContent = `*Data retention policy: Progress lists will only be stored for 120 days from their last save date.`
+  textEl.textContent = `*Data retention policy: Progress lists will only be stored for 90 days from their last save date.`
 
   myListsEl.appendChild(btnWrapperEl)
   myListsEl.appendChild(textEl)
