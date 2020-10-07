@@ -3,8 +3,8 @@ BEGIN
     SET @yperiod = year;
     SET @rownum = 0;
 
-    SELECT score_basis, max_pop, list_score_calc, version
-    INTO @sb, @maxpop, @list_score_calc, @scoring_version
+    SELECT list_score_calc, version
+    INTO @list_score_calc, @scoring_version
     FROM wp_re_boardgames_scoring
     WHERE status = 'A';
 
@@ -44,8 +44,8 @@ BEGIN
     AND list_category = 2
     AND bgg_id <> 0;
 
-    -- INSERT new period history or UPDATE max_list_count if the period already exists
-    INSERT INTO wp_re_boardgames_hist_periods (period_type, period, max_list_count, period_key, scoring_version)
+    -- INSERT new period history or UPDATE max_times_ranked if the period already exists
+    INSERT INTO wp_re_boardgames_hist_periods (period_type, period, max_times_ranked, period_key, scoring_version)
     SELECT "Y" AS period_type
     , @yperiod AS period
     , count(`temp_hist_results`.bgg_id) AS counted
@@ -56,32 +56,37 @@ BEGIN
     ORDER BY counted DESC
     LIMIT 1
     ON DUPLICATE KEY UPDATE
-    max_list_count = VALUES(max_list_count);
+    max_times_ranked = VALUES(max_times_ranked);
 
     --  Insert history into wp_re_boardgames_hist
     SET @s = CONCAT(
-    'INSERT INTO wp_re_boardgames_hist (bg_id, bgg_id, bg_name, period, bg_rank, list_score, pop_score, total_raw, times_ranked, hist_type)
-    SELECT bg_id, bgg_id, NULL AS bg_name, period, @rownum := @rownum+1, list_score, pop_score, total_score, times_ranked, "', 'Y','" as hist_type
+    'INSERT INTO wp_re_boardgames_hist (bg_id, bgg_id, bg_name, period, list_score, times_ranked, hist_type)
+    SELECT bg_id, bgg_id, NULL AS bg_name, period, list_score, times_ranked, "', 'Y','" as hist_type
     FROM
     (SELECT bg_id
     , bgg_id
     , item_name as bg_name
     , @yperiod AS period
     ,', @list_score_calc ,' as list_score
-    , round(count(bgg_id) * @maxpop / MaxList.max_list_count, 3) AS pop_score
-    ,', @list_score_calc ,' + round(count(bgg_id) * @maxpop / MaxList.max_list_count, 3) AS total_score
     , count(bgg_id) as times_ranked
     FROM temp_hist_results
-    CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_hist_periods WHERE period = @yperiod AND period_type = "Y") AS MaxList
-    GROUP BY bgg_id
-    HAVING pop_score > 1
-    ORDER BY total_score DESC) as bghist;'
+    GROUP BY bgg_id) as bghist;'
     );
     PREPARE stmt1 FROM @s;
     EXECUTE stmt1;
     DEALLOCATE PREPARE stmt1;
 
     DROP TABLE `temp_hist_results`;
+
+    -- wp_re_boardgames_hist_periods - average times ranked
+    UPDATE wp_re_boardgames_hist_periods
+    SET avg_times_ranked = (SELECT avg(times_ranked) FROM wp_re_boardgames_hist WHERE hist_type = 'Y' and period = @yperiod)
+    WHERE period_type = 'Y' AND period = @yperiod;
+
+    -- wp_re_boardgames_hist_periods - average list score
+    UPDATE wp_re_boardgames_hist_periods
+    SET avg_list_score = (SELECT avg(list_score) FROM wp_re_boardgames_hist WHERE hist_type = 'Y' and period = @yperiod)
+    WHERE period_type = 'Y' AND period = @yperiod;
 
     -- Update history table with names
     UPDATE wp_re_boardgames_hist
@@ -91,7 +96,16 @@ BEGIN
     AND wp_re_boardgames_hist.hist_type = 'Y';
     
     UPDATE wp_re_boardgames_hist
-    SET total_adjust = round(total_raw/@sb, 3)
-    WHERE period = @yperiod;
+    CROSS JOIN	(SELECT avg_times_ranked, avg_list_score FROM wp_re_boardgames_hist_periods WHERE period_type = 'Y' AND period = @yperiod) as p
+    SET rank_score = round(((times_ranked*list_score)+(p.avg_times_ranked*p.avg_list_score))/(times_ranked+p.avg_times_ranked), 3)
+    WHERE hist_type = 'Y' AND period = @yperiod;
+
+    -- Update Ranks based on Rank Score
+    INSERT INTO wp_re_boardgames_hist (id, bg_rank)
+    SELECT id, @rownum := @rownum+1
+    FROM wp_re_boardgames_hist
+    WHERE hist_type = 'Y' AND period = @yperiod
+    ORDER BY rank_score DESC
+    ON DUPLICATE KEY UPDATE bg_rank = VALUES(bg_rank);
 
 END

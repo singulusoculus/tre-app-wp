@@ -8,8 +8,8 @@ BEGIN
 
     IF @score_version_new <> @score_version_current THEN
 
-        SELECT score_basis, max_pop, list_score_calc
-        INTO @sb, @maxpop, @list_score_calc
+        SELECT list_score_calc, version
+        INTO @list_score_calc, @score_version
         FROM wp_re_boardgames_scoring
         WHERE version = @score_version_new;
 
@@ -103,7 +103,6 @@ BEGIN
         EXECUTE stmt1;
         DEALLOCATE PREPARE stmt1;
 
-
         -- Update wp_re_boardgames
         UPDATE wp_re_boardgames
         JOIN wp_re_boardgames_update_temp ON wp_re_boardgames.bgg_id = wp_re_boardgames_update_temp.bgg_id
@@ -114,36 +113,18 @@ BEGIN
         , wp_re_boardgames.d30_list_score = wp_re_boardgames_update_temp.d30_list_score
         , wp_re_boardgames.d30_times_ranked = wp_re_boardgames_update_temp.d30_times_ranked;
 
-        CALL calc_bg_maxcounts;
-
-        -- Update popularity
-        UPDATE wp_re_boardgames
-        CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'A') AS MaxList 
-        SET at_pop_score = round((at_times_ranked)*@maxpop/MaxList.max_list_count, 3);
-
-        UPDATE wp_re_boardgames
-        CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'Y') AS MaxList 
-        SET cy_pop_score = round((cy_times_ranked)*@maxpop/MaxList.max_list_count, 3);
-
-        UPDATE wp_re_boardgames
-        CROSS JOIN (SELECT max_list_count FROM wp_re_boardgames_maxcounts WHERE max_list_type = 'D') AS MaxList 
-        SET d30_pop_score = round((d30_times_ranked)*@maxpop/MaxList.max_list_count, 3);
-        
         -- Drop temp table
         DROP TABLE wp_re_boardgames_update_temp;
 
+          -- Calculate Rank Scores
+        SET @s = CONCAT('CALL calc_rank_score_v' , @score_version ,';');
+        PREPARE stmt2 FROM @s;
+        EXECUTE stmt2;
+        DEALLOCATE PREPARE stmt2;
+
+        -- Calculate Ranks
         CALL calc_bg_ranks;
         
-        -- Update raw and adjust columns
-        UPDATE wp_re_boardgames
-        SET at_total_raw = round(at_list_score + at_pop_score, 3),
-        at_total_adjust = round((at_list_score + at_pop_score)/@sb, 3),
-        cy_total_raw = round(cy_list_score + cy_pop_score, 3),
-        cy_total_adjust = round((cy_list_score + cy_pop_score)/@sb, 3),
-        d30_total_raw = round(d30_list_score + d30_pop_score, 3),
-        d30_total_adjust = round((d30_list_score + d30_pop_score)/@sb, 3);
-
     END IF;
-
 
 END
