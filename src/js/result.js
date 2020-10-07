@@ -5,6 +5,7 @@ import { setCurrentStep } from './step'
 import { getDBListInfo } from './database'
 import { checkforImages, renderTopNine } from './top-nine'
 import { renderTable } from './tables'
+import { getRankData } from './rank'
 
 let resultData = []
 
@@ -70,13 +71,35 @@ const renderResult = () => {
   tableEl.prepend(spanEl)
 
   // Support Us Toast
-  const toastHTML = `<span class="center-align">Hey, nice list!</span><span class="center-align">If you found this tool useful please consider putting something in our tip jar.</span><div class="prev-toast-btns"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pubmeeple@gmail.com&item_name=Friends+of+the+Pub&item_number=For+RE&currency_code=USD" target="_blank"><button class="btn-flat toast-action support-paypal">Paypal</button></a><button class="btn-flat toast-action support-dismiss">Dismiss</button></div>`
+  const toastHTML = `<span class="center-align support-us">Hey, nice list!</span><span class="center-align">If you found this tool useful please consider putting something in our tip jar.</span><div class="prev-toast-btns"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pubmeeple@gmail.com&item_name=Friends+of+the+Pub&item_number=For+RE&currency_code=USD" target="_blank"><button class="btn-flat toast-action support-paypal">Paypal</button></a><button class="btn-flat toast-action support-dismiss">Dismiss</button></div>`
   M.toast({ html: toastHTML, displayLength: 'stay', classes: 'actionable-toast', inDuration: 600 })
+
+  // BGG Support
+  const rankData = getRankData()
+  if (rankData.listSource === 'bgg' || rankData.listSource === 'mixed') {
+    const toastBggHTML = `<span class="center-align support-bgg">Ranking your games looked good!</span><span class="center-align">The images you saw were provided by BGG. Please consider supporting our friends at BGG!</span><div class="prev-toast-btns"><a href="https://boardgamegeek.com/support" target="_blank"><button class="btn-flat toast-action support-paypal">Support</button></a><button class="btn-flat toast-action support-bgg-dismiss">Dismiss</button></div>`
+    M.toast({ html: toastBggHTML, displayLength: 'stay', classes: 'actionable-toast', inDuration: 1000 })
+  }
 
   const supportDismissEls = document.querySelectorAll('.support-dismiss')
   supportDismissEls.forEach((el) => {
     el.addEventListener('click', () => {
-      M.Toast.dismissAll()
+      const toastEl = document.querySelector('.support-us').parentElement
+      const toastInstance = M.Toast.getInstance(toastEl)
+      toastInstance.dismiss()
+
+      // M.Toast.dismissAll()
+    })
+  })
+
+  const supportBggDismissEls = document.querySelectorAll('.support-bgg-dismiss')
+  supportBggDismissEls.forEach((el) => {
+    el.addEventListener('click', () => {
+      const toastEl = document.querySelector('.support-bgg').parentElement
+      const toastInstance = M.Toast.getInstance(toastEl)
+      toastInstance.dismiss()
+
+      // M.Toast.dismissAll()
     })
   })
 
