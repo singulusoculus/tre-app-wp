@@ -45,13 +45,14 @@ function getTopGamesAll() {
     if ($period === $currentPeriod) {
       $results = $wpdb->get_results ("SELECT at_rank AS rank
       , bg_name
-      , round(at_total_adjust, 3) as total_score
+      , round(at_rank_score, 3) as rank_score
+      , at_times_ranked
       FROM wp_re_boardgames 
       WHERE at_rank <> 0
       ORDER BY at_rank ASC
       LIMIT 300", ARRAY_A );
     } else {
-      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, round(total_adjust, 3) as total_score
+      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, round(rank_score, 3) as rank_score, times_ranked
       FROM `wp_re_boardgames_hist` as h
       WHERE h.period = $period
       AND hist_type = 'A'
@@ -63,68 +64,71 @@ function getTopGamesAll() {
   
     echo $results_json;
   
-  }
+}
   
-  function getTopGamesD30() {
-    global $wpdb;
-    $period = $_POST['period'];
-    $currentYear = date('Y');
-    $currentMonth = date('m');
+function getTopGamesD30() {
+  global $wpdb;
+  $period = $_POST['period'];
+  $currentYear = date('Y');
+  $currentMonth = date('m');
 
-    $currentPeriod = "$currentYear$currentMonth";
+  $currentPeriod = "$currentYear$currentMonth";
 
-    if ($period === $currentPeriod) {
-      $results = $wpdb->get_results ("SELECT d30_rank AS rank
-      , bg_name
-      , round(d30_total_adjust, 3) as total_score
-      FROM wp_re_boardgames 
-      WHERE d30_rank <> 0
-      ORDER BY d30_rank ASC
-      LIMIT 300", ARRAY_A );
-    } else {
-      $results = $wpdb->get_results ("SELECT bg_rank, bg_name, total_adjust 
-      FROM `wp_re_boardgames_hist` 
-      WHERE period = $period 
-      AND hist_type = 'M'
-      ORDER BY `bg_rank` ASC
-      LIMIT 300", ARRAY_A);
-    }
-  
-    $results_json = json_encode($results);
-  
-    echo $results_json;
-  
+  if ($period === $currentPeriod) {
+    $results = $wpdb->get_results ("SELECT d30_rank AS rank
+    , bg_name
+    , round(d30_rank_score, 3) as rank_score
+    , d30_times_ranked
+    FROM wp_re_boardgames 
+    WHERE d30_rank <> 0
+    ORDER BY d30_rank ASC
+    LIMIT 300", ARRAY_A );
+  } else {
+    $results = $wpdb->get_results ("SELECT bg_rank, bg_name, rank_score, times_ranked 
+    FROM `wp_re_boardgames_hist` 
+    WHERE period = $period 
+    AND hist_type = 'M'
+    ORDER BY `bg_rank` ASC
+    LIMIT 300", ARRAY_A);
   }
+
+  $results_json = json_encode($results);
+
+  echo $results_json;
+
+}
   
-  function getTopGamesYear() {
-    global $wpdb;
-    $year = $_POST['year'];
-    $currentYear = date("Y");
-    
-    if ($year === $currentYear) {
-      $results = $wpdb->get_results ("SELECT cy_rank AS rank
-      , bg_name
-      , round(cy_total_adjust, 3) as total_score
-      FROM wp_re_boardgames 
-      WHERE cy_rank <> 0
-      ORDER BY cy_rank ASC
-      LIMIT 300", ARRAY_A );
-    } else {
-      $results = $wpdb->get_results ("SELECT bg_rank AS rank
-      , bg_name
-      , total_adjust
-      FROM wp_re_boardgames_hist
-      WHERE period = $year
-      AND hist_type = 'Y'
-      ORDER BY bg_rank ASC
-      LIMIT 300", ARRAY_A);
-    }
+function getTopGamesYear() {
+  global $wpdb;
+  $year = $_POST['year'];
+  $currentYear = date("Y");
   
-    $results_json = json_encode($results);
-  
-    echo $results_json;
-  
+  if ($year === $currentYear) {
+    $results = $wpdb->get_results ("SELECT cy_rank AS rank
+    , bg_name
+    , round(cy_rank_score, 3) as rank_score
+    , cy_times_ranked
+    FROM wp_re_boardgames 
+    WHERE cy_rank <> 0
+    ORDER BY cy_rank ASC
+    LIMIT 300", ARRAY_A );
+  } else {
+    $results = $wpdb->get_results ("SELECT bg_rank AS rank
+    , bg_name
+    , rank_score
+    , times_ranked
+    FROM wp_re_boardgames_hist
+    WHERE period = $year
+    AND hist_type = 'Y'
+    ORDER BY bg_rank ASC
+    LIMIT 300", ARRAY_A);
   }
+
+  $results_json = json_encode($results);
+
+  echo $results_json;
+
+}
 
 function getTotals() {
   global $wpdb;

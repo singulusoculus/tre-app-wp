@@ -87,7 +87,7 @@ const initRankings = () => {
   }, (data, status) => {
     const parsedData = JSON.parse(data)
 
-    renderTable('rankings-at', ['Rank', 'Game', 'Score'], parsedData)
+    renderTable('rankings-at', ['Rank', 'Game', 'Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-at')
   })
 
@@ -98,7 +98,7 @@ const initRankings = () => {
     year
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTable('rankings-y', ['Rank', 'Game', 'Score'], parsedData)
+    renderTable('rankings-y', ['Rank', 'Game', 'Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-y')
   })
 
@@ -108,7 +108,7 @@ const initRankings = () => {
     period: currentPeriod
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-    renderTable('rankings-d30', ['Rank', 'Game', 'Score'], parsedData)
+    renderTable('rankings-d30', ['Rank', 'Game', 'Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-d30')
   })
 }
@@ -198,7 +198,7 @@ const handleYearSelectChange = () => {
     const selectWrapper = selectInstance.wrapper
     selectWrapper.classList.add('complete')
 
-    renderTable('rankings-y', ['Rank', 'Game', 'Score'], parsedData)
+    renderTable('rankings-y', ['Rank', 'Game', 'Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-y')
 
     const yearTab = document.querySelector('#tab-title-year')
@@ -240,7 +240,7 @@ const handleAtSelectChange = () => {
     const selectWrapper = selectInstance.wrapper
     selectWrapper.classList.add('complete')
 
-    renderTable('rankings-at', ['Rank', 'Game', 'Score'], parsedData)
+    renderTable('rankings-at', ['Rank', 'Game', 'Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-at')
 
     fadeOutSpinner()
@@ -279,7 +279,7 @@ const handleMonthSelectChange = () => {
     const selectWrapper = selectInstance.wrapper
     selectWrapper.classList.add('complete')
 
-    renderTable('rankings-d30', ['Rank', 'Game', 'Score'], parsedData)
+    renderTable('rankings-d30', ['Rank', 'Game', 'Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-d30')
 
     fadeOutSpinner()
