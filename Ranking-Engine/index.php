@@ -121,6 +121,7 @@
                       <input id="bgg-username" type="text">
                       <label for="bgg-username">BGG Username</label>
                     </div>
+                    <p class="center-align" style="font-style: italic">Don't have a BGG account? <a href="https://boardgamegeek.com/join" target="_blank">Get one here!</a></p>
                   </div>
                   <div class="row">
                     <div class="col s6">
