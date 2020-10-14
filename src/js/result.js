@@ -87,8 +87,6 @@ const renderResult = () => {
       const toastEl = document.querySelector('.support-us').parentElement
       const toastInstance = M.Toast.getInstance(toastEl)
       toastInstance.dismiss()
-
-      // M.Toast.dismissAll()
     })
   })
 
@@ -98,8 +96,6 @@ const renderResult = () => {
       const toastEl = document.querySelector('.support-bgg').parentElement
       const toastInstance = M.Toast.getInstance(toastEl)
       toastInstance.dismiss()
-
-      // M.Toast.dismissAll()
     })
   })
 
