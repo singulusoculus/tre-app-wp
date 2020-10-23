@@ -1,20 +1,53 @@
--- Take a backup of all Stored Procedures from live site
+-- Put site into maintenace mode
+-- Upload and activate v2.1.12
 
--- Change the following stored procedures
--- activate_scoring_version
--- calc_bg_scores_on_list_completion
--- update_bg_history_month_alltime
--- update_bg_history_year
+-- BACKUP
+
+-- Take a backup of all Stored Procedures from live site - this is done - copied to backup database.
+
+-- Take a backup of all tables that will be altered:
+-- - wp_re_boardgames
+-- - wp_re_boardgames_hist
+-- - wp_re_boardgames_hist_periods
+-- - wp_re_boardgames_scoring
+DROP TABLE IF EXISTS pubmeepl_re_backup.wp_re_boardgames;
+CREATE TABLE IF NOT EXISTS pubmeepl_re_backup.wp_re_boardgames LIKE wp_re_boardgames;
+INSERT pubmeepl_re_backup.wp_re_boardgames
+SELECT * FROM wp_re_boardgames;
+
+DROP TABLE IF EXISTS pubmeepl_re_backup.wp_re_boardgames_hist;
+CREATE TABLE IF NOT EXISTS pubmeepl_re_backup.wp_re_boardgames_hist LIKE wp_re_boardgames_hist;
+INSERT pubmeepl_re_backup.wp_re_boardgames_hist
+SELECT * FROM wp_re_boardgames_hist;
+
+DROP TABLE IF EXISTS pubmeepl_re_backup.wp_re_boardgames_hist_periods;
+CREATE TABLE IF NOT EXISTS pubmeepl_re_backup.wp_re_boardgames_hist_periods LIKE wp_re_boardgames_hist_periods;
+INSERT pubmeepl_re_backup.wp_re_boardgames_hist_periods
+SELECT * FROM wp_re_boardgames_hist_periods;
+
+DROP TABLE IF EXISTS pubmeepl_re_backup.wp_re_boardgames_scoring;
+CREATE TABLE IF NOT EXISTS pubmeepl_re_backup.wp_re_boardgames_scoring LIKE wp_re_boardgames_scoring;
+INSERT pubmeepl_re_backup.wp_re_boardgames_scoring
+SELECT * FROM wp_re_boardgames_scoring;
+
+-- STORED PROCEDURES
+
+-- Change the following stored procedures:
+-- - activate_scoring_version
+-- - calc_bg_scores_on_list_completion
+-- - update_bg_history_month_alltime
+-- - update_bg_history_year
 
 
--- Add the following stored procedures
--- calc_bg_list_info
--- calc_bg_ranks
--- calc_rank_score_v1
--- calc_rank_score_v2
--- calc_rank_score_v3
+-- Add the following stored procedures:
+-- - calc_bg_list_info
+-- - calc_bg_ranks
+-- - calc_rank_score_v1
+-- - calc_rank_score_v2
+-- - calc_rank_score_v3
 
 
+-- CHANGE/ADD TABLES
 
 -- re_boardgames - add rank_score columns
 ALTER TABLE `wp_re_boardgames` ADD `at_rank_score` FLOAT NOT NULL DEFAULT '0' AFTER `at_times_ranked`;
@@ -99,4 +132,8 @@ CALL `pubmeepl_re`.`activate_scoring_version`(3);
 TRUNCATE TABLE wp_re_boardgames_hist;
 TRUNCATE TABLE wp_re_boardgames_hist_periods;
 
+-- OR just drop these tables, recalc locally and then copy the tables up.
 -- recalc history - I can do this locally then import the tables into the live site
+
+
+-- Don't forget to take site out of maintenance mode

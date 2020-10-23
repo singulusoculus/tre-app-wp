@@ -44,10 +44,13 @@ const renderLogo = (ctx) => {
   return new Promise((resolve, reject) => {
     const logoImage = new Image()
     logoImage.onload = () => {
-      ctx.drawImage(logoImage, 665, 995)
+      // ctx.drawImage(logoImage, 665, 995)
+      ctx.drawImage(logoImage, 0, 0)
       resolve()
     }
-    logoImage.src = getFilePath(`/images/pm-banner-top9.png`)
+    // logoImage.src = getFilePath(`/images/pm-banner-top9.png`)
+    // logoImage.src = getFilePath(`/images/logo-overlay-pm-bgg.png`)
+    logoImage.src = getFilePath(`/images/logo-overlay-pm.png`)
   })
 }
 
