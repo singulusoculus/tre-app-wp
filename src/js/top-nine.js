@@ -49,8 +49,8 @@ const renderLogo = (ctx) => {
       resolve()
     }
     // logoImage.src = getFilePath(`/images/pm-banner-top9.png`)
-    // logoImage.src = getFilePath(`/images/logo-overlay-pm-bgg.png`)
-    logoImage.src = getFilePath(`/images/logo-overlay-pm.png`)
+    logoImage.src = getFilePath(`/images/logo-overlay-pm-bgg.png`)
+    // logoImage.src = getFilePath(`/images/logo-overlay-pm.png`)
   })
 }
 
