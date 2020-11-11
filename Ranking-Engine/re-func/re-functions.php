@@ -186,7 +186,7 @@ function getYearTopTen() {
   global $wpdb;
 
   $results = $wpdb->get_results ("SELECT cy_rank AS rank
-  , bg_name
+  , concat(bg_name, ' (', bgg_year_published, ')') as bg_name
   FROM wp_re_boardgames 
   WHERE cy_rank <> 0
   ORDER BY cy_rank ASC

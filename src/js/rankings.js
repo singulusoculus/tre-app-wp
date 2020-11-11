@@ -6,12 +6,12 @@ const initRankings = () => {
 
   // Get Totals Info
   // getTotals
-  jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
-    func: 'getTotals'
-  }, (data, status) => {
-    const dataParsed = JSON.parse(data)
-    renderRankingsTotals(dataParsed)
-  })
+  // jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
+  //   func: 'getTotals'
+  // }, (data, status) => {
+  //   const dataParsed = JSON.parse(data)
+  //   renderRankingsTotals(dataParsed)
+  // })
 
   // Get Years
   jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
@@ -86,7 +86,6 @@ const initRankings = () => {
     period: currentPeriod
   }, (data, status) => {
     const parsedData = JSON.parse(data)
-
     renderTable('rankings-at', ['Rank', 'Game', 'Score', 'Times Ranked'], parsedData)
     initDataTable('rankings-at')
   })
