@@ -4,13 +4,14 @@ import { showTab, renderPreviousSessionToast, showStartSection, showListSection,
 import { initPrevList, getListData, estimateTotalComparisons, setListData } from './list'
 import { initPrevRanking } from './rank'
 import { initPrevResult, getResultData } from './result'
-import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList, clearUserDBListInfo } from './database'
+import { dbSaveTemplateData, dbSaveProgressData, dbUpdateTemplateData, setDBListInfo, getDBListInfo, dbSaveUserResultData, dbGetTopTenYear, dbGetSharedList, clearUserDBListInfo, dbGetAnnouncement } from './database'
 import { getParentList, setParentList } from './list-sharing'
 import { getUserID, custConfirm, custMessage } from './common'
 import { fadeInSpinner, fadeOutSpinner } from './spinner'
 
 const initRankingEngine = async () => {
   initMaterializeComponents()
+  checkForAnnouncement()
   showTab('start')
   setCurrentStep('start')
   dbGetTopTenYear()
@@ -34,6 +35,71 @@ const initRankingEngine = async () => {
 
   renderMyLists()
   sessionStorage.removeItem('reload')
+}
+
+const checkForAnnouncement = async () => {
+  const announcementCheck = await dbGetAnnouncement()
+  console.log(announcementCheck)
+
+  if (announcementCheck.length > 0) {
+    const announcement = announcementCheck[0]
+
+    const wrapperEl = document.querySelector('.announcement')
+
+    const rowEl = document.createElement('div')
+    rowEl.classList.add('row')
+
+    const colEl = document.createElement('div')
+    colEl.classList.add('col', 's10', 'offset-s1')
+
+    const cardWrapper = document.createElement('div')
+    cardWrapper.classList.add('card', 'blue-grey', 'darken-1')
+
+    const cardContent = document.createElement('div')
+    cardContent.classList.add('card-content', 'white-text', 'center-align')
+
+    // TITLE
+    if (announcement.title.length > 0) {
+      const titleEl = document.createElement('span')
+      titleEl.classList.add('card-title')
+      titleEl.textContent = announcement.title
+      cardContent.appendChild(titleEl)
+    }
+
+    // TEXT
+    if (announcement.text.length > 0) {
+      const textEl = document.createElement('p')
+      textEl.textContent = announcement.text
+      cardContent.appendChild(textEl)
+    }
+
+    // ACTION SECTION
+    if (announcement.action1_text.length > 0) {
+      const actionEl = document.createElement('div')
+      actionEl.classList.add('card-action', 'center-align')
+
+      // ACTION 1
+      const action1El = document.createElement('a')
+      action1El.setAttribute('href', announcement.action1_link)
+      action1El.textContent = announcement.action1_text
+      actionEl.appendChild(action1El)
+
+      // ACTION 2
+      if (announcement.action2_text.length > 0) {
+        const action2El = document.createElement('a')
+        action2El.setAttribute('href', announcement.action2_link)
+        action2El.textContent = announcement.action2_text
+        actionEl.appendChild(action2El)
+      }
+
+      cardWrapper.appendChild(actionEl)
+    }
+
+    cardWrapper.prepend(cardContent)
+    colEl.appendChild(cardWrapper)
+    rowEl.appendChild(colEl)
+    wrapperEl.appendChild(rowEl)
+  }
 }
 
 const checkForReload = () => {

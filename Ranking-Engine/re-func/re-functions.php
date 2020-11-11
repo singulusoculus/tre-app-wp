@@ -84,6 +84,9 @@ switch ($func) {
   case 'addAjaxLoginInit':
     addAjaxLoginInit();
     break;
+  case 'getAnnouncement':
+    getAnnouncement();
+  break;
   default:
     echo 'Could not find the specified function';
 }
@@ -755,6 +758,16 @@ function setShareFlag() {
 function removeslashes($string) {
   $string = implode("", explode("\\", $string));
   return stripslashes(trim($string));
+}
+
+function getAnnouncement() {
+  global $wpdb;
+    
+  $announcement = $wpdb->get_results( "SELECT title, text, action1_text, action1_link, action2_text, action2_link FROM wp_re_announcement", ARRAY_A );
+
+  $announcement_json = json_encode($announcement);
+
+  echo $announcement_json;
 }
 
 ?>

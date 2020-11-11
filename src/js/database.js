@@ -520,6 +520,19 @@ const dbCaptureBGGData = (data) => {
   })
 }
 
+const dbGetAnnouncement = () => {
+  return new Promise((resolve, reject) => {
+    jQuery.post(getFilePath('/re-func/re-functions.php'), {
+      func: 'getAnnouncement'
+    }, (data, status) => {
+      if (status === 'success') {
+        const parsedData = JSON.parse(data)
+        parsedData ? resolve(parsedData) : reject(new Error('No data returned'))
+      }
+    })
+  })
+}
+
 export { dbSaveTemplateData,
   dbSaveProgressData,
   dbSaveResultData,
@@ -537,5 +550,6 @@ export { dbSaveTemplateData,
   dbGetSharedList,
   dbSetShareFlag,
   dbCaptureBGGData,
-  clearUserDBListInfo
+  clearUserDBListInfo,
+  dbGetAnnouncement
 }
