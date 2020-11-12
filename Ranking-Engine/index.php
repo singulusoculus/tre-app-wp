@@ -43,9 +43,15 @@
         <!-- <div class="row">
           <div class="col s10 offset-s1">
             <div class="card blue-grey darken-1">
-              <div class="card-content white-text center-align">
-                <span class="card-title">2019 Ranking Engine Game of the Year:</span>
-                <span class="card-title">WINGSPAN</span>
+              <div class="card-content announcement-content white-text center-align">
+                <div class="card-image">
+                  <img src="https://cf.geekdo-images.com/yLZJCVLlIx4c7eJEWUNJ7w__imagepage/img/uIjeoKgHMcRtzRSR4MoUYl3nXxs=/fit-in/900x600/filters:no_upscale():strip_icc()/pic4458123.jpg" alt="">
+                </div>
+                <div class="announcement-text">
+                    <span class="card-title">2019 Ranking Engine Game of the Year:</span>
+                    <span class="card-title">WINGSPAN</span>
+                    <p>Test</p>
+                </div>
               </div>
               <div class="card-action center-align">
                 <a href="https://www.pubmeeple.com/ranking-engine-game-of-the-year-2019">Read More...</a>

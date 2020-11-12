@@ -739,3 +739,36 @@
   display: flex;
   justify-content: space-around;
 }
+
+//////////////////////////////////////////////////////////////////
+///////////  ANNOUNCEMENT
+//////////////////////////////////////////////////////////////////
+
+.announcement-content {
+  display: flex;
+  align-items: center;
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.announcement-content > .card-image {
+  max-width: 250px
+}
+
+.announcement-content > .card-image > img {
+  height: auto;
+  max-width: 100%;
+  padding-right: 10px;
+
+  @media only screen and (max-width: 600px) {
+    margin-bottom: 10px;
+    padding-right: unset;
+  }
+}
+
+.announcement-text {
+  margin: 0 auto;
+  width: 80%;
+}

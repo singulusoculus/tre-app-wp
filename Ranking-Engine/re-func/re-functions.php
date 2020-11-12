@@ -763,7 +763,7 @@ function removeslashes($string) {
 function getAnnouncement() {
   global $wpdb;
     
-  $announcement = $wpdb->get_results( "SELECT title, text, action1_text, action1_link, action2_text, action2_link FROM wp_re_announcement", ARRAY_A );
+  $announcement = $wpdb->get_results( "SELECT active, title, text, action1_text, action1_link, action2_text, action2_link, image_url FROM wp_re_announcement", ARRAY_A );
 
   $announcement_json = json_encode($announcement);
 

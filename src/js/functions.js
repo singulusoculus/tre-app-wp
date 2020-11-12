@@ -39,9 +39,8 @@ const initRankingEngine = async () => {
 
 const checkForAnnouncement = async () => {
   const announcementCheck = await dbGetAnnouncement()
-  console.log(announcementCheck)
 
-  if (announcementCheck.length > 0) {
+  if (announcementCheck[0].active === '1') {
     const announcement = announcementCheck[0]
 
     const wrapperEl = document.querySelector('.announcement')
@@ -56,22 +55,38 @@ const checkForAnnouncement = async () => {
     cardWrapper.classList.add('card', 'blue-grey', 'darken-1')
 
     const cardContent = document.createElement('div')
-    cardContent.classList.add('card-content', 'white-text', 'center-align')
+    cardContent.classList.add('card-content', 'white-text', 'center-align', 'announcement-content')
+
+    // IMAGE
+    if (announcement.image_url.length > 0) {
+      const imageWrapper = document.createElement('div')
+      imageWrapper.classList.add('card-image')
+
+      const imgEl = document.createElement('img')
+      imgEl.setAttribute('src', announcement.image_url)
+      imageWrapper.appendChild(imgEl)
+      cardContent.appendChild(imageWrapper)
+    }
+
+    const announcementText = document.createElement('div')
+    announcementText.classList.add('announcement-text')
 
     // TITLE
     if (announcement.title.length > 0) {
       const titleEl = document.createElement('span')
       titleEl.classList.add('card-title')
       titleEl.textContent = announcement.title
-      cardContent.appendChild(titleEl)
+      announcementText.appendChild(titleEl)
     }
 
     // TEXT
     if (announcement.text.length > 0) {
       const textEl = document.createElement('p')
       textEl.textContent = announcement.text
-      cardContent.appendChild(textEl)
+      announcementText.appendChild(textEl)
     }
+
+    cardContent.appendChild(announcementText)
 
     // ACTION SECTION
     if (announcement.action1_text.length > 0) {
