@@ -56,7 +56,6 @@ const populateRankData = (data) => {
     totalSize: data ? data.totalSize : 0,
     finishSize: data ? data.finishSize : 0,
     finishFlag: data ? data.finishFlag : 0,
-    bggFlag: data ? data.bggFlag : 0,
     listSource: data ? data.listSource : '',
     finalListID: data ? data.finalListID : 0
   }

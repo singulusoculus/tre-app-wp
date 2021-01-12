@@ -418,7 +418,6 @@ function insertResultRanking() {
   global $wpdb;
   $finalList = $_POST['rankedItems'];
   $itemCount = $_POST['itemCount'];
-  $bggFlag = $_POST['bggFlag'];
   $templateID = $_POST['templateID'];
   $currdate = date("Y-m-d");
   $listCategory = $_POST['category'];
@@ -443,7 +442,6 @@ function insertResultRanking() {
           'parent_list_id' => $parentList === 0 ? NULL : $parentList,
           'finish_date' => $currdate,
           'item_count' => $itemCount,
-          'bgg_flag' => $bggFlag,
           'list_category' => $listCategory,
           're_version' => $version
       ),

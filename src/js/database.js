@@ -387,9 +387,8 @@ const dbUpdateResultData = (rankedItems, resultId) => {
 
 const dbSaveResultData = (rankedItems) => {
   const itemCount = rankedItems.length
-  const rankData = getRankData()
+  // const rankData = getRankData()
   const resultData = getResultData()
-  const bggFlag = rankData.bggFlag
   const templateID = dbListInfo.template.id
   const category = getCategory()
   const parentList = getParentList()
@@ -398,7 +397,6 @@ const dbSaveResultData = (rankedItems) => {
     func: 'insertResultRanking',
     rankedItems,
     itemCount,
-    bggFlag,
     templateID,
     category,
     parentList
