@@ -433,6 +433,7 @@ function insertResultRanking() {
             'list_id' => null,
             `template_id` => $parentList,
             'finish_date' => $currdate,
+            `item_count` => $itemcount,
             'list_category' => $listCategory,
             're_version' => $version
         ),
@@ -440,6 +441,7 @@ function insertResultRanking() {
             '%d',
             '%d',
             '%s',
+            '%d',
             '%d',
             '%s'
         )
