@@ -424,16 +424,6 @@ function insertResultRanking() {
   $parentList = intval($_POST['parentList']);
   global $version;
 
-  // if parentList > 0 then set the update wp_re_list_tempaltes.ranked = 1
-  if ($parentList > 0) {
-    $wpdb->update('wp_re_list_templates', // Table to update
-    array('ranked' => 1), // Update field
-    array('template_id' => $parentList), // Where parameter
-    array( '%d' ), // Update field data type
-    array( '%d' ) // Where parameter data type
-    );
-  }
-
   //INSERT data into wp_re_final_h
   $wpdb->insert(
       'wp_re_results_h',
@@ -458,26 +448,70 @@ function insertResultRanking() {
 
   $savelistid = $wpdb->insert_id;
 
-  //INSERT finalList rows into wp_re_result_d
-  foreach ($finalList as $key => $value) {
+  // if parentList > 0 (it is based on a template list) then
+  if ($parentList > 0) {
+    // set the wp_re_list_templates.ranked = 1
+    $wpdb->update('wp_re_list_templates', // Table to update
+    array('ranked' => 1), // Update field
+    array('template_id' => $parentList), // Where parameter
+    array( '%d' ), // Update field data type
+    array( '%d' ) // Where parameter data type
+    );
 
+    // Update rank_count
+    $rankCount = $wpdb->get_var("SELECT rank_count FROM wp_re_list_templates WHERE template_id = $parentList");
+    $rankCount = $rankCount+1;
+
+    $wpdb->update('wp_re_list_templates', // Table to update
+    array('rank_count' => $rankCount), // Update field
+    array('template_id' => $parentList), // Where parameter
+    array( '%d' ), // Update field data type
+    array( '%d' ) // Where parameter data type
+    );
+
+    // Insert list into wp_re_shared_template_results
+    foreach ($finalList as $key => $value) {
       $itemname = stripslashes($value['name']);
 
       $wpdb->insert(
-          'wp_re_results_d',
+          'wp_re_shared_template_results',
           array(
-              'result_id' => $savelistid,
+              'list_id' => $savelistid,
+              'template_id' => $parentList,
               'item_name' => $itemname,
-              'item_rank' => $key+1,
-              'bgg_id' => $value['bggid']
+              'item_rank' => $key+1
           ),
           array(
               '%d',
-              '%s',
               '%d',
+              '%s',
               '%d'
           )
       );
+    }
+  }
+
+  // if the list is in the board games category then
+  if ($listCategory = 2) {
+    //INSERT finalList rows into wp_re_results_d
+    foreach ($finalList as $key => $value) {
+  
+        $itemname = stripslashes($value['name']);
+  
+        $wpdb->insert(
+            'wp_re_results_d',
+            array(
+                'result_id' => $savelistid,
+                'item_rank' => $key+1,
+                'bgg_id' => $value['bggid']
+            ),
+            array(
+                '%d',
+                '%d',
+                '%d'
+            )
+        );
+    }
   }
 
   echo $savelistid;
