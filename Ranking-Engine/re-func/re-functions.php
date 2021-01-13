@@ -434,9 +434,9 @@ function insertResultRanking() {
         'wp_re_shared_template_results_h',
         array(
             'list_id' => null,
-            `template_id` => $parentList,
+            'template_id' => $parentList,
             'finish_date' => $currdate,
-            `item_count` => $itemcount,
+            'item_count' => $itemCount,
             'list_category' => $listCategory,
             're_version' => $version
         ),
@@ -479,10 +479,12 @@ function insertResultRanking() {
           'wp_re_shared_template_results_d',
           array(
               'list_id' => $templatelistid,
+              'template_id' => $parentList,
               'item_name' => $itemname,
               'item_rank' => $key+1
           ),
           array(
+              '%d',
               '%d',
               '%s',
               '%d'
