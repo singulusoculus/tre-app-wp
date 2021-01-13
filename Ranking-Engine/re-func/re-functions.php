@@ -281,6 +281,9 @@ function deleteTemplateList() {
   $listid = $_POST['templateid'];
 
   $wpdb->delete( 'wp_re_list_templates', array('template_id' => $listid ));
+  // Delete any associated shared template results from wp_re_shared_template_results_h and d
+  $wpdb->delete('wp_re_shared_template_results_h', array('template_id' => $listid));
+  $wpdb->delete('wp_re_shared_template_results_d', array('template_id' => $listid));
 }
 
 ///////////////////////////////////////

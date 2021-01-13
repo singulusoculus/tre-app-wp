@@ -549,5 +549,5 @@ export { dbSaveTemplateData,
   dbSetShareFlag,
   dbCaptureBGGData,
   clearUserDBListInfo,
-  dbGetAnnouncement
+  dbGetAnnouncement,
 }

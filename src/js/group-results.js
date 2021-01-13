@@ -76,7 +76,7 @@ const renderResults = async () => {
     newResults.push({ rank: index + 1, ...item })
   })
   // render results
-  renderTable('rankings', ['Rank', 'Item', 'Pct Score', 'Pop Score', 'Total Score', 'Times Ranked'], newResults)
+  renderTable('rankings', ['Rank', 'Item', 'Score', 'Times Ranked'], results)
   initDataTable('rankings')
   document.querySelector('#page-header').textContent = `Results for: ${templateListData.template_desc}`
 }
