@@ -419,7 +419,7 @@ const dbSaveResultData = (rankedItems) => {
         localStorage.setItem('str', JSON.stringify(lsParentLists))
       }
 
-      if (category === 2 && newData > 0) {
+      if (category === 2 && itemCount > 10 && newData > 0) {
         dbUpdateRankings(dbListInfo.result.id)
       }
     }

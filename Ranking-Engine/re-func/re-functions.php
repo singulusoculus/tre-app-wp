@@ -494,7 +494,7 @@ function insertResultRanking() {
   }
 
   // if the list is in the board games category then
-  if ($listCategory = 2) {
+  if ($listCategory = 2 && $itemCount > 10) {
       //INSERT data into wp_re_results_h
       $wpdb->insert(
         'wp_re_results_h',
