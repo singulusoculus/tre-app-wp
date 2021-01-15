@@ -49,14 +49,19 @@ function getTopGamesAll() {
       , at_times_ranked
       FROM wp_re_boardgames 
       WHERE at_rank <> 0
+      AND bg_type = 'Base'
       ORDER BY at_rank ASC
       LIMIT 300", ARRAY_A );
     } else {
-      $results = $wpdb->get_results ("SELECT bg_rank, concat(h.bg_name, ' (', bgg_year_published, ')') as bg_name, round(rank_score, 3) as rank_score, times_ranked
+      $results = $wpdb->get_results ("SELECT bg_rank
+      , concat(b.bg_name, ' (', bgg_year_published, ')') as bg_name
+      , round(rank_score, 3) as rank_score
+      , times_ranked
       FROM `wp_re_boardgames_hist` as h
       JOIN `wp_re_boardgames` as b on h.bgg_id = b.bgg_id
       WHERE h.period = $period
       AND hist_type = 'A'
+      AND bg_type = 'Base'
       ORDER BY `bg_rank` ASC
       LIMIT 300", ARRAY_A);
     }
@@ -82,14 +87,19 @@ function getTopGamesD30() {
     , d30_times_ranked
     FROM wp_re_boardgames 
     WHERE d30_rank <> 0
+    AND bg_type = 'Base'
     ORDER BY d30_rank ASC
     LIMIT 300", ARRAY_A );
   } else {
-    $results = $wpdb->get_results ("SELECT bg_rank, concat(h.bg_name, ' (', bgg_year_published, ')') as bg_name, rank_score, times_ranked
+    $results = $wpdb->get_results ("SELECT bg_rank
+    , concat(b.bg_name, ' (', bgg_year_published, ')') as bg_name
+    , rank_score
+    , times_ranked
     FROM `wp_re_boardgames_hist` as h
     JOIN `wp_re_boardgames` as b on h.bgg_id = b.bgg_id
     WHERE h.period = $period 
     AND hist_type = 'M'
+    AND bg_type = 'Base'
     ORDER BY `bg_rank` ASC
     LIMIT 300", ARRAY_A);
   }
@@ -112,17 +122,19 @@ function getTopGamesYear() {
     , cy_times_ranked
     FROM wp_re_boardgames 
     WHERE cy_rank <> 0
+    AND bg_type = 'Base'
     ORDER BY cy_rank ASC
     LIMIT 300", ARRAY_A );
   } else {
     $results = $wpdb->get_results ("SELECT bg_rank AS rank
-    , concat(h.bg_name, ' (', bgg_year_published, ')') as bg_name
+    , concat(b.bg_name, ' (', bgg_year_published, ')') as bg_name
     , rank_score
     , times_ranked
     FROM wp_re_boardgames_hist as h
     JOIN `wp_re_boardgames` as b on h.bgg_id = b.bgg_id
     WHERE period = $year
     AND hist_type = 'Y'
+    AND bg_type = 'Base'
     ORDER BY bg_rank ASC
     LIMIT 300", ARRAY_A);
   }
