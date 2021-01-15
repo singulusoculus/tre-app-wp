@@ -423,7 +423,7 @@ function insertResultRanking() {
   $itemCount = $_POST['itemCount'];
   $templateID = $_POST['templateID'];
   $currdate = date("Y-m-d");
-  $listCategory = $_POST['category'];
+  $listCategory = intval($_POST['category']);
   $parentList = intval($_POST['parentList']);
   global $version;
 
@@ -494,7 +494,7 @@ function insertResultRanking() {
   }
 
   // if the list is in the board games category then
-  if ($listCategory = 2 && $itemCount > 10) {
+  if ($listCategory === 2 && $itemCount > 10) {
       //INSERT data into wp_re_results_h
       $wpdb->insert(
         'wp_re_results_h',
