@@ -150,15 +150,15 @@ function getTotals() {
 
   $atLists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
 
-  $atItems = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
+  $atItems = $wpdb->get_row( "SELECT ifnull(sum(item_count), 0) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10", ARRAY_A );
 
   $cyLists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND year(finish_date) = year(current_date())", ARRAY_A );
 
-  $cyItems = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND year(finish_date) = year(current_date())", ARRAY_A );
+  $cyItems = $wpdb->get_row( "SELECT ifnull(sum(item_count), 0) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND year(finish_date) = year(current_date())", ARRAY_A );
 
   $d30Lists = $wpdb->get_row( "SELECT count(result_id) AS TotalLists FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND (wp_re_results_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)", ARRAY_A );
 
-  $d30Items = $wpdb->get_row( "SELECT sum(item_count) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND (wp_re_results_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)", ARRAY_A );
+  $d30Items = $wpdb->get_row( "SELECT ifnull(sum(item_count), 0) as TotalItems FROM wp_re_results_h WHERE list_category = 2 AND item_count > 10 AND (wp_re_results_h.finish_date) >= DATE_SUB(NOW(), INTERVAL 30 DAY)", ARRAY_A );
 
   $data = array();
   array_push($data, $atLists, $atItems, $cyLists, $cyItems, $d30Lists, $d30Items);
