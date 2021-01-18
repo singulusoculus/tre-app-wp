@@ -118,7 +118,6 @@ const addListItems = (list) => {
 
     saveData(listData)
     renderCollectionEl('list')
-    // console.log(listData)
   }
 }
 

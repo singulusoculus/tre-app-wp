@@ -22,7 +22,7 @@ const initRankings = () => {
     dataParsed.forEach((e) => {
       years.push(e.period)
     })
-    console.log(years)
+
     const selectEl = document.querySelector('#year-select')
     selectEl.innerHTML = ''
     years.forEach((year) => {
@@ -43,7 +43,6 @@ const initRankings = () => {
     func: 'getPeriods'
   }, (data, status) => {
     const dataParsed = JSON.parse(data)
-    console.log(dataParsed)
 
     // All Time
     const atSelectEl = document.querySelector('#at-period-select')
@@ -78,7 +77,6 @@ const initRankings = () => {
     currentMonth = `0${currentMonth}`
   }
   const currentPeriod = `${currentYear}${currentMonth}`
-  console.log(currentPeriod)
 
   // Get Top Games Lists
   jQuery.post(getFilePath('/re-func/re-rankings-functions.php'), {
