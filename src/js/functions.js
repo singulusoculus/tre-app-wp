@@ -40,7 +40,7 @@ const initRankingEngine = async () => {
 const checkForAnnouncement = async () => {
   const announcementCheck = await dbGetAnnouncement()
 
-  if (announcementCheck[0].active === '1') {
+  if (announcementCheck.length > 0) {
     const announcement = announcementCheck[0]
 
     const wrapperEl = document.querySelector('.announcement')
