@@ -311,7 +311,7 @@ function getUserLists() {
 
   $progressIds = $wpdb->get_results( "SELECT progress_id AS id, progress_uuid AS uuid, progress_desc AS descr FROM wp_re_rank_progress WHERE wpuid = $wpuid ORDER BY progress_id DESC", ARRAY_A );
   $resultIds = $wpdb->get_results("SELECT result_id AS id, result_uuid AS uuid, result_desc AS descr FROM wp_re_results_user WHERE wpuid = $wpuid ORDER BY result_id DESC" , ARRAY_A );
-  $templateIds =  $wpdb->get_results("SELECT template_id AS id, template_uuid AS uuid, template_desc AS descr, shared, ranked, template_data AS templateData FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
+  $templateIds =  $wpdb->get_results("SELECT template_id AS id, template_uuid AS uuid, template_desc AS descr, shared, ranked, UNCOMPRESS(template_data) AS templateData FROM wp_re_list_templates WHERE wpuid = $wpuid ORDER BY template_id DESC" , ARRAY_A );
   
   $userName = $wpdb->get_results("SELECT user_login AS userName FROM wp_users WHERE ID = $wpuid", ARRAY_A);
   
@@ -329,7 +329,7 @@ function getUserResultList() {
   global $wpdb;
   $resultid = $_POST['resultid'];
     
-  $results = $wpdb->get_results( "SELECT result_data, list_category, result_desc FROM wp_re_results_user WHERE result_id = $resultid", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT UNCOMPRESS(result_data) as result_data, list_category, result_desc FROM wp_re_results_user WHERE result_id = $resultid", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -340,7 +340,7 @@ function getProgressList() {
   global $wpdb;
   $progressid = $_POST['progressid'];
     
-  $results = $wpdb->get_results( "SELECT progress_data, list_category, progress_desc, parent_list_id FROM wp_re_rank_progress WHERE progress_id = $progressid", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT UNCOMPRESS(progress_data) as progress_data, list_category, progress_desc, parent_list_id FROM wp_re_rank_progress WHERE progress_id = $progressid", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -351,7 +351,7 @@ function getTemplateList() {
   global $wpdb;
   $templateid = $_POST['templateid'];
     
-  $results = $wpdb->get_results( "SELECT template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_id = $templateid", ARRAY_A );
+  $results = $wpdb->get_results( "SELECT UNCOMPRESS(template_data) as template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_id = $templateid", ARRAY_A );
 
   $results_json = json_encode($results);
 
@@ -378,6 +378,9 @@ function insertResultUser() {
 
   //sanitize description
   $desc = sanitize_text_field($desc);
+
+  // compress saveData
+  $saveData = "\x1f\x8b\x08\x00".gzcompress($saveData);
 
   //delete progress list if exists
   if ($currentProgressID > 0) {
@@ -587,6 +590,9 @@ function insertProgressList() {
   //sanitize description
   $desc = sanitize_text_field($desc);
 
+  // compress saveData
+  $savedata = "\x1f\x8b\x08\x00".gzcompress($savedata);
+
   //INSERT
   $wpdb->insert(
       'wp_re_rank_progress',
@@ -640,6 +646,9 @@ function updateProgressList() {
   //sanitize description
   $desc = sanitize_text_field($desc);
 
+  // compress savedata
+  $savedata = "\x1f\x8b\x08\x00".gzcompress($savedata);
+
  $wpdb->update(
     'wp_re_rank_progress',
     array(
@@ -679,6 +688,9 @@ function insertTemplateList() {
 
   //sanitize description
   $desc = sanitize_text_field($desc);
+
+  // compress templateData
+  $templateData = "\x1f\x8b\x08\x00".gzcompress($templateData);
 
   //INSERT
   $wpdb->insert(
@@ -727,6 +739,9 @@ function updateTemplateList() {
 
   //sanitize description
   $desc = sanitize_text_field($desc);
+
+  // compress templateData
+  $templateData = "\x1f\x8b\x08\x00".gzcompress($templateData);
 
   //UPDATE currentlistid row
   $wpdb->update(
@@ -777,19 +792,19 @@ function getSharedList() {
 
   switch($type) {
     case 'template':
-    $results = $wpdb->get_results( "SELECT template_id, template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id AND shared = 1", ARRAY_A );
+    $results = $wpdb->get_results( "SELECT template_id, UNCOMPRESS(template_data) as template_data, list_category, template_desc FROM wp_re_list_templates WHERE template_uuid = $str_id AND shared = 1", ARRAY_A );
     $results_json = json_encode($results);
     echo $results_json;
     break;
 
     case 'progress':
-    $results = $wpdb->get_results( "SELECT progress_id, progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_uuid = $str_id", ARRAY_A );
+    $results = $wpdb->get_results( "SELECT progress_id, UNCOMPRESS(progress_data) as progress_data, list_category, progress_desc FROM wp_re_rank_progress WHERE progress_uuid = $str_id", ARRAY_A );
     $results_json = json_encode($results);
     echo $results_json;
     break;
 
     case 'result':
-    $results = $wpdb->get_results( "SELECT result_id, result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
+    $results = $wpdb->get_results( "SELECT result_id, UNCOMPRESS(result_data) as result_data, list_category, result_desc FROM wp_re_results_user WHERE result_uuid = $str_id", ARRAY_A );
     $results_json = json_encode($results);
     echo $results_json;
     break;
