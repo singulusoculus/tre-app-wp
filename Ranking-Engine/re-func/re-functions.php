@@ -11,7 +11,7 @@ require_once('../../../../wp-load.php');
 
 // global $wpdb;
 // $version = '2.0.2';
-$version = getRankingEngineVersion();
+$version = getRankingEngineVersion(); 
 
 $func = $_POST['func'];
 
@@ -110,7 +110,7 @@ function getBGGCollection() {
   $expansions = $_POST['expansions'];
 
 
-  $url = 'https://www.boardgamegeek.com/xmlapi2/collection?username='.$bggUsername.'&stats=1';
+  $url = 'https://boardgamegeek.com/xmlapi2/collection?username='.$bggUsername.'&stats=1';
 
   //filter out expansions if checked
   if ($expansions === '0') {
@@ -150,7 +150,7 @@ function getBGGPlayed() {
   $expansions = $_POST['expansions'];
 
 
-  $url = 'https://www.boardgamegeek.com/xmlapi2/collection?username='.$bggUsername.'&stats=1&played=1';
+  $url = 'https://boardgamegeek.com/xmlapi2/collection?username='.$bggUsername.'&stats=1&played=1';
 
   //filter out expansions if checked
   if ($expansions === '0') {
